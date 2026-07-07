@@ -193,26 +193,12 @@ export default function Login() {
           <span className="relative bg-slate-50 px-4 text-xs font-bold uppercase tracking-wider text-slate-400">or sign in with</span>
         </div>
 
-        <div className="flex flex-col gap-3 justify-center items-center">
-          <div className="w-full flex justify-center">
-            <GoogleLogin
-              onSuccess={handleGoogleSuccess}
-              onError={() => setError('Google Authentication Failed.')}
-              useOneTap
-            />
-          </div>
-
-          <button
-            type="button"
-            onClick={() => {
-              setUsername('adarsh');
-              setPassword('password');
-            }}
-            className="w-full bg-white border border-slate-200 text-slate-700 font-bold py-3.5 rounded-2xl shadow-sm hover:bg-slate-50 transition-all flex items-center justify-center gap-2 text-sm cursor-pointer"
-          >
-            <span className="text-lg">🤖</span>
-            <span>Fill Demo Credentials</span>
-          </button>
+        <div className="flex justify-center mt-2">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => setError('Google Authentication Failed.')}
+            useOneTap
+          />
         </div>
 
         <p className="mt-8 text-center text-slate-500 text-sm font-semibold">
