@@ -23,7 +23,9 @@ export default function Login() {
       if (response.message === 'Login successful') {
         localStorage.setItem('user', JSON.stringify(response.user));
         localStorage.setItem('username', response.user.username);
-        if (response.user.profile && response.user.profile.fullName) {
+        if (response.isNewUser) {
+          navigate('/profile-setup');
+        } else if (response.user.profile && response.user.profile.fullName) {
           navigate('/dashboard');
         } else {
           navigate('/profile-setup');

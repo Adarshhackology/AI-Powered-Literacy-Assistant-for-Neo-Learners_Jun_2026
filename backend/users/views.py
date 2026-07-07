@@ -170,7 +170,8 @@ class GoogleLoginView(APIView):
             
             return Response({
                 'message': 'Login successful',
-                'user': UserSerializer(user).data
+                'user': UserSerializer(user).data,
+                'isNewUser': created
             })
             
         except ValueError:

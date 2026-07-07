@@ -133,6 +133,7 @@ export const apiClient = {
       
       const profiles = getStorageItem<any[]>('profiles', []);
       let profile = profiles.find(p => p.username === mockUsername);
+      const isNewUser = !profile;
       if (!profile) {
         profile = {
           username: mockUsername,
@@ -154,7 +155,8 @@ export const apiClient = {
 
       return {
         message: 'Login successful',
-        user: { username: mockUsername, email: 'user@gmail.com', profile }
+        user: { username: mockUsername, email: 'user@gmail.com', profile },
+        isNewUser
       };
     }
   },

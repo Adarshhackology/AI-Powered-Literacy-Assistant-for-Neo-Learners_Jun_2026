@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
 import { apiClient } from '../utils/api';
 import { SupportedLanguage } from '../utils/translationHelper';
 import { Sparkles, User, Mail, Phone, Lock, BookOpen } from 'lucide-react';
@@ -17,6 +18,24 @@ export default function Register() {
   const [error, setError] = useState('');
   
   const navigate = useNavigate();
+
+  const handleGoogleSuccess = async (credentialResponse: any) => {
+    setLoading(true);
+    setError('');
+    try {
+      const response = await apiClient.googleLogin(credentialResponse.credential);
+      if (response.message === 'Login successful') {
+        localStorage.setItem('user', JSON.stringify(response.user));
+        localStorage.setItem('username', response.user.username);
+        // Sign-up flow always redirects to onboarding setup questions
+        navigate('/profile-setup');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Google registration failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const savedLang = localStorage.getItem('preferredLanguage') as SupportedLanguage;
@@ -217,6 +236,20 @@ export default function Register() {
             )}
           </button>
         </form>
+
+        {/* Google Sign Up */}
+        <div className="relative my-6 text-center">
+          <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-200" /></div>
+          <span className="relative bg-slate-50 px-4 text-xs font-bold uppercase tracking-wider text-slate-400">or sign up with</span>
+        </div>
+
+        <div className="w-full flex justify-center">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => setError('Google Registration Failed.')}
+            useOneTap
+          />
+        </div>
 
         <p className="mt-8 text-center text-slate-500 text-sm font-semibold">
           Already have an account?{' '}
