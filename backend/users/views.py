@@ -3,6 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
+from google.oauth2 import id_token
+from google.auth.transport import requests
 from .models import CustomUser, UserProfile
 from .serializers import UserSerializer, UserProfileSerializer
 
@@ -119,5 +121,59 @@ class GetProfileView(APIView):
             return Response(UserProfileSerializer(profile).data)
         except (CustomUser.DoesNotExist, UserProfile.DoesNotExist):
             return Response({'error': 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class GoogleLoginView(APIView):
+    def post(self, request):
+        token = request.data.get('token')
+        if not token:
+            return Response({'error': 'Token is required'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            # Verify direct OAuth payload with Google APIs
+            idinfo = id_token.verify_oauth2_token(
+                token, 
+                requests.Request(), 
+                '866893913282-u3aojbtk64h6fhpku8m8ckennkusnr3g.apps.googleusercontent.com'
+            )
+            
+            email = idinfo['email']
+            name = idinfo.get('name', email.split('@')[0])
+            avatar = idinfo.get('picture', '🧑‍🎓')
+            
+            # Find user by email or generate a new one
+            user, created = CustomUser.objects.get_or_create(
+                email=email,
+                defaults={
+                    'username': email.split('@')[0],
+                    'first_name': name
+                }
+            )
+            
+            # Find or build user statistics profile
+            profile, profile_created = UserProfile.objects.get_or_create(
+                user=user,
+                defaults={
+                    'fullName': name,
+                    'avatar': avatar,
+                    'education': 'Secondary School',
+                    'preferredLanguage': 'english',
+                    'xp': 100,
+                    'coins': 20,
+                    'streak': 1,
+                    'level': 1,
+                    'badges': '[]',
+                    'completedLessons': '[]'
+                }
+            )
+            
+            return Response({
+                'message': 'Login successful',
+                'user': UserSerializer(user).data
+            })
+            
+        except ValueError:
+            return Response({'error': 'Invalid Google Token'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

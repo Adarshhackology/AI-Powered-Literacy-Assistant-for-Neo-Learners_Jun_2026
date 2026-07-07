@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
 import { apiClient } from '../utils/api';
 import { SupportedLanguage, translations } from '../utils/translationHelper';
 import { ShieldCheck, Mail, Lock, Sparkles } from 'lucide-react';
@@ -13,6 +14,27 @@ export default function Login() {
   const [lang, setLang] = useState<SupportedLanguage>('english');
   
   const navigate = useNavigate();
+
+  const handleGoogleSuccess = async (credentialResponse: any) => {
+    setLoading(true);
+    setError('');
+    try {
+      const response = await apiClient.googleLogin(credentialResponse.credential);
+      if (response.message === 'Login successful') {
+        localStorage.setItem('user', JSON.stringify(response.user));
+        localStorage.setItem('username', response.user.username);
+        if (response.user.profile && response.user.profile.fullName) {
+          navigate('/dashboard');
+        } else {
+          navigate('/profile-setup');
+        }
+      }
+    } catch (err: any) {
+      setError(err.message || 'Google Login failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
   const location = useLocation();
   const successMessage = (location.state as any)?.message;
 
@@ -163,22 +185,33 @@ export default function Login() {
           </button>
         </form>
 
-        {/* Google OAuth simulation */}
+        {/* Google Sign In */}
         <div className="relative my-6 text-center">
           <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-200" /></div>
-          <span className="relative bg-slate-50 px-4 text-xs font-bold uppercase tracking-wider text-slate-400">or</span>
+          <span className="relative bg-slate-50 px-4 text-xs font-bold uppercase tracking-wider text-slate-400">or sign in with</span>
         </div>
 
-        <button
-          onClick={() => {
-            setUsername('adarsh');
-            setPassword('password');
-          }}
-          className="w-full bg-white border border-slate-200 text-slate-700 font-bold py-3.5 rounded-2xl shadow-sm hover:bg-slate-50 transition-all flex items-center justify-center gap-2 text-sm cursor-pointer"
-        >
-          <span className="text-lg">🤖</span>
-          <span>Fill Demo Credentials</span>
-        </button>
+        <div className="flex flex-col gap-3 justify-center items-center">
+          <div className="w-full flex justify-center">
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => setError('Google Authentication Failed.')}
+              useOneTap
+            />
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              setUsername('adarsh');
+              setPassword('password');
+            }}
+            className="w-full bg-white border border-slate-200 text-slate-700 font-bold py-3.5 rounded-2xl shadow-sm hover:bg-slate-50 transition-all flex items-center justify-center gap-2 text-sm cursor-pointer"
+          >
+            <span className="text-lg">🤖</span>
+            <span>Fill Demo Credentials</span>
+          </button>
+        </div>
 
         <p className="mt-8 text-center text-slate-500 text-sm font-semibold">
           New here?{' '}

@@ -115,6 +115,50 @@ export const apiClient = {
     }
   },
 
+  // Authentication: Google Login
+  googleLogin: async (token: string) => {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/users/google-login/`, { token });
+      return response.data;
+    } catch (err) {
+      console.warn('Django backend not active, running local fallback storage');
+      const mockUsername = 'google_user';
+      const users = getStorageItem<any[]>('users', []);
+      let foundUser = users.find(u => u.username === mockUsername);
+      if (!foundUser) {
+        foundUser = { username: mockUsername, email: 'user@gmail.com', password: 'google_password', name: 'Google Learner' };
+        users.push(foundUser);
+        setStorageItem('users', users);
+      }
+      
+      const profiles = getStorageItem<any[]>('profiles', []);
+      let profile = profiles.find(p => p.username === mockUsername);
+      if (!profile) {
+        profile = {
+          username: mockUsername,
+          fullName: 'Google Learner',
+          age: '24',
+          gender: 'Male',
+          education: 'Secondary School',
+          preferredLanguage: 'english',
+          xp: 120,
+          coins: 25,
+          streak: 5,
+          level: 2,
+          badges: ['First Lesson'],
+          completedLessons: [1]
+        };
+        profiles.push(profile);
+        setStorageItem('profiles', profiles);
+      }
+
+      return {
+        message: 'Login successful',
+        user: { username: mockUsername, email: 'user@gmail.com', profile }
+      };
+    }
+  },
+
   // Authentication: Register
   register: async (userData: any) => {
     try {
