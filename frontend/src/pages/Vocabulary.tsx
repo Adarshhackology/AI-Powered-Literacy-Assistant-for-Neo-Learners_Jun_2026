@@ -10,19 +10,20 @@ interface VocabItem {
   emoji: string;
   english: string;
   translations: Record<string, string>;
+  image?: string;
 }
 
 const vocabCategories: Record<string, VocabItem[]> = {
   'Fruits & Food': [
-    { emoji: '🍎', english: 'Apple', translations: { hindi: 'सेब (Seb)', tamil: 'ஆப்பிள் (Āppiḷ)', telugu: 'ఆపిల్ (Āpil)', kannada: 'ಸೇಬು (Sēbu)' } },
-    { emoji: '🍌', english: 'Banana', translations: { hindi: 'केला (Kela)', tamil: 'வாழைப்பழם (Vāḻaippaḻam)', telugu: 'ಅರటిపండు (Araṭipaṇḍu)', kannada: 'ಬಾಳೆಹಣ್ಣು (Bāḷehaṇṇu)' } },
+    { emoji: '🍎', english: 'Apple', translations: { hindi: 'सेब (Seb)', tamil: 'ஆப்பிள் (Āppiḷ)', telugu: 'ఆపిల్ (Āpil)', kannada: 'ಸೇಬು (Sēbu)' }, image: '/vocab_apple.png' },
+    { emoji: '🍌', english: 'Banana', translations: { hindi: 'केला (Kela)', tamil: 'வாழைப்பழם (Vāḻaippaḻam)', telugu: 'అరటిపండు (Araṭipaṇḍu)', kannada: 'ಬಾಳೆಹಣ್ಣು (Bāḷehaṇṇu)' }, image: '/vocab_banana.png' },
     { emoji: '🥛', english: 'Milk', translations: { hindi: 'दूध (Doodh)', tamil: 'பால் (Pāl)', telugu: 'పాలు (Pālu)', kannada: 'ಹಾಲು (Hālu)' } },
-    { emoji: '🍞', english: 'Bread', translations: { hindi: 'रोटी (Roti)', tamil: 'ರೊட்டி (Roṭṭi)', telugu: 'రొట్టె (Roṭṭe)', kannada: 'ರೊಟ್ಟಿ (Roṭṭi)' } },
+    { emoji: '🍞', english: 'Bread', translations: { hindi: 'रोटी (Roti)', tamil: 'ರொட்டி (Roṭṭi)', telugu: 'రొట్టె (Roṭṭe)', kannada: 'ರೊಟ್ಟಿ (Roṭṭi)' } },
     { emoji: '🥚', english: 'Egg', translations: { hindi: 'अंडा (Anda)', tamil: 'முட்டை (Muṭṭai)', telugu: 'గుడ్డు (Guḍḍu)', kannada: 'ಮೊಟ್ಟೆ (Moṭṭe)' } },
   ],
   'Common Objects': [
     { emoji: '🔑', english: 'Key', translations: { hindi: 'चाबी (Chabi)', tamil: 'சாவி (Cāvi)', telugu: 'తాళం (Tāḷaṁ)', kannada: 'ಕೀಲಿ (Kīli)' } },
-    { emoji: '📚', english: 'Book', translations: { hindi: 'किताब (Kitab)', tamil: 'புத்தகம் (Puttakam)', telugu: 'పుస్తకం (Pustakaṁ)', kannada: 'ಪುಸ್ತಕ (Pustaka)' } },
+    { emoji: '📚', english: 'Book', translations: { hindi: 'किताब (Kitab)', tamil: 'புத்தகம் (Puttakam)', telugu: 'పుస్తకం (Pustakaṁ)', kannada: 'ಪುಸ್ತಕ (Pustaka)' }, image: '/vocab_book.png' },
     { emoji: '🖊️', english: 'Pen', translations: { hindi: 'कलम (Kalam)', tamil: 'பேனா (Pēṉā)', telugu: 'పెన్ (Pen)', kannada: 'ಪೆನ್ (Pen)' } },
     { emoji: '📱', english: 'Phone', translations: { hindi: 'मोबाइल (Mobile)', tamil: 'கைபேசி (Kaipeci)', telugu: 'ఫోన్ (Phōn)', kannada: 'ಮೊಬೈಲ್ (Mobile)' } },
     { emoji: '👓', english: 'Glasses', translations: { hindi: 'चश्मा (Chashma)', tamil: 'கண்ணாடி (Kaṇṇāṭi)', telugu: 'కళ్ళజోడు (Kaḷḷajōḍu)', kannada: 'ಕನ್ನಡಕ (Kannaḍaka)' } },
@@ -34,7 +35,7 @@ const vocabCategories: Record<string, VocabItem[]> = {
     { emoji: '🦁', english: 'Lion', translations: { hindi: 'शेर (Sher)', tamil: 'சிங்கம் (Ciṅkam)', telugu: 'సింహం (Siṁhaṁ)', kannada: 'ಸಿಂಹ (Siṁha)' } },
   ],
   'Public Places': [
-    { emoji: '🏥', english: 'Hospital', translations: { hindi: 'अस्पताल (Aspatal)', tamil: 'மருத்துவமனை (Maruttuvamaṉai)', telugu: 'ఆసుపత్రి (Āsupatri)', kannada: 'ಆಸ್ಪತ್ರೆ (Āspatre)' } },
+    { emoji: '🏥', english: 'Hospital', translations: { hindi: 'अस्पताल (Aspatal)', tamil: 'மருத்துவமனை (Maruttuvamaṉai)', telugu: 'ఆసుపత్రి (Āsupatri)', kannada: 'ಆಸ್ಪತ್ರೆ (Āspatre)' }, image: '/vocab_hospital.png' },
     { emoji: '🏫', english: 'School', translations: { hindi: 'स्कूल (School)', tamil: 'பள்ளி (Paḷḷi)', telugu: 'పాఠశాల (Pāṭhaśāla)', kannada: 'ಶಾಲೆ (Śāle)' } },
     { emoji: '🏪', english: 'Shop', translations: { hindi: 'दुकान (Dukan)', tamil: 'கடை (Kaṭai)', telugu: 'దుకాణం (Dukāṇaṁ)', kannada: 'ಅಂಗಡಿ (Aṅgaḍi)' } },
     { emoji: '🌳', english: 'Park', translations: { hindi: 'उद्यान / पार्क', tamil: 'பூங்கா (Pūṅkā)', telugu: 'ఉద్యానవనం (Udyānavanaṁ)', kannada: 'ಉದ್ಯಾನ (Udyāna)' } },
@@ -249,8 +250,12 @@ export default function Vocabulary() {
                 )}
 
                 {/* Big Visual Symbol */}
-                <div className="w-20 h-20 bg-slate-50 border border-slate-100 rounded-3xl flex items-center justify-center text-5xl mb-4 shadow-inner">
-                  {item.emoji}
+                <div className="w-20 h-20 bg-slate-50 border border-slate-100 rounded-3xl flex items-center justify-center text-5xl mb-4 shadow-inner overflow-hidden">
+                  {item.image ? (
+                    <img src={item.image} alt={item.english} className="w-14 h-14 object-contain" />
+                  ) : (
+                    <span>{item.emoji}</span>
+                  )}
                 </div>
 
                 {/* Words */}
