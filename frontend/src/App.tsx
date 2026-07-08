@@ -12,6 +12,7 @@ import LessonView from './pages/LessonView';
 import VoicePractice from './pages/VoicePractice';
 import Reports from './pages/Reports';
 import AdminDashboard from './pages/AdminDashboard';
+import Vocabulary from './pages/Vocabulary';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/lesson/:id" element={<LessonView />} />
         <Route path="/voice-practice" element={<VoicePractice />} />
         <Route path="/reports" element={<Reports />} />
+        <Route path="/vocabulary" element={<Vocabulary />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

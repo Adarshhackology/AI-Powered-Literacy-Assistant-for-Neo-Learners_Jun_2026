@@ -107,6 +107,11 @@ export default function Dashboard() {
               <span>{t.voiceLearning}</span>
             </Link>
 
+            <Link to="/vocabulary" className="flex items-center gap-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-semibold px-4 py-3 rounded-2xl text-sm transition-all">
+              <BookOpen className="w-5 h-5 text-slate-400" />
+              <span>Visual Dictionary</span>
+            </Link>
+
             <Link to="/reports" className="flex items-center gap-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-semibold px-4 py-3 rounded-2xl text-sm transition-all">
               <TrendingUp className="w-5 h-5 text-slate-400" />
               <span>{t.reports}</span>
@@ -236,15 +241,15 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+            <Link to="/vocabulary" className="bg-white p-5 rounded-2xl border border-slate-100 hover:border-indigo-200 shadow-sm flex items-center gap-4 transition-all hover:shadow-md cursor-pointer">
               <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
                 <Sparkles className="w-6 h-6" />
               </div>
               <div>
-                <h4 className="text-slate-400 font-semibold text-xs uppercase tracking-wider">Vocabulary</h4>
-                <p className="text-xl font-extrabold text-slate-900 mt-0.5">72%</p>
+                <h4 className="text-indigo-400 font-semibold text-xs uppercase tracking-wider">Vocabulary</h4>
+                <p className="text-xl font-extrabold text-slate-900 mt-0.5">Explore</p>
               </div>
-            </div>
+            </Link>
           </div>
 
           {/* Detailed Panels Grid */}
