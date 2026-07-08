@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiClient } from '../utils/api';
-import { Sparkles, ArrowRight, User } from 'lucide-react';
+import { Sparkles, ArrowRight, ArrowLeft, User, CheckCircle2 } from 'lucide-react';
 
 const avatars = [
   { id: '1', emoji: '🧑‍🎓', label: 'Learner' },
@@ -11,23 +11,63 @@ const avatars = [
   { id: '5', emoji: '🤖', label: 'Techie' },
 ];
 
+const goals = [
+  { id: 'Read newspapers and signs', emoji: '📰', title: 'Read signs & news', desc: 'Understand notice boards, newspapers, and signposts.' },
+  { id: 'Write basic letters & forms', emoji: '✉️', title: 'Write letters & forms', desc: 'Fill out documents, application forms, and write letters.' },
+  { id: 'Chat with family & kids', emoji: '💬', title: 'Chat with family', desc: 'Message and talk confidently with children and relatives.' },
+  { id: 'Prepare for job applications', emoji: '💼', title: 'Job preparation', desc: 'Write emails, read resumes, and practice basic interviews.' }
+];
+
+const readingOptions = [
+  { level: 'Beginner', emoji: '🔴', label: 'Beginner', desc: 'Cannot read full sentences yet.' },
+  { level: 'Intermediate', emoji: '🟡', label: 'Intermediate', desc: 'Can read basic words and simple sentences.' },
+  { level: 'Advanced', emoji: '🟢', label: 'Advanced', desc: 'Can read newspaper articles and books.' }
+];
+
+const writingOptions = [
+  { level: 'Beginner', emoji: '🔴', label: 'Beginner', desc: 'Cannot write letters or full words yet.' },
+  { level: 'Intermediate', emoji: '🟡', label: 'Intermediate', desc: 'Can spell basic words and simple messages.' },
+  { level: 'Advanced', emoji: '🟢', label: 'Advanced', desc: 'Can write complete paragraphs and letters.' }
+];
+
+const speakingOptions = [
+  { level: 'Shy', value: '30', emoji: '🤐', label: 'Shy / Need practice', desc: 'I feel nervous speaking out loud.' },
+  { level: 'Average', value: '60', emoji: '🙂', label: 'Average / Can talk basic', desc: 'I can speak simple everyday sentences.' },
+  { level: 'Fluent', value: '95', emoji: '🗣️', label: 'Fluent / Speak easily', desc: 'I can speak and express my ideas clearly.' }
+];
+
 export default function ProfileSetup() {
   const username = localStorage.getItem('username') || 'guest';
   const navigate = useNavigate();
 
+  // Onboarding wizard steps: 1 to 5
+  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1);
+
+  // Form states
   const [avatar, setAvatar] = useState('1');
   const [fullName, setFullName] = useState(username);
   const [age, setAge] = useState('24');
-  const [gender, setGender] = useState('Male');
-  const [education, setEducation] = useState('Secondary School');
-  const [occupation, setOccupation] = useState('Student');
-  const [prefLang, setPrefLang] = useState(localStorage.getItem('preferredLanguage') || 'english');
-  const [learningGoal, setLearningGoal] = useState('Improve Speaking & Reading');
+  const [learningGoal, setLearningGoal] = useState('Read newspapers and signs');
   const [readingLevel, setReadingLevel] = useState('Beginner');
   const [writingLevel, setWritingLevel] = useState('Beginner');
-  const [speakingConfidence, setSpeakingConfidence] = useState('50');
-  const [dailyTime, setDailyTime] = useState('30 mins');
+  const [speakingLevel, setSpeakingLevel] = useState('Average');
+  const [speakingConfidence, setSpeakingConfidence] = useState('60');
+
   const [loading, setLoading] = useState(false);
+
+  const handleNext = () => {
+    if (step === 1) {
+      if (!fullName.trim() || !age) {
+        alert('Please fill in your name and age.');
+        return;
+      }
+    }
+    setStep((prev) => (prev + 1) as any);
+  };
+
+  const handleBack = () => {
+    setStep((prev) => (prev - 1) as any);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,15 +76,15 @@ export default function ProfileSetup() {
       const profileData = {
         fullName,
         age,
-        gender,
-        education,
-        occupation,
-        preferredLanguage: prefLang,
+        gender: 'Prefer not to say',
+        education: 'Self-Taught',
+        occupation: 'Learner',
+        preferredLanguage: localStorage.getItem('preferredLanguage') || 'english',
         learningGoal,
         readingLevel,
         writingLevel,
         speakingConfidence,
-        dailyLearningTime: dailyTime,
+        dailyLearningTime: '30 mins',
         avatar: avatars.find(a => a.id === avatar)?.emoji || '🧑‍🎓',
         xp: 20,
         coins: 10,
@@ -61,7 +101,6 @@ export default function ProfileSetup() {
       user.profile = res;
       localStorage.setItem('user', JSON.stringify(user));
       
-      // Send learner to level selection page with images
       navigate('/level-selection');
     } catch (err) {
       console.error(err);
@@ -71,227 +110,309 @@ export default function ProfileSetup() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-6 flex flex-col items-center justify-center relative">
-      {/* Background decorations */}
+    <div className="min-h-screen bg-slate-50 py-12 px-6 flex flex-col items-center justify-center relative font-inter">
+      {/* Decorative Lights */}
       <div className="absolute top-10 left-10 w-48 h-48 bg-blue-300/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-64 h-64 bg-indigo-300/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-3xl w-full bg-white border border-slate-100 p-8 md:p-10 rounded-3xl shadow-2xl relative z-10">
-        <div className="text-center space-y-2 mb-8">
-          <div className="inline-flex items-center gap-1 bg-blue-50 border border-blue-100 text-blue-700 font-bold px-4 py-1.5 rounded-full text-xs">
-            <Sparkles className="w-4.5 h-4.5" />
-            <span>Learner Setup</span>
+      <div className="max-w-2xl w-full bg-white border border-slate-200/50 p-8 md:p-10 rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.03)] relative z-10 space-y-8">
+        
+        {/* Wizard Step Progress Tracker */}
+        <div className="space-y-2.5">
+          <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">
+            <span>Step {step} of 5</span>
+            <span>{Math.round((step / 5) * 100)}% Complete</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Create Learner Profile</h1>
-          <p className="text-slate-500 font-medium">Tell us about yourself to customize your learning path.</p>
+          <div className="grid grid-cols-5 gap-1.5 h-2">
+            {[1, 2, 3, 4, 5].map((s) => (
+              <div 
+                key={s} 
+                className={`rounded-full transition-all duration-300 ${
+                  step >= s ? 'bg-indigo-600' : 'bg-slate-100'
+                }`} 
+              />
+            ))}
+          </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
-          {/* Avatar Selector */}
-          <div className="space-y-3 text-center">
-            <label className="block text-sm font-bold text-slate-700 uppercase tracking-wider">Choose Profile Avatar</label>
-            <div className="flex justify-center gap-4">
-              {avatars.map((av) => (
+        {/* STEP 1: Personal Details */}
+        {step === 1 && (
+          <div className="space-y-6">
+            <div className="text-center space-y-2">
+              <div className="inline-flex items-center gap-1 bg-indigo-50 border border-indigo-100 text-indigo-700 font-extrabold px-4 py-1.5 rounded-full text-xs">
+                <Sparkles className="w-4.5 h-4.5" />
+                <span>Learner Profile Setup</span>
+              </div>
+              <h2 className="text-2.5xl font-black text-slate-900 tracking-tight">Let's build your profile</h2>
+              <p className="text-slate-500 font-semibold text-sm">Tell us your name and choose a character avatar.</p>
+            </div>
+
+            <div className="space-y-6 pt-4">
+              {/* Avatar Picker */}
+              <div className="space-y-3">
+                <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider text-center">Choose Your Avatar</label>
+                <div className="flex justify-center gap-3">
+                  {avatars.map((av) => (
+                    <div
+                      key={av.id}
+                      onClick={() => setAvatar(av.id)}
+                      className={`w-14 h-14 rounded-2xl flex items-center justify-center text-3xl border transition-all hover:scale-105 cursor-pointer ${
+                        avatar === av.id
+                          ? 'border-indigo-600 bg-indigo-50/20 shadow-md ring-4 ring-indigo-500/5'
+                          : 'border-slate-100 bg-slate-50 hover:border-slate-300'
+                      }`}
+                      title={av.label}
+                    >
+                      {av.emoji}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Full Name */}
+              <div className="space-y-1.5">
+                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider pl-1">What is your name?</label>
+                <div className="relative">
+                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400/80" />
+                  <input
+                    type="text"
+                    required
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    className="w-full pl-12 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl text-slate-800 focus:outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-500 transition-all font-semibold text-sm placeholder:text-slate-400"
+                    placeholder="e.g. Adarsh Kumar"
+                  />
+                </div>
+              </div>
+
+              {/* Age */}
+              <div className="space-y-1.5">
+                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider pl-1">How old are you?</label>
+                <input
+                  type="number"
+                  required
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  className="w-full px-4 py-3.5 bg-white border border-slate-200 rounded-2xl text-slate-800 focus:outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-500 transition-all font-semibold text-sm placeholder:text-slate-400"
+                  placeholder="Age"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-4">
+              <button
+                onClick={handleNext}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm px-8 py-3.5 rounded-2xl shadow-md hover:shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer"
+              >
+                <span>Continue</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* STEP 2: Learning Goal */}
+        {step === 2 && (
+          <div className="space-y-6">
+            <div className="text-center space-y-2">
+              <h2 className="text-2.5xl font-black text-slate-900 tracking-tight">What is your learning goal?</h2>
+              <p className="text-slate-500 font-semibold text-sm">Choose what you want to achieve with this assistant.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+              {goals.map((g) => (
                 <div
-                  key={av.id}
-                  onClick={() => setAvatar(av.id)}
-                  className={`w-16 h-16 rounded-2xl flex items-center justify-center text-3xl border-2 cursor-pointer transition-all hover:scale-105 ${
-                    avatar === av.id
-                      ? 'border-blue-600 bg-blue-50 shadow-md ring-2 ring-blue-500/10'
-                      : 'border-slate-100 bg-slate-50 hover:border-slate-300'
+                  key={g.id}
+                  onClick={() => setLearningGoal(g.id)}
+                  className={`p-5 rounded-2xl border cursor-pointer text-left transition-all ${
+                    learningGoal === g.id
+                      ? 'border-indigo-600 bg-indigo-50/20 shadow-md ring-4 ring-indigo-500/5'
+                      : 'border-slate-100 bg-white hover:border-slate-300 hover:shadow-sm'
                   }`}
-                  title={av.label}
                 >
-                  {av.emoji}
+                  <div className="text-3xl mb-2.5">{g.emoji}</div>
+                  <h4 className="font-extrabold text-slate-950 text-sm leading-snug">{g.title}</h4>
+                  <p className="text-slate-400 text-xs font-semibold mt-1 leading-relaxed">{g.desc}</p>
                 </div>
               ))}
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Full Name */}
-            <div className="space-y-2">
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Full Name</label>
-              <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                <input
-                  type="text"
-                  required
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-semibold"
-                  placeholder="e.g. Adarsh Kumar"
-                />
-              </div>
-            </div>
-
-            {/* Age */}
-            <div className="space-y-2">
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Age</label>
-              <input
-                type="number"
-                required
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-                className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-semibold"
-                placeholder="Age"
-              />
-            </div>
-
-            {/* Gender */}
-            <div className="space-y-2">
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Gender</label>
-              <select
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
-                className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-semibold"
+            <div className="flex justify-between pt-6 border-t border-slate-100">
+              <button
+                onClick={handleBack}
+                className="inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-900 font-bold text-sm cursor-pointer"
               >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Non-binary">Non-binary</option>
-                <option value="Prefer not to say">Prefer not to say</option>
-              </select>
-            </div>
-
-            {/* Daily Learning Time */}
-            <div className="space-y-2">
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Daily Study Time</label>
-              <select
-                value={dailyTime}
-                onChange={(e) => setDailyTime(e.target.value)}
-                className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-semibold"
+                <ArrowLeft className="w-4 h-4" />
+                <span>Back</span>
+              </button>
+              <button
+                onClick={handleNext}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm px-8 py-3.5 rounded-2xl shadow-md hover:shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer"
               >
-                <option value="15 mins">15 mins (Quick)</option>
-                <option value="30 mins">30 mins (Recommended)</option>
-                <option value="45 mins">45 mins (Active)</option>
-                <option value="60 mins">60 mins (Intense)</option>
-              </select>
-            </div>
-
-            {/* Occupation */}
-            <div className="space-y-2">
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Occupation</label>
-              <input
-                type="text"
-                required
-                value={occupation}
-                onChange={(e) => setOccupation(e.target.value)}
-                className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-semibold"
-                placeholder="e.g. Farmer, Housewife, Shopkeeper"
-              />
-            </div>
-
-            {/* Preferred Language */}
-            <div className="space-y-2">
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Preferred Language</label>
-              <select
-                value={prefLang}
-                onChange={(e) => setPrefLang(e.target.value)}
-                className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-semibold"
-              >
-                <option value="english">English</option>
-                <option value="hindi">हिंदी (Hindi)</option>
-                <option value="telugu">తెలుగు (Telugu)</option>
-                <option value="tamil">தமிழ் (Tamil)</option>
-                <option value="kannada">ಕನ್ನಡ (Kannada)</option>
-                <option value="malayalam">മലയാളം (Malayalam)</option>
-                <option value="marathi">मराठी (Marathi)</option>
-                <option value="bengali">বাংলা (Bengali)</option>
-                <option value="gujarati">ગુજરાતી (Gujarati)</option>
-                <option value="punjabi">ਪੰਜਾਬੀ (Punjabi)</option>
-              </select>
+                <span>Continue</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
+        )}
 
-          <hr className="border-slate-100" />
-
+        {/* STEP 3: Reading Confidence */}
+        {step === 3 && (
           <div className="space-y-6">
-            <h3 className="font-extrabold text-slate-900 text-lg">Literacy Goals & Skill Levels</h3>
+            <div className="text-center space-y-2">
+              <h2 className="text-2.5xl font-black text-slate-900 tracking-tight">Your Reading Confidence</h2>
+              <p className="text-slate-500 font-semibold text-sm">Choose the option that describes your reading skill best.</p>
+            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Learning Goal */}
-              <div className="space-y-2">
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">What is your primary learning goal?</label>
-                <select
-                  value={learningGoal}
-                  onChange={(e) => setLearningGoal(e.target.value)}
-                  className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-semibold"
+            <div className="space-y-4 pt-4">
+              {readingOptions.map((opt) => (
+                <div
+                  key={opt.level}
+                  onClick={() => setReadingLevel(opt.level)}
+                  className={`p-5 rounded-2xl border cursor-pointer flex items-center gap-4 text-left transition-all ${
+                    readingLevel === opt.level
+                      ? 'border-indigo-600 bg-indigo-50/20 shadow-md ring-4 ring-indigo-500/5'
+                      : 'border-slate-100 bg-white hover:border-slate-300 hover:shadow-sm'
+                  }`}
                 >
-                  <option value="Read newspapers and signs">Read newspapers and signs</option>
-                  <option value="Write basic letters & forms">Write basic letters & forms</option>
-                  <option value="Chat with family & kids">Chat with family & kids</option>
-                  <option value="Prepare for job applications">Prepare for job applications</option>
-                  <option value="General reading confidence">General reading confidence</option>
-                </select>
-              </div>
-
-              {/* Reading Level */}
-              <div className="space-y-2">
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Your Reading Confidence</label>
-                <select
-                  value={readingLevel}
-                  onChange={(e) => setReadingLevel(e.target.value)}
-                  className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-semibold"
-                >
-                  <option value="Beginner">Beginner (Cannot read full sentences)</option>
-                  <option value="Intermediate">Intermediate (Can read basic sentences)</option>
-                  <option value="Advanced">Advanced (Can read full books)</option>
-                </select>
-              </div>
-
-              {/* Writing Level */}
-              <div className="space-y-2">
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Your Writing Confidence</label>
-                <select
-                  value={writingLevel}
-                  onChange={(e) => setWritingLevel(e.target.value)}
-                  className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all font-semibold"
-                >
-                  <option value="Beginner">Beginner (Cannot write letters/words)</option>
-                  <option value="Intermediate">Intermediate (Can spell basic words)</option>
-                  <option value="Advanced">Advanced (Can write complete paragraphs)</option>
-                </select>
-              </div>
-
-              {/* Speaking Confidence Slider */}
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">Speaking Confidence</label>
-                  <span className="text-sm font-extrabold text-blue-600">{speakingConfidence}%</span>
+                  <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-xl shrink-0">
+                    {opt.emoji}
+                  </div>
+                  <div>
+                    <h4 className="font-extrabold text-slate-950 text-sm leading-snug">{opt.label}</h4>
+                    <p className="text-slate-400 text-xs font-semibold mt-0.5">{opt.desc}</p>
+                  </div>
                 </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={speakingConfidence}
-                  onChange={(e) => setSpeakingConfidence(e.target.value)}
-                  className="w-full accent-blue-600 bg-slate-100 rounded-lg cursor-pointer h-2"
-                />
-                <div className="flex justify-between text-[10px] font-bold text-slate-400 uppercase">
-                  <span>Shy</span>
-                  <span>Average</span>
-                  <span>Fluent</span>
-                </div>
-              </div>
+              ))}
+            </div>
+
+            <div className="flex justify-between pt-6 border-t border-slate-100">
+              <button
+                onClick={handleBack}
+                className="inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-900 font-bold text-sm cursor-pointer"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Back</span>
+              </button>
+              <button
+                onClick={handleNext}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm px-8 py-3.5 rounded-2xl shadow-md hover:shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer"
+              >
+                <span>Continue</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
+        )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-base font-extrabold py-4 rounded-2xl hover:shadow-xl hover:shadow-blue-500/20 active:scale-95 transition-all shadow-md disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
-          >
-            {loading ? (
-              <span>⏳ Saving...</span>
-            ) : (
-              <>
-                <span>Create Profile & Start Assessment</span>
-                <ArrowRight className="w-5 h-5" />
-              </>
-            )}
-          </button>
-        </form>
+        {/* STEP 4: Writing Confidence */}
+        {step === 4 && (
+          <div className="space-y-6">
+            <div className="text-center space-y-2">
+              <h2 className="text-2.5xl font-black text-slate-900 tracking-tight">Your Writing Confidence</h2>
+              <p className="text-slate-500 font-semibold text-sm">Choose the option that describes your writing skill best.</p>
+            </div>
+
+            <div className="space-y-4 pt-4">
+              {writingOptions.map((opt) => (
+                <div
+                  key={opt.level}
+                  onClick={() => setWritingLevel(opt.level)}
+                  className={`p-5 rounded-2xl border cursor-pointer flex items-center gap-4 text-left transition-all ${
+                    writingLevel === opt.level
+                      ? 'border-indigo-600 bg-indigo-50/20 shadow-md ring-4 ring-indigo-500/5'
+                      : 'border-slate-100 bg-white hover:border-slate-300 hover:shadow-sm'
+                  }`}
+                >
+                  <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-xl shrink-0">
+                    {opt.emoji}
+                  </div>
+                  <div>
+                    <h4 className="font-extrabold text-slate-950 text-sm leading-snug">{opt.label}</h4>
+                    <p className="text-slate-400 text-xs font-semibold mt-0.5">{opt.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-between pt-6 border-t border-slate-100">
+              <button
+                onClick={handleBack}
+                className="inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-900 font-bold text-sm cursor-pointer"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Back</span>
+              </button>
+              <button
+                onClick={handleNext}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm px-8 py-3.5 rounded-2xl shadow-md hover:shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer"
+              >
+                <span>Continue</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* STEP 5: Speaking Confidence */}
+        {step === 5 && (
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="text-center space-y-2">
+              <h2 className="text-2.5xl font-black text-slate-900 tracking-tight">Speaking Confidence</h2>
+              <p className="text-slate-500 font-semibold text-sm">Choose how comfortable you feel speaking out loud.</p>
+            </div>
+
+            <div className="space-y-4 pt-4">
+              {speakingOptions.map((opt) => (
+                <div
+                  key={opt.level}
+                  onClick={() => {
+                    setSpeakingLevel(opt.level);
+                    setSpeakingConfidence(opt.value);
+                  }}
+                  className={`p-5 rounded-2xl border cursor-pointer flex items-center gap-4 text-left transition-all ${
+                    speakingLevel === opt.level
+                      ? 'border-indigo-600 bg-indigo-50/20 shadow-md ring-4 ring-indigo-500/5'
+                      : 'border-slate-100 bg-white hover:border-slate-300 hover:shadow-sm'
+                  }`}
+                >
+                  <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-2xl shrink-0">
+                    {opt.emoji}
+                  </div>
+                  <div>
+                    <h4 className="font-extrabold text-slate-950 text-sm leading-snug">{opt.label}</h4>
+                    <p className="text-slate-400 text-xs font-semibold mt-0.5">{opt.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-between pt-6 border-t border-slate-100 items-center">
+              <button
+                type="button"
+                onClick={handleBack}
+                className="inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-900 font-bold text-sm cursor-pointer"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Back</span>
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-extrabold text-sm px-8 py-4 rounded-2xl shadow-lg shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer disabled:opacity-60"
+              >
+                {loading ? (
+                  <span>Saving...</span>
+                ) : (
+                  <>
+                    <span>Complete Onboarding</span>
+                    <CheckCircle2 className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </div>
-  );
 }
