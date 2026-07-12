@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Initial Literacy Assessment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    :root { --navy:#12214b; --purple:#6657df; --pink:#ed66ae; --aqua:#20c9c5; --white:rgba(255,255,255,.84); }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; min-height:100vh; font-family:'Poppins',sans-serif; color:var(--navy); background:linear-gradient(135deg,#172b65 0%,#6256c9 47%,#d756a0 100%); overflow-x:hidden; }
+    body::before, body::after { content:""; position:fixed; border-radius:50%; filter:blur(2px); opacity:.35; pointer-events:none; }
+    body::before { width:350px; height:350px; background:#6ef0ea; top:-120px; right:-100px; }
+    body::after { width:300px; height:300px; background:#ffb6dc; bottom:-130px; left:-100px; }
+    .page { min-height:100vh; width:min(1220px,100%); margin:auto; padding:42px 28px; display:grid; grid-template-columns:.78fr 1.22fr; gap:46px; align-items:center; position:relative; }
+    .intro { color:#fff; padding:30px 8px; }
+    .brand { display:inline-flex; align-items:center; gap:10px; font-size:.82rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; }
+    .brand span { display:grid; place-items:center; height:36px; width:36px; border:1px solid rgba(255,255,255,.45); border-radius:12px; background:rgba(255,255,255,.14); }
+    .intro h2 { font-size:clamp(2rem,4vw,3.7rem); line-height:1.14; margin:25px 0 15px; }
+    .intro p { max-width:440px; font-size:1rem; line-height:1.8; color:rgba(255,255,255,.86); }
+    .illustration { width:min(100%,420px); display:block; margin:20px auto 0; filter:drop-shadow(0 18px 22px rgba(18,24,76,.24)); }
+    .form-card { background:var(--white); border:1px solid rgba(255,255,255,.6); border-radius:28px; padding:clamp(22px,4vw,42px); box-shadow:0 25px 55px rgba(11,15,71,.28); backdrop-filter:blur(16px); }
+    .form-card header { margin-bottom:28px; }
+    .eyebrow { color:#6657df; margin:0 0 6px; font-size:.76rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    h1 { margin:0; font-size:clamp(1.55rem,3vw,2.15rem); line-height:1.25; }
+    .subtitle { color:#63708e; margin:8px 0 0; font-size:.88rem; }
+    .progress { height:6px; background:#e8eaf4; border-radius:50px; overflow:hidden; margin:20px 0 0; }
+    .progress span { display:block; width:100%; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--aqua),var(--purple)); }
+    .section { border:0; padding:0; margin:29px 0; }
+    .section legend { width:100%; padding:0 0 11px; margin-bottom:18px; border-bottom:1px solid #dfe3ef; font-size:1rem; font-weight:700; }
+    .section legend i { color:#6657df; margin-right:8px; }
+    .details { display:grid; grid-template-columns:1.6fr .6fr 1fr; gap:14px; }
+    .field label { display:block; font-size:.78rem; font-weight:600; margin-bottom:7px; }
+    .field input, .field select { width:100%; border:1px solid #d9ddec; border-radius:11px; padding:11px 12px; font:inherit; font-size:.82rem; color:var(--navy); outline:none; background:rgba(255,255,255,.75); transition:.2s; }
+    .field input:focus, .field select:focus { border-color:#7668e4; box-shadow:0 0 0 3px rgba(102,87,223,.13); }
+    .question { padding:15px; margin:0 0 12px; border:1px solid #e2e5ef; border-radius:15px; background:rgba(255,255,255,.5); transition:transform .2s,box-shadow .2s,border-color .2s; }
+    .question:hover { transform:translateY(-2px); border-color:#bdb7ef; box-shadow:0 8px 18px rgba(62,67,132,.09); }
+    .question-title { display:flex; gap:10px; align-items:flex-start; margin:0 0 12px; font-size:.84rem; line-height:1.5; font-weight:600; }
+    .number { flex:0 0 23px; height:23px; display:grid; place-items:center; border-radius:8px; background:#eceafd; color:#6559d5; font-size:.7rem; }
+    .options { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; }
+    .option { position:relative; cursor:pointer; }
+    .option input { position:absolute; opacity:0; pointer-events:none; }
+    .option span { display:block; text-align:center; border:1px solid #dce0ec; border-radius:9px; padding:8px 4px; color:#68728d; font-size:.71rem; font-weight:500; transition:.2s; }
+    .option:hover span { border-color:#8d83e8; color:#6153d4; }
+    .option input:checked + span { border-color:#6d5ee0; background:#6d5ee0; color:#fff; box-shadow:0 4px 10px rgba(102,87,223,.22); }
+    .evaluate { width:100%; display:flex; align-items:center; justify-content:center; gap:10px; border:0; border-radius:13px; padding:14px; background:linear-gradient(100deg,#5749c8,#806ce8); color:#fff; font:600 .93rem 'Poppins',sans-serif; cursor:pointer; box-shadow:0 10px 20px rgba(80,67,181,.3); transition:transform .2s, box-shadow .2s; }
+    .evaluate:hover { transform:translateY(-3px); box-shadow:0 14px 25px rgba(80,67,181,.4); }
+    .notice { min-height:20px; color:#cc3c62; text-align:center; font-size:.75rem; margin:10px 0 0; }
+    .result { display:none; margin-top:24px; padding:22px; border-radius:18px; color:#fff; background:linear-gradient(135deg,#2c3c8e,#7254c7); box-shadow:0 15px 25px rgba(46,46,126,.22); animation:reveal .55s ease both; }
+    .result.show { display:block; }
+    @keyframes reveal { from { opacity:0; transform:translateY(15px) scale(.97); } to { opacity:1; transform:translateY(0) scale(1); } }
+    .result-top { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+    .result h3 { margin:0; font-size:1.25rem; }.complete { margin:7px 0 0; font-size:.77rem; color:#dffefa; }
+    .score { min-width:72px; text-align:center; padding:7px 8px; border:1px solid rgba(255,255,255,.28); border-radius:12px; background:rgba(255,255,255,.13); font-size:.74rem; }.score strong { display:block; font-size:1.35rem; }
+    .result-grid { display:grid; grid-template-columns:1fr 1.3fr; gap:16px; margin-top:18px; }
+    .result-box { padding:13px; border-radius:12px; background:rgba(255,255,255,.12); }.result-box small { display:block; opacity:.8; font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; }.level { margin:6px 0 0; font-size:1rem; font-weight:700; }.path { margin:7px 0 0; padding:0; list-style:none; font-size:.74rem; line-height:1.9; }.path i { color:#8ff4e5; margin-right:5px; }
+    @media (max-width:880px) { .page { grid-template-columns:1fr; max-width:650px; gap:0; padding:25px 18px 42px; }.intro { text-align:center; padding:13px 8px 20px; }.intro p { margin-left:auto; margin-right:auto; }.illustration { max-width:280px; margin-top:0; }.form-card { padding:26px 22px; } }
+    @media (max-width:510px) { .page { padding:18px 12px 30px; }.intro h2 { margin:16px 0 8px; }.intro p { display:none; }.illustration { display:none; }.details,.result-grid { grid-template-columns:1fr; }.options { grid-template-columns:1fr; }.question { padding:13px; }.option span { padding:7px; }.form-card { border-radius:22px; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <aside class="intro">
+      <div class="brand"><span><i class="fa-solid fa-sparkles"></i></span> LiteracyAI</div>
+      <h2>Your path to confident communication begins here.</h2>
+      <p>A thoughtful assessment that helps us create the right learning journey for you.</p>
+      <svg class="illustration" viewBox="0 0 520 365" role="img" aria-label="Student learning with an AI assistant" xmlns="http://www.w3.org/2000/svg">
+        <path d="M47 286c37-25 84-29 125-10 45-61 126-78 190-30 37-30 91-29 128 5v79H47z" fill="#fff" opacity=".16"/>
+        <rect x="286" y="79" width="165" height="125" rx="18" fill="#e9e5ff"/><rect x="300" y="94" width="137" height="91" rx="10" fill="#7665df"/>
+        <circle cx="370" cy="135" r="29" fill="#83efe1"/><circle cx="360" cy="128" r="5" fill="#263871"/><circle cx="381" cy="128" r="5" fill="#263871"/><path d="M356 148q14 13 29 0" fill="none" stroke="#263871" stroke-width="4" stroke-linecap="round"/>
+        <path d="M278 205h185l24 21H254z" fill="#c9c4f4"/><path d="M285 205h165l-9 12H294z" fill="#fff"/>
+        <path d="M110 187c14-51 83-53 105-8l18 91H91z" fill="#f4a68c"/><circle cx="161" cy="113" r="38" fill="#ad654f"/><path d="M120 119c-4-51 74-65 82-9-20-16-51-18-82 9z" fill="#363164"/><path d="M124 174c18 13 48 14 72 0v67h-72z" fill="#f7ae95"/><path d="M104 212c28 17 73 18 111 0l19 87H83z" fill="#fee5d5"/><path d="M114 214l48 38 44-38" fill="#785fda"/><path d="M129 248h64v66h-64z" rx="6" fill="#fff"/><path d="M141 265h39M141 278h31M141 291h40" stroke="#b6b2d8" stroke-width="5" stroke-linecap="round"/>
+        <path d="M72 112l11 4 4 11 4-11 11-4-11-4-4-11-4 11zM251 83l7 3 3 7 3-7 7-3-7-3-3-7-3 7z" fill="#8ef1e5"/>
+      </svg>
+    </aside>
+    <section class="form-card">
+      <header><p class="eyebrow">Personalized learning starts here</p><h1>Initial Literacy Assessment</h1><p class="subtitle">Answer each question honestly. It takes about 3 minutes.</p><div class="progress"><span></span></div></header>
+      <form id="assessmentForm" novalidate>
+        <fieldset class="section"><legend><i class="fa-solid fa-user"></i> Personal Information</legend><div class="details"><div class="field"><label for="name">Full Name</label><input id="name" type="text" placeholder="Enter your name" required></div><div class="field"><label for="age">Age</label><input id="age" type="number" min="5" max="100" placeholder="Age" required></div><div class="field"><label for="language">Preferred Language</label><select id="language" required><option value="">Choose</option><option>English</option><option>Tamil</option><option>Hindi</option></select></div></div></fieldset>
+        <div id="questions"></div>
+        <button class="evaluate" type="submit"><i class="fa-solid fa-wand-magic-sparkles"></i> Evaluate My Level</button><p class="notice" id="notice" aria-live="polite"></p>
+      </form>
+      <section class="result" id="result" aria-live="polite"></section>
+    </section>
+  </main>
+  <script>
+    const sections = [
+      ['Reading Skills','fa-book-open',['Can you read a newspaper article without assistance?','How often do you understand unfamiliar words while reading?','Can you understand government notices or forms?']],
+      ['Writing Skills','fa-pen-nib',['Can you write a paragraph without grammatical mistakes?','Can you write an email or application?','How confident are you in writing English?']],
+      ['Comprehension Skills','fa-brain',['Can you summarize a story after reading?','Can you answer questions from a passage?']],
+      ['Communication Skills','fa-comments',['Can you communicate confidently in English?','How comfortable are you speaking in front of others?']]
+    ];
+    const optionLabels = ['Not yet','Sometimes','Confident'];
+    let count = 0;
+    const questions = document.getElementById('questions');
+    sections.forEach(([title, icon, items]) => {
+      const fieldset = document.createElement('fieldset'); fieldset.className = 'section';
+      fieldset.innerHTML = `<legend><i class="fa-solid ${icon}"></i> ${title}</legend>`;
+      items.forEach(text => { count++; const question = document.createElement('div'); question.className='question';
+        question.innerHTML = `<p class="question-title"><span class="number">${count}</span>${text}</p><div class="options">${[0,5,10].map((value,index)=>`<label class="option"><input type="radio" name="q${count}" value="${value}"><span>${optionLabels[index]}</span></label>`).join('')}</div>`;
+        fieldset.appendChild(question);
+      }); questions.appendChild(fieldset);
+    });
+    const learnerId = localStorage.getItem('learnerId');
+    if (learnerId) {
+      fetch(`/api/profile?id=${learnerId}`).then(response => response.json()).then(profile => {
+        if (!profile.error) {
+          document.getElementById('name').value = profile.name;
+          document.getElementById('age').value = profile.age || '';
+          document.getElementById('language').value = profile.preferred_language || '';
+        }
+      }).catch(() => {});
+    }
+    document.getElementById('assessmentForm').addEventListener('submit', async event => {
+      event.preventDefault(); const notice = document.getElementById('notice'); const name = document.getElementById('name').value.trim();
+      const answered = [...document.querySelectorAll('input[type="radio"]:checked')];
+      if (!name || !document.getElementById('age').value || !document.getElementById('language').value || answered.length !== 10) { notice.textContent='Please complete your personal information and answer all 10 questions.'; return; }
+      notice.textContent='Saving your assessment...'; const score = answered.reduce((total, answer) => total + Number(answer.value), 0);
+      try {
+        const response = await fetch('/api/assessment', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({user_id: learnerId ? Number(learnerId) : null, scores: answered.map(answer => Number(answer.value))})});
+        const saved = await response.json();
+        if (!response.ok) throw Error(saved.error);
+      } catch (error) { notice.textContent='Result calculated, but it could not be saved. Start the project with: python app.py'; return; }
+      notice.textContent='';
+      let level, color, path;
+      if (score <= 40) { level='🔴 Beginner'; color='#ff7a87'; path=['Alphabet Practice','Basic Vocabulary','Reading Basics']; }
+      else if (score <= 70) { level='🟡 Intermediate'; color='#ffd96b'; path=['Grammar Practice','Vocabulary Building','Reading Comprehension']; }
+      else { level='🟢 Advanced'; color='#85f2c0'; path=['Essay Writing','Communication Skills','Critical Reading']; }
+      const result = document.getElementById('result'); result.classList.remove('show');
+      result.innerHTML = `<div class="result-top"><div><h3>Assessment Results</h3><p class="complete"><i class="fa-solid fa-circle-check"></i> Assessment Completed Successfully</p></div><div class="score"><strong>${score}</strong>out of 100</div></div><div class="result-grid"><div class="result-box"><small>Literacy Level</small><p class="level" style="color:${color}">${level}</p><small style="margin-top:15px">Total Score</small><p class="level">${score} / 100</p></div><div class="result-box"><small>Recommended Learning Path</small><ul class="path">${path.map(item=>`<li><i class="fa-solid fa-check"></i>${item}</li>`).join('')}</ul></div></div>`;
+      requestAnimationFrame(()=>result.classList.add('show')); result.scrollIntoView({behavior:'smooth',block:'nearest'});
+    });
+  </script>
+</body>
+</html>
