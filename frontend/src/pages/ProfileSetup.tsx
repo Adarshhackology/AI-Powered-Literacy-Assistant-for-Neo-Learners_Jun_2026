@@ -415,4 +415,5 @@ export default function ProfileSetup() {
         )}
       </div>
     </div>
+  );
 }
