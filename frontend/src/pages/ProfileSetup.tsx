@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiClient } from '../utils/api';
 import { Sparkles, ArrowRight, ArrowLeft, User, CheckCircle2, Globe } from 'lucide-react';
-import { SupportedLanguage } from '../utils/translationHelper';
+import type { SupportedLanguage } from '../utils/translationHelper';
 
 const avatars = [
   { id: '1', emoji: '🧑‍🎓', label: 'Learner' },
@@ -22,6 +22,31 @@ const languagesList = [
   { code: 'marathi', name: 'Marathi', nativeName: 'मराठी', flag: '🇮🇳' },
   { code: 'gujarati', name: 'Gujarati', nativeName: 'ગુજરાતી', flag: '🇮🇳' },
   { code: 'punjabi', name: 'Punjabi', nativeName: 'ਪੰਜਾਬੀ', flag: '🇮🇳' }
+];
+
+const goals = [
+  { id: 'Read newspapers and signs', emoji: '📰' },
+  { id: 'Write basic letters & forms', emoji: '✉️' },
+  { id: 'Chat with family & kids', emoji: '💬' },
+  { id: 'Prepare for job applications', emoji: '💼' }
+];
+
+const readingOptions = [
+  { level: 'Beginner', emoji: '🔴' },
+  { level: 'Intermediate', emoji: '🟡' },
+  { level: 'Advanced', emoji: '🟢' }
+];
+
+const writingOptions = [
+  { level: 'Beginner', emoji: '🔴' },
+  { level: 'Intermediate', emoji: '🟡' },
+  { level: 'Advanced', emoji: '🟢' }
+];
+
+const speakingOptions = [
+  { level: 'Shy', value: '30', emoji: '🤐' },
+  { level: 'Average', value: '60', emoji: '🙂' },
+  { level: 'Fluent', value: '95', emoji: '🗣️' }
 ];
 
 const profileTranslations: Record<string, any> = {

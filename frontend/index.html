@@ -4,7 +4,32 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <title>Literacy Assistant</title>
+    <script>
+      window.addEventListener('error', function(e) {
+        var root = document.getElementById('root');
+        if (root) {
+          root.innerHTML = '<div style="padding: 20px; color: red; font-family: sans-serif; background: #fff5f5; border: 1px solid #ffc9c9; margin: 20px; border-radius: 8px;">' +
+            '<h2>Frontend Runtime Error</h2>' +
+            '<p><strong>Message:</strong> ' + e.message + '</p>' +
+            '<p><strong>Source:</strong> ' + e.filename + ':' + e.lineno + ':' + e.colno + '</p>' +
+            '<pre style="white-space: pre-wrap; background: #eee; padding: 10px; border-radius: 4px;">' + (e.error ? e.error.stack : '') + '</pre>' +
+            '<p>Please try a hard refresh (Ctrl+F5 or Cmd+Shift+R) to clear local cache.</p>' +
+            '</div>';
+        }
+      });
+      window.addEventListener('unhandledrejection', function(e) {
+        var root = document.getElementById('root');
+        if (root) {
+          root.innerHTML = '<div style="padding: 20px; color: red; font-family: sans-serif; background: #fff5f5; border: 1px solid #ffc9c9; margin: 20px; border-radius: 8px;">' +
+            '<h2>Unhandled Promise Rejection</h2>' +
+            '<p><strong>Reason:</strong> ' + e.reason + '</p>' +
+            '<pre style="white-space: pre-wrap; background: #eee; padding: 10px; border-radius: 4px;">' + (e.reason && e.reason.stack ? e.reason.stack : e.reason) + '</pre>' +
+            '<p>Please try a hard refresh (Ctrl+F5 or Cmd+Shift+R) to clear local cache.</p>' +
+            '</div>';
+        }
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>
