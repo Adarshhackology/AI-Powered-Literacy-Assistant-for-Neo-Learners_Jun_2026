@@ -62,7 +62,7 @@ const profileTranslations: Record<string, any> = {
       'Average': { label: 'Average / Can talk basic', desc: 'I can speak simple everyday sentences.' },
       'Fluent': { label: 'Fluent / Speak easily', desc: 'I can speak and express my ideas clearly.' }
     },
-    continue: "Continue",
+    continueText: "Continue",
     back: "Back",
     complete: "Complete Onboarding"
   },
@@ -103,7 +103,7 @@ const profileTranslations: Record<string, any> = {
       'Average': { label: 'औसत / बुनियादी बात कर सकते हैं', desc: 'मैं सरल रोज़मर्रा के वाक्य बोल सकता हूँ।' },
       'Fluent': { label: 'धाराप्रवाह / आसानी से बोलें', desc: 'मैं अपने विचारों को स्पष्ट रूप से बोल और व्यक्त कर सकता हूँ।' }
     },
-    continue: "आगे बढ़ें",
+    continueText: "आगे बढ़ें",
     back: "पीछे",
     complete: "पंजीकरण पूरा करें"
   },
@@ -127,7 +127,7 @@ const profileTranslations: Record<string, any> = {
     readingSubtitle: "మీ చదివే నైపుణ్యాన్ని ఉత్తమంగా వివరించే ఎంపికను ఎంచుకోండి.",
     readingOptions: {
       'Beginner': { label: 'ప్రారంభకుడు (Beginner)', desc: 'ఇంకా పూర్తి వాక్యాలను చదవలేరు.' },
-      'Intermediate': { label: 'మధ్యస్థం (Intermediate)', desc: 'ప్రాథమిక పదాలు మరియు సాధారణ వాక్యాలను చదవగలరు.' },
+      'Intermediate': { label: 'మధ్యస్థం (Intermediate)', desc: 'ప్రాథమిక పదాలుและ సాధారణ వాక్యాలను చదవగలరు.' },
       'Advanced': { label: 'అధునాతన (Advanced)', desc: 'వార్తాపత్రిక కథనాలు మరియు పుస్తకాలను చదవగలరు.' }
     },
     writingTitle: "మీ లేఖన నైపుణ్యం",
@@ -142,16 +142,16 @@ const profileTranslations: Record<string, any> = {
     speakingOptions: {
       'Shy': { label: 'సిగ్గుపడే / ప్రాక్టీస్ కావాలి', desc: 'నేను బయటకు మాట్లాడటానికి కొంచెం భయపడతాను.' },
       'Average': { label: 'సగటు / ప్రాథమికంగా మాట్లాడగలను', desc: 'నేను సాధారణ రోజువారీ వాక్యాలను మాట్లాడగలను.' },
-      'Fluent': { label: 'ధారాళంగా మాట్లాడగలను', desc: 'నేను నా ఆలోచనలను స్పಷ್ಟంగా మాట్లాడి వ్యక్తపరచగలను.' }
+      'Fluent': { label: 'ధారాళంగా మాట్లాడగలను', desc: 'నేను నా ఆలోచనలను స్పష్టంగా మాట్లాడి వ్యక్తపరచగలను.' }
     },
-    continue: "కొనసాగించండి",
+    continueText: "కొనసాగించండి",
     back: "వెనుకకు",
     complete: "పూర్తి చేయండి"
   },
   tamil: {
     langTitle: "உங்கள் மொழியைத் தேர்ந்தெடுக்கவும்",
     langSubtitle: "முழு இணையதளமும் இந்த மொழிக்கு மாற்றப்படும்.",
-    detailsTitle: "உங்கள் சுயವಿவரத்தை உருவாக்குவோம்",
+    detailsTitle: "உங்கள் சுயவிவரத்தை உருவாக்குவோம்",
     detailsSubtitle: "உங்கள் பெயரைச் சொல்லி, ஒரு அவதாரத்தைத் தேர்ந்தெடுக்கவும்.",
     avatarLabel: "உங்கள் அவதாரத்தைத் தேர்ந்தெடுக்கவும்",
     nameLabel: "உங்கள் பெயர் என்ன?",
@@ -185,7 +185,7 @@ const profileTranslations: Record<string, any> = {
       'Average': { label: 'சராசரி / அடிப்படை பேச முடியும்', desc: 'நான் எளிய அன்றாட வாக்கியங்களை பேச முடியும்.' },
       'Fluent': { label: 'சரளமாக பேச முடியும்', desc: 'நான் என் கருத்துக்களை தெளிவாக பேசவும் வெளிப்படுத்தவும் முடியும்.' }
     },
-    continue: "தொடரவும்",
+    continueText: "தொடரவும்",
     back: "பின்னால்",
     complete: "முடிந்தது"
   },
@@ -226,7 +226,7 @@ const profileTranslations: Record<string, any> = {
       'Average': { label: 'ಸರಾಸರಿ / ಮೂಲಭೂತವಾಗಿ ಮಾತನಾಡಬಹುದು', desc: 'ನಾನು ಸರಳ ದಿನನಿತ್ಯದ ವಾಕ್ಯಗಳನ್ನು ಮಾತನಾಡಬಲ್ಲೆ.' },
       'Fluent': { label: 'ಸರಾಗವಾಗಿ ಮಾತನಾಡಬಲ್ಲೆ', desc: 'ನಾನು ನನ್ನ ಆಲೋಚನೆಗಳನ್ನು ಸ್ಪಷ್ಟವಾಗಿ ಮಾತನಾಡಬಹುದು.' }
     },
-    continue: "ಮುಂದುವರೆಯಿರಿ",
+    continueText: "ಮುಂದುವರೆಯಿರಿ",
     back: "ಹಿಂದೆ",
     complete: "ಪೂರ್ಣಗೊಳಿಸಿ"
   }
@@ -242,20 +242,7 @@ export default function ProfileSetup() {
 
   // Form states
   const [avatar, setAvatar] = useState('1');
-  const getInitialName = () => {
-    try {
-      const userStr = localStorage.getItem('user');
-      if (userStr) {
-        const parsed = JSON.parse(userStr);
-        if (parsed.first_name) return parsed.first_name;
-        if (parsed.profile && parsed.profile.fullName) return parsed.profile.fullName;
-      }
-    } catch (e) {
-      console.error(e);
-    }
-    return localStorage.getItem('username') || 'Learner';
-  };
-  const [fullName, setFullName] = useState(getInitialName());
+  const [fullName, setFullName] = useState('');
   const [age, setAge] = useState('24');
   const [learningGoal, setLearningGoal] = useState('Read newspapers and signs');
   const [readingLevel, setReadingLevel] = useState('Beginner');
@@ -271,12 +258,33 @@ export default function ProfileSetup() {
     setPrefLang(saved);
   }, []);
 
+  // Update fullName state when localStorage user changes
+  useEffect(() => {
+    try {
+      const userStr = localStorage.getItem('user');
+      if (userStr) {
+        const parsed = JSON.parse(userStr);
+        if (parsed.first_name) {
+          setFullName(parsed.first_name);
+        } else if (parsed.profile && parsed.profile.fullName) {
+          setFullName(parsed.profile.fullName);
+        } else {
+          setFullName(username);
+        }
+      } else {
+        setFullName(username);
+      }
+    } catch (e) {
+      setFullName(username);
+    }
+  }, [username]);
+
   const t = profileTranslations[prefLang] || profileTranslations.english;
 
   const handleLanguageSelect = (code: SupportedLanguage) => {
     setPrefLang(code);
     localStorage.setItem('preferredLanguage', code);
-    // Dispatch custom event to let components (like Navbars) know language changed
+    // Dispatch custom event to let components know language changed
     window.dispatchEvent(new Event('storage'));
   };
 
@@ -336,19 +344,23 @@ export default function ProfileSetup() {
 
   // Safe translations lookup
   const getGoalData = (id: string) => {
-    return t.goals[id] || profileTranslations.english.goals[id];
+    const goalsObj = t?.goals || profileTranslations.english.goals;
+    return goalsObj[id] || profileTranslations.english.goals[id] || { title: id, desc: '' };
   };
 
   const getReadingData = (level: string) => {
-    return t.readingOptions[level] || profileTranslations.english.readingOptions[level];
+    const opts = t?.readingOptions || profileTranslations.english.readingOptions;
+    return opts[level] || profileTranslations.english.readingOptions[level] || { label: level, desc: '' };
   };
 
   const getWritingData = (level: string) => {
-    return t.writingOptions[level] || profileTranslations.english.writingOptions[level];
+    const opts = t?.writingOptions || profileTranslations.english.writingOptions;
+    return opts[level] || profileTranslations.english.writingOptions[level] || { label: level, desc: '' };
   };
 
   const getSpeakingData = (level: string) => {
-    return t.speakingOptions[level] || profileTranslations.english.speakingOptions[level];
+    const opts = t?.speakingOptions || profileTranslations.english.speakingOptions;
+    return opts[level] || profileTranslations.english.speakingOptions[level] || { label: level, desc: '' };
   };
 
   return (
@@ -412,7 +424,7 @@ export default function ProfileSetup() {
                 onClick={handleNext}
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm px-8 py-3.5 rounded-2xl shadow-md hover:shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer"
               >
-                <span>{t.continue}</span>
+                <span>{t.continueText}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -491,7 +503,7 @@ export default function ProfileSetup() {
                 onClick={handleNext}
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm px-8 py-3.5 rounded-2xl shadow-md hover:shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer"
               >
-                <span>{t.continue}</span>
+                <span>{t.continueText}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -539,7 +551,7 @@ export default function ProfileSetup() {
                 onClick={handleNext}
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm px-8 py-3.5 rounded-2xl shadow-md hover:shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer"
               >
-                <span>{t.continue}</span>
+                <span>{t.continueText}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -571,7 +583,7 @@ export default function ProfileSetup() {
                       {opt.emoji}
                     </div>
                     <div>
-                      <h4 className="font-extrabold text-slate-950 text-sm leading-snug">{readingData.label}</h4>
+                      <h4 className="font-extrabold text-slate-955 text-sm leading-snug">{readingData.label}</h4>
                       <p className="text-slate-400 text-xs font-semibold mt-0.5">{readingData.desc}</p>
                     </div>
                   </div>
@@ -591,7 +603,7 @@ export default function ProfileSetup() {
                 onClick={handleNext}
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm px-8 py-3.5 rounded-2xl shadow-md hover:shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer"
               >
-                <span>{t.continue}</span>
+                <span>{t.continueText}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -643,7 +655,7 @@ export default function ProfileSetup() {
                 onClick={handleNext}
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm px-8 py-3.5 rounded-2xl shadow-md hover:shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer"
               >
-                <span>{t.continue}</span>
+                <span>{t.continueText}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
