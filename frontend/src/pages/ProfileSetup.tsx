@@ -242,7 +242,20 @@ export default function ProfileSetup() {
 
   // Form states
   const [avatar, setAvatar] = useState('1');
-  const [fullName, setFullName] = useState(username);
+  const getInitialName = () => {
+    try {
+      const userStr = localStorage.getItem('user');
+      if (userStr) {
+        const parsed = JSON.parse(userStr);
+        if (parsed.first_name) return parsed.first_name;
+        if (parsed.profile && parsed.profile.fullName) return parsed.profile.fullName;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return localStorage.getItem('username') || 'Learner';
+  };
+  const [fullName, setFullName] = useState(getInitialName());
   const [age, setAge] = useState('24');
   const [learningGoal, setLearningGoal] = useState('Read newspapers and signs');
   const [readingLevel, setReadingLevel] = useState('Beginner');
