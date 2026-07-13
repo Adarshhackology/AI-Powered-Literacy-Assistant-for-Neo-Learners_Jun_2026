@@ -15,8 +15,8 @@ const assessmentTranslations: Record<string, any> = {
     speakBtn: "Listen",
     readingQ1: "Q1. Click the word that matches the picture:",
     readingQ2: "Q2. Click the word that matches the picture:",
-    optionsR1: { 'Apple': 'Apple 🍎', 'Banana': 'Banana 🍌', 'Orange': 'Orange 🍊', 'Grapes': 'Grapes 🍇' },
-    optionsR2: { 'Book': 'Book 📖', 'Pencil': 'Pencil ✏️', 'Table': 'Table 🪑', 'Bag': 'Bag 🎒' },
+    optionsR1: { 'Apple': 'Apple', 'Banana': 'Banana', 'Orange': 'Orange', 'Grapes': 'Grapes' },
+    optionsR2: { 'Book': 'Book', 'Pencil': 'Pencil', 'Table': 'Table', 'Bag': 'Bag' },
     writingHeader: "Section 2: Writing",
     writingQ: "Task: Write a simple sentence in English about what you see in the book or your favorite food.",
     writingHelp: "Write at least 3-5 words. Make sure to use capital letters and end with a period.",
@@ -31,7 +31,7 @@ const assessmentTranslations: Record<string, any> = {
     compQ1: "Q1. What letters do you see on the toy blocks?",
     compQ2: "Q2. What is the person in the picture reading?",
     optionsC1: { 'A B C': 'A B C', 'X Y Z': 'X Y Z', '1 2 3': '1 2 3', 'D O G': 'D O G' },
-    optionsC2: { 'Newspaper': 'Newspaper 📰', 'Phone': 'Phone 📱', 'Letter': 'Letter ✉️', 'Nothing': 'Nothing 🚫' }
+    optionsC2: { 'Newspaper': 'Newspaper', 'Phone': 'Phone', 'Letter': 'Letter', 'Nothing': 'Nothing' }
   },
   hindi: {
     title: "प्रारंभिक मूल्यांकन",
@@ -45,8 +45,8 @@ const assessmentTranslations: Record<string, any> = {
     speakBtn: "सुनें (Listen)",
     readingQ1: "प्रश्न १. उस शब्द पर क्लिक करें जो चित्र से मेल खाता है:",
     readingQ2: "प्रश्न २. उस शब्द पर क्लिक करें जो चित्र से मेल खाता है:",
-    optionsR1: { 'Apple': 'सेब (Apple) 🍎', 'Banana': 'केला (Banana) 🍌', 'Orange': 'संतरा (Orange) 🍊', 'Grapes': 'अंगूर (Grapes) 🍇' },
-    optionsR2: { 'Book': 'किताब (Book) 📖', 'Pencil': 'पेंसिल (Pencil) ✏️', 'Table': 'मेज (Table) 🪑', 'Bag': 'बस्ता (Bag) 🎒' },
+    optionsR1: { 'Apple': 'सेब (Apple)', 'Banana': 'केला (Banana)', 'Orange': 'संतरा (Orange)', 'Grapes': 'अंगूर (Grapes)' },
+    optionsR2: { 'Book': 'किताब (Book)', 'Pencil': 'पेंसिल (Pencil)', 'Table': 'मेज (Table)', 'Bag': 'बस्ता (Bag)' },
     writingHeader: "भाग २: लेखन (Writing)",
     writingQ: "कार्य: किताब या अपने पसंदीदा भोजन के बारे में अंग्रेजी में एक सरल वाक्य लिखें।",
     writingHelp: "कम से कम ३-५ शब्द लिखें। बड़े अक्षरों (Capital letters) का प्रयोग करें और अंत में पूर्ण विराम (.) लगाएं।",
@@ -61,7 +61,7 @@ const assessmentTranslations: Record<string, any> = {
     compQ1: "प्रश्न १. आपको खिलौने के ब्लॉक पर कौन से अक्षर दिखाई दे रहे हैं?",
     compQ2: "प्रश्न २. चित्र में व्यक्ति क्या पढ़ रहा है?",
     optionsC1: { 'A B C': 'A B C', 'X Y Z': 'X Y Z', '1 2 3': '1 2 3', 'D O G': 'D O G' },
-    optionsC2: { 'Newspaper': 'समाचार पत्र (Newspaper) 📰', 'Phone': 'फ़ोन (Phone) 📱', 'Letter': 'पत्र (Letter) ✉️', 'Nothing': 'कुछ नहीं (Nothing) 🚫' }
+    optionsC2: { 'Newspaper': 'समाचार पत्र (Newspaper)', 'Phone': 'फ़ोन (Phone)', 'Letter': 'पत्र (Letter)', 'Nothing': 'कुछ नहीं (Nothing)' }
   },
   telugu: {
     title: "ప్రారంభ అంచనా",
@@ -75,8 +75,8 @@ const assessmentTranslations: Record<string, any> = {
     speakBtn: "వినండి",
     readingQ1: "ప్రశ్న 1. చిత్రానికి సరిపోయే పదాన్ని క్లిక్ చేయండి:",
     readingQ2: "ప్రశ్న 2. చిత్రానికి సరిపోయే పదాన్ని క్లిక్ చేయండి:",
-    optionsR1: { 'Apple': 'యాపిల్ (Apple) 🍎', 'Banana': 'అరటిపండు (Banana) 🍌', 'Orange': 'నారింజ (Orange) 🍊', 'Grapes': 'ద్రాక్ష (Grapes) 🍇' },
-    optionsR2: { 'Book': 'పుస్తకం (Book) 📖', 'Pencil': 'పెన్సిల్ (Pencil) ✏️', 'Table': 'బల్ల (Table) 🪑', 'Bag': 'సంచి (Bag) 🎒' },
+    optionsR1: { 'Apple': 'యాపిల్ (Apple)', 'Banana': 'అరటిపండు (Banana)', 'Orange': 'నారింజ (Orange)', 'Grapes': 'ద్రాక్ష (Grapes)' },
+    optionsR2: { 'Book': 'పుస్తకం (Book)', 'Pencil': 'పెన్సిల్ (Pencil)', 'Table': 'బల్ల (Table)', 'Bag': 'సంచి (Bag)' },
     writingHeader: "విభాగం 2: రాయడం (Writing)",
     writingQ: "టాస్క్: పుస్తకం లేదా మీకు ఇష్టమైన ఆహారం గురించి ఇంగ్లీష్ లో ఒక సాధారణ వాక్యం రాయండి.",
     writingHelp: "కనీసం 3-5 పదాలు రాయండి. క్యాపిటల్ లెటర్స్ వాడండి మరియు చివర ఫుల్ స్టాప్ (.) ఉంచండి.",
@@ -91,7 +91,7 @@ const assessmentTranslations: Record<string, any> = {
     compQ1: "ప్రశ్న 1. బొమ్మ బ్లాకులపై మీకు ఏ అక్షరాలు కనిపిస్తున్నాయి?",
     compQ2: "ప్రశ్న 2. చిత్రంలో ఉన్న వ్యక్తి ఏమి చదువుతున్నాడు?",
     optionsC1: { 'A B C': 'A B C', 'X Y Z': 'X Y Z', '1 2 3': '1 2 3', 'D O G': 'D O G' },
-    optionsC2: { 'Newspaper': 'వార్తాపత్రిక (Newspaper) 📰', 'Phone': 'ఫోన్ (Phone) 📱', 'Letter': 'లేఖ (Letter) ✉️', 'Nothing': 'ఏమీ లేదు (Nothing) 🚫' }
+    optionsC2: { 'Newspaper': 'వార్తాపత్రిక (Newspaper)', 'Phone': 'ఫోన్ (Phone)', 'Letter': 'లేఖ (Letter)', 'Nothing': 'ఏమీ లేదు (Nothing)' }
   },
   tamil: {
     title: "தொடக்க மதிப்பீடு",
@@ -105,8 +105,8 @@ const assessmentTranslations: Record<string, any> = {
     speakBtn: "கேளுங்கள்",
     readingQ1: "கேள்வி 1. படத்திற்குப் பொருந்தும் வார்த்தையைக் கிளிக் செய்க:",
     readingQ2: "கேள்வி 2. படத்திற்குப் பொருந்தும் வார்த்தையைக் கிளிக் செய்க:",
-    optionsR1: { 'Apple': 'ஆப்பிள் (Apple) 🍎', 'Banana': 'வாழைப்பழம் (Banana) 🍌', 'Orange': 'ஆரஞ்சு (Orange) 🍊', 'Grapes': 'திராட்சை (Grapes) 🍇' },
-    optionsR2: { 'Book': 'புத்தகம் (Book) 📖', 'Pencil': 'பென்சில் (Pencil) ✏️', 'Table': 'மேஜை (Table) 🪑', 'Bag': 'பள்ளிப் பை (Bag) 🎒' },
+    optionsR1: { 'Apple': 'ஆப்பிள் (Apple)', 'Banana': 'வாழைப்பழம் (Banana)', 'Orange': 'ஆரஞ்சு (Orange)', 'Grapes': 'திராட்சை (Grapes)' },
+    optionsR2: { 'Book': 'புத்தகம் (Book)', 'Pencil': 'பென்சில் (Pencil)', 'Table': 'மேஜை (Table)', 'Bag': 'பள்ளிப் பை (Bag)' },
     writingHeader: "பகுதி 2: எழுத்து (Writing)",
     writingQ: "பணி: புத்தகம் அல்லது உங்களுக்கு பிடித்த உணவு பற்றி ஆங்கிலத்தில் எளிய வாக்கியம் எழுதுங்கள்.",
     writingHelp: "குறைந்தது 3-5 வார்த்தைகள் எழுதவும். பெரிய எழுத்தில் (Capital) தொடங்கி, முற்றுப்புள்ளியுடன் (.) முடிக்கவும்.",
@@ -121,7 +121,7 @@ const assessmentTranslations: Record<string, any> = {
     compQ1: "கேள்வி 1. பொம்மை கட்டைகளில் என்ன எழுத்துக்களைக் காண்கிறீர்கள்?",
     compQ2: "கேள்வி 2. படத்தில் உள்ள நபர் என்ன படிக்கிறார்?",
     optionsC1: { 'A B C': 'A B C', 'X Y Z': 'X Y Z', '1 2 3': '1 2 3', 'D O G': 'D O G' },
-    optionsC2: { 'Newspaper': 'செய்தித்தாள் (Newspaper) 📰', 'Phone': 'தொலைபேசி (Phone) 📱', 'Letter': 'கடிதம் (Letter) ✉️', 'Nothing': 'ஒன்றுமில்லை (Nothing) 🚫' }
+    optionsC2: { 'Newspaper': 'செய்தித்தாள் (Newspaper)', 'Phone': 'தொலைபேசி (Phone)', 'Letter': 'கடிதம் (Letter)', 'Nothing': 'ஒன்றுமில்லை (Nothing)' }
   },
   kannada: {
     title: "ಆರಂಭಿಕ ಮೌಲ್ಯಮಾಪನ",
@@ -135,8 +135,8 @@ const assessmentTranslations: Record<string, any> = {
     speakBtn: "ಕೇಳಿ (Listen)",
     readingQ1: "ಪ್ರಶ್ನೆ 1. ಚಿತ್ರಕ್ಕೆ ಹೊಂದಿಕೆಯಾಗುವ ಪದವನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ:",
     readingQ2: "ಪ್ರಶ್ನೆ 2. ಚಿತ್ರಕ್ಕೆ ಹೊಂದಿಕೆಯಾಗುವ ಪದವನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ:",
-    optionsR1: { 'Apple': 'ಸೇಬು (Apple) 🍎', 'Banana': 'ಬಾಳೆಹಣ್ಣು (Banana) 🍌', 'Orange': 'ಕಿತ್ತಳೆ (Orange) 🍊', 'Grapes': 'ದ್ರಾಕ್ಷಿ (Grapes) 🍇' },
-    optionsR2: { 'Book': 'ಪುಸ್ತಕ (Book) 📖', 'Pencil': 'ಪೆನ್ಸಿಲ್ (Pencil) ✏️', 'Table': 'ಮೇಜು (Table) 🪑', 'Bag': 'ಬ್ಯಾಗ್ (Bag) 🎒' },
+    optionsR1: { 'Apple': 'ಸೇಬು (Apple)', 'Banana': 'ಬಾಳೆಹಣ್ಣು (Banana)', 'Orange': 'ಕಿತ್ತಳೆ (Orange)', 'Grapes': 'ದ್ರಾಕ್ಷಿ (Grapes)' },
+    optionsR2: { 'Book': 'ಪುಸ್ತಕ (Book)', 'Pencil': 'ಪೆನ್ಸಿಲ್ (Pencil)', 'Table': 'ಮೇಜು (Table)', 'Bag': 'ಬ್ಯಾಗ್ (Bag)' },
     writingHeader: "ವಿಭಾಗ 2: ಬರವಣಿಗೆ (Writing)",
     writingQ: "ಕಾರ್ಯ: ಪುಸ್ತಕ ಅಥವಾ ನಿಮ್ಮ ನೆಚ್ಚಿನ ಆಹಾರದ ಬಗ್ಗೆ ಇಂಗ್ಲಿಷ್‌ನಲ್ಲಿ ಒಂದು ಸರಳ ವಾಕ್ಯವನ್ನು ಬರೆಯಿರಿ.",
     writingHelp: "ಕನಿಷ್ಠ 3-5 ಪದಗಳನ್ನು ಬರೆಯಿರಿ. ಕ್ಯಾಪಿಟಲ್ ಅಕ್ಷರಗಳನ್ನು ಬಳಸಿ ಮತ್ತು ಕೊನೆಯಲ್ಲಿ ಚುಕ್ಕೆ (.) ಇರಿಸಿ.",
@@ -151,7 +151,7 @@ const assessmentTranslations: Record<string, any> = {
     compQ1: "ಪ್ರಶ್ನೆ 1. ಆಟದ ಬ್ಲಾಕ್‌ಗಳ ಮೇಲೆ ನಿಮಗೆ ಯಾವ ಅಕ್ಷರಗಳು ಕಾಣಿಸುತ್ತಿವೆ?",
     compQ2: "ಪ್ರಶ್ನೆ 2. ಚಿತ್ರದಲ್ಲಿರುವ ವ್ಯಕ್ತಿ ಏನನ್ನು ಓದುತ್ತಿದ್ದಾನೆ?",
     optionsC1: { 'A B C': 'A B C', 'X Y Z': 'X Y Z', '1 2 3': '1 2 3', 'D O G': 'D O G' },
-    optionsC2: { 'Newspaper': 'ಸುದ್ದಿಪತ್ರಿಕೆ (Newspaper) 📰', 'Phone': 'ಫೋನ್ (Phone) 📱', 'Letter': 'ಪತ್ರ (Letter) ✉️', 'Nothing': 'ಏನೂ ಇಲ್ಲ (Nothing) 🚫' }
+    optionsC2: { 'Newspaper': 'ಸುದ್ದಿಪತ್ರಿಕೆ (Newspaper)', 'Phone': 'ಫೋನ್ (Phone)', 'Letter': 'ಪತ್ರ (Letter)', 'Nothing': 'ಏನೂ ಇಲ್ಲ (Nothing)' }
   },
   bengali: {
     title: "প্রারম্ভিক মূল্যায়ন",
@@ -160,16 +160,16 @@ const assessmentTranslations: Record<string, any> = {
     writing: "লেখা",
     comprehension: "বোধগম্যতা",
     next: "পরবর্তী ভাগ",
-    submit: "মূল্যায়ন জমা দিন",
+    submit: "मूल्यांकन জমা দিন",
     readingHeader: "ভাগ ১: চিত্র পঠন (Image Reading)",
     speakBtn: "শুনুন",
     readingQ1: "প্রশ্ন ১. ছবির সাথে মিল থাকা শব্দটি ক্লিক করুন:",
     readingQ2: "প্রশ্ন ২. ছবির সাথে মিল থাকা শব্দটি ক্লিক করুন:",
-    optionsR1: { 'Apple': 'আপেল (Apple) 🍎', 'Banana': 'কলা (Banana) 🍌', 'Orange': 'কমলা (Orange) 🍊', 'Grapes': 'আঙুর (Grapes) 🍇' },
-    optionsR2: { 'Book': 'বই (Book) 📖', 'Pencil': 'পেন্সিল (Pencil) ✏️', 'Table': 'টেবিল (Table) 🪑', 'Bag': 'ব্যাগ (Bag) 🎒' },
+    optionsR1: { 'Apple': 'আপেল (Apple)', 'Banana': 'কলা (Banana)', 'Orange': 'কমলা (Orange)', 'Grapes': 'আঙুর (Grapes)' },
+    optionsR2: { 'Book': 'বই (Book)', 'Pencil': 'পেন্সিল (Pencil)', 'Table': 'টেবিল (Table)', 'Bag': 'ব্যাগ (Bag)' },
     writingHeader: "ভাগ ২: লেখা (Writing)",
     writingQ: "কার্য: বই বা আপনার প্রিয় খাবার সম্পর্কে ইংরেজিতে একটি সহজ বাক্য লিখুন।",
-    writingHelp: "অন্তত ৩-৫ শব্দ লিখুন। বড় হাতের অক্ষর দিয়ে শুরু করুন এবং শেষে ফুলস্টপ (.) দিন।",
+    writingHelp: "অনূ্যন ৩-৫ শব্দ লিখুন। বড় হাতের অক্ষর দিয়ে শুরু করুন এবং শেষে ফুলস্টপ (.) দিন।",
     placeholder: "আপনার বাক্যটি এখানে লিখুন...",
     grammarHelp: "ব্যাকরণ সাহায্য",
     grammarCaps: "বড় হাতের অক্ষর",
@@ -181,7 +181,7 @@ const assessmentTranslations: Record<string, any> = {
     compQ1: "প্রশ্ন ১. খেলনা ব্লকে আপনি কোন অক্ষরগুলি দেখতে পাচ্ছেন?",
     compQ2: "প্রশ্ন ২. ছবির ব্যক্তিটি কী পড়ছেন?",
     optionsC1: { 'A B C': 'A B C', 'X Y Z': 'X Y Z', '1 2 3': '1 2 3', 'D O G': 'D O G' },
-    optionsC2: { 'Newspaper': 'সংবাদপত্র (Newspaper) 📰', 'Phone': 'ফোন (Phone) 📱', 'Letter': 'চিঠি (Letter) ✉️', 'Nothing': 'কিছু না (Nothing) 🚫' }
+    optionsC2: { 'Newspaper': 'সংবাদপত্র (Newspaper)', 'Phone': 'ফোন (Phone)', 'Letter': 'চিঠি (Letter)', 'Nothing': 'কিছু না (Nothing)' }
   },
   marathi: {
     title: "प्रारंभिक मूल्यांकन",
@@ -195,8 +195,8 @@ const assessmentTranslations: Record<string, any> = {
     speakBtn: "ऐका",
     readingQ1: "प्रश्न १. चित्राशी जुळणाऱ्या शब्दावर क्लिक करा:",
     readingQ2: "प्रश्न २. चित्राशी जुळणाऱ्या शब्दावर क्लिक करा:",
-    optionsR1: { 'Apple': 'सफरचंद (Apple) 🍎', 'Banana': 'केळे (Banana) 🍌', 'Orange': 'संत्रे (Orange) 🍊', 'Grapes': 'द्राक्षे (Grapes) 🍇' },
-    optionsR2: { 'Book': 'पुस्तक (Book) 📖', 'Pencil': 'पेन्सिल (Pencil) ✏️', 'Table': 'टेबल (Table) 🪑', 'Bag': 'दप्तर (Bag) 🎒' },
+    optionsR1: { 'Apple': 'सफरचंद (Apple)', 'Banana': 'केळे (Banana)', 'Orange': 'संत्रे (Orange)', 'Grapes': 'द्राक्षे (Grapes)' },
+    optionsR2: { 'Book': 'पुस्तक (Book)', 'Pencil': 'पेन्सिल (Pencil)', 'Table': 'टेबल (Table)', 'Bag': 'दप्तर (Bag)' },
     writingHeader: "भाग २: लेखन (Writing)",
     writingQ: "कार्य: पुस्तक किंवा तुमच्या आवडत्या जेवणाबद्दल इंग्रजीत सोपे वाक्य लिहा.",
     writingHelp: "किमान ३-५ शब्द लिहा. कॅपिटल अक्षराने सुरुवात करा आणि शेवटी पूर्णविराम (.) द्या.",
@@ -211,7 +211,7 @@ const assessmentTranslations: Record<string, any> = {
     compQ1: "प्रश्न १. खेळण्याच्या ठोकळ्यांवर तुम्हाला कोणती अक्षरे दिसत आहेत?",
     compQ2: "प्रश्न २. चित्रातील व्यक्ती काय वाचत आहे?",
     optionsC1: { 'A B C': 'A B C', 'X Y Z': 'X Y Z', '1 2 3': '1 2 3', 'D O G': 'D O G' },
-    optionsC2: { 'Newspaper': 'वर्तमानपत्र (Newspaper) 📰', 'Phone': 'फोन (Phone) 📱', 'Letter': 'पत्र (Letter) ✉️', 'Nothing': 'काही नाही (Nothing) 🚫' }
+    optionsC2: { 'Newspaper': 'वर्तमानपत्र (Newspaper)', 'Phone': 'फोन (Phone)', 'Letter': 'पत्र (Letter)', 'Nothing': 'काही नाही (Nothing)' }
   },
   gujarati: {
     title: "પ્રારંભિક મૂલ્યાંકન",
@@ -225,8 +225,8 @@ const assessmentTranslations: Record<string, any> = {
     speakBtn: "સાંભળો",
     readingQ1: "પ્રશ્ન ૧. ચિત્ર સાથે મેળ ખાતા શબ્દ પર ક્લિક કરો:",
     readingQ2: "પ્રશ્ન ૨. ચિત્ર સાથે મેળ ખાતા શબ્દ પર ક્લિક કરો:",
-    optionsR1: { 'Apple': 'સફરજન (Apple) 🍎', 'Banana': 'કેળું (Banana) 🍌', 'Orange': 'સંતરું (Orange) 🍊', 'Grapes': 'દ્રાક્ષ (Grapes) 🍇' },
-    optionsR2: { 'Book': 'પુસ્તક (Book) 📖', 'Pencil': 'પેન્સિલ (Pencil) ✏️', 'Table': 'ટેબલ (Table) 🪑', 'Bag': 'દફતર (Bag) 🎒' },
+    optionsR1: { 'Apple': 'સફરજન (Apple)', 'Banana': 'કેળું (Banana)', 'Orange': 'સંતરું (Orange)', 'Grapes': 'દ્રાક્ષ (Grapes)' },
+    optionsR2: { 'Book': 'પુસ્તક (Book)', 'Pencil': 'પેન્સિલ (Pencil)', 'Table': 'ટેબલ (Table)', 'Bag': 'દફતર (Bag)' },
     writingHeader: "વિભાગ ૨: લેખન (Writing)",
     writingQ: "કાર્ય: પુસ્તક અથવા તમારા મનપસંદ ખોરાક વિશે અંગ્રેજીમાં સરળ વાક્ય લખો.",
     writingHelp: "ઓછામાં ઓછા ૩-૫ શબ્દો લખો. કેપિટલ અક્ષરથી શરૂ કરો અને અંતે પૂર્ણવિરામ (.) મૂકો.",
@@ -241,7 +241,7 @@ const assessmentTranslations: Record<string, any> = {
     compQ1: "પ્રશ્ન ૧. રમકડાના બ્લોક્સ પર તમને કયા અક્ષરો દેખાય છે?",
     compQ2: "પ્રશ્ન ૨. ચિત્રમાં વ્યક્તિ શું વાંચી રહી છે?",
     optionsC1: { 'A B C': 'A B C', 'X Y Z': 'X Y Z', '1 2 3': '1 2 3', 'D O G': 'D O G' },
-    optionsC2: { 'Newspaper': 'સમાચાર પત્ર (Newspaper) 📰', 'Phone': 'ફોન (Phone) 📱', 'Letter': 'પત્ર (Letter) ✉️', 'Nothing': 'કંઈ નહીં (Nothing) 🚫' }
+    optionsC2: { 'Newspaper': 'સમાચાર પત્ર (Newspaper)', 'Phone': 'ફોન (Phone)', 'Letter': 'પત્ર (Letter)', 'Nothing': 'કંઈ નહીં (Nothing)' }
   },
   punjabi: {
     title: "ਸ਼ੁਰੂਆਤੀ ਮੁਲਾਂਕਣ",
@@ -250,16 +250,16 @@ const assessmentTranslations: Record<string, any> = {
     writing: "ਲਿਖਣਾ",
     comprehension: "ਸਮਝ",
     next: "ਅਗਲਾ ਭਾਗ",
-    submit: "ਮੁਲਾਂਕਣ ਜਮ੍ਹਾਂ ਕਰੋ",
+    submit: "ਮੁਲਾਂਕਣ ਜਮ੍ਹ ਕਰੋ",
     readingHeader: "ਭਾਗ 1: ਤਸਵੀਰ ਪੜ੍ਹਨਾ (Image Reading)",
     speakBtn: "ਸੁਣੋ",
     readingQ1: "ਪ੍ਰਸ਼ਨ 1. ਉਸ ਸ਼ਬਦ 'ਤੇ ਕਲਿੱਕ ਕਰੋ ਜੋ ਤਸਵੀਰ ਨਾਲ ਮੇਲ ਖਾਂਦਾ ਹੈ:",
     readingQ2: "ਪ੍ਰਸ਼ਨ 2. ਉਸ ਸ਼ਬਦ 'ਤੇ ਕਲਿੱਕ ਕਰੋ ਜੋ ਤਸਵੀਰ ਨਾਲ ਮੇਲ ਖਾਂਦਾ ਹੈ:",
-    optionsR1: { 'Apple': 'ਸੇਬ (Apple) 🍎', 'Banana': 'ਕੇਲਾ (Banana) 🍌', 'Orange': 'ਸੰਤਰਾ (Orange) 🍊', 'Grapes': 'ਅੰਗੂਰ (Grapes) 🍇' },
-    optionsR2: { 'Book': 'ਕਿਤਾਬ (Book) 📖', 'Pencil': 'ਪੈਨਸਿਲ (Pencil) ✏️', 'Table': 'ਮੇਜ਼ (Table) 🪑', 'Bag': 'ਬੈਗ (Bag) 🎒' },
+    optionsR1: { 'Apple': 'ਸੇਬ (Apple)', 'Banana': 'ਕੇਲਾ (Banana)', 'Orange': 'ਸੰਤਰਾ (Orange)', 'Grapes': 'ਅੰਗੂਰ (Grapes)' },
+    optionsR2: { 'Book': 'ਕਿਤਾਬ (Book)', 'Pencil': 'ਪੈਨਸਿਲ (Pencil)', 'Table': 'ਮੇਜ਼ (Table)', 'Bag': 'ਬੈਗ (Bag)' },
     writingHeader: "ਭਾਗ 2: ਲਿਖਣਾ (Writing)",
     writingQ: "ਕਾਰਜ: ਕਿਤਾਬ ਜਾਂ ਆਪਣੀ ਮਨਪਸੰਦ ਖੁਰਾਕ ਬਾਰੇ ਅੰਗਰੇਜ਼ੀ ਵਿੱਚ ਇੱਕ ਸਰਲ ਵਾਕ ਲਿਖੋ।",
-    writingHelp: "ਘੱਟੋ-ਘੱਟ 3-5 ਸ਼ਬਦ ਲਿਖੋ। ਕੈਪੀਟਲ ਅੱਖਰ ਨਾਲ ਸ਼ੁਰੂ ਕਰੋ ਅਤੇ ਅੰਤ ਵਿੱਚ ਬਿੰਦੀ (.) ਲਗਾਓ।",
+    writingHelp: "ਘੱਟੋ-ਘੱਟ 3-5 ਸ਼ਬਦ ਲਿਖੋ। ਕੈਪੀਟਲ ਅੱਖਰ ਨਾਲ ਸੁਰੂ ਕਰੋ ਅਤੇ ਅੰਤ ਵਿੱਚ ਬਿੰਦੀ (.) ਲਗਾਓ।",
     placeholder: "ਆਪਣਾ ਵਾਕ ਇੱਥੇ ਲਿਖੋ...",
     grammarHelp: "ਵਿਆਕਰਨ ਸਹਾਇਤਾ",
     grammarCaps: "ਕੈਪੀਟਲ ਅੱਖਰ",
@@ -269,9 +269,9 @@ const assessmentTranslations: Record<string, any> = {
     compHeader: "ਭਾਗ 3: ਤਸਵੀਰ ਸਮਝ (Picture Comprehension)",
     compSpeak: "ਸੁਣੋ",
     compQ1: "ਪ੍ਰਸ਼ਨ 1. ਤੁਹਾਨੂੰ ਖਿਡੌਣੇ ਦੇ ਬਲਾਕਾਂ 'ਤੇ ਕਿਹੜੇ ਅੱਖਰ ਦਿਖਾਈ ਦੇ ਰਹੇ ਹਨ?",
-    compQ2: "ਪ੍ਰਸ਼ਨ 2. ਤਸਵੀਰ ਵਿੱਚ ਵਿਅਕती ਕੀ ਪੜ੍ਹ ਰਿਹਾ ਹੈ?",
+    compQ2: "ਪ੍ਰਸ਼ਨ 2. ਤਸਵੀਰ ਵਿੱਚ ਵਿਅਕਤੀ ਕੀ ਪੜ੍ਹ ਰਿਹਾ ਹੈ?",
     optionsC1: { 'A B C': 'A B C', 'X Y Z': 'X Y Z', '1 2 3': '1 2 3', 'D O G': 'D O G' },
-    optionsC2: { 'Newspaper': 'ਅਖ਼ਬਾਰ (Newspaper) 📰', 'Phone': 'ਫ਼ੋਨ (Phone) 📱', 'Letter': 'ਪੱਤਰ (Letter) ✉️', 'Nothing': 'ਕੁਝ ਨਹੀਂ (Nothing) 🚫' }
+    optionsC2: { 'Newspaper': 'ਅਖ਼ਬਾਰ (Newspaper)', 'Phone': 'ਫ਼ੋਨ (Phone)', 'Letter': 'ਪੱਤਰ (Letter)', 'Nothing': 'ਕੁਝ ਨਹੀਂ (Nothing)' }
   }
 };
 
@@ -422,7 +422,7 @@ export default function Assessment() {
         {step === 1 && (
           <div className="space-y-8">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h2 className="text-lg font-black text-slate-950 flex items-center gap-2">
+              <h2 className="text-lg font-black text-slate-955 flex items-center gap-2">
                 <span>{t.readingHeader}</span>
               </h2>
               <button
