@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiClient } from '../utils/api';
-import { SupportedLanguage } from '../utils/translationHelper';
 import { 
-  ArrowLeft, Volume2, Mic, CheckCircle, Trophy, Sparkles, BookOpen 
+  ArrowLeft, Volume2, Mic, CheckCircle, Trophy, Sparkles 
 } from 'lucide-react';
 import { vocabCategories, VocabItem } from '../utils/vocabData';
 
@@ -46,7 +45,7 @@ export default function Vocabulary() {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = langCode;
-      utterance.rate = 0.9;
+      utterance.rate = 0.85; // slower for kids to absorb sounds
       window.speechSynthesis.speak(utterance);
     } else {
       alert('Text to speech not supported in this browser.');
@@ -63,7 +62,7 @@ export default function Vocabulary() {
     setActiveItem(item.english);
     setIsListening(true);
     setScore(null);
-    setPracticeStatus('Listening... Speak now!');
+    setPracticeStatus('Listening... Speak now! 🎙️');
 
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
@@ -93,7 +92,7 @@ export default function Vocabulary() {
     recognition.onerror = (e: any) => {
       console.error(e);
       setIsListening(false);
-      setPracticeStatus('Error capturing audio. Try again.');
+      setPracticeStatus('Oops! Couldn\'t hear clearly. Try again! 🎤');
     };
 
     recognition.start();
@@ -121,159 +120,169 @@ export default function Vocabulary() {
     }
   };
 
+  const getScoreBadge = (sc: number) => {
+    if (sc === 100) return { label: '🎉 Awesome!', color: 'bg-green-100 text-green-800 border-green-200' };
+    if (sc >= 85) return { label: '🌟 Great Job!', color: 'bg-emerald-100 text-emerald-800 border-emerald-250' };
+    if (sc >= 70) return { label: '⭐ Good Try!', color: 'bg-yellow-100 text-yellow-800 border-yellow-250' };
+    return { label: '💪 Keep Trying!', color: 'bg-orange-50 text-orange-850 border-orange-200' };
+  };
+
+
   return (
-    <div className="min-h-screen bg-slate-50 font-inter">
-      {/* Top Banner Header */}
-      <header className="bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between sticky top-0 z-20 shadow-sm">
+    <div className="min-h-screen bg-slate-50">
+      
+      {/* Visual Header Banner */}
+      <header className="bg-white border-b-4 border-slate-100 px-6 py-4 flex items-center justify-between sticky top-0 z-20 shadow-sm">
         <div className="flex items-center gap-4">
           <button 
             onClick={() => navigate('/dashboard')}
-            className="w-10 h-10 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-xl flex items-center justify-center border border-slate-100 cursor-pointer transition-all"
+            className="w-11 h-11 bg-slate-50 hover:bg-slate-100 text-slate-600 border-b-4 border-2 border-slate-150 rounded-2xl flex items-center justify-center cursor-pointer transition-all active:border-b-0 active:mt-1 hover-pop"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-5 h-5 text-slate-500" />
           </button>
           <div>
-            <h1 className="text-xl font-black text-slate-900 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-indigo-500" />
-              Visual Vocabulary Explorer
+            <h1 className="text-xl font-black text-slate-900 flex items-center gap-1.5 leading-none">
+              <Sparkles className="w-5 h-5 text-yellow-500 animate-float" />
+              NEO Sticker Album 🎨
             </h1>
-            <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Learn words with pictures & voice</p>
+            <p className="text-[10px] text-slate-400 font-black uppercase tracking-wider mt-1">Unlock stickers by reading and speaking aloud!</p>
           </div>
         </div>
 
-        {/* Stats indicators */}
-        <div className="flex items-center gap-4 text-xs font-bold">
-          <span className="flex items-center gap-1.5 text-yellow-600 bg-yellow-50 px-3 py-2 rounded-full border border-yellow-100 shadow-sm">
+        {/* Gamification coins / XP */}
+        <div className="flex items-center gap-3 text-xs font-black">
+          <span className="flex items-center gap-1.5 text-yellow-600 bg-yellow-50 border-2 border-yellow-100 px-3.5 py-2 rounded-2xl shadow-sm hover-pop">
             🪙 <span>{profile.coins}</span>
           </span>
-          <span className="flex items-center gap-1.5 text-blue-600 bg-blue-50 px-3 py-2 rounded-full border border-blue-100 shadow-sm">
+          <span className="flex items-center gap-1.5 text-indigo-600 bg-indigo-50 border-2 border-indigo-100 px-3.5 py-2 rounded-2xl shadow-sm hover-pop">
             🏆 <span>{profile.xp} XP</span>
           </span>
         </div>
       </header>
 
-      {/* Main Container */}
+      {/* Main Sticker Board */}
       <main className="max-w-6xl mx-auto px-6 py-8 space-y-8">
         
-        {/* Filter Controls Row */}
-        <div className="bg-white border border-slate-200/50 p-5 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col md:flex-row md:items-center justify-between gap-4">
+        {/* Category sticker filters */}
+        <div className="bg-white border-4 border-slate-100 p-5 rounded-[32px] shadow-[0_8px_30px_rgb(0,0,0,0.015)] flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
-              <BookOpen className="w-5 h-5" />
+            <div className="w-10 h-10 bg-indigo-50 border-2 border-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-xl font-bold shadow-sm rotate-[-3deg]">
+              📂
             </div>
             <div>
-              <h3 className="font-extrabold text-sm text-slate-900">Select Category</h3>
-              <p className="text-xs text-slate-400 font-semibold">Switch sets to learn different topics</p>
+              <h3 className="font-extrabold text-sm text-slate-800">Choose Sticker Category</h3>
+              <p className="text-[10px] text-slate-400 font-extrabold">Tap a set to change dictionary items</p>
             </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2.5">
-            {Object.keys(vocabCategories).map((catName) => (
-              <button
-                key={catName}
-                onClick={() => {
-                  setSelectedCategory(catName);
-                  setActiveItem(null);
-                  setScore(null);
-                  setPracticeStatus('');
-                }}
-                className={`px-4 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                  selectedCategory === catName 
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-indigo-600/10' 
-                    : 'bg-slate-50 border border-slate-200/80 text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-                }`}
-              >
-                {catName}
-              </button>
-            ))}
+            {Object.keys(vocabCategories).map((catName) => {
+              const isActive = selectedCategory === catName;
+              return (
+                <button
+                  key={catName}
+                  onClick={() => {
+                    setSelectedCategory(catName);
+                    setActiveItem(null);
+                    setScore(null);
+                    setPracticeStatus('');
+                  }}
+                  className={`px-4.5 py-2.5 rounded-2xl text-xs font-black border-2 border-b-6 transition-all cursor-pointer hover-pop active:border-b-0 active:mt-1.5 ${
+                    isActive 
+                      ? 'bg-gradient-to-r from-indigo-500 to-blue-500 border-indigo-750 text-white shadow-md shadow-indigo-600/10' 
+                      : 'bg-slate-50 border-slate-200 text-slate-650 hover:bg-slate-100 hover:text-slate-900'
+                  }`}
+                >
+                  {catName}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Visual Cards Grid */}
+        {/* Bubbly Stickers Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {vocabCategories[selectedCategory].map((item, idx) => {
             const isCompleted = unlockedItems.includes(item.english);
             const isPracticeFocus = activeItem === item.english;
-            
             return (
               <div 
                 key={idx}
-                className={`bg-white border rounded-[28px] p-6 flex flex-col items-center text-center relative transition-all duration-300 shadow-sm ${
+                className={`border-4 border-b-8 rounded-[36px] p-6 flex flex-col items-center text-center relative transition-all duration-300 shadow-sm hover-pop ${
                   isCompleted 
-                    ? 'border-emerald-200 bg-emerald-50/10 ring-4 ring-emerald-500/5' 
+                    ? 'border-emerald-500 bg-emerald-50/15 shadow-emerald-250/20' 
                     : isPracticeFocus 
-                      ? 'border-indigo-300 bg-indigo-50/10 ring-4 ring-indigo-500/5'
-                      : 'border-slate-200/60 hover:shadow-md hover:border-slate-300'
+                      ? 'border-indigo-400 bg-indigo-50/15'
+                      : 'border-slate-200 bg-white hover:border-slate-350'
                 }`}
               >
-                {/* Badge completion indicator */}
+                {/* sticker unlocked badge */}
                 {isCompleted && (
-                  <span className="absolute top-4 right-4 text-emerald-600 text-xs font-extrabold bg-emerald-50 px-2 py-0.5 rounded-full flex items-center gap-1 border border-emerald-100">
-                    <CheckCircle className="w-3.5 h-3.5" />
-                    <span>Learnt</span>
+                  <span className="absolute top-4 right-4 text-emerald-600 text-[10px] font-black bg-emerald-50 border-2 border-emerald-100 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm rotate-[5deg]">
+                    <CheckCircle className="w-3.5 h-3.5 shrink-0" />
+                    <span>LEARNT</span>
                   </span>
                 )}
 
-                {/* Big Visual Symbol */}
-                <div className="w-20 h-20 bg-slate-50 border border-slate-100 rounded-3xl flex items-center justify-center text-5xl mb-4 shadow-inner overflow-hidden">
+                {/* Big cute icon container */}
+                <div className="w-24 h-24 bg-white border-4 border-slate-100 rounded-[32px] flex items-center justify-center text-5xl mb-4 shadow-sm overflow-hidden rotate-[-2deg] shrink-0 hover:rotate-[2deg] transition-all">
                   {item.image ? (
-                    <img src={item.image} alt={item.english} className="w-14 h-14 object-contain" />
+                    <img src={item.image} alt={item.english} className="w-16 h-16 object-contain" />
                   ) : (
                     <span>{item.emoji}</span>
                   )}
                 </div>
 
-                {/* Words */}
-                <div className="space-y-1">
-                  <h3 className="text-lg font-black text-slate-900 tracking-tight">{item.english}</h3>
-                  <p className="text-indigo-600 font-bold text-sm tracking-wide bg-indigo-50/50 px-3 py-1 rounded-xl inline-block border border-indigo-100/50">
+                {/* Word names */}
+                <div className="space-y-1.5">
+                  <h3 className="text-xl font-black text-slate-850 tracking-tight leading-none">{item.english}</h3>
+                  <p className="text-indigo-600 font-extrabold text-xs tracking-wide bg-indigo-50 border-2 border-indigo-100 px-3.5 py-1.5 rounded-2xl inline-block shadow-sm">
                     {getTranslation(item)}
                   </p>
                 </div>
 
-                {/* Interactive Speech & audio */}
-                <div className="w-full mt-6 pt-5 border-t border-slate-100 flex gap-2">
+                {/* Listen and speak buttons */}
+                <div className="w-full mt-6 pt-5 border-t-2 border-slate-100 flex gap-2.5">
                   <button
                     onClick={() => playAudio(item.english)}
-                    className="flex-1 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 text-slate-600 font-bold py-3 rounded-2xl transition-all cursor-pointer text-xs flex items-center justify-center gap-1.5"
-                    title="Listen to pronunciation"
+                    className="flex-1 bg-slate-50 hover:bg-slate-100 border-2 border-b-4 border-slate-200 text-slate-650 font-black py-2.5 rounded-2xl transition-all cursor-pointer text-xs flex items-center justify-center gap-1.5 active:border-b-0 active:mt-1"
+                    title="Listen to word sound"
                   >
-                    <Volume2 className="w-4 h-4 text-slate-500" />
-                    <span>Listen</span>
+                    <Volume2 className="w-4 h-4 text-slate-550" />
+                    <span>Listen 🔊</span>
                   </button>
 
                   <button
                     onClick={() => handleSpeechPractice(item)}
                     disabled={isListening}
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3 rounded-2xl shadow-sm hover:shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer text-xs flex items-center justify-center gap-1.5 disabled:opacity-50"
+                    className="flex-1 bg-gradient-to-r from-pink-500 to-indigo-500 hover:from-pink-600 hover:to-indigo-650 text-white font-black py-2.5 border-b-4 border-indigo-700/80 rounded-2xl shadow-sm active:border-b-0 active:mt-1 transition-all cursor-pointer text-xs flex items-center justify-center gap-1.5 disabled:opacity-50"
                   >
                     <Mic className="w-4 h-4" />
-                    <span>Practice</span>
+                    <span>Speak 🎤</span>
                   </button>
                 </div>
 
-                {/* Feedback area */}
+                {/* Speak Practice Score Dialog */}
                 {isPracticeFocus && (
-                  <div className="w-full mt-4 bg-white border border-slate-100 rounded-2xl p-3.5 space-y-1.5 z-10 shadow-inner">
-                    <p className="text-[11px] font-bold text-slate-500 leading-tight uppercase tracking-wider">{practiceStatus}</p>
+                  <div className="w-full mt-4 bg-white border-2 border-slate-150 rounded-3xl p-3.5 space-y-2 z-10 shadow-inner">
+                    <p className="text-[10px] font-black text-slate-450 uppercase tracking-wide leading-none">{practiceStatus}</p>
                     {score !== null && (
-                      <div className="flex items-center justify-center gap-1">
-                        <span className={`text-xs font-black px-2.5 py-1 rounded-full border ${
-                          score >= 80 
-                            ? 'bg-emerald-50 text-emerald-800 border-emerald-100' 
-                            : 'bg-amber-50 text-amber-800 border-amber-100'
-                        }`}>
-                          Score: {score}%
-                        </span>
-                        {score >= 80 && (
-                          <span className="text-xs font-bold text-emerald-600 animate-bounce flex items-center gap-0.5">
-                            <Trophy className="w-3.5 h-3.5" /> +5 XP
+                      <div className="flex flex-col items-center gap-1.5 pt-1">
+                        <div className="flex items-center gap-1.5">
+                          <span className={`text-[10px] font-black px-2.5 py-1 rounded-full border-2 ${getScoreBadge(score).color}`}>
+                            {getScoreBadge(score).label}
+                          </span>
+                        </div>
+                        {score >= 70 && (
+                          <span className="text-[10px] font-black text-emerald-600 animate-bounce flex items-center gap-0.5">
+                            <Trophy className="w-3.5 h-3.5" /> +5 XP Sticker!
                           </span>
                         )}
                       </div>
                     )}
                   </div>
                 )}
+
               </div>
             );
           })}

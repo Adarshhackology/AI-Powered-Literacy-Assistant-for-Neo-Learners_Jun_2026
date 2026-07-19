@@ -3,8 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { apiClient } from '../utils/api';
 import { SupportedLanguage, translations } from '../utils/translationHelper';
 import { 
-  BookOpen, Mic, Trophy, Calendar, Star, LogOut, 
-  Settings, User, Bell, Search, Sparkles, Award, TrendingUp, ShieldAlert 
+  BookOpen, Mic, Trophy, Calendar, LogOut, 
+  Settings, Bell, Search, Sparkles, TrendingUp 
 } from 'lucide-react';
 
 export default function Dashboard() {
@@ -64,78 +64,91 @@ export default function Dashboard() {
     navigate('/login');
   };
 
-  // Find next uncompleted lesson
-  const getNextLesson = () => {
-    if (lessons.length === 0) return null;
-    const completedIds = profile.completedLessons || [];
-    const next = lessons.find(l => !completedIds.includes(l.id));
-    return next || lessons[0];
-  };
-
-  const nextLesson = getNextLesson();
-
   const getLevelName = (lvl: number) => {
-    const levels = ['Beginner', 'Learner', 'Explorer', 'Achiever', 'Master'];
-    return levels[Math.min(lvl - 1, levels.length - 1)] || 'Learner';
+    const levels = ['Beginner 🎈', 'Learner 🦄', 'Explorer 🚀', 'Achiever 🏆', 'Master 👑'];
+    return levels[Math.min(lvl - 1, levels.length - 1)] || 'Learner 🦄';
   };
 
   return (
     <div className="min-h-screen bg-slate-50 flex text-slate-800">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-slate-100 hidden md:flex flex-col justify-between py-6 px-4 shrink-0">
+      
+      {/* Sidebar Navigation */}
+      <aside className="w-64 bg-white border-r-4 border-slate-100 hidden md:flex flex-col justify-between py-6 px-4 shrink-0">
         <div className="space-y-8">
           {/* Logo */}
-          <div className="flex items-center gap-2 px-3">
-            <div className="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center text-white text-lg">📚</div>
-            <span className="text-xl font-black text-blue-600">NeoLit AI</span>
+          <div className="flex items-center gap-2.5 px-3">
+            <div className="w-11 h-11 bg-gradient-to-tr from-yellow-400 via-amber-400 to-orange-500 rounded-2xl flex items-center justify-center text-white text-2xl shadow-md rotate-[-3deg] animate-float">
+              📚
+            </div>
+            <span className="text-xl font-black text-slate-850 tracking-tight">NeoLit Game</span>
           </div>
 
           {/* Navigation Links */}
-          <nav className="space-y-1.5">
-            <Link to="/dashboard" className="flex items-center gap-3 bg-blue-50 text-blue-700 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all">
-              <Trophy className="w-5 h-5 text-blue-600" />
-              <span>{t.dashboard}</span>
+          <nav className="space-y-2">
+            <Link 
+              to="/dashboard" 
+              className="flex items-center gap-3 bg-indigo-50 border-2 border-indigo-150 text-indigo-700 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all hover-pop"
+            >
+              <Trophy className="w-5 h-5 text-indigo-600" />
+              <span>🏠 {t.dashboard}</span>
             </Link>
             
-            <Link to="/lesson/1" className="flex items-center gap-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-semibold px-4 py-3 rounded-2xl text-sm transition-all">
-              <BookOpen className="w-5 h-5 text-slate-400" />
-              <span>{t.lessons}</span>
+            <Link 
+              to="/lesson/1" 
+              className="flex items-center gap-3 bg-white border-2 border-slate-100 text-slate-600 hover:border-sky-300 hover:text-sky-700 hover:bg-sky-50 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all hover-pop"
+            >
+              <BookOpen className="w-5 h-5 text-sky-500" />
+              <span>📖 {t.lessons}</span>
             </Link>
             
-            <Link to="/voice-practice" className="flex items-center gap-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-semibold px-4 py-3 rounded-2xl text-sm transition-all">
-              <Mic className="w-5 h-5 text-slate-400" />
-              <span>{t.voiceLearning}</span>
+            <Link 
+              to="/voice-practice" 
+              className="flex items-center gap-3 bg-white border-2 border-slate-100 text-slate-600 hover:border-pink-300 hover:text-pink-700 hover:bg-pink-50 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all hover-pop"
+            >
+              <Mic className="w-5 h-5 text-pink-500" />
+              <span>🎙️ {t.voiceLearning}</span>
             </Link>
 
-            <Link to="/vocabulary" className="flex items-center gap-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-semibold px-4 py-3 rounded-2xl text-sm transition-all">
-              <BookOpen className="w-5 h-5 text-slate-400" />
-              <span>Visual Dictionary</span>
+            <Link 
+              to="/vocabulary" 
+              className="flex items-center gap-3 bg-white border-2 border-slate-100 text-slate-600 hover:border-emerald-300 hover:text-emerald-700 hover:bg-emerald-50 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all hover-pop"
+            >
+              <Sparkles className="w-5 h-5 text-emerald-500" />
+              <span>🎨 Sticker Book</span>
             </Link>
 
-            <Link to="/reports" className="flex items-center gap-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-semibold px-4 py-3 rounded-2xl text-sm transition-all">
-              <TrendingUp className="w-5 h-5 text-slate-400" />
-              <span>{t.reports}</span>
+            <Link 
+              to="/reports" 
+              className="flex items-center gap-3 bg-white border-2 border-slate-100 text-slate-600 hover:border-amber-300 hover:text-amber-700 hover:bg-amber-50 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all hover-pop"
+            >
+              <TrendingUp className="w-5 h-5 text-amber-500" />
+              <span>📊 My Progress</span>
             </Link>
 
-            <Link to="/admin" className="flex items-center gap-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-semibold px-4 py-3 rounded-2xl text-sm transition-all">
+            <Link 
+              to="/admin" 
+              className="flex items-center gap-3 bg-white border-2 border-slate-100 text-slate-600 hover:border-indigo-300 hover:text-indigo-700 hover:bg-indigo-50 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all hover-pop"
+            >
               <Settings className="w-5 h-5 text-slate-400" />
-              <span>{t.admin} Dashboard</span>
+              <span>🛠️ Admin Desk</span>
             </Link>
           </nav>
         </div>
 
-        {/* User profile / Logout */}
-        <div className="space-y-4 pt-6 border-t border-slate-100">
-          <div className="flex items-center gap-3 px-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-2xl">{profile.avatar}</div>
+        {/* User Profile Card */}
+        <div className="space-y-4 pt-6 border-t-2 border-slate-100">
+          <div className="bg-slate-50 border-2 border-slate-100/80 p-3.5 rounded-3xl flex items-center gap-3">
+            <div className="w-11 h-11 rounded-2xl bg-white border-2 border-indigo-200/80 flex items-center justify-center text-3xl shadow-sm rotate-[4deg]">
+              {profile.avatar}
+            </div>
             <div>
-              <h4 className="font-extrabold text-sm text-slate-900 truncate max-w-[120px]">{profile.fullName}</h4>
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Level {profile.level}</p>
+              <h4 className="font-extrabold text-sm text-slate-850 truncate max-w-[110px]">{profile.fullName}</h4>
+              <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wide">Level {profile.level}</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 bg-slate-50 text-slate-600 hover:bg-red-50 hover:text-red-700 font-bold py-3 rounded-2xl text-sm transition-all border border-slate-100 cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 bg-rose-50 border-2 border-rose-100 text-rose-600 hover:bg-rose-100 font-extrabold py-3 rounded-2xl text-xs transition-all cursor-pointer active-pop"
           >
             <LogOut className="w-4 h-4" />
             <span>{t.logout}</span>
@@ -145,163 +158,177 @@ export default function Dashboard() {
 
       {/* Main Container */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Top Header Bar */}
-        <header className="h-18 bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3 bg-slate-50 border border-slate-100 px-4 py-2 rounded-2xl max-w-xs w-full">
+        
+        {/* Top Header Stats bar */}
+        <header className="bg-white border-b-4 border-slate-100 px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3 bg-slate-50 border-2 border-slate-100 px-4 py-2 rounded-2xl max-w-xs w-full">
             <Search className="w-4 h-4 text-slate-400 shrink-0" />
-            <input type="text" placeholder="Search lessons..." className="bg-transparent text-sm w-full focus:outline-none font-semibold" />
+            <input type="text" placeholder="Search stages..." className="bg-transparent text-sm w-full focus:outline-none font-bold placeholder:text-slate-400/80" />
           </div>
 
-          <div className="flex items-center gap-6">
-            {/* Gamification Stats */}
-            <div className="flex items-center gap-4 text-sm font-extrabold">
-              <span className="flex items-center gap-1.5 text-amber-500 bg-amber-50 px-3 py-1.5 rounded-full border border-amber-100" title="Daily Streak">
+          <div className="flex items-center gap-4">
+            {/* Playful stats */}
+            <div className="flex items-center gap-3 text-xs font-black">
+              <span className="flex items-center gap-1.5 text-orange-600 bg-orange-50 border-2 border-orange-100 px-3.5 py-2 rounded-2xl shadow-sm hover-pop">
                 🔥 <span>{profile.streak} Days</span>
               </span>
-              <span className="flex items-center gap-1.5 text-yellow-600 bg-yellow-50 px-3 py-1.5 rounded-full border border-yellow-100" title="Gold Coins">
+              <span className="flex items-center gap-1.5 text-yellow-600 bg-yellow-50 border-2 border-yellow-100 px-3.5 py-2 rounded-2xl shadow-sm hover-pop">
                 🪙 <span>{profile.coins}</span>
               </span>
-              <span className="flex items-center gap-1.5 text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full border border-blue-100" title="XP Score">
+              <span className="flex items-center gap-1.5 text-indigo-600 bg-indigo-50 border-2 border-indigo-100 px-3.5 py-2 rounded-2xl shadow-sm hover-pop">
                 🏆 <span>{profile.xp} XP</span>
               </span>
             </div>
 
-            <button className="relative w-10 h-10 bg-slate-50 border border-slate-100 hover:bg-slate-100 text-slate-600 rounded-xl flex items-center justify-center transition-all">
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white" />
+            <button className="relative w-10 h-10 bg-slate-50 border-2 border-slate-150 hover:bg-slate-100 text-slate-600 rounded-2xl flex items-center justify-center transition-all hover-pop">
+              <Bell className="w-5 h-5 text-slate-500" />
+              <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white" />
             </button>
-
-            {/* Mobile Sidebar Trigger placeholder / User avatar */}
-            <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white text-xl cursor-pointer md:hidden" onClick={() => navigate('/select-language')}>
-              🌐
-            </div>
           </div>
         </header>
 
         {/* Content Body */}
         <main className="flex-1 p-6 md:p-8 overflow-y-auto space-y-8">
-          {/* Welcome banner */}
-          <div className="relative bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl p-6 md:p-8 text-white shadow-xl shadow-blue-500/10 overflow-hidden">
-            {/* Backdrop highlights */}
-            <div className="absolute right-0 top-0 w-80 h-80 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+          
+          {/* Welcome Kids Banner */}
+          <div className="relative bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-[36px] p-6 md:p-8 text-white shadow-xl shadow-indigo-500/10 overflow-hidden border-b-6 border-indigo-700/60">
+            {/* Decorative items */}
+            <div className="absolute right-[-5%] top-[-10%] text-9xl opacity-15 pointer-events-none animate-float select-none">🎈</div>
+            <div className="absolute left-[30%] bottom-[-15%] text-7xl opacity-10 pointer-events-none select-none">✨</div>
             
             <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-              <div className="space-y-2">
-                <span className="bg-white/20 text-white font-bold text-xs uppercase tracking-wider px-3.5 py-1 rounded-full">
-                  Skill Level: {getLevelName(profile.level)} (Lvl {profile.level})
+              <div className="space-y-3">
+                <span className="bg-yellow-400/90 text-slate-900 font-extrabold text-xs uppercase tracking-wider px-3.5 py-1.5 rounded-full border border-yellow-300">
+                  {getLevelName(profile.level)}
                 </span>
-                <h1 className="text-3xl font-black tracking-tight">{t.welcomeBack}, {profile.fullName}!</h1>
-                <p className="text-blue-100 font-medium max-w-md">Your personalized AI learning path is ready. Keep building your daily habit!</p>
+                <h1 className="text-3xl font-black tracking-tight">{t.welcomeBack}, {profile.fullName}! 👋</h1>
+                <p className="text-indigo-100 font-semibold max-w-md">Let's play and learn! Go to your map below to unlock stages and earn stars!</p>
               </div>
 
-              {nextLesson && (
-                <div className="bg-white/10 backdrop-blur border border-white/20 p-5 rounded-2xl space-y-3 shrink-0 max-w-[280px]">
-                  <h4 className="text-xs font-bold text-blue-200 uppercase tracking-wider">Up Next</h4>
-                  <p className="font-extrabold text-sm truncate">{nextLesson.title}</p>
+              {lessons.length > 0 && (
+                <div className="bg-white/10 backdrop-blur border-2 border-white/20 p-5 rounded-3xl space-y-3.5 shrink-0 max-w-[280px]">
+                  <h4 className="text-xs font-black text-yellow-300 uppercase tracking-wider">🌟 Up Next Stage</h4>
+                  <p className="font-extrabold text-sm truncate">{lessons[0].title}</p>
                   <Link
-                    to={`/lesson/${nextLesson.id}`}
-                    className="inline-block w-full bg-white hover:bg-slate-100 text-blue-700 font-black text-center py-2.5 rounded-xl text-xs transition-all shadow-md active:scale-95"
+                    to={`/lesson/${lessons[0].id}`}
+                    className="inline-block w-full bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-black text-center py-3 rounded-2xl text-xs transition-all shadow-md active-pop"
                   >
-                    Start Lesson
+                    Play Stage 🚀
                   </Link>
                 </div>
               )}
             </div>
           </div>
 
-          {/* Quick Metrics */}
+          {/* Quick Metrics (Bubbly Cards) */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                <BookOpen className="w-6 h-6" />
+            
+            <div className="bg-yellow-50/50 border-4 border-yellow-100 p-5 rounded-[28px] shadow-sm flex items-center gap-4 hover-pop">
+              <div className="w-12 h-12 rounded-2xl bg-yellow-150 text-yellow-600 flex items-center justify-center shrink-0 shadow-sm text-2xl font-bold">
+                📖
               </div>
               <div>
-                <h4 className="text-slate-400 font-semibold text-xs uppercase tracking-wider">Reading Score</h4>
-                <p className="text-xl font-extrabold text-slate-900 mt-0.5">78%</p>
+                <h4 className="text-yellow-600 font-extrabold text-xs uppercase tracking-wider">Reading</h4>
+                <p className="text-xl font-black text-slate-800 mt-0.5">78%</p>
               </div>
             </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                <Award className="w-6 h-6" />
+            <div className="bg-rose-50/50 border-4 border-rose-100 p-5 rounded-[28px] shadow-sm flex items-center gap-4 hover-pop">
+              <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0 shadow-sm text-2xl font-bold">
+                ✍️
               </div>
               <div>
-                <h4 className="text-slate-400 font-semibold text-xs uppercase tracking-wider">Writing Score</h4>
-                <p className="text-xl font-extrabold text-slate-900 mt-0.5">45%</p>
+                <h4 className="text-rose-600 font-extrabold text-xs uppercase tracking-wider">Writing</h4>
+                <p className="text-xl font-black text-slate-800 mt-0.5">45%</p>
               </div>
             </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
-                <Mic className="w-6 h-6" />
+            <div className="bg-sky-50/50 border-4 border-sky-100 p-5 rounded-[28px] shadow-sm flex items-center gap-4 hover-pop">
+              <div className="w-12 h-12 rounded-2xl bg-sky-100 text-sky-650 flex items-center justify-center shrink-0 shadow-sm text-2xl font-bold">
+                🗣️
               </div>
               <div>
-                <h4 className="text-slate-400 font-semibold text-xs uppercase tracking-wider">Speaking Score</h4>
-                <p className="text-xl font-extrabold text-slate-900 mt-0.5">67%</p>
+                <h4 className="text-sky-650 font-extrabold text-xs uppercase tracking-wider">Speaking</h4>
+                <p className="text-xl font-black text-slate-800 mt-0.5">67%</p>
               </div>
             </div>
 
-            <Link to="/vocabulary" className="bg-white p-5 rounded-2xl border border-slate-100 hover:border-indigo-200 shadow-sm flex items-center gap-4 transition-all hover:shadow-md cursor-pointer">
-              <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
-                <Sparkles className="w-6 h-6" />
+            <Link to="/vocabulary" className="bg-emerald-50/50 border-4 border-emerald-100 p-5 rounded-[28px] shadow-sm flex items-center gap-4 hover-pop transition-all hover:shadow-md cursor-pointer">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 shadow-sm text-2xl font-bold">
+                🌸
               </div>
               <div>
-                <h4 className="text-indigo-400 font-semibold text-xs uppercase tracking-wider">Vocabulary</h4>
-                <p className="text-xl font-extrabold text-slate-900 mt-0.5">Explore</p>
+                <h4 className="text-emerald-650 font-extrabold text-xs uppercase tracking-wider">Sticker Book</h4>
+                <p className="text-xl font-black text-slate-800 mt-0.5">Explore</p>
               </div>
             </Link>
+
           </div>
 
-          {/* Detailed Panels Grid */}
+          {/* Child-Friendly Game Board and Dashboard Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Left: Lessons list & Badges */}
-            <div className="lg:col-span-8 space-y-8">
-              {/* Learning Path */}
+            
+            {/* Left: Playful Game Winding Path Map */}
+            <div className="lg:col-span-7 space-y-6">
               <div className="space-y-4">
-                <h3 className="text-lg font-extrabold text-slate-900">Learning Paths</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {lessons.map((les) => {
-                    const isCompleted = profile.completedLessons?.includes(les.id);
-                    return (
-                      <div key={les.id} className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-                        <div className="space-y-2">
-                          <div className="flex justify-between items-start">
-                            <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
-                              les.difficulty === 'Beginner' ? 'bg-green-50 text-green-700' : 'bg-blue-50 text-blue-700'
-                            }`}>
-                              {les.difficulty}
-                            </span>
-                            {isCompleted && (
-                              <span className="text-xs font-bold text-emerald-600 flex items-center gap-0.5">
-                                ✓ Finished
-                              </span>
-                            )}
-                          </div>
-                          <h4 className="font-extrabold text-slate-950 text-base leading-snug">{les.title}</h4>
-                          <p className="text-xs text-slate-400 font-semibold">{les.category} • {les.time}</p>
-                        </div>
-                        <div className="pt-4 flex justify-end">
+                <h3 className="text-xl font-black text-slate-850 flex items-center gap-2">
+                  <span>🗺️ Learning Adventure Map</span>
+                </h3>
+
+                {/* Game Path Layout */}
+                <div className="bg-gradient-to-b from-sky-100 via-indigo-50/60 to-purple-100/60 p-8 rounded-[40px] border-4 border-dashed border-indigo-250 relative overflow-hidden flex flex-col items-center shadow-inner">
+                  {/* Decorative background visual cues */}
+                  <span className="absolute top-4 right-6 text-5xl opacity-20 select-none animate-float">🎈</span>
+                  <span className="absolute bottom-6 left-6 text-5xl opacity-20 select-none">🏡</span>
+                  <span className="absolute top-[40%] left-4 text-5xl opacity-15 select-none">🦕</span>
+
+                  <div className="flex flex-col gap-12 items-center w-full max-w-sm relative z-10 py-6">
+                    {lessons.map((les, index) => {
+                      const isCompleted = profile.completedLessons?.includes(les.id);
+                      const isNext = !isCompleted && (index === 0 || profile.completedLessons?.includes(lessons[index - 1]?.id));
+                      const offsetClass = index % 2 === 0 ? 'translate-x-12' : '-translate-x-12';
+
+                      return (
+                        <div key={les.id} className={`flex flex-col items-center transition-all ${offsetClass} hover-pop relative`}>
+                          
+                          {/* Connection dash line for stages */}
+                          {index < lessons.length - 1 && (
+                            <div className="absolute bottom-[-50px] w-1.5 h-12 border-l-4 border-dashed border-indigo-300 pointer-events-none" />
+                          )}
+
                           <Link
                             to={`/lesson/${les.id}`}
-                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                            className={`w-20 h-20 rounded-full flex flex-col items-center justify-center border-b-6 shadow-lg transition-all text-3xl font-black active:border-b-0 active:mt-1.5 ${
                               isCompleted
-                                ? 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-                                : 'bg-blue-600 hover:bg-blue-700 text-white shadow-sm'
+                                ? 'bg-gradient-to-br from-green-400 to-emerald-500 border-emerald-600 text-white hover:brightness-105 shadow-emerald-250/30'
+                                : isNext
+                                  ? 'bg-gradient-to-br from-yellow-400 to-amber-500 border-amber-600 text-white animate-bounce shadow-amber-300/40'
+                                  : 'bg-white border-slate-300 text-slate-350 cursor-not-allowed pointer-events-none'
                             }`}
                           >
-                            {isCompleted ? 'Review' : 'Start'}
+                            {isCompleted ? '⭐' : isNext ? '🎯' : '🔒'}
                           </Link>
+                          <div className="mt-2.5 text-center max-w-[130px]">
+                            <p className="text-[9px] font-black text-indigo-500 uppercase tracking-widest leading-none">Stage {index + 1}</p>
+                            <h5 className="font-extrabold text-[11px] text-slate-800 leading-snug mt-0.5">{les.title}</h5>
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
+            </div>
 
-              {/* Achievements Showcase */}
-              <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
-                <h3 className="text-lg font-extrabold text-slate-900">Achievements Badges</h3>
-                <div className="grid grid-cols-3 md:grid-cols-6 gap-4 text-center">
+            {/* Right Sideboards: Sticker album & Leaderboard */}
+            <div className="lg:col-span-5 space-y-8">
+              
+              {/* Achievement Badge Sticker Book showcase */}
+              <div className="bg-white p-6 rounded-[32px] border-4 border-slate-100 shadow-sm space-y-4">
+                <h3 className="text-base font-black text-slate-850 flex items-center gap-1.5">
+                  <span>🏆 Badge Sticker Album</span>
+                </h3>
+                <div className="grid grid-cols-3 gap-4 text-center">
                   {[
                     { badge: '🏅', title: 'First Lesson', desc: 'Finished 1 lesson' },
                     { badge: '🔥', title: '7 Day Streak', desc: 'Study 7 days consecutive' },
@@ -312,74 +339,80 @@ export default function Dashboard() {
                   ].map((bg, idx) => {
                     const userHasBadge = profile.badges?.some((b: string) => b.toLowerCase().includes(bg.title.toLowerCase()) || b.toLowerCase().includes(bg.title.split(' ')[0].toLowerCase()));
                     return (
-                      <div key={idx} className={`space-y-1 ${userHasBadge ? 'opacity-100' : 'opacity-30'}`} title={bg.desc}>
-                        <div className={`w-12 h-12 mx-auto rounded-full flex items-center justify-center text-2xl bg-slate-50 border ${userHasBadge ? 'border-amber-200 bg-amber-50/50 shadow-sm' : 'border-slate-100'}`}>
+                      <div key={idx} className={`space-y-1.5 transition-opacity ${userHasBadge ? 'opacity-100' : 'opacity-25'}`} title={bg.desc}>
+                        <div className={`w-14 h-14 mx-auto rounded-2xl flex items-center justify-center text-3xl bg-slate-50 border-2 ${
+                          userHasBadge ? 'border-amber-300 bg-amber-50/50 shadow-sm rotate-[3deg]' : 'border-slate-100'
+                        } hover-pop`}>
                           {bg.badge}
                         </div>
-                        <h5 className="text-[10px] font-black text-slate-800 leading-none truncate">{bg.title}</h5>
+                        <h5 className="text-[10px] font-black text-slate-800 leading-none truncate max-w-[70px] mx-auto">{bg.title}</h5>
                       </div>
                     );
                   })}
                 </div>
               </div>
-            </div>
 
-            {/* Right: Leaderboard & Activity */}
-            <div className="lg:col-span-4 space-y-8">
-              {/* Daily Streak target */}
-              <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
-                <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-1.5">
-                  <Calendar className="w-5 h-5 text-blue-500" />
-                  <span>Weekly Target progress</span>
+              {/* Weekly target progress bar visual */}
+              <div className="bg-white p-6 rounded-[32px] border-4 border-slate-100 shadow-sm space-y-4">
+                <h3 className="text-base font-black text-slate-850 flex items-center gap-1.5">
+                  <Calendar className="w-5 h-5 text-indigo-500" />
+                  <span>Weekly Goal progress</span>
                 </h3>
-                <div className="flex justify-between items-center text-sm font-semibold">
-                  <span>Weekly Goal: Study 5 Days</span>
-                  <span className="text-blue-600 font-extrabold">5/7 Days</span>
+                <div className="flex justify-between items-center text-xs font-black">
+                  <span>Goal: Study 5 Days</span>
+                  <span className="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-lg">5/7 Days</span>
                 </div>
-                <div className="flex justify-between gap-1.5 pt-1">
+                <div className="flex justify-between gap-2 pt-1">
                   {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, idx) => (
                     <div key={idx} className="flex-1 text-center space-y-1">
-                      <div className={`h-8 rounded-lg flex items-center justify-center text-xs font-black border ${
+                      <div className={`h-8 rounded-xl flex items-center justify-center text-xs font-black border-b-4 border-2 transition-all ${
                         idx < 5 
-                          ? 'bg-blue-600 text-white border-blue-600 shadow-sm shadow-blue-500/10' 
-                          : 'bg-slate-50 text-slate-400 border-slate-100'
+                          ? 'bg-gradient-to-br from-indigo-500 to-blue-500 text-white border-blue-600 border-b-blue-700 shadow-sm' 
+                          : 'bg-slate-50 text-slate-350 border-slate-150 border-b-slate-200'
                       }`}>
-                        ✓
+                        {idx < 5 ? '⭐' : '•'}
                       </div>
-                      <span className="text-[10px] font-bold text-slate-400">{day}</span>
+                      <span className="text-[10px] font-black text-slate-400">{day}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Leaderboard panel */}
-              <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
-                <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-1.5">
-                  <Trophy className="w-5 h-5 text-amber-500" />
-                  <span>Leaderboard (Top Learners)</span>
+              {/* Top Champions List */}
+              <div className="bg-white p-6 rounded-[32px] border-4 border-slate-100 shadow-sm space-y-4">
+                <h3 className="text-base font-black text-slate-850 flex items-center gap-1.5">
+                  <Trophy className="w-5 h-5 text-amber-500 animate-float" />
+                  <span>Champions League</span>
                 </h3>
 
                 <div className="space-y-3.5">
                   {leaderboard.slice(0, 5).map((lb, idx) => (
-                    <div key={idx} className="flex items-center justify-between text-sm">
+                    <div key={idx} className="flex items-center justify-between text-xs font-bold bg-slate-50/50 p-2.5 rounded-2xl border border-slate-100">
                       <div className="flex items-center gap-3">
-                        <span className={`w-5 h-5 font-black text-xs rounded-full flex items-center justify-center text-center ${
-                          idx === 0 ? 'bg-amber-500 text-white' : idx === 1 ? 'bg-slate-300 text-slate-800' : idx === 2 ? 'bg-amber-700 text-white' : 'text-slate-400'
+                        <span className={`w-6 h-6 font-black text-xs rounded-xl flex items-center justify-center text-center shadow-sm ${
+                          idx === 0 
+                            ? 'bg-amber-400 text-slate-900 border-b-4 border-amber-600' 
+                            : idx === 1 
+                              ? 'bg-slate-300 text-slate-800 border-b-4 border-slate-500' 
+                              : idx === 2 
+                                ? 'bg-amber-700 text-white border-b-4 border-amber-900' 
+                                : 'bg-white text-slate-400 border border-slate-200'
                         }`}>
-                          {idx + 1}
+                          {idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : idx + 1}
                         </span>
                         <div>
-                          <h5 className="font-extrabold text-slate-900">{lb.name}</h5>
-                          <p className="text-[10px] font-semibold text-slate-400">Level {lb.level} • {lb.streak}d streak</p>
+                          <h5 className="font-extrabold text-slate-800 text-xs leading-none">{lb.name}</h5>
+                          <p className="text-[9px] font-extrabold text-slate-400 mt-1">Level {lb.level} • {lb.streak}d streak</p>
                         </div>
                       </div>
-                      <span className="font-extrabold text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-lg text-xs">
+                      <span className="font-black text-indigo-650 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-lg text-[10px]">
                         {lb.xp} XP
                       </span>
                     </div>
                   ))}
                 </div>
               </div>
+
             </div>
           </div>
         </main>

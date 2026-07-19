@@ -8,16 +8,20 @@ from users.serializers import UserProfileSerializer
 class SubmitAssessmentView(APIView):
     def post(self, request):
         username = request.data.get('username')
+        userId = request.data.get('userId')
         readingScore = request.data.get('readingScore', 0)
         writingScore = request.data.get('writingScore', 0)
         comprehensionScore = request.data.get('comprehensionScore', 0)
         overallScore = request.data.get('overallScore', 0)
 
-        if not username:
-            return Response({'error': 'Username is required'}, status=status.HTTP_400_BAD_REQUEST)
+        if not username and not userId:
+            return Response({'error': 'Username or userId is required'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            user = CustomUser.objects.get(username=username)
+            if userId:
+                user = CustomUser.objects.get(id=userId)
+            else:
+                user = CustomUser.objects.get(username=username)
             profile = UserProfile.objects.get(user=user)
 
             result = AssessmentResult.objects.create(

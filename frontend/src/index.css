@@ -1,45 +1,63 @@
 @import "tailwindcss";
 
-/* Custom premium fonts and animations for neo-learners */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800;900&display=swap');
+/* Custom playful, rounded font 'Nunito' for child-friendly NEO-learners */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;850;900;1000&display=swap');
 
 * {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
 }
 
-button, a.btn {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
+button, a.btn, select, input, textarea {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 850;
 }
 
 body {
   background-color: #f8fafc;
 }
 
-/* Custom fade-in animations for smooth transitions */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Playful child animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }
 
-/* Custom scrollbars for dashboard views */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
+.animate-wiggle {
+  animation: wiggle 0.5s ease-in-out infinite;
+}
+
+/* Tactile 3D pop effect for kids */
+.hover-pop {
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hover-pop:hover {
+  transform: scale(1.04);
+}
+
+.active-pop:active {
+  transform: scale(0.96);
+}
+
+/* Custom scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
