@@ -362,7 +362,10 @@ export default function LevelSelection() {
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-100">
           <button
-            onClick={() => navigate('/assessment')}
+            onClick={() => {
+              const testLevelName = selected >= 5 ? 'Advanced' : selected >= 3 ? 'Intermediate' : 'Beginner';
+              navigate(`/assessment?levelTest=true&level=${testLevelName}`);
+            }}
             className="w-full sm:w-auto px-6 py-3 border border-slate-200 hover:border-blue-600 text-slate-700 hover:text-blue-600 font-extrabold text-sm rounded-2xl transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 hover:shadow-sm"
           >
             <span>📝</span>

@@ -291,7 +291,24 @@ export default function Assessment() {
 
   const urlParams = new URLSearchParams(window.location.search);
   const isLevelTest = urlParams.get('levelTest') === 'true';
-  const testLevel = urlParams.get('level') || 'Beginner';
+
+  const getMappedLevel = (lvl: string | null | undefined): 'Beginner' | 'Intermediate' | 'Advanced' => {
+    if (!lvl) return 'Beginner';
+    const lower = lvl.toLowerCase();
+    if (lower === 'advanced' || lower === 'master' || lower === 'expert') return 'Advanced';
+    if (lower === 'intermediate' || lower === 'explorer' || lower === 'achiever') return 'Intermediate';
+    return 'Beginner';
+  };
+
+  const getStartingLevel = (): 'Beginner' | 'Intermediate' | 'Advanced' => {
+    const urlLvl = urlParams.get('level');
+    if (urlLvl) return getMappedLevel(urlLvl);
+    
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    return getMappedLevel(user.profile?.readingLevel);
+  };
+
+  const testLevel = getStartingLevel();
 
   const questionsConfig = {
     Beginner: {
@@ -456,15 +473,19 @@ export default function Assessment() {
     // Check if this is a Level Graduation Test
     const urlParams = new URLSearchParams(window.location.search);
     const isLevelTest = urlParams.get('levelTest') === 'true';
-    const testLevel = urlParams.get('level') || 'Beginner';
+    const testLevel = getStartingLevel();
 
     if (isLevelTest) {
       const isPass = overallScore >= 70;
       if (isPass) {
         const user = JSON.parse(localStorage.getItem('user') || '{}');
         if (user.profile) {
-          const currentLevel = user.profile.level || 1;
-          const nextLevel = Math.min(currentLevel + 1, 3);
+          let nextLevel = 2;
+          if (testLevel === 'Intermediate') {
+            nextLevel = 3;
+          } else if (testLevel === 'Advanced') {
+            nextLevel = 3;
+          }
           
           user.profile.level = nextLevel;
           user.profile.xp = (user.profile.xp || 0) + 100; // Level promotion bonus!
