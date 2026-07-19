@@ -109,6 +109,28 @@ export default function VoicePractice() {
       fluency: 75 + Math.floor(Math.random() * 20),
       confidence: 80 + Math.floor(Math.random() * 18),
     });
+
+    if (matchScore >= 75) {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (user.profile) {
+        user.profile.xp = (user.profile.xp || 0) + 15;
+        if (!user.profile.badges.includes('Voice Master')) {
+          user.profile.badges.push('Voice Master');
+        }
+        localStorage.setItem('user', JSON.stringify(user));
+        
+        const username = localStorage.getItem('username') || 'guest';
+        const profiles = JSON.parse(localStorage.getItem('profiles') || '[]');
+        const idx = profiles.findIndex((p: any) => p.username === username);
+        if (idx !== -1) {
+          profiles[idx].xp = user.profile.xp;
+          if (!profiles[idx].badges.includes('Voice Master')) {
+            profiles[idx].badges.push('Voice Master');
+          }
+          localStorage.setItem('profiles', JSON.stringify(profiles));
+        }
+      }
+    }
   };
 
   // Mock simulation helper
@@ -166,7 +188,7 @@ export default function VoicePractice() {
       </nav>
 
       {/* Main Container */}
-      <main className="flex-1 max-w-3xl w-full mx-auto p-6 md:p-8 flex flex-col justify-center space-y-8">
+      <main className="flex-1 max-w-3xl w-full mx-auto p-6 md:p-8 flex flex-col justify-start overflow-y-auto space-y-8">
         {/* Word Display Board */}
         <div className="bg-white border border-slate-100 p-8 rounded-3xl shadow-xl text-center space-y-4 relative overflow-hidden">
           {/* Accent decoration */}
@@ -250,6 +272,25 @@ export default function VoicePractice() {
         {/* Analysis Results Display */}
         {speechScores && (
           <div className="space-y-6 animate-fade-in">
+            {/* Success / Error Banner */}
+            {speechScores.pronunciation >= 75 ? (
+              <div className="bg-emerald-50 border-2 border-emerald-250 p-4.5 rounded-3xl flex items-center gap-3">
+                <span className="text-3xl">🎉</span>
+                <div className="text-left">
+                  <h4 className="font-extrabold text-sm text-emerald-800">Great Job! Pronounced Correctly!</h4>
+                  <p className="text-xs font-bold text-emerald-600">You earned +15 XP!</p>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-rose-50 border-2 border-rose-250 p-4.5 rounded-3xl flex items-center gap-3">
+                <span className="text-3xl">❌</span>
+                <div className="text-left">
+                  <h4 className="font-extrabold text-sm text-rose-800">Oops! That doesn't sound quite right.</h4>
+                  <p className="text-xs font-bold text-rose-600">Listen to the pronunciation and try saying it again!</p>
+                </div>
+              </div>
+            )}
+
             {/* Scores Cards grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-sm text-center">
