@@ -1,7 +1,7 @@
 // Unified API adapter connecting to Django + MySQL backend with local fallback
 import axios from 'axios';
 
-const BACKEND_URL = 'http://127.0.0.1:8001/api';
+const BACKEND_URL = 'http://127.0.0.1:8000/api';
 
 // Local storage helper
 const getStorageItem = <T>(key: string, defaultValue: T): T => {
