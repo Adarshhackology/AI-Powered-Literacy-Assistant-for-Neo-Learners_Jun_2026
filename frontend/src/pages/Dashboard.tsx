@@ -10,6 +10,7 @@ import {
 export default function Dashboard() {
   const navigate = useNavigate();
   const username = localStorage.getItem('username') || 'guest';
+  const [activeLevel, setActiveLevel] = useState<string>('Beginner');
   
   const [profile, setProfile] = useState<any>({
     fullName: username,
@@ -21,6 +22,14 @@ export default function Dashboard() {
     badges: ['First Lesson', '7 Day Streak'],
     completedLessons: [1]
   });
+
+  useEffect(() => {
+    if (profile && profile.level) {
+      const levels = ['Beginner', 'Intermediate', 'Advanced'];
+      const currentLevelName = levels[Math.min(profile.level - 1, levels.length - 1)] || 'Beginner';
+      setActiveLevel(currentLevelName);
+    }
+  }, [profile]);
 
   const [lessons, setLessons] = useState<any[]>([]);
   const [leaderboard, setLeaderboard] = useState<any[]>([]);
@@ -68,6 +77,9 @@ export default function Dashboard() {
     const levels = ['Beginner 🎈', 'Learner 🦄', 'Explorer 🚀', 'Achiever 🏆', 'Master 👑'];
     return levels[Math.min(lvl - 1, levels.length - 1)] || 'Learner 🦄';
   };
+
+  const filteredLessons = lessons.filter(l => l.difficulty.toLowerCase() === activeLevel.toLowerCase());
+  const displayedLessons = filteredLessons.slice(0, 12);
 
   return (
     <div className="min-h-screen bg-slate-50 flex text-slate-800">
@@ -275,6 +287,31 @@ export default function Dashboard() {
                   <span>🗺️ Learning Adventure Map</span>
                 </h3>
 
+                {/* Level Tabs Selectors */}
+                <div className="flex flex-wrap gap-2.5 mb-4">
+                  {['Beginner', 'Intermediate', 'Advanced'].map((lvlName, idx) => {
+                    const lvlNum = idx + 1;
+                    const isUnlocked = profile.level >= lvlNum;
+                    const isActive = activeLevel === lvlName;
+                    return (
+                      <button
+                        key={lvlName}
+                        disabled={!isUnlocked}
+                        onClick={() => setActiveLevel(lvlName)}
+                        className={`px-4.5 py-2.5 rounded-2xl text-xs font-black border-2 border-b-6 transition-all hover-pop active:border-b-0 active:mt-1.5 ${
+                          isActive
+                            ? 'bg-gradient-to-r from-indigo-500 to-blue-500 border-indigo-750 text-white shadow-md'
+                            : isUnlocked
+                              ? 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 shadow-sm'
+                              : 'bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed opacity-50'
+                        }`}
+                      >
+                        {lvlName === 'Beginner' ? '🎈' : lvlName === 'Intermediate' ? '🦄' : '🚀'} {lvlName} {isUnlocked ? '' : '🔒'}
+                      </button>
+                    );
+                  })}
+                </div>
+
                 {/* Game Path Layout */}
                 <div className="bg-gradient-to-b from-sky-100 via-indigo-50/60 to-purple-100/60 p-8 rounded-[40px] border-4 border-dashed border-indigo-250 relative overflow-hidden flex flex-col items-center shadow-inner">
                   {/* Decorative background visual cues */}
@@ -283,18 +320,16 @@ export default function Dashboard() {
                   <span className="absolute top-[40%] left-4 text-5xl opacity-15 select-none">🦕</span>
 
                   <div className="flex flex-col gap-12 items-center w-full max-w-sm relative z-10 py-6">
-                    {lessons.map((les, index) => {
+                    {displayedLessons.map((les, index) => {
                       const isCompleted = profile.completedLessons?.includes(les.id);
-                      const isNext = !isCompleted && (index === 0 || profile.completedLessons?.includes(lessons[index - 1]?.id));
+                      const isNext = !isCompleted && (index === 0 || profile.completedLessons?.includes(displayedLessons[index - 1]?.id));
                       const offsetClass = index % 2 === 0 ? 'translate-x-12' : '-translate-x-12';
 
                       return (
                         <div key={les.id} className={`flex flex-col items-center transition-all ${offsetClass} hover-pop relative`}>
                           
                           {/* Connection dash line for stages */}
-                          {index < lessons.length - 1 && (
-                            <div className="absolute bottom-[-50px] w-1.5 h-12 border-l-4 border-dashed border-indigo-300 pointer-events-none" />
-                          )}
+                          <div className="absolute bottom-[-50px] w-1.5 h-12 border-l-4 border-dashed border-indigo-300 pointer-events-none" />
 
                           <Link
                             to={`/lesson/${les.id}`}
@@ -315,6 +350,21 @@ export default function Dashboard() {
                         </div>
                       );
                     })}
+
+                    {/* Level Test Path Node */}
+                    <div className="flex flex-col items-center translate-x-0 hover-pop mt-6 relative">
+                      <Link
+                        to={`/assessment?levelTest=true&level=${activeLevel}`}
+                        className="w-22 h-22 rounded-3xl bg-gradient-to-tr from-yellow-400 to-amber-500 border-b-8 border-amber-600 shadow-xl flex items-center justify-center text-4xl font-black animate-pulse hover:brightness-105 active:border-b-0 active:mt-1.5"
+                      >
+                        🎓
+                      </Link>
+                      <div className="mt-2 text-center max-w-[150px]">
+                        <p className="text-[9px] font-black text-amber-500 uppercase tracking-widest leading-none">Graduation Test</p>
+                        <h5 className="font-extrabold text-[11px] text-slate-800 leading-snug mt-0.5">Unlock Next Level! 🏆</h5>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>

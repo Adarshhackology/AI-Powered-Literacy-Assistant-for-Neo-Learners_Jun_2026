@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, ArrowRight, Volume2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { apiClient } from '../utils/api';
 
 const assessmentTranslations: Record<string, any> = {
   english: {
@@ -355,6 +356,52 @@ export default function Assessment() {
     if (compAns2 === 'Newspaper') compScore += 50;
 
     const overallScore = Math.round((readingScore + writingScore + compScore) / 3);
+
+    // Check if this is a Level Graduation Test
+    const urlParams = new URLSearchParams(window.location.search);
+    const isLevelTest = urlParams.get('levelTest') === 'true';
+    const testLevel = urlParams.get('level') || 'Beginner';
+
+    if (isLevelTest) {
+      const isPass = overallScore >= 70;
+      if (isPass) {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        if (user.profile) {
+          const currentLevel = user.profile.level || 1;
+          const nextLevel = Math.min(currentLevel + 1, 3);
+          
+          user.profile.level = nextLevel;
+          user.profile.xp = (user.profile.xp || 0) + 100; // Level promotion bonus!
+          user.profile.coins = (user.profile.coins || 0) + 30;
+          
+          const levels = ['Beginner', 'Intermediate', 'Advanced'];
+          user.profile.readingLevel = levels[nextLevel - 1] || 'Beginner';
+          
+          localStorage.setItem('user', JSON.stringify(user));
+          
+          const username = localStorage.getItem('username') || 'guest';
+          
+          // Save to server database
+          try {
+            apiClient.saveProfile(username, user.profile);
+          } catch (e) {
+            console.error('Failed to sync profile to server:', e);
+          }
+
+          const profiles = JSON.parse(localStorage.getItem('profiles') || '[]');
+          const idx = profiles.findIndex((p: any) => p.username === username);
+          if (idx !== -1) {
+            profiles[idx] = { ...profiles[idx], ...user.profile };
+            localStorage.setItem('profiles', JSON.stringify(profiles));
+          }
+        }
+        alert(`🎉 Congratulations!\n\nYou passed the ${testLevel} Graduation Test with ${overallScore}%!\n\n🏆 You earned +100 XP & +30 Coins and unlocked the next level stages!`);
+      } else {
+        alert(`💪 Good try!\n\nYou scored ${overallScore}% on the ${testLevel} test.\n\nKeep practicing the stages and try again!`);
+      }
+      navigate('/dashboard');
+      return;
+    }
 
     const results = {
       readingScore,
