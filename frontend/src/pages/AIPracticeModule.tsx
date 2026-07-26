@@ -13,14 +13,16 @@ interface Question {
   image_hint?: string;
 }
 
+const stripEmoji = (str: string) => str ? str.replace(/[\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '').trim() : '';
+
 const defaultPracticeQuestions: Record<string, Question[]> = {
   reading: [
-    { id: 'r1', type: 'mcq', text: 'Which word matches the picture 🍎?', options: ['Apple 🍎', 'Banana 🍌', 'Cat 🐱', 'Dog 🐶'], correct_answer: 'Apple 🍎', hint: 'It is a red sweet fruit.', image_emoji: '🍎' },
+    { id: 'r1', type: 'mcq', text: 'Which word matches the picture 🍎?', options: ['Apple', 'Banana', 'Cat', 'Dog'], correct_answer: 'Apple', hint: 'It is a red sweet fruit.', image_emoji: '🍎' },
     { id: 'r2', type: 'fill_blank', text: 'Select the missing vowel: B _ LL (Ball)', correct_answer: 'A', hint: 'First letter of the alphabet.', image_emoji: '⚽' },
     { id: 'r3', type: 'read_aloud', text: 'Read aloud: The swift blue bird sings in the morning.', correct_answer: 'The swift blue bird sings in the morning.', hint: 'Speak clearly into your microphone.', image_emoji: '🐦' },
-    { id: 'r4', type: 'mcq', text: 'Which word rhymes with "Cat"?', options: ['Hat 🎩', 'Dog 🐶', 'Fish 🐟', 'Sun ☀️'], correct_answer: 'Hat 🎩', hint: 'Something you wear on your head.', image_emoji: '🎩' },
+    { id: 'r4', type: 'mcq', text: 'Which word rhymes with "Cat"?', options: ['Hat', 'Dog', 'Fish', 'Sun'], correct_answer: 'Hat', hint: 'Something you wear on your head.', image_emoji: '🎩' },
     { id: 'r5', type: 'fill_blank', text: 'Write the opposite word of "Cold":', correct_answer: 'hot', hint: 'Like fire or the sun.', image_emoji: '🔥' },
-    { id: 'r6', type: 'mcq', text: 'Identify the letter sound for 🐶 (Dog):', options: ['D 🐶', 'B ⚾', 'C 🐱', 'F 🐟'], correct_answer: 'D 🐶', hint: 'Starts with letter D.', image_emoji: '🐶' }
+    { id: 'r6', type: 'mcq', text: 'Identify the letter sound for 🐶 (Dog):', options: ['D', 'B', 'C', 'F'], correct_answer: 'D', hint: 'Starts with letter D.', image_emoji: '🐶' }
   ],
   writing: [
     { id: 'w1', type: 'fill_blank', text: 'Complete the sentence: She is _____ to school.', correct_answer: 'going', hint: 'Verb meaning walking or moving to school.', image_emoji: '🏫' },
@@ -31,11 +33,11 @@ const defaultPracticeQuestions: Record<string, Question[]> = {
     { id: 'w6', type: 'paragraph', text: 'Write what you like to do on a sunny day.', correct_answer: 'I like to play in the park.', hint: 'Share your favorite fun activity.', image_emoji: '☀️' }
   ],
   comprehension: [
-    { id: 'c1', type: 'mcq', text: 'Story: "Tim found a golden key under a tree." What did Tim find?', options: ['A key 🔑', 'A coin 🪙', 'A flower 🌸', 'A toy 🧸'], correct_answer: 'A key 🔑', hint: 'Golden object under the tree.', image_emoji: '🔑' },
-    { id: 'c2', type: 'mcq', text: 'What is the main idea of: "Trees give us clean air, fruits, and shade."?', options: ['Trees are helpful 🌳', 'Trees are tall', 'Trees have leaves', 'Birds live in trees'], correct_answer: 'Trees are helpful 🌳', hint: 'Focus on how trees benefit us.', image_emoji: '🌳' },
-    { id: 'c3', type: 'mcq', text: 'Predict what happens next when dark clouds fill the sky:', options: ['It will rain 🌧️', 'The sun will shine ☀️', 'Stars appear 🌟', 'It snows ❄️'], correct_answer: 'It will rain 🌧️', hint: 'Dark clouds bring rain.', image_hint: '☁️', image_emoji: '☁️' },
+    { id: 'c1', type: 'mcq', text: 'Story: "Tim found a golden key under a tree." What did Tim find?', options: ['A key', 'A coin', 'A flower', 'A toy'], correct_answer: 'A key', hint: 'Golden object under the tree.', image_emoji: '🔑' },
+    { id: 'c2', type: 'mcq', text: 'What is the main idea of: "Trees give us clean air, fruits, and shade."?', options: ['Trees are helpful', 'Trees are tall', 'Trees have leaves', 'Birds live in trees'], correct_answer: 'Trees are helpful', hint: 'Focus on how trees benefit us.', image_emoji: '🌳' },
+    { id: 'c3', type: 'mcq', text: 'Predict what happens next when dark clouds fill the sky:', options: ['It will rain', 'The sun will shine', 'Stars appear', 'It snows'], correct_answer: 'It will rain', hint: 'Dark clouds bring rain.', image_hint: '☁️', image_emoji: '☁️' },
     { id: 'c4', type: 'fill_blank', text: 'What feeling does "Lily jumped up and down with joy" describe?', correct_answer: 'happy', hint: 'Joy means happiness.', image_emoji: '🎉' },
-    { id: 'c5', type: 'mcq', text: 'Match the meaning of "Brave":', options: ['Not afraid 💪', 'Very quiet 🤫', 'Slow 🐢', 'Sleepy 😴'], correct_answer: 'Not afraid 💪', hint: 'Showing courage.', image_emoji: '🛡️' },
+    { id: 'c5', type: 'mcq', text: 'Match the meaning of "Brave":', options: ['Not afraid', 'Very quiet', 'Slow', 'Sleepy'], correct_answer: 'Not afraid', hint: 'Showing courage.', image_emoji: '🛡️' },
     { id: 'c6', type: 'mcq', text: 'Arrange events: 1) Baked cake 2) Bought flour 3) Ate cake', options: ['2 -> 1 -> 3', '1 -> 2 -> 3', '3 -> 2 -> 1', '2 -> 3 -> 1'], correct_answer: '2 -> 1 -> 3', hint: 'Buy ingredients first.', image_emoji: '🎂' }
   ]
 };
@@ -267,7 +269,7 @@ export default function AIPracticeModule() {
                       : 'border-slate-200 bg-white text-slate-600 hover:border-indigo-300 hover:bg-slate-50'
                   } ${feedback ? 'opacity-70 cursor-not-allowed' : ''}`}
                 >
-                  {opt}
+                  {stripEmoji(opt)}
                 </button>
               ))}
             </div>

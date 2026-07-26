@@ -33,10 +33,10 @@ def call_gemini_json(prompt):
 
 def get_fallback_assessment_questions(language):
     return [
-        {"id": 1, "skill": "reading", "question_text": f"Read aloud and select the correct matching word for 'Apple' in {language}.", "question_type": "mcq", "options": ["Apple 🍎", "Banana 🍌", "Cat 🐱", "Dog 🐶"], "correct_answer": "Apple 🍎", "image_hint": "🍎"},
+        {"id": 1, "skill": "reading", "question_text": f"Read aloud and select the correct matching word for 'Apple' in {language}.", "question_type": "mcq", "options": ["Apple", "Banana", "Cat", "Dog"], "correct_answer": "Apple", "image_hint": "🍎"},
         {"id": 2, "skill": "reading", "question_text": f"Select the missing letter: S _ UN (Sun)", "question_type": "mcq", "options": ["O", "A", "U", "E"], "correct_answer": "U", "image_hint": "☀️"},
         {"id": 3, "skill": "reading", "question_text": "Read the sentence in under 15 seconds: 'The swift blue bird sings loudly.'", "question_type": "read_aloud", "options": None, "correct_answer": "The swift blue bird sings loudly.", "image_hint": "🐦"},
-        {"id": 4, "skill": "reading", "question_text": "Match the word 'Book' with its picture.", "question_type": "mcq", "options": ["📚 Book", "✏️ Pencil", "🎒 Bag", "🚗 Car"], "correct_answer": "📚 Book", "image_hint": "📚"},
+        {"id": 4, "skill": "reading", "question_text": "Match the word 'Book' with its picture.", "question_type": "mcq", "options": ["Book", "Pencil", "Bag", "Car"], "correct_answer": "Book", "image_hint": "📚"},
         {"id": 5, "skill": "reading", "question_text": "Identify the rhyming word for 'Cat'.", "question_type": "mcq", "options": ["Hat", "Dog", "Fish", "Bird"], "correct_answer": "Hat", "image_hint": "🎩"},
         {"id": 6, "skill": "writing", "question_text": "Complete the sentence: 'She is _____ to school.'", "question_type": "fill_blank", "options": None, "correct_answer": "going", "image_hint": "🏫"},
         {"id": 7, "skill": "writing", "question_text": "Spell the word for 🐶 correctly.", "question_type": "fill_blank", "options": None, "correct_answer": "dog", "image_hint": "🐶"},

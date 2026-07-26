@@ -13,9 +13,11 @@ interface Question {
   correct_answer?: string;
 }
 
+const stripEmoji = (str: string) => str ? str.replace(/[\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '').trim() : '';
+
 const fallbackQuestions: Question[] = [
-  { id: 1, section: 'reading', type: 'mcq', text: 'Which word matches the picture?', emoji: '🍎', options: ['Apple 🍎', 'Banana 🍌', 'Cat 🐱', 'Dog 🐶'], correct_answer: 'Apple 🍎' },
-  { id: 2, section: 'reading', type: 'mcq', text: 'What animal is this?', emoji: '🐶', options: ['Cat 🐱', 'Dog 🐶', 'Bird 🐦', 'Fish 🐟'], correct_answer: 'Dog 🐶' },
+  { id: 1, section: 'reading', type: 'mcq', text: 'Which word matches the picture?', emoji: '🍎', options: ['Apple', 'Banana', 'Cat', 'Dog'], correct_answer: 'Apple' },
+  { id: 2, section: 'reading', type: 'mcq', text: 'What animal is this?', emoji: '🐶', options: ['Cat', 'Dog', 'Bird', 'Fish'], correct_answer: 'Dog' },
   { id: 3, section: 'writing', type: 'fill_blank', text: 'The sky is ___', emoji: '☁️', correct_answer: 'blue' },
   { id: 4, section: 'comprehension', type: 'paragraph', text: 'Write a sentence about your favorite color.', emoji: '🎨', correct_answer: 'My favorite color is blue.' },
   { id: 5, section: 'reading', type: 'read_aloud', text: 'Read this aloud: Hello World!', emoji: '🌍', correct_answer: 'Hello World!' },
@@ -220,7 +222,7 @@ export default function AIAssessment() {
                       }
                     `}
                   >
-                    {opt}
+                    {stripEmoji(opt)}
                   </button>
                 ))}
               </div>
