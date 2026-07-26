@@ -159,9 +159,9 @@ class SubmitAssessmentView(APIView):
         overall = int((r_score + w_score + c_score) / 3)
 
         weak_areas = []
-        if r_score < 60: weak_areas.append('reading')
-        if w_score < 60: weak_areas.append('writing')
-        if c_score < 60: weak_areas.append('comprehension')
+        if r_score < 99: weak_areas.append('reading')
+        if w_score < 99: weak_areas.append('writing')
+        if c_score < 99: weak_areas.append('comprehension')
         if not weak_areas:
             min_score = min(r_score, w_score, c_score)
             if min_score == r_score: weak_areas.append('reading')

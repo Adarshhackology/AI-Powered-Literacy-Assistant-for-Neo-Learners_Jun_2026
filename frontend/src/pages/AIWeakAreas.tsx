@@ -32,23 +32,23 @@ export default function AIWeakAreas() {
     }
   }, [sessionId]);
 
-  const weakCount = skills.filter(s => s.score < 60).length;
+  const weakCount = skills.filter(s => s.score < 99).length;
 
   return (
     <div className="min-h-screen bg-sky-50 font-['Nunito'] p-4 sm:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12 animate-in fade-in slide-in-from-top-4">
           <h1 className="text-4xl sm:text-5xl font-black text-slate-800 mb-4 flex items-center justify-center gap-4">
-            Let's Find Where You Need Help! 🔍
+            Let's Find Where You Need Practice! 🔍
           </h1>
           <p className="text-xl text-slate-600 font-bold max-w-2xl mx-auto bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
-            Don't worry! Everyone has areas to improve. Let's build a learning plan together! 💪
+            Any score below 99% gets a custom AI practice module to help you reach perfection! 💪
           </p>
         </div>
 
         <div className="grid gap-6 mb-12">
           {skills.map((skill, index) => {
-            const isStrong = skill.score >= 60;
+            const isStrong = skill.score >= 99;
             return (
               <div 
                 key={skill.name}
