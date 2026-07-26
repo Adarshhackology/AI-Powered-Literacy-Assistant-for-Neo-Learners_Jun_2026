@@ -289,119 +289,6 @@ export default function Assessment() {
 
   const t = assessmentTranslations[userLang] || assessmentTranslations.english;
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const isLevelTest = urlParams.get('levelTest') === 'true';
-
-  const getMappedLevel = (lvl: string | null | undefined): 'Beginner' | 'Intermediate' | 'Advanced' => {
-    if (!lvl) return 'Beginner';
-    const lower = lvl.toLowerCase();
-    if (lower === 'advanced' || lower === 'master' || lower === 'expert') return 'Advanced';
-    if (lower === 'intermediate' || lower === 'explorer' || lower === 'achiever') return 'Intermediate';
-    return 'Beginner';
-  };
-
-  const getStartingLevel = (): 'Beginner' | 'Intermediate' | 'Advanced' => {
-    const urlLvl = urlParams.get('level');
-    if (urlLvl) return getMappedLevel(urlLvl);
-    
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    return getMappedLevel(user.profile?.readingLevel);
-  };
-
-  const testLevel = getStartingLevel();
-
-  const questionsConfig = {
-    Beginner: {
-      title: "Beginner Graduation Test 🎓",
-      subtitle: "Let's check if you are ready to graduate to Level 2!",
-      readingHeader: "Section 1: Image Match 🍎",
-      readingQ1: "Q1. Click the word that matches the fruit picture:",
-      readQ1Img: "/vocab_apple.png",
-      readQ1Opts: ['Apple', 'Banana', 'Orange', 'Grapes'],
-      readQ1Correct: 'Apple',
-      
-      readingQ2: "Q2. Click the word that matches the study tool picture:",
-      readQ2Img: "/vocab_book.png",
-      readQ2Opts: ['Book', 'Pencil', 'Table', 'Bag'],
-      readQ2Correct: 'Book',
-      
-      writingHeader: "Section 2: Write a Word ✍️",
-      writingQ: "Task: Write a simple sentence containing the sight word 'cat' or 'dog' (e.g. 'I see a dog.')",
-      writingHelp: "Write at least 3-5 words. Make sure to use capital letters and end with a period.",
-      
-      compHeader: "Section 3: Simple Comprehension 🧩",
-      compQ1: "Q1. What letters are showing on the alphabet block card?",
-      compQ1Img: "/level_alphabet_1783340004005.png",
-      compQ1Opts: ['A B C', '1 2 3', 'Red Blue', 'Cat Dog'],
-      compQ1Correct: 'A B C',
-      
-      compQ2: "Q2. Which fruit sticker is shown on this album card?",
-      compQ2Img: "/vocab_banana.png",
-      compQ2Opts: ['Banana', 'Apple', 'Tomato', 'Grapes'],
-      compQ2Correct: 'Banana',
-    },
-    Intermediate: {
-      title: "Intermediate Graduation Test 🎓",
-      subtitle: "Let's check if you are ready to graduate to Level 3!",
-      readingHeader: "Section 1: Sentence and Place Match 🏡",
-      readingQ1: "Q1. Which grammar part does this sentence-tracing illustration represent?",
-      readQ1Img: "/level_sentences_1783340032385.png",
-      readQ1Opts: ['Letters', 'Sentences', 'Newspaper', 'Dialogue'],
-      readQ1Correct: 'Sentences',
-      
-      readingQ2: "Q2. Which public place sticker is showing on this card?",
-      readQ2Img: "/vocab_hospital.png",
-      readQ2Opts: ['Hospital', 'School', 'Market', 'Library'],
-      readQ2Correct: 'Hospital',
-      
-      writingHeader: "Section 2: Write a Description ✍️",
-      writingQ: "Task: Write a 5-word sentence describing your classroom or local town (e.g. 'My school is very big.')",
-      writingHelp: "Write at least 5 words. Make sure to use capital letters and end with a period.",
-      
-      compHeader: "Section 3: Text & Category Match 🧩",
-      compQ1: "Q1. What does this group of alphabet blocks represent?",
-      compQ1Img: "/level_words_1783340019724.png",
-      compQ1Opts: ['Letters', 'Words', 'Stories', 'Grammar'],
-      compQ1Correct: 'Words',
-      
-      compQ2: "Q2. What type of children's book illustration is shown here?",
-      compQ2Img: "/level_stories_1783340046772.png",
-      compQ2Opts: ['Storybook', 'Newspaper', 'Calculator', 'Notebook'],
-      compQ2Correct: 'Storybook',
-    },
-    Advanced: {
-      title: "Advanced Graduation Test 🎓",
-      subtitle: "Test your skills to achieve your graduation crown!",
-      readingHeader: "Section 1: Media and Mastery Match 🏆",
-      readingQ1: "Q1. Which reading medium does this global ecosystem illustration represent?",
-      readQ1Img: "/level_newspaper_1783340060913.png",
-      readQ1Opts: ['Newspaper', 'Picture Book', 'Sticker Board', 'Grammar Book'],
-      readQ1Correct: 'Newspaper',
-      
-      readingQ2: "Q2. Which certificate stamp represents complete course mastery?",
-      readQ2Img: "/level_mastery_1783340074714.png",
-      readQ2Opts: ['Alphabet', 'Words', 'Sentences', 'Mastery'],
-      readQ2Correct: 'Mastery',
-      
-      writingHeader: "Section 2: Describe Goals ✍️",
-      writingQ: "Task: Write a full descriptive paragraph detailing your future learning goals (at least 8-10 words).",
-      writingHelp: "Write at least 8-10 words. Make sure to use capital letters and end with a period.",
-      
-      compHeader: "Section 3: Sector & Story Match 🧩",
-      compQ1: "Q1. Which department sector does this hospital clinic represent?",
-      compQ1Img: "/vocab_hospital.png",
-      compQ1Opts: ['Healthcare', 'Education', 'Shopping', 'Farming'],
-      compQ1Correct: 'Healthcare',
-      
-      compQ2: "Q2. What category does this fable story illustration belong to?",
-      compQ2Img: "/level_stories_1783340046772.png",
-      compQ2Opts: ['Grammar Rules', 'Moral Story', 'Dialogue Drill', 'Sight Words'],
-      compQ2Correct: 'Moral Story',
-    }
-  };
-
-  const activeConfig = questionsConfig[testLevel as 'Beginner' | 'Intermediate' | 'Advanced'] || questionsConfig.Beginner;
-
   // Step 1: Reading state
   const [readingAns1, setReadingAns1] = useState('');
   const [readingAns2, setReadingAns2] = useState('');
@@ -454,8 +341,8 @@ export default function Assessment() {
 
     // Calculate score
     let readingScore = 0;
-    if (readingAns1 === activeConfig.readQ1Correct) readingScore += 50;
-    if (readingAns2 === activeConfig.readQ2Correct) readingScore += 50;
+    if (readingAns1 === 'Apple') readingScore += 50;
+    if (readingAns2 === 'Book') readingScore += 50;
     
     let writingScore = 0;
     if (hasMinWords) writingScore += 40;
@@ -465,27 +352,23 @@ export default function Assessment() {
     if (endsWithPeriod) writingScore += 30;
 
     let compScore = 0;
-    if (compAns1 === activeConfig.compQ1Correct) compScore += 50;
-    if (compAns2 === activeConfig.compQ2Correct) compScore += 50;
+    if (compAns1 === 'A B C') compScore += 50;
+    if (compAns2 === 'Newspaper') compScore += 50;
 
     const overallScore = Math.round((readingScore + writingScore + compScore) / 3);
 
     // Check if this is a Level Graduation Test
     const urlParams = new URLSearchParams(window.location.search);
     const isLevelTest = urlParams.get('levelTest') === 'true';
-    const testLevel = getStartingLevel();
+    const testLevel = urlParams.get('level') || 'Beginner';
 
     if (isLevelTest) {
       const isPass = overallScore >= 70;
       if (isPass) {
         const user = JSON.parse(localStorage.getItem('user') || '{}');
         if (user.profile) {
-          let nextLevel = 2;
-          if (testLevel === 'Intermediate') {
-            nextLevel = 3;
-          } else if (testLevel === 'Advanced') {
-            nextLevel = 3;
-          }
+          const currentLevel = user.profile.level || 1;
+          const nextLevel = Math.min(currentLevel + 1, 3);
           
           user.profile.level = nextLevel;
           user.profile.xp = (user.profile.xp || 0) + 100; // Level promotion bonus!
@@ -584,7 +467,7 @@ export default function Assessment() {
           <div className="space-y-8">
             <div className="flex items-center justify-between border-b-2 border-slate-100 pb-3.5">
               <h2 className="text-base font-black text-slate-850 flex items-center gap-1.5">
-                <span>{isLevelTest ? activeConfig.readingHeader : t.readingHeader}</span>
+                <span>{t.readingHeader}</span>
               </h2>
               <button
                 onClick={() => handleSpeak("Look at the pictures and tap the word that matches the picture.")}
@@ -595,16 +478,16 @@ export default function Assessment() {
               </button>
             </div>
 
-            {/* Q1 */}
+            {/* Q1: Apple */}
             <div className="space-y-4">
               <div className="flex flex-col md:flex-row gap-6 items-center bg-slate-50/50 p-5 rounded-[32px] border-4 border-slate-100">
                 <div className="w-28 h-28 rounded-3xl bg-white border-2 border-slate-100 flex items-center justify-center shrink-0 shadow-sm rotate-[-3deg]">
-                  <img src={activeConfig.readQ1Img} alt="Question 1 Image" className="object-contain w-20 h-20" />
+                  <img src="/vocab_apple.png" alt="Apple" className="object-contain w-20 h-20" />
                 </div>
                 <div className="space-y-3.5 w-full">
-                  <label className="block font-black text-slate-800 text-sm pl-1">{isLevelTest ? activeConfig.readingQ1 : t.readingQ1}</label>
+                  <label className="block font-black text-slate-800 text-sm pl-1">{t.readingQ1}</label>
                   <div className="grid grid-cols-2 gap-3">
-                    {activeConfig.readQ1Opts.map((opt) => {
+                    {['Apple', 'Banana', 'Orange', 'Grapes'].map((opt) => {
                       const isSelected = readingAns1 === opt;
                       return (
                         <label
@@ -615,7 +498,7 @@ export default function Assessment() {
                               : 'border-slate-200 text-slate-700 bg-white hover:border-slate-300'
                           }`}
                         >
-                          <span className="text-xs font-extrabold">{opt}</span>
+                          <span className="text-xs font-extrabold">{t.optionsR1[opt] || opt}</span>
                           <input
                             type="radio"
                             name="readingQ1"
@@ -632,16 +515,16 @@ export default function Assessment() {
               </div>
             </div>
 
-            {/* Q2 */}
+            {/* Q2: Book */}
             <div className="space-y-4">
               <div className="flex flex-col md:flex-row gap-6 items-center bg-slate-50/50 p-5 rounded-[32px] border-4 border-slate-100">
                 <div className="w-28 h-28 rounded-3xl bg-white border-2 border-slate-100 flex items-center justify-center shrink-0 shadow-sm rotate-[3deg]">
-                  <img src={activeConfig.readQ2Img} alt="Question 2 Image" className="object-contain w-20 h-20" />
+                  <img src="/vocab_book.png" alt="Book" className="object-contain w-20 h-20" />
                 </div>
                 <div className="space-y-3.5 w-full">
-                  <label className="block font-black text-slate-800 text-sm pl-1">{isLevelTest ? activeConfig.readingQ2 : t.readingQ2}</label>
+                  <label className="block font-black text-slate-800 text-sm pl-1">{t.readingQ2}</label>
                   <div className="grid grid-cols-2 gap-3">
-                    {activeConfig.readQ2Opts.map((opt) => {
+                    {['Book', 'Pencil', 'Table', 'Bag'].map((opt) => {
                       const isSelected = readingAns2 === opt;
                       return (
                         <label
@@ -652,7 +535,7 @@ export default function Assessment() {
                               : 'border-slate-200 text-slate-700 bg-white hover:border-slate-300'
                           }`}
                         >
-                          <span className="text-xs font-extrabold">{opt}</span>
+                          <span className="text-xs font-extrabold">{t.optionsR2[opt] || opt}</span>
                           <input
                             type="radio"
                             name="readingQ2"
@@ -758,7 +641,7 @@ export default function Assessment() {
           <div className="space-y-8">
             <div className="flex items-center justify-between border-b-2 border-slate-100 pb-3.5">
               <h2 className="text-base font-black text-slate-850 flex items-center gap-1.5">
-                <span>{isLevelTest ? activeConfig.compHeader : t.compHeader}</span>
+                <span>{t.compHeader}</span>
               </h2>
               <button
                 onClick={() => handleSpeak("Look at the pictures and tap the matching options.")}
@@ -769,16 +652,16 @@ export default function Assessment() {
               </button>
             </div>
 
-            {/* Q1 */}
+            {/* Q1: ABC blocks */}
             <div className="space-y-4">
               <div className="flex flex-col md:flex-row gap-6 items-center bg-slate-50/50 p-5 rounded-[32px] border-4 border-slate-100">
                 <div className="w-28 h-28 rounded-3xl bg-white border-2 border-slate-100 flex items-center justify-center shrink-0 shadow-sm rotate-[-3deg]">
-                  <img src={activeConfig.compQ1Img} alt="Blocks" className="object-contain w-20 h-20" />
+                  <img src="/level_alphabet_1783340004005.png" alt="Blocks" className="object-contain w-20 h-20" />
                 </div>
                 <div className="space-y-3 w-full">
-                  <label className="block font-black text-slate-800 text-sm pl-1">{isLevelTest ? activeConfig.compQ1 : t.compQ1}</label>
+                  <label className="block font-black text-slate-800 text-sm pl-1">{t.compQ1}</label>
                   <div className="grid grid-cols-2 gap-3">
-                    {activeConfig.compQ1Opts.map((opt) => {
+                    {['A B C', 'X Y Z', '1 2 3', 'D O G'].map((opt) => {
                       const isSelected = compAns1 === opt;
                       return (
                         <label
@@ -789,7 +672,7 @@ export default function Assessment() {
                               : 'border-slate-200 text-slate-700 bg-white hover:border-slate-300'
                           }`}
                         >
-                          <span className="text-xs font-extrabold">{opt}</span>
+                          <span className="text-xs font-extrabold">{t.optionsC1[opt] || opt}</span>
                           <input
                             type="radio"
                             name="compAns1"
@@ -806,16 +689,16 @@ export default function Assessment() {
               </div>
             </div>
 
-            {/* Q2 */}
+            {/* Q2: Newspaper reader */}
             <div className="space-y-4">
               <div className="flex flex-col md:flex-row gap-6 items-center bg-slate-50/50 p-5 rounded-[32px] border-4 border-slate-100">
                 <div className="w-28 h-28 rounded-3xl bg-white border-2 border-slate-100 flex items-center justify-center shrink-0 shadow-sm rotate-[3deg]">
-                  <img src={activeConfig.compQ2Img} alt="Newspaper" className="object-contain w-20 h-20" />
+                  <img src="/level_newspaper_1783340060913.png" alt="Newspaper" className="object-contain w-20 h-20" />
                 </div>
                 <div className="space-y-3 w-full">
-                  <label className="block font-black text-slate-800 text-sm pl-1">{isLevelTest ? activeConfig.compQ2 : t.compQ2}</label>
+                  <label className="block font-black text-slate-800 text-sm pl-1">{t.compQ2}</label>
                   <div className="grid grid-cols-2 gap-3">
-                    {activeConfig.compQ2Opts.map((opt) => {
+                    {['Newspaper', 'Phone', 'Letter', 'Nothing'].map((opt) => {
                       const isSelected = compAns2 === opt;
                       return (
                         <label
@@ -826,7 +709,7 @@ export default function Assessment() {
                               : 'border-slate-200 text-slate-700 bg-white hover:border-slate-300'
                           }`}
                         >
-                          <span className="text-xs font-extrabold">{opt}</span>
+                          <span className="text-xs font-extrabold">{t.optionsC2[opt] || opt}</span>
                           <input
                             type="radio"
                             name="compAns2"
