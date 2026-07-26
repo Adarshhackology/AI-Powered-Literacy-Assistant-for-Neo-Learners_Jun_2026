@@ -133,13 +133,18 @@ export default function AIPracticeModule() {
         setSkillName(sKey === 'writing' ? '✍️ Writing Practice' : sKey === 'comprehension' ? '🧠 Comprehension Practice' : '📖 Reading Practice');
 
         if (loadedQ.length === 0) {
-          loadedQ = questionBank[sKey];
+          loadedQ = [...(questionBank[sKey] || questionBank.reading)].sort(() => Math.random() - 0.5);
+        } else {
+          loadedQ = [...loadedQ].sort(() => Math.random() - 0.5);
         }
+
+        // Shuffle MCQ options for every question so choices order changes every time
+        loadedQ = loadedQ.map(q => q.type === 'mcq' && q.options ? { ...q, options: [...q.options].sort(() => Math.random() - 0.5) } : q);
 
         setQuestions(loadedQ);
       } catch (e) {
         console.error(e);
-        setQuestions(questionBank.reading);
+        setQuestions([...questionBank.reading].sort(() => Math.random() - 0.5));
       } finally {
         setLoading(false);
       }

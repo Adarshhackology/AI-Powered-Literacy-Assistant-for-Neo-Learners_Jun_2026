@@ -15,147 +15,68 @@ interface Question {
 
 const stripEmoji = (str: string) => str ? str.replace(/[\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '').trim() : '';
 
+const shuffleArray = <T,>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+
 const getLanguageFallbackQuestions = (lang: string): Question[] => {
   const n = (lang || '').toLowerCase();
 
-  // Hindi
-  if (n.includes('hi') || n.includes('hindi') || n.includes('हिन्दी')) {
-    return [
-      { id: 1, section: 'reading', type: 'mcq', text: 'चित्र को देखकर सही शब्द चुनें:', emoji: '🍎', options: ['सेब', 'केला', 'बिल्ली', 'कुत्ता'], correct_answer: 'सेब' },
-      { id: 2, section: 'reading', type: 'mcq', text: 'यह कौन सा जानवर है?', emoji: '🐶', options: ['बिल्ली', 'कुत्ता', 'पक्षी', 'मछली'], correct_answer: 'कुत्ता' },
-      { id: 3, section: 'writing', type: 'fill_blank', text: 'खाली स्थान भरें: आसमान _____ है।', emoji: '☁️', correct_answer: 'नीला' },
-      { id: 4, section: 'comprehension', type: 'paragraph', text: 'अपने पसंदीदा रंग के बारे में एक वाक्य लिखें।', emoji: '🎨', correct_answer: 'मेरा पसंदीदा रंग नीला है।' },
-      { id: 5, section: 'reading', type: 'read_aloud', text: 'इसे जोर से पढ़ें: नमस्ते भारत!', emoji: '🌍', correct_answer: 'नमस्ते भारत!' }
-    ];
-  }
-  // Gujarati
-  if (n.includes('gu') || n.includes('gujarati') || n.includes('ગુજરાતી')) {
-    return [
-      { id: 1, section: 'reading', type: 'mcq', text: 'ચિત્ર જોઈને સાચો શબ્દ પસંદ કરો:', emoji: '🍎', options: ['સફરજન', 'કેળું', 'બિલાડી', 'કૂતરો'], correct_answer: 'સફરજન' },
-      { id: 2, section: 'reading', type: 'mcq', text: 'આ કયું પ્રાણી છે?', emoji: '🐶', options: ['બિલાડી', 'કૂતરો', 'પક્ષી', 'માછલી'], correct_answer: 'કૂતરો' },
-      { id: 3, section: 'writing', type: 'fill_blank', text: 'ખાલી જગ્યા પૂરો: આકાશ _____ છે.', emoji: '☁️', correct_answer: 'વાદળી' },
-      { id: 4, section: 'comprehension', type: 'paragraph', text: 'તમારા મનપસંદ રંગ વિશે એક વાક્ય લખો.', emoji: '🎨', correct_answer: 'મારો મનપસંદ રંગ વાદળી છે.' },
-      { id: 5, section: 'reading', type: 'read_aloud', text: 'આ મોટેથી વાંચો: નમસ્તે ભારત!', emoji: '🌍', correct_answer: 'નમસ્તે ભારત!' }
-    ];
-  }
-  // Bengali
-  if (n.includes('bn') || n.includes('bengali') || n.includes('বাংলা')) {
-    return [
-      { id: 1, section: 'reading', type: 'mcq', text: 'ছবি দেখে সঠিক শব্দটি বেছে নিন:', emoji: '🍎', options: ['আপেল', 'কলা', 'বিড়াল', 'কুকুর'], correct_answer: 'আপেল' },
-      { id: 2, section: 'reading', type: 'mcq', text: 'এটি কোন প্রাণী?', emoji: '🐶', options: ['বিড়াল', 'কুকুর', 'পাখি', 'মাছ'], correct_answer: 'কুকুর' },
-      { id: 3, section: 'writing', type: 'fill_blank', text: 'শূন্যস্থান পূরণ করুন: আকাশ _____।', emoji: '☁️', correct_answer: 'নীল' },
-      { id: 4, section: 'comprehension', type: 'paragraph', text: 'আপনার পছন্দের রঙ সম্পর্কে একটি বাক্য লিখুন।', emoji: '🎨', correct_answer: 'আমার পছন্দের রঙ নীল।' },
-      { id: 5, section: 'reading', type: 'read_aloud', text: 'এটি জোরে পড়ুন: নমস্কার ভারত!', emoji: '🌍', correct_answer: 'নমস্কার ভারত!' }
-    ];
-  }
-  // Marathi
-  if (n.includes('mr') || n.includes('marathi') || n.includes('मराठी')) {
-    return [
-      { id: 1, section: 'reading', type: 'mcq', text: 'चित्र पाहून योग्य शब्द निवडा:', emoji: '🍎', options: ['सफरचंद', 'केळी', 'मांजर', 'कुत्रा'], correct_answer: 'सफरचंद' },
-      { id: 2, section: 'reading', type: 'mcq', text: 'हा कोणता प्राणी आहे?', emoji: '🐶', options: ['मांजर', 'कुत्रा', 'पक्षी', 'मासा'], correct_answer: 'कुत्रा' },
-      { id: 3, section: 'writing', type: 'fill_blank', text: 'रिकामी जागा भरा: आकाश _____ आहे.', emoji: '☁️', correct_answer: 'निळे' },
-      { id: 4, section: 'comprehension', type: 'paragraph', text: 'तुमच्या आवडत्या रंगाबद्दल एक वाक्य लिहा.', emoji: '🎨', correct_answer: 'माझा आवडता रंग निळा आहे.' },
-      { id: 5, section: 'reading', type: 'read_aloud', text: 'हे मोठ्याने वाचा: नमस्कार भारत!', emoji: '🌍', correct_answer: 'नमस्कार भारत!' }
-    ];
-  }
-  // Kannada
-  if (n.includes('kn') || n.includes('kannada') || n.includes('ಕನ್ನಡ')) {
-    return [
-      { id: 1, section: 'reading', type: 'mcq', text: 'ಚಿತ್ರವನ್ನು ನೋಡಿ ಸರಿಯಾದ ಪದವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ:', emoji: '🍎', options: ['ಸೇಬು', 'ಬಾಳೆಹಣ್ಣು', 'ಬೆಕ್ಕು', 'ನಾಯಿ'], correct_answer: 'ಸೇಬು' },
-      { id: 2, section: 'reading', type: 'mcq', text: 'ಇದು ಯಾವ ಪ್ರಾಣಿ?', emoji: '🐶', options: ['ಬೆಕ್ಕು', 'ನಾಯಿ', 'ಪಕ್ಷಿ', 'ಮೀನು'], correct_answer: 'ನಾಯಿ' },
-      { id: 3, section: 'writing', type: 'fill_blank', text: 'ಖಾಲಿ ಜಾಗವನ್ನು ತುಂಬಿ: ಆಕಾಶವು _____ ಬಣ್ಣದಲ್ಲಿದೆ.', emoji: '☁️', correct_answer: 'ನೀಲಿ' },
-      { id: 4, section: 'comprehension', type: 'paragraph', text: 'ನಿಮ್ಮ ನೆಚ್ಚಿನ ಬಣ್ಣದ ಬಗ್ಗೆ ಒಂದು ವಾಕ್ಯ ಬರೆಯಿರಿ.', emoji: '🎨', correct_answer: 'ನನ್ನ ನೆಚ್ಚಿನ ಬಣ್ಣ ನೀಲಿ.' },
-      { id: 5, section: 'reading', type: 'read_aloud', text: 'ಇದನ್ನು ಗಟ್ಟಿಯಾಗಿ ಓದಿ: ನಮಸ್ಕಾರ ಭಾರತ!', emoji: '🌍', correct_answer: 'ನಮಸ್ಕಾರ ಭಾರತ!' }
-    ];
-  }
-  // Malayalam
-  if (n.includes('ml') || n.includes('malayalam') || n.includes('മലയാളം')) {
-    return [
-      { id: 1, section: 'reading', type: 'mcq', text: 'ചിത്രം കണ്ട് ശരിയായ വാക്ക് തിരഞ്ഞെടുക്കുക:', emoji: '🍎', options: ['ആപ്പിൾ', 'വാഴപ്പഴം', 'പൂച്ച', 'പട്ടി'], correct_answer: 'ആപ്പിൾ' },
-      { id: 2, section: 'reading', type: 'mcq', text: 'ഇത് ഏത് മൃഗമാണ്?', emoji: '🐶', options: ['പൂച്ച', 'പട്ടി', 'പക്ഷി', 'മീൻ'], correct_answer: 'പട്ടി' },
-      { id: 3, section: 'writing', type: 'fill_blank', text: 'വിട്ട ഭാഗം പൂരിപ്പിക്കുക: ആകാശം _____ ആണ്.', emoji: '☁️', correct_answer: 'നീലം' },
-      { id: 4, section: 'comprehension', type: 'paragraph', text: 'നിങ്ങൾക്ക് ഇഷ്ടപ്പെട്ട നിറത്തെക്കുറിച്ച് ഒരു വാചകം എഴുതുക.', emoji: '🎨', correct_answer: 'എനിക്ക് ഇഷ്ടപ്പെട്ട നിറം നീലയാണ്.' },
-      { id: 5, section: 'reading', type: 'read_aloud', text: 'ഇത് ഉറക്കെ വായിക്കുക: നമസ്കാരം ഭാരതം!', emoji: '🌍', correct_answer: 'നമസ്കാരം ഭാരതം!' }
-    ];
-  }
-  // Punjabi
-  if (n.includes('pa') || n.includes('punjabi') || n.includes('ਪੰਜਾਬੀ')) {
-    return [
-      { id: 1, section: 'reading', type: 'mcq', text: 'ਤਸਵੀਰ ਦੇਖ ਕੇ ਸਹੀ ਸ਼ਬਦ ਚੁਣੋ:', emoji: '🍎', options: ['ਸੇਬ', 'ਕੇਲਾ', 'ਬਿੱਲੀ', 'ਕੁੱਤਾ'], correct_answer: 'ਸੇਬ' },
-      { id: 2, section: 'reading', type: 'mcq', text: 'ਇਹ ਕਿਹੜਾ ਜਾਨਵਰ ਹੈ?', emoji: '🐶', options: ['ਬਿੱਲੀ', 'ਕੁੱਤਾ', 'ਪੰਛੀ', 'ਮੱਛੀ'], correct_answer: 'ਕੁੱਤਾ' },
-      { id: 3, section: 'writing', type: 'fill_blank', text: 'ਖਾਲੀ ਥਾਂ ਭਰੋ: ਅਸਮਾਨ _____ ਹੈ।', emoji: '☁️', correct_answer: 'ਨੀਲਾ' },
-      { id: 4, section: 'comprehension', type: 'paragraph', text: 'ਆਪਣੇ ਪਸੰਦੀਦਾ ਰੰਗ ਬਾਰੇ ਇੱਕ ਵਾਕ ਲਿਖੋ।', emoji: '🎨', correct_answer: 'ਮੇਰਾ ਪਸੰਦੀਦਾ ਰੰਗ ਨੀਲਾ ਹੈ।' },
-      { id: 5, section: 'reading', type: 'read_aloud', text: 'ਇਸਨੂੰ ਉੱਚੀ ਪੜ੍ਹੋ: ਸਤਿ ਸ਼੍ਰੀ ਅਕਾਲ!', emoji: '🌍', correct_answer: 'ਸਤਿ ਸ਼੍ਰੀ ਅਕਾਲ!' }
-    ];
-  }
-  // Urdu
-  if (n.includes('ur') || n.includes('urdu') || n.includes('اردو')) {
-    return [
-      { id: 1, section: 'reading', type: 'mcq', text: 'تصویر دیکھ کر درست لفظ منتخب کریں:', emoji: '🍎', options: ['سیب', 'کیلا', 'بلی', 'کتا'], correct_answer: 'سیب' },
-      { id: 2, section: 'reading', type: 'mcq', text: 'یہ کون سا جانور ہے؟', emoji: '🐶', options: ['بلی', 'کتا', 'پرندہ', 'مچھلی'], correct_answer: 'کتا' },
-      { id: 3, section: 'writing', type: 'fill_blank', text: 'خالی جگہ پر کریں: آسمان _____ ہے۔', emoji: '☁️', correct_answer: 'نیلا' },
-      { id: 4, section: 'comprehension', type: 'paragraph', text: 'اپنے پسندیدہ رنگ کے بارے میں ایک جملہ لکھیں۔', emoji: '🎨', correct_answer: 'میرا پسندیدہ رنگ نیلا ہے۔' },
-      { id: 5, section: 'reading', type: 'read_aloud', text: 'اسے بلند آواز میں پڑھیں: السلام علیکم!', emoji: '🌍', correct_answer: 'السلام علیکم!' }
-    ];
-  }
-  // Odia
-  if (n.includes('or') || n.includes('odia') || n.includes('ଓଡ଼ିଆ')) {
-    return [
-      { id: 1, section: 'reading', type: 'mcq', text: 'ଚିତ୍ର ଦେଖି ସଠିକ୍ ଶବ୍ଦ ବାଛନ୍ତୁ:', emoji: '🍎', options: ['ସେଓ', 'କଦଳୀ', 'ବିଲେଇ', 'କୁକୁର'], correct_answer: 'ସେଓ' },
-      { id: 2, section: 'reading', type: 'mcq', text: 'ଏହା କେଉଁ ପଶୁ?', emoji: '🐶', options: ['ବିଲେଇ', 'କୁକୁର', 'ପକ୍ଷୀ', 'ମାଛ'], correct_answer: 'କୁକୁର' },
-      { id: 3, section: 'writing', type: 'fill_blank', text: 'ଖାଲି ସ୍ଥାନ ପୂରଣ କରନ୍ତୁ: ଆକାଶ _____ ରଙ୍ଗର ।', emoji: '☁️', correct_answer: 'ନୀଳ' },
-      { id: 4, section: 'comprehension', type: 'paragraph', text: 'ଆପଣଙ୍କର ପ୍ରିୟ ରଙ୍ଗ ବିଷୟରେ ଗୋଟିଏ ବାକ୍ୟ ଲେଖନ୍ତୁ ।', emoji: '🎨', correct_answer: 'ମୋର ପ୍ରିୟ ରଙ୍ଗ ନୀଳ ।' },
-      { id: 5, section: 'reading', type: 'read_aloud', text: 'ଏହାକୁ ଉଚ୍ଚ ସ୍ୱରରେ ପଢନ୍ତୁ: ନମସ୍କାର ଭାରତ!', emoji: '🌍', correct_answer: 'ନମସ୍କାର ଭାରତ!' }
-    ];
-  }
-  // Assamese
-  if (n.includes('as') || n.includes('assamese') || n.includes('অসমীয়া')) {
-    return [
-      { id: 1, section: 'reading', type: 'mcq', text: 'ছবি চাই শুদ্ধ শব্দটো বাছক:', emoji: '🍎', options: ['আপেল', 'কল', 'মেকুৰী', 'কুকুৰ'], correct_answer: 'আপেল' },
-      { id: 2, section: 'reading', type: 'mcq', text: 'এইটো কি প্ৰাণী?', emoji: '🐶', options: ['মেকুৰী', 'কুকুৰ', 'চৰাই', 'মাছ'], correct_answer: 'কুকুৰ' },
-      { id: 3, section: 'writing', type: 'fill_blank', text: 'খালী ঠাই পূৰ কৰক: আকাশখন _____।', emoji: '☁️', correct_answer: 'নীলা' },
-      { id: 4, section: 'comprehension', type: 'paragraph', text: 'আপোনাৰ প্ৰিয় ৰং সম্পৰ্কে এটা বাক্য লিখক।', emoji: '🎨', correct_answer: 'মোৰ প্ৰিয় ৰং নীলা।' },
-      { id: 5, section: 'reading', type: 'read_aloud', text: 'এইটো ডাঙৰকৈ পঢ়ক: নমস্কাৰ ভাৰত!', emoji: '🌍', correct_answer: 'নমস্কাৰ ভাৰত!' }
-    ];
-  }
-  // Sanskrit
-  if (n.includes('sa') || n.includes('sanskrit') || n.includes('संस्कृतम्')) {
-    return [
-      { id: 1, section: 'reading', type: 'mcq', text: 'चित्रं दृष्ट्वा उचितं शब्दं चिनुत:', emoji: '🍎', options: ['सेवफलम्', 'कदलीफलम्', 'मार्जारी', 'कुक्कुरः'], correct_answer: 'सेवफलम्' },
-      { id: 2, section: 'reading', type: 'mcq', text: 'एषः कः पशुः अस्ति?', emoji: '🐶', options: ['मार्जारी', 'कुक्कुरः', 'खगः', 'मत्स्यः'], correct_answer: 'कुक्कुरः' },
-      { id: 3, section: 'writing', type: 'fill_blank', text: 'रिक्तस्थानं पूरयत: आकाशः _____ अस्ति।', emoji: '☁️', correct_answer: 'नीलः' },
-      { id: 4, section: 'comprehension', type: 'paragraph', text: 'स्वस्य प्रियवर्णविषये एकं वाक्यं लिखत।', emoji: '🎨', correct_answer: 'मम प्रियवर्णः नीलः अस्ति।' },
-      { id: 5, section: 'reading', type: 'read_aloud', text: 'उच्चैः पठतु: नमस्ते भारतम्!', emoji: '🌍', correct_answer: 'नमस्ते भारतम्!' }
-    ];
-  }
-  // Telugu
-  if (n.includes('te') || n.includes('telugu') || n.includes('తెలుగు')) {
-    return [
-      { id: 1, section: 'reading', type: 'mcq', text: 'చిత్రాన్ని చూసి సరైన పదాన్ని ఎంచుకోండి:', emoji: '🍎', options: ['యాపిల్', 'అరటి', 'పిల్లి', 'కుక్క'], correct_answer: 'యాపిల్' },
-      { id: 2, section: 'reading', type: 'mcq', text: 'ఇది ఏ జంతువు?', emoji: '🐶', options: ['పిల్లి', 'కుక్క', 'పక్షి', 'చేప'], correct_answer: 'కుక్క' },
-      { id: 3, section: 'writing', type: 'fill_blank', text: 'ఖాళీని పూరించండి: ఆకాశం _____ రంగులో ఉంది.', emoji: '☁️', correct_answer: 'నీలం' },
-      { id: 4, section: 'comprehension', type: 'paragraph', text: 'మీకు ఇష్టమైన రంగు గురించి ఒక వాక్యం రాయండి.', emoji: '🎨', correct_answer: 'నాకు ఇష్టమైన రంగు నీలం.' },
-      { id: 5, section: 'reading', type: 'read_aloud', text: 'గట్టిగా చదవండి: నమస్కారం!', emoji: '🌍', correct_answer: 'నమస్కారం!' }
-    ];
-  }
-  // Tamil
-  if (n.includes('ta') || n.includes('tamil') || n.includes('தமிழ்')) {
-    return [
-      { id: 1, section: 'reading', type: 'mcq', text: 'படத்தைப் பார்த்து சரியான சொல்லைத் தேர்ந்தெடுக்கவும்:', emoji: '🍎', options: ['ஆப்பிள்', 'வாழைப்பழம்', 'பூனை', 'நாய்'], correct_answer: 'ஆப்பிள்' },
-      { id: 2, section: 'reading', type: 'mcq', text: 'இது என்ன விலங்கு?', emoji: '🐶', options: ['பூனை', 'நாய்', 'பறவை', 'மீன்'], correct_answer: 'நாய்' },
-      { id: 3, section: 'writing', type: 'fill_blank', text: 'கோடிட்ட இடத்தை நிரப்புக: வானம் _____ நிறம்.', emoji: '☁️', correct_answer: 'நீலம்' },
-      { id: 4, section: 'comprehension', type: 'paragraph', text: 'உங்களுக்கு பிடித்த நிறத்தைப் பற்றி ஒரு வாக்கியம் எழுதுங்கள்.', emoji: '🎨', correct_answer: 'எனக்கு பிடித்த நிறம் நீலம்.' },
-      { id: 5, section: 'reading', type: 'read_aloud', text: 'சத்தமாக படிக்கவும்: வணக்கம்!', emoji: '🌍', correct_answer: 'வணக்கம்!' }
-    ];
-  }
+  const isHindi = n.includes('hi') || n.includes('hindi') || n.includes('हिन्दी');
+  const isGujarati = n.includes('gu') || n.includes('gujarati') || n.includes('ગુજરાતી');
+  const isBengali = n.includes('bn') || n.includes('bengali') || n.includes('বাংলা');
+  const isMarathi = n.includes('mr') || n.includes('marathi') || n.includes('मराठी');
+  const isKannada = n.includes('kn') || n.includes('kannada') || n.includes('ಕನ್ನಡ');
+  const isMalayalam = n.includes('ml') || n.includes('malayalam') || n.includes('മലയാളം');
+  const isPunjabi = n.includes('pa') || n.includes('punjabi') || n.includes('ਪੰਜਾਬੀ');
+  const isUrdu = n.includes('ur') || n.includes('urdu') || n.includes('اردو');
+  const isOdia = n.includes('or') || n.includes('odia') || n.includes('ଓଡ଼ିଆ');
+  const isAssamese = n.includes('as') || n.includes('assamese') || n.includes('অসমীয়া');
+  const isSanskrit = n.includes('sa') || n.includes('sanskrit') || n.includes('संस्कृतम्');
+  const isTelugu = n.includes('te') || n.includes('telugu') || n.includes('తెలుగు');
+  const isTamil = n.includes('ta') || n.includes('tamil') || n.includes('தமிழ்');
 
-  // Default English
+  // Multi-item pool for MCQ vocabulary
+  const vocabPool = [
+    { emoji: '🍎', hi: 'सेब', gu: 'સફરજન', bn: 'আপেল', mr: 'सफरचंद', kn: 'ಸೇಬು', ml: 'ആപ്പിൾ', pa: 'ਸੇਬ', ur: 'سیب', or: 'ସେଓ', as: 'আপেল', sa: 'सेवफलम्', te: 'యాపిల్', ta: 'ஆப்பிள்', en: 'Apple',
+      disEn: ['Banana', 'Cat', 'Dog'], disHi: ['केला', 'बिल्ली', 'कुत्ता'], disGu: ['કેળું', 'બિલાડી', 'કૂતરો'], disBn: ['কলা', 'বিড়াল', 'কুকুর'], disMr: ['केळी', 'मांजर', 'कुत्रा'], disKn: ['ಬಾಳೆಹಣ್ಣು', 'ಬೆಕ್ಕು', 'ನಾಯಿ'], disMl: ['വാഴപ്പഴം', 'പൂച്ച', 'പട്ടി'], disPa: ['ਕੇਲਾ', 'ਬਿੱਲੀ', 'ਕੁੱਤਾ'], disUr: ['کیلا', 'بلی', 'کتا'], disOr: ['କଦଳୀ', 'ବିଲେଇ', 'କୁକୁର'], disAs: ['কল', 'মেকুৰী', 'কুকুৰ'], disSa: ['कदलीफलम्', 'मार्जारी', 'कुक्कुरः'], disTe: ['అరటి', 'పిల్లి', 'కుక్క'], disTa: ['வாழைப்பழம்', 'பூனை', 'நாய்'] },
+    
+    { emoji: '🐶', hi: 'कुत्ता', gu: 'કૂતરો', bn: 'কুকুর', mr: 'कुत्रा', kn: 'ನಾಯಿ', ml: 'പട്ടി', pa: 'ਕੁੱਤਾ', ur: 'کتا', or: 'କୁକୁର', as: 'কুকুৰ', sa: 'कुक्कुरः', te: 'కుక్క', ta: 'நாய்', en: 'Dog',
+      disEn: ['Cat', 'Bird', 'Fish'], disHi: ['बिल्ली', 'पक्षी', 'मछली'], disGu: ['બિલાડી', 'પક્ષી', 'માછલી'], disBn: ['বিড়াল', 'পাখি', 'মাছ'], disMr: ['मांजर', 'पक्षी', 'मासा'], disKn: ['ಬೆಕ್ಕು', 'ಪಕ್ಷಿ', 'ಮೀನು'], disMl: ['പൂച്ച', 'പക്ഷി', 'മീൻ'], disPa: ['ਬਿੱਲੀ', 'ਪੰਛੀ', 'ਮੱਛੀ'], disUr: ['بلی', 'پرندہ', 'مچھلی'], disOr: ['ବିଲେଇ', 'ପକ୍ଷୀ', 'ମାଛ'], disAs: ['মেকুৰী', 'চৰাই', 'মাছ'], disSa: ['मार्जारी', 'खगः', 'मत्स्यः'], disTe: ['పిల్లి', 'పక్షి', 'చేప'], disTa: ['பூனை', 'பறவை', 'மீன்'] },
+    
+    { emoji: '📚', hi: 'किताब', gu: 'પુસ્તક', bn: 'বই', mr: 'पुस्तक', kn: 'ಪುಸ್ತಕ', ml: 'പുസ്തകം', pa: 'ਕਿਤਾਬ', ur: 'کتاب', or: 'ପୁସ୍ତକ', as: 'কিতাপ', sa: 'पुस्तकम्', te: 'పుస్తకం', ta: 'புத்தகம்', en: 'Book',
+      disEn: ['Pencil', 'Bag', 'Car'], disHi: ['पेंसिल', 'बैग', 'गाड़ी'], disGu: ['પેન્સિલ', 'બેગ', 'ગાડી'], disBn: ['পেন্সিল', 'ব্যাগ', 'গাড়ি'], disMr: ['पेन्सिल', 'पिशवी', 'गाडी'], disKn: ['ಪೆನ್ಸಿಲ್', 'ಬ್ಯಾಗ್', 'ಕಾರು'], disMl: ['പെൻസിൽ', 'ബാഗ്', 'കാർ'], disPa: ['ਪੈਨਸਿਲ', 'ਬੈਗ', 'ਕਾਰ'], disUr: ['پنسل', 'بیگ', 'گاڑی'], disOr: ['ପେନ୍ସିଲ୍', 'ବ୍ୟାଗ୍', 'ଗାଡି'], disAs: ['পেঞ্চিল', 'বেগ', 'গাড়ী'], disSa: ['लेखनी', 'स्यूतः', 'यानम्'], disTe: ['పెన్సిల్', 'బ్యాగ్', 'కారు'], disTa: ['பென்சில்', 'பை', 'கார்'] },
+
+    { emoji: '🚗', hi: 'गाड़ी', gu: 'ગાડી', bn: 'গাড়ি', mr: 'गाडी', kn: 'ಕಾರು', ml: 'കാർ', pa: 'ਕਾਰ', ur: 'گاڑی', or: 'ଗାଡି', as: 'গাড়ী', sa: 'यानम्', te: 'కారు', ta: 'கார்', en: 'Car',
+      disEn: ['Bus', 'Train', 'Bicycle'], disHi: ['बस', 'ट्रेन', 'साइकिल'], disGu: ['બસ', 'ટ્રેન', 'સાઇકલ'], disBn: ['বাস', 'ট্রেন', 'সাইকেল'], disMr: ['बस', 'ट्रेन', 'सायकल'], disKn: ['ಬಸ್', 'ರೈಲು', 'ಸೈಕಲ್'], disMl: ['ബസ്', 'ട്രെയിൻ', 'സൈക്കിൾ'], disPa: ['ਬੱਸ', 'ਟ੍ਰੇਨ', 'ਸਾਈਕਲ'], disUr: ['بس', 'ٹرین', 'سائیکل'], disOr: ['ବସ୍', 'ଟ୍ରେନ୍', 'ସାଇକେଲ୍'], disAs: ['বাছ', 'ট্ৰেইন', 'চাইকেল'], disSa: ['लोकयानम्', 'रेलयानम्', 'द्विचक्रिका'], disTe: ['బస్సు', 'రైలు', 'సైకిల్'], disTa: ['பேருந்து', 'ரயில்', 'மிதிவண்டி'] },
+
+    { emoji: '🌸', hi: 'फूल', gu: 'ફૂલ', bn: 'ফুল', mr: 'फूल', kn: 'ಹೂವು', ml: 'പൂവ്', pa: 'ਫੁੱਲ', ur: 'پھول', or: 'ଫୁଲ', as: 'ফুল', sa: 'पुष्पम्', te: 'పువ్వు', ta: 'பூ', en: 'Flower',
+      disEn: ['Tree', 'Leaf', 'Grass'], disHi: ['पेड़', 'पत्ता', 'घास'], disGu: ['ઝાડ', 'પાંદડું', 'ઘાસ'], disBn: ['গাছ', 'পাতা', 'ঘাস'], disMr: ['झाड', 'पान', 'गवत'], disKn: ['ಮರ', 'ಎಲೆ', 'ಹುಲ್ಲು'], disMl: ['മരം', 'ഇല', 'പുല്ല്'], disPa: ['ਦਰੱਖਤ', 'ਪੱਤਾ', 'ਘਾਹ'], disUr: ['درخت', 'پتا', 'گھاس'], disOr: ['ଗଛ', 'ପତ୍ର', 'ଘାସ'], disAs: ['গছ', 'পাত', 'ঘাহ'], disSa: ['वृक्षः', 'पत्रम्', 'तृणम्'], disTe: ['చెట్టు', 'ఆకు', 'గడ్డి'], disTa: ['மரம்', 'இலை', 'புல்'] }
+  ];
+
+  const shuffledVocab = shuffleArray(vocabPool);
+  const v1 = shuffledVocab[0];
+  const v2 = shuffledVocab[1];
+
+  const getWord = (item: any) => isHindi ? item.hi : isGujarati ? item.gu : isBengali ? item.bn : isMarathi ? item.mr : isKannada ? item.kn : isMalayalam ? item.ml : isPunjabi ? item.pa : isUrdu ? item.ur : isOdia ? item.or : isAssamese ? item.as : isSanskrit ? item.sa : isTelugu ? item.te : isTamil ? item.ta : item.en;
+  const getDis = (item: any) => isHindi ? item.disHi : isGujarati ? item.disGu : isBengali ? item.disBn : isMarathi ? item.disMr : isKannada ? item.disKn : isMalayalam ? item.disMl : isPunjabi ? item.disPa : isUrdu ? item.disUr : isOdia ? item.disOr : isAssamese ? item.disAs : isSanskrit ? item.disSa : isTelugu ? item.disTe : isTamil ? item.disTa : item.disEn;
+
+  const promptQ1 = isHindi ? 'चित्र को देखकर सही शब्द चुनें:' : isGujarati ? 'ચિત્ર જોઈને સાચો શબ્દ પસંદ કરો:' : isBengali ? 'ছবি দেখে সঠিক শব্দটি বেছে নিন:' : isMarathi ? 'चित्र पाहून योग्य शब्द निवडा:' : isKannada ? 'ಚಿತ್ರವನ್ನು ನೋಡಿ ಸರಿಯಾದ ಪದವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ:' : isMalayalam ? 'ചിത്രം കണ്ട് ശരിയായ വാക്ക് തിരഞ്ഞെടുക്കുക:' : isPunjabi ? 'ਤਸਵੀਰ ਦੇਖ ਕੇ ਸਹੀ ਸ਼ਬਦ ਚੁਣੋ:' : isUrdu ? 'تصویر دیکھ کر درست لفظ منتخب کریں:' : isOdia ? 'ଚିତ୍ର ଦେଖି ସଠିକ୍ ଶବ୍ଦ ବାଛନ୍ତୁ:' : isAssamese ? 'ছবি চাই শুদ্ধ শব্দটো বাছক:' : isSanskrit ? 'चित्रं दृष्ट्वा उचितं शब्दं चिनुत:' : isTelugu ? 'చిత్రాన్ని చూసి సరైన పదాన్ని ఎంచుకోండి:' : isTamil ? 'படத்தைப் பார்த்து சரியான சொல்லைத் தேர்ந்தெடுக்கவும்:' : 'Which word matches the picture?';
+
+  const promptQ2 = isHindi ? 'यह कौन सा जानवर / वस्तु है?' : isGujarati ? 'આ કયું પ્રાણી / વસ્તુ છે?' : isBengali ? 'এটি কোন প্রাণী / বস্তু?' : isMarathi ? 'हा कोणता प्राणी / वस्तू आहे?' : isKannada ? 'ಇದು ಯಾವ ಪ್ರಾಣಿ / ವಸ್ತು?' : isMalayalam ? 'ഇത് ഏത് മൃഗമാണ് / വസ്തുവാണ്?' : isPunjabi ? 'ਇਹ ਕਿਹੜਾ ਜਾਨਵਰ / ਚੀਜ਼ ਹੈ?' : isUrdu ? 'یہ کون سا جانور / چیز ہے؟' : isOdia ? 'ଏହା କେଉଁ ପଶୁ / ଜିନିଷ?' : isAssamese ? 'এইটো কি প্ৰাণী / বস্তু?' : isSanskrit ? 'एषः कः पशुः / वस्तु अस्ति?' : isTelugu ? 'ఇది ఏ జంతువు / వస్తువు?' : isTamil ? 'இது என்ன விலங்கு / பொருள்?' : 'What animal or object is this?';
+
+  const promptQ3 = isHindi ? 'खाली स्थान भरें: आसमान _____ है।' : isGujarati ? 'ખાલી જગ્યા પૂરો: આકાશ _____ છે.' : isBengali ? 'শূন্যস্থান পূরণ করুন: আকাশ _____।' : isMarathi ? 'रिकामी जागा भरा: आकाश _____ आहे.' : isKannada ? 'ಖಾಲಿ ಜಾಗವನ್ನು ತುಂಬಿ: ಆಕಾಶವು _____ బಣ್ಣದಲ್ಲಿದೆ.' : isMalayalam ? 'വിട്ട ഭാഗം പൂരിപ്പിക്കുക: ആകാശം _____ ആണ്.' : isPunjabi ? 'ਖਾਲੀ ਥਾਂ ਭਰੋ: ਅਸਮਾਨ _____ ਹੈ।' : isUrdu ? 'خالی جگہ پر کریں: آسمان _____ ہے۔' : isOdia ? 'ଖାଲି ସ୍ଥାନ ପୂରଣ କରନ୍ତୁ: ଆକାଶ _____ ରଙ୍ଗର ।' : isAssamese ? 'খালী ঠাই পূৰ কৰক: আকাশখন _____।' : isSanskrit ? 'रिक्तस्थानं पूरयत: आकाशः _____ अस्ति।' : isTelugu ? 'ఖాళీని పూరించండి: ఆకాశం _____ రంగులో ఉంది.' : isTamil ? 'கோடிட்ட இடத்தை நிரப்புக: வானம் _____ நிறம்.' : 'The sky is ___';
+
+  const ansQ3 = isHindi ? 'नीला' : isGujarati ? 'વાદળી' : isBengali ? 'নীল' : isMarathi ? 'निळे' : isKannada ? 'ನೀಲಿ' : isMalayalam ? 'നീലം' : isPunjabi ? 'ਨੀਲਾ' : isUrdu ? 'نیلا' : isOdia ? 'ନୀଳ' : isAssamese ? 'নীলা' : isSanskrit ? 'नीलः' : isTelugu ? 'నీలం' : isTamil ? 'நீலம்' : 'blue';
+
+  const promptQ4 = isHindi ? 'अपने पसंदीदा रंग के बारे में एक वाक्य लिखें।' : isGujarati ? 'તમારા મનપસંદ રંગ વિશે એક વાક્ય લખો.' : isBengali ? 'আপনার পছন্দের রঙ সম্পর্কে একটি বাক্য লিখুন।' : isMarathi ? 'तुमच्या आवडत्या रंगाबद्दल एक वाक्य लिहा.' : isKannada ? 'ನಿಮ್ಮ ನೆಚ್ಚಿನ ಬಣ್ಣದ ಬಗ್ಗೆ ಒಂದು ವಾಕ್ಯ ಬರೆಯಿರಿ.' : isMalayalam ? 'നിങ്ങൾക്ക് ഇഷ്ടപ്പെട്ട നിറത്തെക്കുറിച്ച് ഒരു വാചകം എഴുതുക.' : isPunjabi ? 'ਆਪਣੇ ਪਸੰਦੀਦਾ ਰੰਗ ਬਾਰੇ ਇੱਕ ਵਾਕ ਲਿਖੋ।' : isUrdu ? 'اپنے پسندیدہ رنگ کے بارے میں ایک جملہ لکھیں۔' : isOdia ? 'ଆପଣଙ୍କର ପ୍ରିୟ ରଙ୍ଗ ବିଷୟରେ ଗୋଟିଏ ବାକ୍ୟ ଲେଖନ୍ତୁ ।' : isAssamese ? 'আপোনাৰ প্ৰিয় ৰং সম্পৰ্কে এটা বাক্য লিখক।' : isSanskrit ? 'स्वस्य प्रियवर्णविषये एकं वाक्यं लिखत।' : isTelugu ? 'మీకు ఇష్టమైన రంగు గురించి ఒక వాక్యం రాయండి.' : isTamil ? 'உங்களுக்கு பிடித்த நிறத்தைப் பற்றி ஒரு வாக்கியம் எழுதுங்கள்.' : 'Write a sentence about your favorite color.';
+
+  const promptQ5 = isHindi ? 'इसे जोर से पढ़ें: नमस्ते भारत!' : isGujarati ? 'આ મોટેથી વાંચો: નમસ્તે ભારત!' : isBengali ? 'এটি জোরে পড়ুন: নমস্কার ভারত!' : isMarathi ? 'हे मोठ्याने वाचा: नमस्कार भारत!' : isKannada ? 'ಇದನ್ನು ಗಟ್ಟಿಯಾಗಿ ಓದಿ: ನಮಸ್ಕಾರ ಭಾರತ!' : isMalayalam ? 'ഇത് ഉറക്കെ വായിക്കുക: നമസ്കാരം ഭാരതം!' : isPunjabi ? 'ਇਸਨੂੰ ਉੱਚੀ ਪੜ੍ਹੋ: ਸਤਿ ਸ਼੍ਰੀ ਅਕਾਲ!' : isUrdu ? 'اسے بلند آواز میں پڑھیں: السلام علیکم!' : isOdia ? 'ଏହାକୁ ଉଚ୍ଚ ସ୍ୱରରେ ପଢନ୍ତୁ: ନମସ୍କାର ଭାରତ!' : isAssamese ? 'এইটো ডাঙৰকৈ পঢ়ক: নমস্কাৰ ভাৰত!' : isSanskrit ? 'उच्चैः पठतु: नमस्ते भारतम्!' : isTelugu ? 'గట్టిగా చదవండి: నమస్కారం!' : isTamil ? 'சத்தமாக படிக்கவும்: வணக்கம்!' : 'Read this aloud: Hello World!';
+
   return [
-    { id: 1, section: 'reading', type: 'mcq', text: 'Which word matches the picture?', emoji: '🍎', options: ['Apple', 'Banana', 'Cat', 'Dog'], correct_answer: 'Apple' },
-    { id: 2, section: 'reading', type: 'mcq', text: 'What animal is this?', emoji: '🐶', options: ['Cat', 'Dog', 'Bird', 'Fish'], correct_answer: 'Dog' },
-    { id: 3, section: 'writing', type: 'fill_blank', text: 'The sky is ___', emoji: '☁️', correct_answer: 'blue' },
-    { id: 4, section: 'comprehension', type: 'paragraph', text: 'Write a sentence about your favorite color.', emoji: '🎨', correct_answer: 'My favorite color is blue.' },
-    { id: 5, section: 'reading', type: 'read_aloud', text: 'Read this aloud: Hello World!', emoji: '🌍', correct_answer: 'Hello World!' }
+    { id: 1, section: 'reading', type: 'mcq', text: promptQ1, emoji: v1.emoji, options: shuffleArray([getWord(v1), ...getDis(v1)]), correct_answer: getWord(v1) },
+    { id: 2, section: 'reading', type: 'mcq', text: promptQ2, emoji: v2.emoji, options: shuffleArray([getWord(v2), ...getDis(v2)]), correct_answer: getWord(v2) },
+    { id: 3, section: 'writing', type: 'fill_blank', text: promptQ3, emoji: '☁️', correct_answer: ansQ3 },
+    { id: 4, section: 'comprehension', type: 'paragraph', text: promptQ4, emoji: '🎨', correct_answer: ansQ3 },
+    { id: 5, section: 'reading', type: 'read_aloud', text: promptQ5, emoji: '🌍', correct_answer: 'Hello' }
   ];
 };
 
