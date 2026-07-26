@@ -37,25 +37,66 @@ export default function AIPracticeModule() {
     const fetchQuestions = async () => {
       try {
         setLoading(true);
-        // Simulate API call
-        await new Promise(r => setTimeout(r, 1000));
-        
-        setSkillName('📖 Reading Practice');
-        setQuestions([
-          {
-            id: 'q1', type: 'mcq', text: 'Which word describes the picture?',
-            options: ['Apple', 'Banana', 'Cat', 'Dog'], correct_answer: 'Apple',
-            hint: 'It is a red fruit.', image_emoji: '🍎'
-          },
-          {
-            id: 'q2', type: 'fill_blank', text: 'The sky is _____.',
-            correct_answer: 'blue', hint: 'Color of the ocean.', image_emoji: '🌤️'
-          },
-          {
-            id: 'q3', type: 'read_aloud', text: 'The quick brown fox jumps over the lazy dog.',
-            correct_answer: 'The quick brown fox jumps over the lazy dog.', hint: 'Speak clearly into the microphone.', image_emoji: '🦊'
+        // Try getting session or plan data from API or localStorage
+        let loadedQ: Question[] = [];
+        let name = '📖 Reading Practice';
+
+        const planStr = localStorage.getItem(`plan_${sessionId}`);
+        if (planStr) {
+          const plan = JSON.parse(planStr);
+          const mod = plan.modules?.find((m: any) => String(m.id) === String(moduleId)) || plan.modules?.[0];
+          if (mod) {
+            name = mod.skill === 'writing' ? '✍️ Writing Practice' : mod.skill === 'comprehension' ? '🧠 Comprehension Practice' : '📖 Reading Practice';
+            if (mod.questions && mod.questions.length > 0) {
+              loadedQ = mod.questions.map((q: any, idx: number) => ({
+                id: `q_${idx}`,
+                type: q.question_type || (idx % 2 === 0 ? 'mcq' : 'fill_blank'),
+                text: q.question_text || `Question ${idx + 1}`,
+                options: q.options || ['Option A', 'Option B', 'Option C', 'Option D'],
+                correct_answer: q.correct_answer || (q.options ? q.options[0] : 'correct'),
+                hint: q.hint || 'Focus on the words carefully.',
+                image_emoji: q.image_hint || '🌟'
+              }));
+            }
           }
-        ]);
+        }
+
+        if (loadedQ.length === 0) {
+          setSkillName('📖 Reading Practice');
+          loadedQ = [
+            {
+              id: 'q1', type: 'mcq', text: 'Which word describes the picture 🍎?',
+              options: ['Apple 🍎', 'Banana 🍌', 'Cat 🐱', 'Dog 🐶'], correct_answer: 'Apple 🍎',
+              hint: 'It is a red sweet fruit.', image_emoji: '🍎'
+            },
+            {
+              id: 'q2', type: 'fill_blank', text: 'Complete the sentence: The sky is _____.',
+              correct_answer: 'blue', hint: 'Color of the ocean.', image_emoji: '🌤️'
+            },
+            {
+              id: 'q3', type: 'read_aloud', text: 'The swift blue bird sings loudly in the tree.',
+              correct_answer: 'The swift blue bird sings loudly in the tree.', hint: 'Speak clearly into your microphone.', image_emoji: '🐦'
+            },
+            {
+              id: 'q4', type: 'mcq', text: 'Select the missing letter in S _ UN (Sun)',
+              options: ['U', 'O', 'A', 'E'], correct_answer: 'U',
+              hint: 'Bright star in the sky.', image_emoji: '☀️'
+            },
+            {
+              id: 'q5', type: 'fill_blank', text: 'Write the opposite word of Cold:',
+              correct_answer: 'hot', hint: 'Like the sun or fire.', image_emoji: '🔥'
+            },
+            {
+              id: 'q6', type: 'mcq', text: 'Identify the rhyming word for "Cat":',
+              options: ['Hat 🎩', 'Dog 🐶', 'Fish 🐟', 'Tree 🌳'], correct_answer: 'Hat 🎩',
+              hint: 'Something you wear on your head.', image_emoji: '🎩'
+            }
+          ];
+        } else {
+          setSkillName(name);
+        }
+
+        setQuestions(loadedQ);
       } catch (e) {
         console.error(e);
       } finally {

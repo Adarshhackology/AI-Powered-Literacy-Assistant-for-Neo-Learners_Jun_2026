@@ -205,7 +205,9 @@ class GenerateModulesView(APIView):
             return Response({'error': 'Session not found'}, status=404)
 
         latest_assessment = session.assessments.filter(assessment_type='initial').last()
-        weak_areas = latest_assessment.weak_areas if latest_assessment else ['reading']
+        weak_areas = (latest_assessment.weak_areas if (latest_assessment and latest_assessment.weak_areas) else [])
+        if not weak_areas:
+            weak_areas = ['reading', 'writing']
 
         modules = []
         for skill in ['reading', 'writing', 'comprehension']:
@@ -231,7 +233,7 @@ Return ONLY a valid JSON array of objects with keys:
                 )
                 modules.append(AILearningModuleSerializer(mod).data)
 
-        return Response({'modules': modules})
+        return Response({'modules': modules, 'weak_areas': weak_areas})
 
 @method_decorator(csrf_exempt, name='dispatch')
 class SubmitAnswerView(APIView):
