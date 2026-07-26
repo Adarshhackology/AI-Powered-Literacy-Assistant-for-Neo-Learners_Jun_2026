@@ -79,7 +79,7 @@ export default function Dashboard() {
   };
 
   const filteredLessons = lessons.filter(l => l.difficulty.toLowerCase() === activeLevel.toLowerCase());
-  const displayedLessons = filteredLessons.slice(0, 12);
+  const displayedLessons = filteredLessons;
 
   return (
     <div className="min-h-screen bg-slate-50 flex text-slate-800">
@@ -339,8 +339,8 @@ export default function Dashboard() {
                   })}
                 </div>
 
-                {/* Game Path Layout */}
-                <div className="bg-gradient-to-b from-sky-100 via-indigo-50/60 to-purple-100/60 p-8 rounded-[40px] border-4 border-dashed border-indigo-250 relative overflow-hidden flex flex-col items-center shadow-inner">
+                {/* Game Path Layout (Scrollable showing ~5 stages in preview) */}
+                <div className="bg-gradient-to-b from-sky-100 via-indigo-50/60 to-purple-100/60 p-8 rounded-[40px] border-4 border-dashed border-indigo-250 relative h-[580px] overflow-y-auto flex flex-col items-center shadow-inner scroll-smooth">
                   {/* Decorative background visual cues */}
                   <span className="absolute top-4 right-6 text-5xl opacity-20 select-none animate-float">🎈</span>
                   <span className="absolute bottom-6 left-6 text-5xl opacity-20 select-none">🏡</span>
