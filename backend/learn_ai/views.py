@@ -32,6 +32,26 @@ def call_gemini_json(prompt):
     return None
 
 def get_fallback_assessment_questions(language):
+    lang = (language or '').lower()
+    if 'hi' in lang or 'hindi' in lang:
+        return [
+            {"id": 1, "skill": "reading", "question_text": "चित्र को देखकर सही शब्द चुनें:", "question_type": "mcq", "options": ["सेब", "केला", "बिल्ली", "कुत्ता"], "correct_answer": "सेब", "image_hint": "🍎"},
+            {"id": 2, "skill": "reading", "question_text": "यह कौन सा जानवर है?", "question_type": "mcq", "options": ["बिल्ली", "कुत्ता", "पक्षी", "मछली"], "correct_answer": "कुत्ता", "image_hint": "🐶"},
+            {"id": 3, "skill": "reading", "question_text": "इसे जोर से पढ़ें: 'नमस्ते दुनिया!'", "question_type": "read_aloud", "options": None, "correct_answer": "नमस्ते दुनिया!", "image_hint": "🌍"},
+            {"id": 4, "skill": "reading", "question_text": "सही शब्द से मिलाएँ: 📚", "question_type": "mcq", "options": ["किताब", "पेंसिल", "बैग", "गाड़ी"], "correct_answer": "किताब", "image_hint": "📚"},
+            {"id": 5, "skill": "reading", "question_text": "'कमल' शब्द का पहला अक्षर क्या है?", "question_type": "mcq", "options": ["क", "म", "ल", "र"], "correct_answer": "क", "image_hint": "🌸"},
+            {"id": 6, "skill": "writing", "question_text": "वाक्य पूरा करें: 'वह स्कूल जा _____ है।'", "question_type": "fill_blank", "options": None, "correct_answer": "रहा", "image_hint": "🏫"},
+            {"id": 7, "skill": "writing", "question_text": "🐶 का नाम हिंदी में लिखें:", "question_type": "fill_blank", "options": None, "correct_answer": "कुत्ता", "image_hint": "🐶"},
+            {"id": 8, "skill": "writing", "question_text": "सही वाक्य चुनें: [खाता / राम / आम / है]", "question_type": "fill_blank", "options": None, "correct_answer": "राम आम खाता है", "image_hint": "🥭"},
+            {"id": 9, "skill": "writing", "question_text": "अपने पसंदीदा फल के बारे में एक वाक्य लिखें।", "question_type": "paragraph", "options": None, "correct_answer": "मेरा पसंदीदा फल आम है।", "image_hint": "🥭"},
+            {"id": 10, "skill": "writing", "question_text": "'सूरज' का विलोम शब्द लिखें:", "question_type": "fill_blank", "options": None, "correct_answer": "चांद", "image_hint": "🌙"},
+            {"id": 11, "skill": "comprehension", "question_text": "कहानी: 'रामू ने पेड़ के नीचे एक चाबी पाई।' रामू को क्या मिला?", "question_type": "mcq", "options": ["चाबी", "सिक्का", "फूल", "खिलौना"], "correct_answer": "चाबी", "image_hint": "🔑"},
+            {"id": 12, "skill": "comprehension", "question_text": "पेड़ हमें क्या देते हैं?", "question_type": "mcq", "options": ["छाया और फल", "पानी और आग", "कपड़े", "गाड़ियां"], "correct_answer": "छाया और फल", "image_hint": "🌳"},
+            {"id": 13, "skill": "comprehension", "question_text": "काले बादल आने पर क्या होगा?", "question_type": "mcq", "options": ["बारिश होगी", "धूप निकलेगी", "बर्फ गिरेगी", "तारे दिखेंगे"], "correct_answer": "बारिश होगी", "image_hint": "🌧️"},
+            {"id": 14, "skill": "comprehension", "question_text": "'वीर' शब्द का सही अर्थ क्या है?", "question_type": "mcq", "options": ["साहसी", "डरपोक", "शांत", "सोया हुआ"], "correct_answer": "साहसी", "image_hint": "🛡️"},
+            {"id": 15, "skill": "comprehension", "question_text": "एक खुश कुत्ता अपनी पूंछ के साथ क्या करता है?", "question_type": "fill_blank", "options": None, "correct_answer": "हिलाता", "image_hint": "🐶"}
+        ]
+
     return [
         {"id": 1, "skill": "reading", "question_text": f"Read aloud and select the correct matching word for 'Apple' in {language}.", "question_type": "mcq", "options": ["Apple", "Banana", "Cat", "Dog"], "correct_answer": "Apple", "image_hint": "🍎"},
         {"id": 2, "skill": "reading", "question_text": f"Select the missing letter: S _ UN (Sun)", "question_type": "mcq", "options": ["O", "A", "U", "E"], "correct_answer": "U", "image_hint": "☀️"},
@@ -43,10 +63,10 @@ def get_fallback_assessment_questions(language):
         {"id": 8, "skill": "writing", "question_text": "Fix the grammar: 'He go to market yesterday.'", "question_type": "fill_blank", "options": None, "correct_answer": "went", "image_hint": "🛒"},
         {"id": 9, "skill": "writing", "question_text": "Write a short sentence about your favorite pet.", "question_type": "paragraph", "options": None, "correct_answer": "My favorite pet is a dog.", "image_hint": "🐾"},
         {"id": 10, "skill": "writing", "question_text": "Arrange into correct sentence: [likes / ice cream / Sam]", "question_type": "fill_blank", "options": None, "correct_answer": "Sam likes ice cream", "image_hint": "🍦"},
-        {"id": 11, "skill": "comprehension", "question_text": "Story: 'Tim found a golden key under a tree. He opened the small wooden box.' What did Tim find?", "question_type": "mcq", "options": ["A key 🔑", "A coin 🪙", "A flower 🌸", "A toy 🧸"], "correct_answer": "A key 🔑", "image_hint": "🔑"},
+        {"id": 11, "skill": "comprehension", "question_text": "Story: 'Tim found a golden key under a tree. He opened the small wooden box.' What did Tim find?", "question_type": "mcq", "options": ["A key", "A coin", "A flower", "A toy"], "correct_answer": "A key", "image_hint": "🔑"},
         {"id": 12, "skill": "comprehension", "question_text": "Why was Tim looking at the wooden box?", "question_type": "mcq", "options": ["To open it with the key", "To throw it", "To paint it", "To hide it"], "correct_answer": "To open it with the key", "image_hint": "📦"},
-        {"id": 13, "skill": "comprehension", "question_text": "What is the main idea of: 'Trees give us clean air, fruits, and shade.'", "question_type": "mcq", "options": ["Trees are helpful 🌳", "Trees are tall", "Trees have leaves", "Birds live in trees"], "correct_answer": "Trees are helpful 🌳", "image_hint": "🌳"},
-        {"id": 14, "skill": "comprehension", "question_text": "Predict what happens next when dark clouds fill the sky.", "question_type": "mcq", "options": ["It will rain 🌧️", "The sun will shine ☀️", "Stars will appear 🌟", "It will snow ❄️"], "correct_answer": "It will rain 🌧️", "image_hint": "☁️"},
+        {"id": 13, "skill": "comprehension", "question_text": "What is the main idea of: 'Trees give us clean air, fruits, and shade.'", "question_type": "mcq", "options": ["Trees are helpful", "Trees are tall", "Trees have leaves", "Birds live in trees"], "correct_answer": "Trees are helpful", "image_hint": "🌳"},
+        {"id": 14, "skill": "comprehension", "question_text": "Predict what happens next when dark clouds fill the sky.", "question_type": "mcq", "options": ["It will rain", "The sun will shine", "Stars will appear", "It will snow"], "correct_answer": "It will rain", "image_hint": "☁️"},
         {"id": 15, "skill": "comprehension", "question_text": "Explain in 1 word what a happy dog does with its tail.", "question_type": "fill_blank", "options": None, "correct_answer": "wag", "image_hint": "🐶"}
     ]
 

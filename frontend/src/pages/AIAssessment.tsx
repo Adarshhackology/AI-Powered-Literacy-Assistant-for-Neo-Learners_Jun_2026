@@ -15,13 +15,43 @@ interface Question {
 
 const stripEmoji = (str: string) => str ? str.replace(/[\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '').trim() : '';
 
-const fallbackQuestions: Question[] = [
-  { id: 1, section: 'reading', type: 'mcq', text: 'Which word matches the picture?', emoji: '🍎', options: ['Apple', 'Banana', 'Cat', 'Dog'], correct_answer: 'Apple' },
-  { id: 2, section: 'reading', type: 'mcq', text: 'What animal is this?', emoji: '🐶', options: ['Cat', 'Dog', 'Bird', 'Fish'], correct_answer: 'Dog' },
-  { id: 3, section: 'writing', type: 'fill_blank', text: 'The sky is ___', emoji: '☁️', correct_answer: 'blue' },
-  { id: 4, section: 'comprehension', type: 'paragraph', text: 'Write a sentence about your favorite color.', emoji: '🎨', correct_answer: 'My favorite color is blue.' },
-  { id: 5, section: 'reading', type: 'read_aloud', text: 'Read this aloud: Hello World!', emoji: '🌍', correct_answer: 'Hello World!' },
-];
+const getLanguageFallbackQuestions = (lang: string): Question[] => {
+  const normalized = (lang || '').toLowerCase();
+  if (normalized.includes('hi') || normalized.includes('hindi') || normalized.includes('हिन्दी')) {
+    return [
+      { id: 1, section: 'reading', type: 'mcq', text: 'चित्र को देखकर सही शब्द चुनें:', emoji: '🍎', options: ['सेब', 'केला', 'बिल्ली', 'कुत्ता'], correct_answer: 'सेब' },
+      { id: 2, section: 'reading', type: 'mcq', text: 'यह कौन सा जानवर है?', emoji: '🐶', options: ['बिल्ली', 'कुत्ता', 'पक्षी', 'मछली'], correct_answer: 'कुत्ता' },
+      { id: 3, section: 'writing', type: 'fill_blank', text: 'खाली स्थान भरें: आसमान _____ है।', emoji: '☁️', correct_answer: 'नीला' },
+      { id: 4, section: 'comprehension', type: 'paragraph', text: 'अपने पसंदीदा रंग के बारे में एक वाक्य लिखें।', emoji: '🎨', correct_answer: 'मेरा पसंदीदा रंग नीला है।' },
+      { id: 5, section: 'reading', type: 'read_aloud', text: 'इसे जोर से पढ़ें: नमस्ते भारत!', emoji: '🌍', correct_answer: 'नमस्ते भारत!' }
+    ];
+  }
+  if (normalized.includes('te') || normalized.includes('telugu') || normalized.includes('తెలుగు')) {
+    return [
+      { id: 1, section: 'reading', type: 'mcq', text: 'చిత్రాన్ని చూసి సరైన పదాన్ని ఎంచుకోండి:', emoji: '🍎', options: ['యాపిల్', 'అరటి', 'పిల్లి', 'కుక్క'], correct_answer: 'యాపిల్' },
+      { id: 2, section: 'reading', type: 'mcq', text: 'ఇది ఏ జంతువు?', emoji: '🐶', options: ['పిల్లి', 'కుక్క', 'పక్షి', 'చేప'], correct_answer: 'కుక్క' },
+      { id: 3, section: 'writing', type: 'fill_blank', text: 'ఖాళీని పూరించండి: ఆకాశం _____ రంగులో ఉంది.', emoji: '☁️', correct_answer: 'నీలం' },
+      { id: 4, section: 'comprehension', type: 'paragraph', text: 'మీకు ఇష్టమైన రంగు గురించి ఒక వాక్యం రాయండి.', emoji: '🎨', correct_answer: 'నాకు ఇష్టమైన రంగు నీలం.' },
+      { id: 5, section: 'reading', type: 'read_aloud', text: 'గట్టిగా చదవండి: నమస్కారం!', emoji: '🌍', correct_answer: 'నమస్కారం!' }
+    ];
+  }
+  if (normalized.includes('ta') || normalized.includes('tamil') || normalized.includes('தமிழ்')) {
+    return [
+      { id: 1, section: 'reading', type: 'mcq', text: 'படத்தைப் பார்த்து சரியான சொல்லைத் தேர்ந்தெடுக்கவும்:', emoji: '🍎', options: ['ஆப்பிள்', 'வாழைப்பழம்', 'பூனை', 'நாய்'], correct_answer: 'ஆப்பிள்' },
+      { id: 2, section: 'reading', type: 'mcq', text: 'இது என்ன விலங்கு?', emoji: '🐶', options: ['பூனை', 'நாய்', 'பறவை', 'மீன்'], correct_answer: 'நாய்' },
+      { id: 3, section: 'writing', type: 'fill_blank', text: 'கோடிட்ட இடத்தை நிரப்புக: வானம் _____ நிறம்.', emoji: '☁️', correct_answer: 'நீலம்' },
+      { id: 4, section: 'comprehension', type: 'paragraph', text: 'உங்களுக்கு பிடித்த நிறத்தைப் பற்றி ஒரு வாக்கியம் எழுதுங்கள்.', emoji: '🎨', correct_answer: 'எனக்கு பிடித்த நிறம் நீலம்.' },
+      { id: 5, section: 'reading', type: 'read_aloud', text: 'சத்தமாக படிக்கவும்: வணக்கம்!', emoji: '🌍', correct_answer: 'வணக்கம்!' }
+    ];
+  }
+  return [
+    { id: 1, section: 'reading', type: 'mcq', text: 'Which word matches the picture?', emoji: '🍎', options: ['Apple', 'Banana', 'Cat', 'Dog'], correct_answer: 'Apple' },
+    { id: 2, section: 'reading', type: 'mcq', text: 'What animal is this?', emoji: '🐶', options: ['Cat', 'Dog', 'Bird', 'Fish'], correct_answer: 'Dog' },
+    { id: 3, section: 'writing', type: 'fill_blank', text: 'The sky is ___', emoji: '☁️', correct_answer: 'blue' },
+    { id: 4, section: 'comprehension', type: 'paragraph', text: 'Write a sentence about your favorite color.', emoji: '🎨', correct_answer: 'My favorite color is blue.' },
+    { id: 5, section: 'reading', type: 'read_aloud', text: 'Read this aloud: Hello World!', emoji: '🌍', correct_answer: 'Hello World!' }
+  ];
+};
 
 export default function AIAssessment() {
   const navigate = useNavigate();
@@ -39,6 +69,9 @@ export default function AIAssessment() {
 
   useEffect(() => {
     const fetchQuestions = async () => {
+      const userLang = localStorage.getItem('current_ai_lang') || localStorage.getItem('preferredLanguage') || 'english';
+      const fallbacks = getLanguageFallbackQuestions(userLang);
+
       try {
         setLoading(true);
         const data = await apiClient.generateAIAssessment(Number(sessionId));
@@ -47,18 +80,18 @@ export default function AIAssessment() {
             id: q.id || idx + 1,
             section: q.skill || (idx < 2 ? 'reading' : idx < 4 ? 'writing' : 'comprehension'),
             type: q.question_type || 'mcq',
-            text: q.question_text || 'Select the correct answer:',
+            text: q.question_text || fallbacks[idx % fallbacks.length]?.text || 'Select the correct answer:',
             emoji: q.image_hint || '🌟',
-            options: q.options || (q.question_type === 'mcq' ? ['Option A', 'Option B', 'Option C', 'Option D'] : undefined),
+            options: q.options || (q.question_type === 'mcq' ? fallbacks[idx % fallbacks.length]?.options || ['Apple', 'Banana', 'Cat', 'Dog'] : undefined),
             correct_answer: q.correct_answer
           }));
           setQuestions(mapped);
         } else {
-          setQuestions(fallbackQuestions);
+          setQuestions(fallbacks);
         }
       } catch (err) {
         console.error(err);
-        setQuestions(fallbackQuestions);
+        setQuestions(fallbacks);
       } finally {
         setLoading(false);
       }
@@ -166,7 +199,7 @@ export default function AIAssessment() {
     );
   }
 
-  const question = questions[currentIndex] || fallbackQuestions[0];
+  const question = questions[currentIndex] || getLanguageFallbackQuestions('english')[0];
   const sections = ['reading', 'writing', 'comprehension'];
   const currentSection = question.section || 'reading';
 

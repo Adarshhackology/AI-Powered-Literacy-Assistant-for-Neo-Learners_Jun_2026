@@ -43,6 +43,33 @@ const defaultPracticeQuestions: Record<string, Question[]> = {
   ]
 };
 
+const defaultHindiPracticeQuestions: Record<string, Question[]> = {
+  reading: [
+    { id: 'r1', type: 'mcq', text: 'चित्र को देखकर सही शब्द चुनें 🍎:', options: ['सेब', 'केला', 'बिल्ली', 'कुत्ता'], correct_answer: 'सेब', hint: 'यह एक मीठा लाल फल है।', image_emoji: '🍎' },
+    { id: 'r2', type: 'fill_blank', text: 'सही शब्द चुनें: क _ ल (कमल)', correct_answer: 'म', hint: 'फूल का नाम।', image_emoji: '🌸' },
+    { id: 'r3', type: 'read_aloud', text: 'इसे जोर से पढ़ें: सूरज सुबह पूर्व में उगता है।', correct_answer: 'सूरज सुबह पूर्व में उगता है।', hint: 'माइक में साफ बोलें।', image_emoji: '🌅' },
+    { id: 'r4', type: 'mcq', text: 'अक्षर "क" से शुरू होने वाला शब्द चुनें:', options: ['किताब', 'पानी', 'घर', 'पेड़'], correct_answer: 'किताब', hint: 'पढ़ने की वस्तु।', image_emoji: '📚' },
+    { id: 'r5', type: 'fill_blank', text: '"दिन" का विलोम शब्द लिखें:', correct_answer: 'रात', hint: 'सूरज ढलने के बाद।', image_emoji: '🌙' },
+    { id: 'r6', type: 'mcq', text: '🐶 जानवर की सही आवाज चुनें:', options: ['भौ-भौ', 'म्याऊं', 'चीं-चीं', 'कांव-कांव'], correct_answer: 'भौ-भौ', hint: 'कुत्ते की आवाज।', image_emoji: '🐶' }
+  ],
+  writing: [
+    { id: 'w1', type: 'fill_blank', text: 'वाक्य पूरा करें: वह स्कूल जा _____ है।', correct_answer: 'रहा', hint: 'क्रिया रूप।', image_emoji: '🏫' },
+    { id: 'w2', type: 'fill_blank', text: 'शब्द शुद्ध करें: "किताबब" -> _____', correct_answer: 'किताब', hint: 'पढ़ने की पुस्तक।', image_emoji: '📖' },
+    { id: 'w3', type: 'paragraph', text: 'अपने पसंदीदा जानवर के बारे में एक वाक्य लिखें।', correct_answer: 'मेरा पसंदीदा जानवर कुत्ता है।', hint: 'जानवर का नाम।', image_emoji: '🐾' },
+    { id: 'w4', type: 'mcq', text: 'सही बहुवचन चुनें: "लड़का" -> _____', options: ['लड़के', 'लड़कों', 'लड़कियां', 'लड़काएं'], correct_answer: 'लड़के', hint: 'एक से अधिक।', image_emoji: '👦👦' },
+    { id: 'w5', type: 'fill_blank', text: 'शब्दों को सही क्रम में लगाएं: [है / आम / खाता / राम]', correct_answer: 'राम आम खाता है', hint: 'राम से शुरू करें।', image_emoji: '🥭' },
+    { id: 'w6', type: 'paragraph', text: 'आप सुबह उठकर क्या करते हैं?', correct_answer: 'मैं सुबह ब्रश करता हूं।', hint: 'सुबह की आदत।', image_emoji: '🌅' }
+  ],
+  comprehension: [
+    { id: 'c1', type: 'mcq', text: 'कहानी: "रामू ने पेड़ के नीचे एक चाबी पाई।" रामू को क्या मिला?', options: ['चाबी', 'सिक्का', 'फूल', 'खिलौना'], correct_answer: 'चाबी', hint: 'पेड़ के नीचे चाबी मिली।', image_emoji: '🔑' },
+    { id: 'c2', type: 'mcq', text: 'पेड़ हमें क्या देते हैं?', options: ['छाया और फल', 'आग और धुआं', 'गाड़ियां', 'कपड़े'], correct_answer: 'छाया और फल', hint: 'पर्यावरण का लाभ।', image_emoji: '🌳' },
+    { id: 'c3', type: 'mcq', text: 'काले बादल आने पर क्या होगा?', options: ['बारिश होगी', 'धूप निकलेगी', 'तारे दिखेंगे', 'बर्फ गिरेगी'], correct_answer: 'बारिश होगी', hint: 'बादल बारिश लाते हैं।', image_hint: '☁️', image_emoji: '☁️' },
+    { id: 'c4', type: 'fill_blank', text: '"खुशी में नाचना" कौन सा भाव दर्शाता है?', correct_answer: 'प्रसन्नता', hint: 'आनंद का भाव।', image_emoji: '🎉' },
+    { id: 'c5', type: 'mcq', text: '"वीर" का सही अर्थ चुनें:', options: ['साहसी', 'डरपोक', 'शांत', 'सोया हुआ'], correct_answer: 'साहसी', hint: 'बहादुर।', image_emoji: '🛡️' },
+    { id: 'c6', type: 'mcq', text: 'घटनाक्रम लगाएं: 1) आटा खरीदा 2) केक बनाया 3) केक खाया', options: ['1 -> 2 -> 3', '2 -> 1 -> 3', '3 -> 2 -> 1', '2 -> 3 -> 1'], correct_answer: '1 -> 2 -> 3', hint: 'सामान पहले खरीदें।', image_emoji: '🎂' }
+  ]
+};
+
 export default function AIPracticeModule() {
   const { sessionId, moduleId } = useParams();
   const navigate = useNavigate();
@@ -66,6 +93,10 @@ export default function AIPracticeModule() {
 
   useEffect(() => {
     const fetchQuestions = async () => {
+      const userLang = (localStorage.getItem('current_ai_lang') || localStorage.getItem('preferredLanguage') || 'english').toLowerCase();
+      const isHindi = userLang.includes('hi') || userLang.includes('hindi');
+      const questionBank = isHindi ? defaultHindiPracticeQuestions : defaultPracticeQuestions;
+
       try {
         setLoading(true);
         let loadedQ: Question[] = [];
@@ -88,10 +119,10 @@ export default function AIPracticeModule() {
                   text: q.question_text || q.text,
                   options: q.options && Array.isArray(q.options) && q.options.length >= 2 && q.options[0] !== 'Option A' 
                     ? q.options 
-                    : defaultPracticeQuestions[sKey][idx % 6].options,
-                  correct_answer: q.correct_answer || defaultPracticeQuestions[sKey][idx % 6].correct_answer,
+                    : questionBank[sKey][idx % 6].options,
+                  correct_answer: q.correct_answer || questionBank[sKey][idx % 6].correct_answer,
                   hint: q.hint || 'Focus on the words carefully.',
-                  image_emoji: q.image_hint || q.image_emoji || defaultPracticeQuestions[sKey][idx % 6].image_emoji
+                  image_emoji: q.image_hint || q.image_emoji || questionBank[sKey][idx % 6].image_emoji
                 }));
               }
             }
@@ -102,13 +133,13 @@ export default function AIPracticeModule() {
         setSkillName(sKey === 'writing' ? '✍️ Writing Practice' : sKey === 'comprehension' ? '🧠 Comprehension Practice' : '📖 Reading Practice');
 
         if (loadedQ.length === 0) {
-          loadedQ = defaultPracticeQuestions[sKey];
+          loadedQ = questionBank[sKey];
         }
 
         setQuestions(loadedQ);
       } catch (e) {
         console.error(e);
-        setQuestions(defaultPracticeQuestions.reading);
+        setQuestions(questionBank.reading);
       } finally {
         setLoading(false);
       }
