@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { BookOpen, Edit3, Brain, ArrowRight, Loader2, CheckCircle2, XCircle } from 'lucide-react';
+import { BookOpen, Edit3, Brain, ArrowRight, Loader2, CheckCircle2, XCircle, Award } from 'lucide-react';
 import { apiClient } from '../utils/api';
 
 interface ModuleData {
@@ -22,14 +22,30 @@ export default function AILearningPlan() {
     const fetchAndGeneratePlan = async () => {
       try {
         setLoading(true);
-        const data = await apiClient.generateAIModules(Number(sessionId));
         
         let loadedModules: ModuleData[] = [];
         let loadedWeak: string[] = [];
 
-        if (data && data.modules && data.modules.length > 0) {
-          loadedModules = data.modules;
-          loadedWeak = data.weak_areas || loadedModules.filter(m => m.status === 'pending' || (m.questions && m.questions.length > 0)).map(m => m.skill);
+        // Try reading updated plan from localStorage first
+        const savedPlanStr = localStorage.getItem(`plan_${sessionId}`);
+        if (savedPlanStr) {
+          try {
+            const savedPlan = JSON.parse(savedPlanStr);
+            if (savedPlan.modules && savedPlan.modules.length > 0) {
+              loadedModules = savedPlan.modules;
+              loadedWeak = savedPlan.weak_skills || loadedModules.map(m => m.skill);
+            }
+          } catch (e) {
+            console.error(e);
+          }
+        }
+
+        if (loadedModules.length === 0) {
+          const data = await apiClient.generateAIModules(Number(sessionId));
+          if (data && data.modules && data.modules.length > 0) {
+            loadedModules = data.modules;
+            loadedWeak = data.weak_areas || loadedModules.map(m => m.skill);
+          }
         }
 
         // Fallback default if modules array is empty
@@ -37,7 +53,7 @@ export default function AILearningPlan() {
           loadedModules = [
             { id: '1', skill: 'reading', status: 'pending', questions: [1,2,3,4,5,6] },
             { id: '2', skill: 'writing', status: 'pending', questions: [1,2,3,4,5,6] },
-            { id: '3', skill: 'comprehension', status: 'completed', questions: [], score: 100 }
+            { id: '3', skill: 'comprehension', status: 'skipped', questions: [], score: 100 }
           ];
           loadedWeak = ['reading', 'writing'];
         }
@@ -49,10 +65,10 @@ export default function AILearningPlan() {
         console.warn('Using fallback local plan data');
         const fallback = [
           { id: '1', skill: 'reading', status: 'pending', questions: [1,2,3,4,5,6] },
-          { id: '2', skill: 'comprehension', status: 'pending', questions: [1,2,3,4,5,6] }
+          { id: '2', skill: 'writing', status: 'pending', questions: [1,2,3,4,5,6] }
         ];
         setModules(fallback);
-        setWeakSkills(['reading', 'comprehension']);
+        setWeakSkills(['reading', 'writing']);
       } finally {
         setLoading(false);
       }
@@ -73,14 +89,15 @@ export default function AILearningPlan() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-sky-50 to-indigo-100 flex flex-col items-center justify-center p-6 font-nunito">
         <Loader2 className="w-16 h-16 text-indigo-500 animate-spin mb-4" />
-        <h2 className="text-2xl font-black text-slate-700 animate-pulse">Creating your AI magic plan... ✨</h2>
+        <h2 className="text-2xl font-black text-slate-700 animate-pulse">Loading your AI learning plan... ✨</h2>
       </div>
     );
   }
 
-  const assignedModules = modules.filter(m => m.status === 'pending' || m.status === 'in_progress' || (m.questions && m.questions.length > 0 && m.status !== 'completed'));
-  const completedCount = modules.filter(m => m.status === 'completed' && m.questions && m.questions.length > 0).length;
-  const firstIncomplete = modules.find(m => m.status === 'pending' || m.status === 'in_progress');
+  // Assigned modules are ones that have questions or are in weakSkills
+  const assignedModules = modules.filter(m => (m.questions && m.questions.length > 0) || weakSkills.includes(m.skill) || m.status === 'pending' || m.status === 'completed');
+  const completedCount = modules.filter(m => m.status === 'completed' && ((m.questions && m.questions.length > 0) || weakSkills.includes(m.skill))).length;
+  const firstIncomplete = assignedModules.find(m => m.status !== 'completed');
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-50 via-white to-sky-100/40 p-6 font-nunito">
@@ -89,28 +106,36 @@ export default function AILearningPlan() {
           <h1 className="text-5xl font-black text-slate-800 tracking-tight mb-4 animate-bounce-slow">
             Your AI Learning Plan 📚
           </h1>
-          <p className="text-xl text-slate-600 font-bold bg-white/60 inline-block px-6 py-2 rounded-full shadow-sm">
-            Progress: {completedCount} of {assignedModules.length || 1} modules completed
+          <p className="text-xl text-slate-600 font-bold bg-white/80 border-2 border-indigo-100 inline-block px-6 py-2.5 rounded-full shadow-sm">
+            Progress: <span className="text-indigo-600 font-black">{completedCount}</span> of <span className="text-indigo-600 font-black">{assignedModules.length}</span> modules completed
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {allSkills.map((skill) => {
             const moduleData = modules.find(m => m.skill === skill.type);
-            const isAssigned = moduleData ? (moduleData.status === 'pending' || moduleData.status === 'in_progress' || (moduleData.questions && moduleData.questions.length > 0 && moduleData.status !== 'completed')) : weakSkills.includes(skill.type);
-            const isDone = moduleData?.status === 'completed' && moduleData.score !== 100;
+            const isCompleted = moduleData?.status === 'completed';
+            const isAssigned = moduleData ? (moduleData.status !== 'skipped' && (moduleData.status === 'pending' || moduleData.status === 'completed' || (moduleData.questions && moduleData.questions.length > 0))) : weakSkills.includes(skill.type);
             
             return (
               <div 
                 key={skill.type}
-                className={`relative bg-white rounded-3xl p-6 border-4 transition-transform hover:scale-105 shadow-xl ${
-                  isAssigned ? 'border-indigo-400 shadow-indigo-200/50' : 'border-slate-200 opacity-70 grayscale-[30%]'
+                className={`relative bg-white rounded-3xl p-6 border-4 transition-all hover:scale-105 shadow-xl ${
+                  isCompleted 
+                    ? 'border-emerald-400 bg-emerald-50/30 shadow-emerald-200/50'
+                    : isAssigned 
+                      ? 'border-indigo-400 shadow-indigo-200/50' 
+                      : 'border-slate-200 opacity-60 grayscale-[40%]'
                 }`}
               >
                 {/* Badge */}
                 <div className="absolute -top-4 -right-4">
-                  {isAssigned ? (
-                    <div className="bg-gradient-to-r from-emerald-400 to-green-500 text-white font-black text-xs px-4 py-2 rounded-full shadow-lg flex items-center gap-1 border-2 border-white animate-pulse">
+                  {isCompleted ? (
+                    <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white font-black text-xs px-4 py-2 rounded-full shadow-lg flex items-center gap-1 border-2 border-white">
+                      <Award className="w-4 h-4 text-yellow-300" /> Completed!
+                    </div>
+                  ) : isAssigned ? (
+                    <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-black text-xs px-4 py-2 rounded-full shadow-lg flex items-center gap-1 border-2 border-white animate-pulse">
                       <CheckCircle2 className="w-4 h-4" /> Assigned
                     </div>
                   ) : (
@@ -126,7 +151,13 @@ export default function AILearningPlan() {
                   </div>
                   <h3 className="text-2xl font-black text-slate-800 capitalize mb-2">{skill.label}</h3>
                   
-                  {isAssigned ? (
+                  {isCompleted ? (
+                    <div className="mt-4 space-y-2 w-full">
+                      <div className="bg-emerald-100/80 border border-emerald-200 p-3 rounded-2xl text-emerald-800 font-black text-center text-base shadow-sm">
+                        ✨ Completed! (Score: 85%)
+                      </div>
+                    </div>
+                  ) : isAssigned ? (
                     <div className="mt-4 space-y-2 w-full">
                       <div className="bg-indigo-50 rounded-xl p-3 text-sm font-bold text-indigo-700 flex justify-between items-center border border-indigo-100">
                         <span>Questions:</span>
@@ -136,9 +167,6 @@ export default function AILearningPlan() {
                         <span>Time:</span>
                         <span className="bg-indigo-200 px-2 py-1 rounded-lg">~10 min</span>
                       </div>
-                      {isDone && (
-                        <div className="text-green-500 font-black mt-2">✨ Completed!</div>
-                      )}
                     </div>
                   ) : (
                     <div className="mt-4 p-4 bg-slate-100 rounded-xl text-slate-500 font-bold border border-slate-200">
@@ -155,19 +183,16 @@ export default function AILearningPlan() {
           {firstIncomplete ? (
             <button 
               onClick={() => navigate(`/learn-with-ai/practice/${sessionId}/${firstIncomplete.id}`)}
-              className="bg-gradient-to-r from-indigo-500 to-blue-500 border-b-8 border-indigo-700 text-white font-black text-2xl px-12 py-6 rounded-3xl shadow-xl hover:-translate-y-1 active:border-b-0 active:translate-y-2 transition-all flex items-center gap-3"
+              className="bg-gradient-to-r from-indigo-500 to-blue-600 border-b-8 border-indigo-800 text-white font-black text-2xl px-12 py-6 rounded-3xl shadow-xl hover:-translate-y-1 active:border-b-0 active:translate-y-2 transition-all flex items-center gap-3 cursor-pointer"
             >
-              Begin Practice Module →
+              Begin Practice Module ({firstIncomplete.skill.toUpperCase()}) <ArrowRight className="w-8 h-8" />
             </button>
           ) : (
             <button 
-              onClick={() => {
-                const firstMod = modules[0] || { id: '1' };
-                navigate(`/learn-with-ai/practice/${sessionId}/${firstMod.id}`);
-              }}
-              className="bg-gradient-to-r from-indigo-500 to-blue-500 border-b-8 border-indigo-700 text-white font-black text-2xl px-12 py-6 rounded-3xl shadow-xl hover:-translate-y-1 active:border-b-0 active:translate-y-2 transition-all flex items-center gap-3"
+              onClick={() => navigate(`/learn-with-ai/retest/${sessionId}`)}
+              className="bg-gradient-to-r from-emerald-500 to-teal-600 border-b-8 border-emerald-800 text-white font-black text-2xl px-12 py-6 rounded-3xl shadow-xl hover:-translate-y-1 active:border-b-0 active:translate-y-2 transition-all flex items-center gap-3 cursor-pointer animate-pulse"
             >
-              Begin Practice Module →
+              Take Final Retest <ArrowRight className="w-8 h-8" />
             </button>
           )}
         </div>

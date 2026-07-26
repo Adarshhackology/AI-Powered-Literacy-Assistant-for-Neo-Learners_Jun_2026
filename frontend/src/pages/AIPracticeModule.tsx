@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Mic, Lightbulb, ArrowRight, Loader2, Check, X, CheckCircle2 } from 'lucide-react';
+import { apiClient } from '../utils/api';
 
 interface Question {
   id: string;
@@ -203,15 +204,32 @@ export default function AIPracticeModule() {
     } else {
       setLoading(true);
       try {
-        await fetch('http://127.0.0.1:8000/api/learn-ai/complete-module/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ module_id: moduleId })
-        });
+        await apiClient.completeAIModule(Number(moduleId));
       } catch (e) {
         console.error(e);
       }
-      navigate(`/learn-with-ai/suggestions/${sessionId}/${moduleId}`);
+
+      // Update plan data in localStorage to mark module completed
+      const planStr = localStorage.getItem(`plan_${sessionId}`);
+      if (planStr) {
+        try {
+          const plan = JSON.parse(planStr);
+          if (plan.modules) {
+            const updated = plan.modules.map((m: any) => {
+              if (String(m.id) === String(moduleId) || m.skill === skillKey) {
+                return { ...m, status: 'completed', score: 85 };
+              }
+              return m;
+            });
+            localStorage.setItem(`plan_${sessionId}`, JSON.stringify({ ...plan, modules: updated }));
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      // Return back to AI Learning Plan overview page
+      navigate(`/learn-with-ai/plan/${sessionId}`);
     }
   };
 
