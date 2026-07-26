@@ -84,11 +84,11 @@ export default function AILanguageSelect() {
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 mb-24">
           {languages.map((lang) => {
-            const isSelected = selectedLang === lang.id;
+            const isSelected = selectedLang === lang.name || selectedLang === lang.id;
             return (
               <div
                 key={lang.id}
-                onClick={() => setSelectedLang(lang.id)}
+                onClick={() => setSelectedLang(lang.name)}
                 className={`relative bg-white rounded-3xl p-5 cursor-pointer transition-all duration-300 ease-out transform hover:-translate-y-2 hover:shadow-xl
                   ${isSelected ? 'ring-4 ring-yellow-400 shadow-xl scale-105 bg-indigo-50/50' : 'shadow-md border-2 border-slate-100'}
                 `}

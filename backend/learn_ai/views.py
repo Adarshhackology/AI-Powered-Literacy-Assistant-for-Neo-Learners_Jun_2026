@@ -33,23 +33,23 @@ def call_gemini_json(prompt):
 
 def get_fallback_assessment_questions(language):
     lang = (language or '').lower()
-    if 'hi' in lang or 'hindi' in lang:
+    if 'gu' in lang or 'gujarati' in lang:
         return [
-            {"id": 1, "skill": "reading", "question_text": "चित्र को देखकर सही शब्द चुनें:", "question_type": "mcq", "options": ["सेब", "केला", "बिल्ली", "कुत्ता"], "correct_answer": "सेब", "image_hint": "🍎"},
-            {"id": 2, "skill": "reading", "question_text": "यह कौन सा जानवर है?", "question_type": "mcq", "options": ["बिल्ली", "कुत्ता", "पक्षी", "मछली"], "correct_answer": "कुत्ता", "image_hint": "🐶"},
-            {"id": 3, "skill": "reading", "question_text": "इसे जोर से पढ़ें: 'नमस्ते दुनिया!'", "question_type": "read_aloud", "options": None, "correct_answer": "नमस्ते दुनिया!", "image_hint": "🌍"},
-            {"id": 4, "skill": "reading", "question_text": "सही शब्द से मिलाएँ: 📚", "question_type": "mcq", "options": ["किताब", "पेंसिल", "बैग", "गाड़ी"], "correct_answer": "किताब", "image_hint": "📚"},
-            {"id": 5, "skill": "reading", "question_text": "'कमल' शब्द का पहला अक्षर क्या है?", "question_type": "mcq", "options": ["क", "म", "ल", "र"], "correct_answer": "क", "image_hint": "🌸"},
-            {"id": 6, "skill": "writing", "question_text": "वाक्य पूरा करें: 'वह स्कूल जा _____ है।'", "question_type": "fill_blank", "options": None, "correct_answer": "रहा", "image_hint": "🏫"},
-            {"id": 7, "skill": "writing", "question_text": "🐶 का नाम हिंदी में लिखें:", "question_type": "fill_blank", "options": None, "correct_answer": "कुत्ता", "image_hint": "🐶"},
-            {"id": 8, "skill": "writing", "question_text": "सही वाक्य चुनें: [खाता / राम / आम / है]", "question_type": "fill_blank", "options": None, "correct_answer": "राम आम खाता है", "image_hint": "🥭"},
-            {"id": 9, "skill": "writing", "question_text": "अपने पसंदीदा फल के बारे में एक वाक्य लिखें।", "question_type": "paragraph", "options": None, "correct_answer": "मेरा पसंदीदा फल आम है।", "image_hint": "🥭"},
-            {"id": 10, "skill": "writing", "question_text": "'सूरज' का विलोम शब्द लिखें:", "question_type": "fill_blank", "options": None, "correct_answer": "चांद", "image_hint": "🌙"},
-            {"id": 11, "skill": "comprehension", "question_text": "कहानी: 'रामू ने पेड़ के नीचे एक चाबी पाई।' रामू को क्या मिला?", "question_type": "mcq", "options": ["चाबी", "सिक्का", "फूल", "खिलौना"], "correct_answer": "चाबी", "image_hint": "🔑"},
-            {"id": 12, "skill": "comprehension", "question_text": "पेड़ हमें क्या देते हैं?", "question_type": "mcq", "options": ["छाया और फल", "पानी और आग", "कपड़े", "गाड़ियां"], "correct_answer": "छाया और फल", "image_hint": "🌳"},
-            {"id": 13, "skill": "comprehension", "question_text": "काले बादल आने पर क्या होगा?", "question_type": "mcq", "options": ["बारिश होगी", "धूप निकलेगी", "बर्फ गिरेगी", "तारे दिखेंगे"], "correct_answer": "बारिश होगी", "image_hint": "🌧️"},
-            {"id": 14, "skill": "comprehension", "question_text": "'वीर' शब्द का सही अर्थ क्या है?", "question_type": "mcq", "options": ["साहसी", "डरपोक", "शांत", "सोया हुआ"], "correct_answer": "साहसी", "image_hint": "🛡️"},
-            {"id": 15, "skill": "comprehension", "question_text": "एक खुश कुत्ता अपनी पूंछ के साथ क्या करता है?", "question_type": "fill_blank", "options": None, "correct_answer": "हिलाता", "image_hint": "🐶"}
+            {"id": 1, "skill": "reading", "question_text": "ચિત્ર જોઈને સાચો શબ્દ પસંદ કરો:", "question_type": "mcq", "options": ["સફરજન", "કેળું", "બિલાડી", "કૂતરો"], "correct_answer": "સફરજન", "image_hint": "🍎"},
+            {"id": 2, "skill": "reading", "question_text": "આ કયું પ્રાણી છે?", "question_type": "mcq", "options": ["બિલાડી", "કૂતરો", "પક્ષી", "માછલી"], "correct_answer": "કૂતરો", "image_hint": "🐶"},
+            {"id": 3, "skill": "reading", "question_text": "આ મોટેથી વાંચો: 'નમસ્તે ભારત!'", "question_type": "read_aloud", "options": None, "correct_answer": "નમસ્તે ભારત!", "image_hint": "🌍"},
+            {"id": 4, "skill": "reading", "question_text": "સાચો શબ્દ શોધો: 📚", "question_type": "mcq", "options": ["પુસ્તક", "પેન્સિલ", "બેગ", "ગાડી"], "correct_answer": "પુસ્તક", "image_hint": "📚"},
+            {"id": 5, "skill": "reading", "question_text": "'કમળ' શબ્દનો પ્રથમ અક્ષર કયો છે?", "question_type": "mcq", "options": ["ક", "મ", "ળ", "ર"], "correct_answer": "ક", "image_hint": "🌸"},
+            {"id": 6, "skill": "writing", "question_text": "વાક્ય પૂર્ણ કરો: 'તે શાળાએ જઈ _____ છે.'", "question_type": "fill_blank", "options": None, "correct_answer": "રહ્યો", "image_hint": "🏫"},
+            {"id": 7, "skill": "writing", "question_text": "🐶 નું નામ ગુજરાતીમાં લખો:", "question_type": "fill_blank", "options": None, "correct_answer": "કૂતરો", "image_hint": "🐶"},
+            {"id": 8, "skill": "writing", "question_text": "યોગ્ય વાક્ય પસંદ કરો: [ખા છે / રામ / કેરી]", "question_type": "fill_blank", "options": None, "correct_answer": "રામ કેરી ખા છે", "image_hint": "🥭"},
+            {"id": 9, "skill": "writing", "question_text": "તમારા મનપસંદ ફળ વિશે એક વાક્ય લખો.", "question_type": "paragraph", "options": None, "correct_answer": "મારું મનપસંદ ફળ કેરી છે.", "image_hint": "🥭"},
+            {"id": 10, "skill": "writing", "question_text": "'સૂર્ય' નો વિરોધી શબ્દ લખો:", "question_type": "fill_blank", "options": None, "correct_answer": "ચંદ્ર", "image_hint": "🌙"},
+            {"id": 11, "skill": "comprehension", "question_text": "વાર્તા: 'રામુને ઝાડ નીચે એક ચાવી મળી.' રામુને શું મળ્યું?", "question_type": "mcq", "options": ["ચાવી", "સિક્કો", "ફૂલ", "રમકડું"], "correct_answer": "ચાવી", "image_hint": "🔑"},
+            {"id": 12, "skill": "comprehension", "question_text": "વૃક્ષો આપણને શું આપે છે?", "question_type": "mcq", "options": ["છાંયો અને ફળ", "પાણી અને આગ", "કપડાં", "ગાડીઓ"], "correct_answer": "છાંયો અને ફળ", "image_hint": "🌳"},
+            {"id": 13, "skill": "comprehension", "question_text": "કાળા વાદળો આવે ત્યારે શું થશે?", "question_type": "mcq", "options": ["વરસાદ પડશે", "તડકો નીકળશે", "બર્ફ પડશે", "તારા દેખાશે"], "correct_answer": "વરસાદ પડશે", "image_hint": "🌧️"},
+            {"id": 14, "skill": "comprehension", "question_text": "'વીર' શબ્દનો સાચો અર્થ શું છે?", "question_type": "mcq", "options": ["બહાદુર", "બીકણ", "શાંત", "ઊંઘતો"], "correct_answer": "બહાદુર", "image_hint": "🛡️"},
+            {"id": 15, "skill": "comprehension", "question_text": "એક ખુશ કૂતરો તેની પૂંછડી સાથે શું કરે છે?", "question_type": "fill_blank", "options": None, "correct_answer": "પટપટાવે છે", "image_hint": "🐶"}
         ]
 
     return [
