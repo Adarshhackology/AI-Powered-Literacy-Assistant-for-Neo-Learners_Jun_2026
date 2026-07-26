@@ -12,6 +12,7 @@ interface Question {
   hint: string;
   image_emoji: string;
   image_hint?: string;
+  image_url?: string;
 }
 
 const stripEmoji = (str: string) => str ? str.replace(/[\u{1F300}-\u{1F9FF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '').trim() : '';
@@ -301,8 +302,16 @@ export default function AIPracticeModule() {
       <div className="w-full max-w-3xl bg-white rounded-[2.5rem] p-8 sm:p-10 shadow-2xl border-4 border-slate-100 relative overflow-hidden">
         
         {/* Question Area */}
-        <div className="text-center mb-8">
-          <div className="text-7xl mb-4 animate-bounce-slow">{currentQ.image_emoji}</div>
+        <div className="text-center mb-8 flex flex-col items-center">
+          {currentQ.image_url ? (
+            <div className="w-40 h-40 mb-4 rounded-3xl overflow-hidden border-4 border-purple-200 shadow-xl bg-purple-50 flex items-center justify-center">
+              <img src={currentQ.image_url} alt="Practice Visual" className="w-full h-full object-cover" />
+            </div>
+          ) : (
+            <div className="w-28 h-28 mb-4 rounded-3xl bg-gradient-to-br from-purple-100 to-pink-100 border-4 border-purple-200 shadow-lg flex items-center justify-center text-7xl animate-bounce-slow">
+              {currentQ.image_emoji || currentQ.image_hint || '✨'}
+            </div>
+          )}
           <h2 className="text-3xl sm:text-4xl font-black text-slate-800 leading-tight mb-2">
             {currentQ.text}
           </h2>

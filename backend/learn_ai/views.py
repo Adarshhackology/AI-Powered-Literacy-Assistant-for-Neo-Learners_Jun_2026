@@ -125,9 +125,9 @@ class GenerateAssessmentView(APIView):
         except AISession.DoesNotExist:
             return Response({'error': 'Session not found'}, status=404)
         
-        prompt = f"""Generate 15 literacy assessment questions (5 reading, 5 writing, 5 comprehension) for a learner in language '{session.language}'.
+        prompt = f"""Generate 15 unique, child-friendly literacy assessment questions (5 reading, 5 writing, 5 comprehension) for a learner in language '{session.language}'.
 Return ONLY a valid JSON array of objects with keys:
-"id" (1-15), "skill" ("reading", "writing", or "comprehension"), "question_text", "question_type" ("mcq", "fill_blank", "paragraph", or "read_aloud"), "options" (array of 4 string options for mcq, null for others), "correct_answer", "image_hint" (emoji string)."""
+"id" (1-15), "skill" ("reading", "writing", or "comprehension"), "question_text" (in target language '{session.language}'), "question_type" ("mcq", "fill_blank", "paragraph", or "read_aloud"), "options" (array of 4 string options in '{session.language}' for mcq, null for others), "correct_answer", "image_hint" (emoji string like 🍎/🐶/📚/🚗/🌸/☀️), "image_url" (a URL string to a relevant illustration or shape, e.g. "https://api.dicebear.com/7.x/bottts/svg?seed=apple")."""
         
         questions = call_gemini_json(prompt)
         if not questions or not isinstance(questions, list) or len(questions) < 5:
@@ -234,7 +234,7 @@ class GenerateModulesView(APIView):
             if skill in weak_areas:
                 prompt = f"""Generate 6 progressive practice questions for improving '{skill}' in '{session.language}'.
 Return ONLY a valid JSON array of objects with keys:
-"index" (0-5), "question_text", "question_type" ("mcq", "fill_blank", "paragraph", or "read_aloud"), "options" (array of 4 options for mcq, null otherwise), "correct_answer", "hint", "image_hint" (emoji)."""
+"index" (0-5), "question_text" (in '{session.language}'), "question_type" ("mcq", "fill_blank", "paragraph", or "read_aloud"), "options" (array of 4 options in '{session.language}' for mcq, null otherwise), "correct_answer", "hint", "image_hint" (emoji), "image_url" (a URL string to a relevant illustration, e.g. "https://api.dicebear.com/7.x/bottts/svg?seed=book")."""
                 q_list = call_gemini_json(prompt)
                 if not q_list or not isinstance(q_list, list) or len(q_list) < 3:
                     q_list = get_fallback_practice_questions(skill, session.language)

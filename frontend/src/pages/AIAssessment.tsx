@@ -9,6 +9,7 @@ interface Question {
   type: 'mcq' | 'fill_blank' | 'paragraph' | 'read_aloud';
   text: string;
   emoji: string;
+  image_url?: string;
   options?: string[];
   correct_answer?: string;
 }
@@ -260,9 +261,17 @@ export default function AIAssessment() {
               </span>
             </div>
 
-            <div className="text-center mb-8">
-              <div className="text-7xl mb-4 animate-bounce-slow inline-block">{question.emoji}</div>
-              <h2 className="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">
+            <div className="text-center mb-8 flex flex-col items-center">
+              {question.image_url ? (
+                <div className="w-36 h-36 mb-4 rounded-3xl overflow-hidden border-4 border-indigo-200 shadow-xl bg-indigo-50 flex items-center justify-center">
+                  <img src={question.image_url} alt="Question Visual" className="w-full h-full object-cover" />
+                </div>
+              ) : (
+                <div className="w-28 h-28 mb-4 rounded-3xl bg-gradient-to-br from-indigo-100 to-purple-100 border-4 border-indigo-200 shadow-lg flex items-center justify-center text-7xl animate-bounce-slow">
+                  {question.emoji || '🌟'}
+                </div>
+              )}
+              <h2 className="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight max-w-2xl">
                 {question.text}
               </h2>
             </div>
