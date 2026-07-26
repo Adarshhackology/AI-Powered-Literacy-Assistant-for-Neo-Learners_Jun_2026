@@ -268,7 +268,7 @@ export default function ProfileSetup() {
   // Form states
   const [avatar, setAvatar] = useState('1');
   const [fullName, setFullName] = useState('');
-  const [age, setAge] = useState('24');
+  const [age, setAge] = useState('');
   const [learningGoal, setLearningGoal] = useState('Read newspapers and signs');
   const [readingLevel, setReadingLevel] = useState('Beginner');
   const [writingLevel, setWritingLevel] = useState('Beginner');
@@ -283,24 +283,32 @@ export default function ProfileSetup() {
     setPrefLang(saved);
   }, []);
 
-  // Update fullName state when localStorage user changes
+  // Update fullName & age state when localStorage user changes
   useEffect(() => {
     try {
       const userStr = localStorage.getItem('user');
       if (userStr) {
         const parsed = JSON.parse(userStr);
-        if (parsed.first_name) {
+        if (parsed.first_name && parsed.first_name !== 'google_user') {
           setFullName(parsed.first_name);
-        } else if (parsed.profile && parsed.profile.fullName) {
+        } else if (parsed.profile && parsed.profile.fullName && parsed.profile.fullName !== 'google_user' && parsed.profile.fullName !== 'Google Learner') {
           setFullName(parsed.profile.fullName);
-        } else {
+        } else if (username && username !== 'google_user' && username !== 'guest') {
           setFullName(username);
+        } else {
+          setFullName('');
         }
-      } else {
+
+        if (parsed.profile && parsed.profile.age) {
+          setAge(parsed.profile.age);
+        }
+      } else if (username && username !== 'google_user' && username !== 'guest') {
         setFullName(username);
+      } else {
+        setFullName('');
       }
     } catch (e) {
-      setFullName(username);
+      setFullName('');
     }
   }, [username]);
 

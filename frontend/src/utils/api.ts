@@ -133,9 +133,9 @@ export const apiClient = {
       if (!profile) {
         profile = {
           username: mockUsername,
-          fullName: 'Google Learner',
-          age: '24',
-          gender: 'Male',
+          fullName: '',
+          age: '',
+          gender: 'Not specified',
           education: 'Secondary School',
           preferredLanguage: 'english',
           xp: 120,
