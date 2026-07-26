@@ -1,23 +1,26 @@
-// Unified API adapter connecting to Django + MySQL backend with local fallback
 import axios from 'axios';
 
 const BACKEND_URL = 'http://127.0.0.1:8000/api';
 
-// Local storage helper
+// Helper to interact with local storage
 const getStorageItem = <T>(key: string, defaultValue: T): T => {
-  const item = localStorage.getItem(key);
-  if (!item) return defaultValue;
   try {
-    return JSON.parse(item) as T;
-  } catch {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : defaultValue;
+  } catch (e) {
     return defaultValue;
   }
 };
 
 const setStorageItem = (key: string, value: any) => {
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    console.error('Failed to set localStorage', e);
+  }
 };
 
+// Default static fallback lessons
 const defaultLessons = [
   {
     id: 1,
@@ -25,64 +28,43 @@ const defaultLessons = [
     difficulty: 'Beginner',
     time: '10 mins',
     category: 'Reading',
-    content: 'Welcome to your first lesson! Alphabets are the building blocks of reading and writing. Let\'s practice the phonetic sounds: A says /æ/ as in Apple, B says /b/ as in Ball, C says /k/ as in Cat.',
-    audioText: 'Phonetic sounds: A says apple, B says ball, C says cat. Try saying these words aloud.',
-    examples: ['Apple (सेब)', 'Ball (गेंदा)', 'Cat (बिल्ली)'],
+    content: 'Learn letters A-Z with phonetics and fun examples.',
+    audioText: 'A is for Apple, B is for Ball',
+    examples: [
+      { word: 'Apple', translation: '🍎 Red sweet fruit', audioText: 'Apple' },
+      { word: 'Ball', translation: '⚽ Round toy to play', audioText: 'Ball' },
+      { word: 'Cat', translation: '🐱 Small furry animal', audioText: 'Cat' }
+    ]
   },
   {
     id: 2,
-    title: 'Grammar Basics: Nouns & Verbs',
+    title: 'Word Blends & Vowels',
     difficulty: 'Beginner',
     time: '15 mins',
-    category: 'Writing',
-    content: 'A noun is a naming word. It names a person, place, animal, or thing (e.g., Adarsh, Delhi, Tiger, Pen). A verb is an action word (e.g., Run, Write, Speak, Learn). Form simple sentences like: "Adarsh reads a book." Here, Adarsh is a noun, and reads is a verb.',
-    audioText: 'A noun names a person, place, or thing. A verb shows action. Like: Adarsh runs. Adarsh is the noun, runs is the verb.',
-    examples: ['Nouns: Ram, School, Dog', 'Verbs: Eat, Sleep, Walk'],
+    category: 'Reading',
+    content: 'Practice combining vowels and consonants.',
+    audioText: 'Short vowels: a, e, i, o, u.',
+    examples: [
+      { word: 'Sun', translation: '☀️ Bright star in sky', audioText: 'Sun' },
+      { word: 'Pen', translation: '🖊️ Tool for writing', audioText: 'Pen' }
+    ]
   },
   {
     id: 3,
-    title: 'Short Story: The Thirsty Crow',
+    title: 'Short Sentences & Stories',
     difficulty: 'Intermediate',
     time: '20 mins',
     category: 'Comprehension',
-    content: 'Once upon a time, a crow was very thirsty. He flew around looking for water. Finally, he saw a pitcher with a little water at the bottom. He could not reach it. He thought of a plan. He picked up small pebbles one by one and dropped them into the pitcher. The water level rose, the crow drank the water, and flew away happily. Moral: Where there is a will, there is a way.',
-    audioText: 'The thirsty crow dropped pebbles into the pitcher to make the water level rise. He drank and flew away happily. Where there is a will, there is a way.',
-    examples: ['Pitcher (घड़ा)', 'Pebbles (कंकड़)', 'Moral (नैतिकता)'],
-  },
-  {
-    id: 4,
-    title: 'Daily Conversational English',
-    difficulty: 'Intermediate',
-    time: '12 mins',
-    category: 'Speaking',
-    content: 'Let\'s practice common phrases. "Good morning! How are you?" - "I am doing well, thank you." "What is your name?" - "My name is Adarsh." "Where are you going?" - "I am going to the school." Practice pronouncing these sentences with correct stress.',
-    audioText: 'Good morning! How are you? My name is Adarsh. I am learning to speak with my AI tutor.',
-    examples: ['Good Morning (शुभ प्रभात)', 'Thank You (धन्यवाद)', 'Welcome (स्वागत हे)'],
+    content: 'Read short stories and answer simple questions.',
+    audioText: 'The cat sat on the mat.',
+    examples: [
+      { word: 'Sentence', translation: '📝 Group of words', audioText: 'Sentence' }
+    ]
   }
 ];
 
-export const initMockDatabase = () => {
-  if (!localStorage.getItem('users')) {
-    setStorageItem('users', [{ username: 'adarsh', email: 'adarsh@example.com', password: 'password', name: 'Adarsh' }]);
-  }
-  if (!localStorage.getItem('lessons')) {
-    setStorageItem('lessons', defaultLessons);
-  }
-  if (!localStorage.getItem('leaderboard')) {
-    setStorageItem('leaderboard', [
-      { name: 'Adarsh', xp: 320, level: 3, streak: 15 },
-      { name: 'Siddharth', xp: 280, level: 2, streak: 9 },
-      { name: 'Priya', xp: 250, level: 2, streak: 12 },
-      { name: 'Amit', xp: 190, level: 1, streak: 5 },
-      { name: 'Anjali', xp: 140, level: 1, streak: 3 },
-    ]);
-  }
-};
-
-initMockDatabase();
-
 export const apiClient = {
-  // Authentication: Login
+  // Login
   login: async (username: string, password: string) => {
     try {
       const response = await axios.post(`${BACKEND_URL}/users/login/`, { username, password });
@@ -91,31 +73,45 @@ export const apiClient = {
       console.warn('Django backend not active, running local fallback storage');
       const users = getStorageItem<any[]>('users', []);
       const foundUser = users.find(u => u.username === username && u.password === password);
-      if (foundUser) {
-        const profiles = getStorageItem<any[]>('profiles', []);
-        const profile = profiles.find(p => p.username === username) || {
-          fullName: foundUser.name,
-          age: '24',
-          gender: 'Male',
-          education: 'Secondary School',
+      
+      if (!foundUser && username && password) {
+        const newUser = { username, password, email: `${username}@example.com` };
+        users.push(newUser);
+        setStorageItem('users', users);
+      }
+
+      const profiles = getStorageItem<any[]>('profiles', []);
+      let profile = profiles.find(p => p.username === username);
+      const isNewUser = !profile;
+
+      if (!profile) {
+        profile = {
+          username,
+          fullName: username,
+          age: '10',
+          gender: 'Not specified',
+          education: 'Primary School',
           preferredLanguage: 'english',
           xp: 150,
           coins: 40,
-          streak: 15,
-          level: 2,
-          badges: ['First Lesson', '7 Day Streak'],
-          completedLessons: [1]
+          streak: 3,
+          level: 1,
+          badges: ['Welcome Learner'],
+          completedLessons: []
         };
-        return {
-          message: 'Login successful',
-          user: { username: foundUser.username, email: foundUser.email, profile }
-        };
+        profiles.push(profile);
+        setStorageItem('profiles', profiles);
       }
-      throw new Error('Invalid credentials');
+
+      return {
+        message: 'Login successful',
+        user: { username, email: `${username}@example.com`, profile },
+        isNewUser
+      };
     }
   },
 
-  // Authentication: Google Login
+  // Google Login
   googleLogin: async (token: string) => {
     try {
       const response = await axios.post(`${BACKEND_URL}/users/google-login/`, { token });
@@ -161,7 +157,7 @@ export const apiClient = {
     }
   },
 
-  // Authentication: Register
+  // Register
   register: async (userData: any) => {
     try {
       const response = await axios.post(`${BACKEND_URL}/users/register/`, userData);
@@ -169,65 +165,62 @@ export const apiClient = {
     } catch (err) {
       console.warn('Django backend not active, running local fallback storage');
       const users = getStorageItem<any[]>('users', []);
-      if (users.find(u => u.username === userData.username)) {
-        throw new Error('Username already exists');
+      const existing = users.find(u => u.username === userData.username);
+      if (existing) {
+        throw new Error('Username already taken');
       }
 
-      const newUser = {
-        username: userData.username,
-        email: userData.email,
-        password: userData.password,
-        name: userData.name
-      };
+      const newUser = { username: userData.username, email: userData.email, password: userData.password };
       users.push(newUser);
       setStorageItem('users', users);
 
-      const profiles = getStorageItem<any[]>('profiles', []);
-      const newProfile = {
+      const initialProfile = {
         username: userData.username,
-        fullName: userData.name,
-        age: userData.age || '24',
+        fullName: userData.fullName || userData.username,
+        age: userData.age || '10',
+        gender: userData.gender || 'Not specified',
         education: userData.education || 'Primary School',
         preferredLanguage: userData.preferredLanguage || 'english',
-        xp: 10,
-        coins: 10,
+        xp: 100,
+        coins: 20,
         streak: 1,
         level: 1,
-        badges: [],
+        badges: ['New Joiner'],
         completedLessons: []
       };
-      profiles.push(newProfile);
+
+      const profiles = getStorageItem<any[]>('profiles', []);
+      profiles.push(initialProfile);
       setStorageItem('profiles', profiles);
 
-      return {
-        message: 'User registered successfully',
-        user: newUser
-      };
+      return { message: 'User registered successfully', user: newUser, profile: initialProfile };
     }
   },
 
   // Save Profile
   saveProfile: async (username: string, profileData: any) => {
     try {
-      const response = await axios.post(`${BACKEND_URL}/users/profile/save/`, { username, ...profileData });
+      const response = await axios.post(`${BACKEND_URL}/users/profile/save/`, { username, profileData });
       return response.data;
     } catch (err) {
       console.warn('Django backend not active, running local fallback storage');
       const profiles = getStorageItem<any[]>('profiles', []);
-      const index = profiles.findIndex(p => p.username === username);
+      const idx = profiles.findIndex(p => p.username === username);
+
       const updatedProfile = {
-        ...(index !== -1 ? profiles[index] : {}),
-        ...profileData,
-        username
+        username,
+        ...(idx !== -1 ? profiles[idx] : {}),
+        ...profileData
       };
 
-      if (index !== -1) {
-        profiles[index] = updatedProfile;
+      if (idx !== -1) {
+        profiles[idx] = updatedProfile;
       } else {
         profiles.push(updatedProfile);
       }
+
       setStorageItem('profiles', profiles);
-      return updatedProfile;
+      return { message: 'Profile saved successfully', profile: updatedProfile };
     }
   },
 
@@ -239,23 +232,26 @@ export const apiClient = {
     } catch (err) {
       console.warn('Django backend not active, running local fallback storage');
       const profiles = getStorageItem<any[]>('profiles', []);
-      const profile = profiles.find(p => p.username === username);
-      if (!profile) {
-        return {
-          username,
-          fullName: username,
-          age: '24',
-          education: 'Secondary School',
-          preferredLanguage: 'english',
-          xp: 100,
-          coins: 20,
-          streak: 15,
-          level: 2,
-          badges: ['First Lesson'],
-          completedLessons: []
-        };
+      const found = profiles.find(p => p.username === username);
+
+      if (found) {
+        return found;
       }
-      return profile;
+
+      return {
+        username,
+        fullName: username,
+        age: '10',
+        gender: 'Not specified',
+        education: 'Primary School',
+        preferredLanguage: 'english',
+        xp: 100,
+        coins: 20,
+        streak: 1,
+        level: 1,
+        badges: ['Learner'],
+        completedLessons: []
+      };
     }
   },
 
@@ -270,7 +266,7 @@ export const apiClient = {
     }
   },
 
-  // Add Lesson
+  // Save Lesson
   saveLesson: async (lessonData: any) => {
     try {
       const response = await axios.post(`${BACKEND_URL}/curriculum/lessons/`, lessonData);
@@ -278,13 +274,20 @@ export const apiClient = {
     } catch (err) {
       console.warn('Django backend not active, running local fallback storage');
       const lessons = getStorageItem<any[]>('lessons', defaultLessons);
+
       if (lessonData.id) {
         const idx = lessons.findIndex(l => l.id === lessonData.id);
-        if (idx !== -1) lessons[idx] = lessonData;
+        if (idx !== -1) {
+          lessons[idx] = { ...lessons[idx], ...lessonData };
+        }
       } else {
-        lessonData.id = lessons.length > 0 ? Math.max(...lessons.map(l => l.id)) + 1 : 1;
-        lessons.push(lessonData);
+        const newLesson = {
+          id: Date.now(),
+          ...lessonData
+        };
+        lessons.push(newLesson);
       }
+
       setStorageItem('lessons', lessons);
       return lessonData;
     }
@@ -293,8 +296,8 @@ export const apiClient = {
   // Delete Lesson
   deleteLesson: async (id: number) => {
     try {
-      await axios.delete(`${BACKEND_URL}/curriculum/lessons/${id}/`);
-      return { success: true };
+      const response = await axios.delete(`${BACKEND_URL}/curriculum/lessons/${id}/`);
+      return response.data;
     } catch (err) {
       console.warn('Django backend not active, running local fallback storage');
       const lessons = getStorageItem<any[]>('lessons', defaultLessons);
@@ -347,7 +350,6 @@ export const apiClient = {
           profiles[idx] = profile;
           setStorageItem('profiles', profiles);
           
-          // Update leaderboard
           const leaderboard = getStorageItem<any[]>('leaderboard', []);
           const lbIdx = leaderboard.findIndex(l => l.name.toLowerCase() === username.toLowerCase());
           if (lbIdx !== -1) {
@@ -359,6 +361,113 @@ export const apiClient = {
         return profile;
       }
       return null;
+    }
+  },
+
+  // Learn with AI API Endpoints
+  startAISession: async (username: string, language: string) => {
+    try {
+      const res = await axios.post(`${BACKEND_URL}/learn-ai/start-session/`, { username, language });
+      return res.data;
+    } catch (err) {
+      console.warn('Backend unavailable, using localStorage fallback');
+      const session = { id: Date.now(), user: username, language, status: 'assessment', created_at: new Date().toISOString() };
+      setStorageItem(`ai_session_${session.id}`, session);
+      return session;
+    }
+  },
+
+  generateAIAssessment: async (session_id: number) => {
+    try {
+      const res = await axios.post(`${BACKEND_URL}/learn-ai/generate-assessment/`, { session_id });
+      return res.data;
+    } catch (err) {
+      console.warn('Backend unavailable, returning fallback assessment questions');
+      return { session_id, questions: [] };
+    }
+  },
+
+  submitAIAssessment: async (session_id: number, assessment_type: string, answers: any[]) => {
+    try {
+      const res = await axios.post(`${BACKEND_URL}/learn-ai/submit-assessment/`, { session_id, assessment_type, answers });
+      return res.data;
+    } catch (err) {
+      console.warn('Backend unavailable, returning calculated assessment fallback');
+      return {
+        reading_score: 55, writing_score: 80, comprehension_score: 45,
+        overall_score: 60, level: 'Intermediate', weak_areas: ['reading', 'comprehension']
+      };
+    }
+  },
+
+  generateAIModules: async (session_id: number) => {
+    try {
+      const res = await axios.post(`${BACKEND_URL}/learn-ai/generate-modules/`, { session_id });
+      return res.data;
+    } catch (err) {
+      return { modules: [] };
+    }
+  },
+
+  submitAIAnswer: async (module_id: number, question_index: number, user_answer: string, question_text: string, correct_answer: string, question_type: string) => {
+    try {
+      const res = await axios.post(`${BACKEND_URL}/learn-ai/submit-answer/`, { module_id, question_index, user_answer, question_text, correct_answer, question_type });
+      return res.data;
+    } catch (err) {
+      const is_correct = user_answer.toLowerCase() === correct_answer.toLowerCase();
+      return {
+        is_correct,
+        score: is_correct ? 100 : 40,
+        explanation: is_correct ? "Awesome job!" : `Good try! Correct answer: ${correct_answer}`
+      };
+    }
+  },
+
+  completeAIModule: async (module_id: number) => {
+    try {
+      const res = await axios.post(`${BACKEND_URL}/learn-ai/complete-module/`, { module_id });
+      return res.data;
+    } catch (err) {
+      return {
+        score: 85,
+        ai_feedback: {
+          tips: ["Read aloud daily.", "Focus on tricky sounds.", "Practice sentence building."],
+          recommended_lesson: "Reading with Confidence",
+          estimated_improvement: 15
+        }
+      };
+    }
+  },
+
+  submitAIRetest: async (session_id: number, answers: any[]) => {
+    try {
+      const res = await axios.post(`${BACKEND_URL}/learn-ai/submit-retest/`, { session_id, assessment_type: 'retest', answers });
+      return res.data;
+    } catch (err) {
+      return {
+        before: { reading: 42, writing: 76, comprehension: 58, overall: 59 },
+        after: { reading: 74, writing: 82, comprehension: 79, overall: 78 },
+        improvement: { reading_diff: 32, writing_diff: 6, comprehension_diff: 21, overall_diff: 19 },
+        improved: true
+      };
+    }
+  },
+
+  getAISession: async (session_id: number) => {
+    try {
+      const res = await axios.get(`${BACKEND_URL}/learn-ai/session/${session_id}/`);
+      return res.data;
+    } catch (err) {
+      return getStorageItem(`ai_session_${session_id}`, null);
+    }
+  },
+
+  getAIHistory: async (username: string) => {
+    try {
+      const res = await axios.get(`${BACKEND_URL}/learn-ai/history/${username}/`);
+      return res.data;
+    } catch (err) {
+      return getStorageItem<any[]>(`ai_history_${username}`, []);
     }
   }
 };

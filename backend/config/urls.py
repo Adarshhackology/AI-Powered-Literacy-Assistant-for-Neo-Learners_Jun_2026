@@ -23,5 +23,6 @@ urlpatterns = [
     path('api/recommend/', GenerateRecommendationView.as_view()),
     path('api/learning-path', SaveLearningPathView.as_view(), name='api_learning_path'),
     path('api/learning-path/', SaveLearningPathView.as_view()),
+    path('api/learn-ai/', include('learn_ai.urls')),
 ]
 

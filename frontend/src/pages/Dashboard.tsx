@@ -104,6 +104,14 @@ export default function Dashboard() {
               <Trophy className="w-5 h-5 text-indigo-600" />
               <span>🏠 {t.dashboard}</span>
             </Link>
+
+            <Link 
+              to="/learn-with-ai" 
+              className="flex items-center gap-3 bg-gradient-to-r from-purple-600 to-indigo-600 border-2 border-purple-400 text-white font-black px-4 py-3 rounded-2xl text-sm transition-all hover-pop shadow-md shadow-purple-200"
+            >
+              <Sparkles className="w-5 h-5 text-yellow-300 animate-pulse" />
+              <span>🧠 Learn with AI</span>
+            </Link>
             
             <Link 
               to="/lesson/1" 
@@ -230,6 +238,25 @@ export default function Dashboard() {
                 </div>
               )}
             </div>
+          </div>
+
+          {/* Learn with AI Featured Hero Banner */}
+          <div className="bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-700 rounded-[32px] p-6 text-white shadow-lg border-b-6 border-indigo-900 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+            <div className="absolute right-0 top-0 text-9xl opacity-10 pointer-events-none select-none">🧠</div>
+            <div className="space-y-2 max-w-xl z-10">
+              <span className="bg-yellow-400 text-slate-900 font-black text-xs px-3 py-1 rounded-full uppercase tracking-wider">NEW MODULE 🚀</span>
+              <h2 className="text-2xl md:text-3xl font-black">Learn with AI Tutor 🧠</h2>
+              <p className="text-purple-100 text-sm font-semibold">
+                Personalized skill assessment in Reading, Writing & Comprehension with AI-generated practice modules in 14+ languages!
+              </p>
+            </div>
+            <Link
+              to="/learn-with-ai"
+              className="bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-black text-sm px-6 py-3.5 rounded-2xl shadow-lg hover-pop border-b-4 border-yellow-600 shrink-0 z-10 flex items-center gap-2"
+            >
+              <Sparkles className="w-5 h-5 text-indigo-700 animate-spin" />
+              <span>Start AI Tutor Session →</span>
+            </Link>
           </div>
 
           {/* Quick Metrics (Bubbly Cards) */}

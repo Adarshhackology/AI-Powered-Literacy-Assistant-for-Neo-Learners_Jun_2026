@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'users',
     'curriculum',
     'assessments',
+    'learn_ai',
 ]
 
 MIDDLEWARE = [

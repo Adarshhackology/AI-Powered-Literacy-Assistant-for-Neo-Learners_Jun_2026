@@ -14,6 +14,18 @@ import Reports from './pages/Reports';
 import AdminDashboard from './pages/AdminDashboard';
 import Vocabulary from './pages/Vocabulary';
 
+// Learn with AI Module imports
+import LearnWithAI from './pages/LearnWithAI';
+import AILanguageSelect from './pages/AILanguageSelect';
+import AIAssessment from './pages/AIAssessment';
+import AIScoreResults from './pages/AIScoreResults';
+import AIWeakAreas from './pages/AIWeakAreas';
+import AILearningPlan from './pages/AILearningPlan';
+import AIPracticeModule from './pages/AIPracticeModule';
+import AISuggestions from './pages/AISuggestions';
+import AIRetest from './pages/AIRetest';
+import AIComparison from './pages/AIComparison';
+
 function App() {
   return (
     <Router>
@@ -32,6 +44,19 @@ function App() {
         <Route path="/reports" element={<Reports />} />
         <Route path="/vocabulary" element={<Vocabulary />} />
         <Route path="/admin" element={<AdminDashboard />} />
+
+        {/* Learn with AI Routes */}
+        <Route path="/learn-with-ai" element={<LearnWithAI />} />
+        <Route path="/learn-with-ai/language" element={<AILanguageSelect />} />
+        <Route path="/learn-with-ai/assessment/:sessionId" element={<AIAssessment />} />
+        <Route path="/learn-with-ai/scores/:sessionId" element={<AIScoreResults />} />
+        <Route path="/learn-with-ai/weak-areas/:sessionId" element={<AIWeakAreas />} />
+        <Route path="/learn-with-ai/plan/:sessionId" element={<AILearningPlan />} />
+        <Route path="/learn-with-ai/practice/:sessionId/:moduleId" element={<AIPracticeModule />} />
+        <Route path="/learn-with-ai/suggestions/:sessionId/:moduleId" element={<AISuggestions />} />
+        <Route path="/learn-with-ai/retest/:sessionId" element={<AIRetest />} />
+        <Route path="/learn-with-ai/comparison/:sessionId" element={<AIComparison />} />
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
