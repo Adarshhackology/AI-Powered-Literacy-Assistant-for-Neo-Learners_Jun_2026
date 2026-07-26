@@ -10,6 +10,7 @@ interface Question {
   correct_answer?: string;
   hint: string;
   image_emoji: string;
+  image_hint?: string;
 }
 
 const defaultPracticeQuestions: Record<string, Question[]> = {
