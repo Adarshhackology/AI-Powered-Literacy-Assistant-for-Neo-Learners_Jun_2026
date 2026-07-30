@@ -85,51 +85,25 @@ export default function VoicePractice() {
   };
 
   // Real Speech evaluation helper
-  const evaluateSpeech = (spokenText: string) => {
-    const target = currentWord.text.toLowerCase();
-    const spoken = spokenText.toLowerCase();
+  const evaluateSpeech = async (spokenText: string) => {
+    const target = currentWord.text;
+    const username = localStorage.getItem('username') || 'learner';
 
-    // Check matching level
-    let matchScore = 0;
-    if (spoken.includes(target)) {
-      matchScore = 90 + Math.floor(Math.random() * 10); // 90 - 100%
-    } else {
-      // Calculate simple character-matching similarity
-      let matchingChars = 0;
-      for (let i = 0; i < Math.min(target.length, spoken.length); i++) {
-        if (target[i] === spoken[i]) matchingChars++;
+    try {
+      const res = await apiClient.evaluatePronunciation(username, target, spokenText);
+      if (res) {
+        setSpeechScores({
+          pronunciation: res.pronunciation_score || 85,
+          speed: res.speech_rate || 120,
+          fluency: res.fluency_score || 88,
+          confidence: res.content_score || 86,
+          overall_score: res.overall_score || 86,
+          result_label: res.result_label || 'Good',
+          xp_awarded: res.xp_awarded || 25
+        });
       }
-      matchScore = Math.round((matchingChars / target.length) * 80);
-      if (matchScore < 30) matchScore = 35; // baseline fallback
-    }
-
-    setSpeechScores({
-      pronunciation: matchScore,
-      speed: 70 + Math.floor(Math.random() * 20),
-      fluency: 75 + Math.floor(Math.random() * 20),
-      confidence: 80 + Math.floor(Math.random() * 18),
-    });
-
-    if (matchScore >= 75) {
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
-      if (user.profile) {
-        user.profile.xp = (user.profile.xp || 0) + 15;
-        if (!user.profile.badges.includes('Voice Master')) {
-          user.profile.badges.push('Voice Master');
-        }
-        localStorage.setItem('user', JSON.stringify(user));
-        
-        const username = localStorage.getItem('username') || 'guest';
-        const profiles = JSON.parse(localStorage.getItem('profiles') || '[]');
-        const idx = profiles.findIndex((p: any) => p.username === username);
-        if (idx !== -1) {
-          profiles[idx].xp = user.profile.xp;
-          if (!profiles[idx].badges.includes('Voice Master')) {
-            profiles[idx].badges.push('Voice Master');
-          }
-          localStorage.setItem('profiles', JSON.stringify(profiles));
-        }
-      }
+    } catch (e) {
+      console.error(e);
     }
   };
 

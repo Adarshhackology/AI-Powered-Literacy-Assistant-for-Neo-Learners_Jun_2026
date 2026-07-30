@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'curriculum',
     'assessments',
     'learn_ai',
+    'voice_dashboard',
 ]
 
 MIDDLEWARE = [

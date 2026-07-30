@@ -146,6 +146,22 @@ export default function Dashboard() {
             </Link>
 
             <Link 
+              to="/store" 
+              className="flex items-center gap-3 bg-white border-2 border-slate-100 text-slate-600 hover:border-amber-400 hover:text-amber-700 hover:bg-amber-50 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all hover-pop"
+            >
+              <span className="text-xl">🎁</span>
+              <span>Rewards Store</span>
+            </Link>
+
+            <Link 
+              to="/leaderboard" 
+              className="flex items-center gap-3 bg-white border-2 border-slate-100 text-slate-600 hover:border-yellow-400 hover:text-yellow-700 hover:bg-yellow-50 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all hover-pop"
+            >
+              <Trophy className="w-5 h-5 text-yellow-500" />
+              <span>Leaderboard</span>
+            </Link>
+
+            <Link 
               to="/admin" 
               className="flex items-center gap-3 bg-white border-2 border-slate-100 text-slate-600 hover:border-indigo-300 hover:text-indigo-700 hover:bg-indigo-50 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all hover-pop"
             >

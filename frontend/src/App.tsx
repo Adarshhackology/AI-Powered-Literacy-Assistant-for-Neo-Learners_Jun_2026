@@ -25,6 +25,8 @@ import AIPracticeModule from './pages/AIPracticeModule';
 import AISuggestions from './pages/AISuggestions';
 import AIRetest from './pages/AIRetest';
 import AIComparison from './pages/AIComparison';
+import GamificationStore from './pages/GamificationStore';
+import Leaderboard from './pages/Leaderboard';
 
 function App() {
   return (
@@ -43,6 +45,8 @@ function App() {
         <Route path="/voice-practice" element={<VoicePractice />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/vocabulary" element={<Vocabulary />} />
+        <Route path="/store" element={<GamificationStore />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/admin" element={<AdminDashboard />} />
 
         {/* Learn with AI Routes */}
