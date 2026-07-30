@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Mic, MicOff, Volume2, Sparkles, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { apiClient } from '../utils/api';
 
 const wordsToPractice = [
   { text: 'Beautiful', phonetic: '/ˈbjuːtɪfl/', help: 'Stress should be on "Beau"', stressWord: 'Beau' },

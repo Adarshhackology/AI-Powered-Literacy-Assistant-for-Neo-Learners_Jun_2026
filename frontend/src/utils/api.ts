@@ -462,15 +462,6 @@ export const apiClient = {
     }
   },
 
-  getAIHistory: async (username: string) => {
-    try {
-      const res = await axios.get(`${BACKEND_URL}/learn-ai/history/${username}/`);
-      return res.data;
-    } catch (err) {
-      return getStorageItem<any[]>(`ai_history_${username}`, []);
-    }
-  },
-
   // Module 3: Voice Learning & Progress Monitoring Dashboard Methods
   uploadSpeech: async (username: string, transcript: string, lesson_id?: number) => {
     try {
