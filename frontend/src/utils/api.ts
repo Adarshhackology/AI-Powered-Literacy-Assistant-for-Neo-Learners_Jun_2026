@@ -550,7 +550,7 @@ export const apiClient = {
     }
   },
 
-  getLeaderboard: async () => {
+  getGamificationLeaderboard: async () => {
     try {
       const res = await axios.get(`${BACKEND_URL}/voice-dashboard/gamification/leaderboard/`);
       return res.data;

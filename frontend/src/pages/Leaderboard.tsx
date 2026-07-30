@@ -23,7 +23,7 @@ export default function Leaderboard() {
     const fetchLeaderboard = async () => {
       try {
         setLoading(true);
-        const data = await apiClient.getLeaderboard();
+        const data = await apiClient.getGamificationLeaderboard();
         if (data && data.leaderboard) {
           setLeaders(data.leaderboard);
         }
