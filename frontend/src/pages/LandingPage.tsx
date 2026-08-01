@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Sparkles, Languages } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { SupportedLanguage, translations } from '../utils/translationHelper';
+import { Sparkle, TrophySVG, RobotMascot } from '../components/UI/Illustrations';
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const [lang, setLang] = useState<SupportedLanguage>('english');
+  const [activeTab, setActiveTab] = useState<'login' | 'signup'>('login');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     const saved = localStorage.getItem('preferredLanguage') as SupportedLanguage;
@@ -19,203 +22,637 @@ export default function LandingPage() {
     localStorage.setItem('preferredLanguage', newLang);
   };
 
-  const t = translations[lang] || translations.english;
-
-  const languageLabels: Record<SupportedLanguage, string> = {
-    english: 'English (US) 🇺🇸',
-    hindi: 'हिंदी (Hindi) 🇮🇳',
-    telugu: 'తెలుగు (Telugu) 🇮🇳',
-    tamil: 'தமிழ் (Tamil) 🇮🇳',
-    kannada: 'ಕನ್ನಡ (Kannada) 🇮🇳',
-    malayalam: 'മലയാളം (Malayalam) 🇮🇳',
-    marathi: 'मराठी (Marathi) 🇮🇳',
-    bengali: 'বাংলা (Bengali) 🇮🇳',
-    gujarati: 'ગુજરાતી (Gujarati) 🇮🇳',
-    punjabi: 'ਪੰਜਾਬੀ (Punjabi) 🇮🇳'
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      localStorage.setItem('username', email);
+      localStorage.setItem('user', JSON.stringify({ username: email, first_name: email }));
+    }
+    navigate('/dashboard');
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-50 via-white to-sky-100/40 text-slate-800 selection:bg-indigo-500 selection:text-white">
-      
-      {/* Navbar */}
-      <nav className="sticky top-0 z-50 backdrop-blur-md bg-white/90 border-b-4 border-slate-100 px-6 py-4 flex items-center justify-between shadow-sm">
-        <div className="flex items-center gap-2.5 cursor-pointer hover-pop" onClick={() => navigate('/')}>
-          <div className="w-11 h-11 bg-gradient-to-tr from-yellow-400 via-amber-400 to-orange-500 rounded-2xl flex items-center justify-center text-white shadow-md rotate-[-3deg] animate-float">
-            📚
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(180deg, #E0F2FE 0%, #F0F9FF 30%, #F5F3FF 70%, #FAF5FF 100%)',
+      fontFamily: 'Nunito, sans-serif',
+      color: '#1E293B',
+      position: 'relative',
+      overflowX: 'hidden',
+    }}>
+
+      {/* ── TOP NAVBAR ── */}
+      <header style={{
+        height: '68px',
+        background: 'rgba(255,255,255,0.92)',
+        backdropFilter: 'blur(20px)',
+        borderBottom: '2px solid #E2E8F0',
+        padding: '0 24px',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        position: 'sticky', top: 0, zIndex: 50,
+        boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
+      }}>
+        {/* Left Logo */}
+        <div onClick={() => navigate('/')} style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+          <div style={{
+            width: '42px', height: '42px', borderRadius: '14px',
+            background: 'linear-gradient(135deg, #FFD54A, #FF9F43)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '22px', boxShadow: '0 4px 14px rgba(255,159,67,0.4)',
+          }}>
+            📖
           </div>
-          <span className="text-2xl font-black text-slate-850 tracking-tight leading-none mt-1">NeoLit Adventure</span>
+          <div>
+            <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', color: '#1e1040', lineHeight: 1.1 }}>
+              NeoLit Adventure
+            </div>
+            <div style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: '9.5px', color: '#FF9F43', letterSpacing: '0.5px' }}>
+              AI Literacy Adventure for Kids
+            </div>
+          </div>
         </div>
 
-        <div className="flex items-center gap-4">
-          {/* Language Selector Dropdown */}
-          <div className="relative flex items-center gap-1.5 bg-slate-50 border-2 border-slate-200/80 px-3 py-2 rounded-2xl text-xs font-black text-slate-700 hover:bg-slate-100 transition-all">
-            <Languages className="w-4 h-4 text-indigo-500" />
+        {/* Center Nav Pills */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '6px',
+          background: '#F1F5F9', padding: '4px 8px', borderRadius: '99px',
+          border: '1px solid #E2E8F0',
+        }}>
+          {[
+            { label: 'Home', icon: '🏠', route: '/' },
+            { label: 'Playground', icon: '🎯', route: '/dashboard' },
+            { label: 'Features', icon: '💡', route: '/learn-with-ai' },
+            { label: 'Achievements', icon: '🏅', route: '/reports' },
+            { label: 'Sticker Album', icon: '📓', route: '/vocabulary' },
+            { label: 'League', icon: '🏆', route: '/leaderboard' },
+          ].map((item, i) => (
+            <button
+              key={i}
+              onClick={() => navigate(item.route)}
+              style={{
+                background: i === 0 ? 'white' : 'transparent',
+                color: i === 0 ? '#6C4CFF' : '#64748B',
+                border: 'none', borderRadius: '99px',
+                padding: '6px 14px',
+                fontFamily: 'Poppins', fontWeight: 800, fontSize: '12px',
+                cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px',
+                boxShadow: i === 0 ? '0 2px 8px rgba(0,0,0,0.08)' : 'none',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <span>{item.icon}</span>
+              <span>{item.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Right Action buttons */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {/* Language Selector */}
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: '6px',
+            background: '#F8FAFF', border: '1.5px solid #E2E8F0',
+            borderRadius: '99px', padding: '5px 12px',
+            fontFamily: 'Poppins', fontWeight: 800, fontSize: '12px', color: '#334155',
+          }}>
+            <span>🌐</span>
             <select
               value={lang}
               onChange={(e) => handleLangChange(e.target.value as SupportedLanguage)}
-              className="bg-transparent border-none outline-none pr-4 cursor-pointer font-black"
+              style={{ background: 'transparent', border: 'none', outline: 'none', fontFamily: 'Poppins', fontWeight: 800, fontSize: '12px', color: '#334155', cursor: 'pointer' }}
             >
-              {Object.keys(languageLabels).map((langKey) => (
-                <option key={langKey} value={langKey}>
-                  {languageLabels[langKey as SupportedLanguage]}
-                </option>
-              ))}
+              <option value="english">English (US)</option>
+              <option value="hindi">Hindi (हिंदी)</option>
+              <option value="telugu">Telugu (తెలుగు)</option>
+              <option value="tamil">Tamil (தமிழ்)</option>
             </select>
           </div>
 
-          <Link to="/login" className="text-xs font-black text-slate-650 hover:text-indigo-650 px-3.5 py-2.5 border-2 border-transparent hover:border-slate-100 rounded-2xl transition-all">
-            {t.login} 🔑
-          </Link>
-          <Link to="/register" className="bg-gradient-to-r from-indigo-500 to-blue-500 border-b-4 border-indigo-700 text-white font-black text-xs px-5 py-3 rounded-2xl shadow-sm hover-pop active:border-b-0 active:mt-1">
-            {t.register} 🚀
-          </Link>
-        </div>
-      </nav>
+          <button
+            onClick={() => navigate('/login')}
+            className="btn-3d"
+            style={{
+              background: 'white', color: '#1e1040',
+              border: '1.5px solid #E2E8F0', borderRadius: '99px',
+              padding: '8px 18px',
+              fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
+              cursor: 'pointer',
+            }}
+          >
+            Login
+          </button>
 
-      {/* Hero Section */}
-      <header className="relative max-w-7xl mx-auto px-6 pt-16 pb-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        {/* Playful Floating elements */}
-        <span className="absolute top-10 left-[15%] text-6xl opacity-20 select-none animate-float">🎈</span>
-        <span className="absolute top-[40%] right-[10%] text-6xl opacity-25 select-none animate-float" style={{ animationDelay: '1.5s' }}>🦄</span>
-        <span className="absolute bottom-5 left-[30%] text-5xl opacity-15 select-none">✏️</span>
-
-        <div className="lg:col-span-7 space-y-8 relative text-left">
-          <div className="inline-flex items-center gap-2 bg-yellow-100 border-2 border-yellow-250 text-yellow-800 font-black px-4.5 py-2 rounded-full text-xs shadow-sm rotate-[-1deg]">
-            <Sparkles className="w-4 h-4 text-yellow-600 animate-spin" style={{ animationDuration: '4s' }} />
-            <span>AI Literacy Adventure For Kids!</span>
-          </div>
-
-          <h1 className="text-5xl lg:text-6.5xl font-black text-slate-850 leading-[1.1] tracking-tight">
-            Read, Speak & <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-indigo-500">Play with Words!</span>
-          </h1>
-
-          <p className="text-base lg:text-lg text-slate-500 max-w-xl font-bold leading-relaxed">
-            Welcome to your magical literacy lab! NeoLit is an educational playground that helps you master letters, trace sentence structures, and practice voice conversations with interactive sticker rewards!
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 pt-2">
-            <Link to="/register" className="bg-gradient-to-r from-yellow-400 via-amber-400 to-orange-500 border-b-6 border-orange-600 text-slate-900 text-base font-black px-8 py-4.5 rounded-3xl shadow-md text-center transition-all hover-pop active:border-b-0 active:mt-1.5 cursor-pointer">
-              Start Learning Game 🚀
-            </Link>
-            <a href="#features" className="bg-white border-2 border-b-4 border-slate-200 text-slate-700 font-black px-8 py-4.5 rounded-3xl text-center shadow-sm hover:bg-slate-50 transition-all flex items-center justify-center gap-2 active:border-b-0 active:mt-1">
-              <span>View Playground Features 👇</span>
-            </a>
-          </div>
-        </div>
-
-        {/* Visual Mock Showcase (Sticker Board Mock) */}
-        <div className="lg:col-span-5 flex justify-center relative">
-          <div className="bg-white border-4 border-b-8 border-slate-100 p-7 rounded-[40px] shadow-xl w-full max-w-sm relative z-10 hover:scale-[1.02] transition-transform duration-300">
-            {/* Mascot Image Illustration */}
-            <div className="flex justify-center mb-4">
-              <div className="w-28 h-28 rounded-3xl bg-gradient-to-tr from-amber-100 to-indigo-100 p-2 border-4 border-indigo-200 shadow-lg flex items-center justify-center">
-                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=neolit-mascot" alt="NeoLit Kid Mascot" className="w-full h-full object-contain animate-bounce-slow" />
-              </div>
-            </div>
-            
-            {/* Mock Chat Card with AI tutor */}
-            <div className="flex items-center gap-3 border-b-2 border-slate-100 pb-4 mb-4">
-              <div className="w-10 h-10 bg-indigo-50 border border-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 font-bold text-lg rotate-[-5deg]">🤖</div>
-              <div className="text-left">
-                <h4 className="font-extrabold text-sm text-slate-800">Neo - AI Playmate</h4>
-                <p className="text-[10px] text-emerald-500 flex items-center gap-1 font-black">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" /> ONLINE & READY
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-3.5 mb-5 font-bold text-xs text-slate-650">
-              <div className="bg-slate-50 border border-slate-100 text-slate-800 p-3.5 rounded-3xl rounded-tl-none max-w-[85%] text-left">
-                Say: <b>"LITERACY"</b>! 🗣️
-              </div>
-              <div className="bg-indigo-500 text-white p-3.5 rounded-3xl rounded-tr-none max-w-[85%] ml-auto text-right shadow-sm">
-                "Lit-er-a-cy" 🎤
-              </div>
-              <div className="bg-emerald-50 border border-emerald-100 text-emerald-800 p-3.5 rounded-3xl rounded-tl-none max-w-[85%] text-left flex items-center gap-2">
-                <span>🌟 Super! Score: <b>98%</b>!</span>
-              </div>
-            </div>
-
-            <div className="flex justify-center">
-              <div className="w-14 h-14 rounded-full bg-gradient-to-r from-pink-500 to-indigo-500 text-white rounded-full flex items-center justify-center shadow-lg cursor-pointer animate-bounce hover:brightness-105">
-                🎤
-              </div>
-            </div>
-          </div>
+          <button
+            onClick={() => navigate('/register')}
+            className="btn-3d"
+            style={{
+              background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)', color: 'white',
+              border: 'none', borderBottom: '3.5px solid #4D2FCC',
+              borderRadius: '99px', padding: '8px 20px',
+              fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
+              cursor: 'pointer', boxShadow: '0 4px 14px rgba(108,76,255,0.4)',
+              display: 'flex', alignItems: 'center', gap: '6px',
+            }}
+          >
+            <span>👤 Register</span>
+          </button>
         </div>
       </header>
 
-      {/* Playground Feature Cards with Illustrations */}
-      <section id="features" className="max-w-7xl mx-auto px-6 py-20 border-t-4 border-slate-100">
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
-          <h2 className="text-3.5xl font-black text-slate-850 tracking-tight">🎒 NeoLit Learning Playground</h2>
-          <p className="text-slate-500 font-extrabold text-sm">Tap any section to explore interactive visual exercises for students!</p>
+      {/* ── HERO MAIN SECTION (3 COLUMNS) ── */}
+      <section style={{
+        maxWidth: '1440px', margin: '0 auto',
+        padding: '30px 24px 40px',
+        display: 'grid', gridTemplateColumns: '1.1fr 1fr 1fr',
+        gap: '24px', alignItems: 'center',
+        position: 'relative',
+      }}>
+
+        {/* ══ COLUMN 1: Text & CTAs ══ */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {/* Badge */}
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: '6px',
+            background: '#FFFDE7', color: '#B45309',
+            border: '1.5px solid #FFE082', borderRadius: '99px',
+            padding: '5px 14px', width: 'fit-content',
+            fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px',
+            boxShadow: '0 2px 8px rgba(255,213,74,0.3)',
+          }}>
+            ⭐ Learn. Speak. Play. Grow!
+          </div>
+
+          <h1 style={{
+            fontFamily: 'Poppins', fontWeight: 900, fontSize: '42px',
+            color: '#1e1040', lineHeight: 1.15, margin: 0,
+          }}>
+            Read, Speak & <span style={{ color: '#FF4FA3' }}>Play</span> with <span style={{ color: '#6C4CFF' }}>Words!</span>
+          </h1>
+
+          <p style={{
+            fontFamily: 'Nunito', fontWeight: 700, fontSize: '14px',
+            color: '#475569', lineHeight: 1.6, margin: 0,
+          }}>
+            Welcome to your magical literacy lab! NeoLit is an educational playground that helps you master letters, trace sentences, and practice conversations with interactive sticker rewards!
+          </p>
+
+          {/* Action Buttons */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px' }}>
+            <button
+              onClick={() => navigate('/register')}
+              className="btn-3d"
+              style={{
+                background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
+                color: 'white',
+                fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px',
+                padding: '12px 24px', borderRadius: '16px',
+                border: 'none', borderBottom: '4px solid #4D2FCC',
+                cursor: 'pointer', boxShadow: '0 8px 24px rgba(108,76,255,0.4)',
+                display: 'flex', alignItems: 'center', gap: '8px',
+              }}
+            >
+              🚀 Start Learning Now
+            </button>
+
+            <button
+              onClick={() => navigate('/dashboard')}
+              className="btn-3d"
+              style={{
+                background: 'white',
+                color: '#6C4CFF',
+                fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px',
+                padding: '12px 20px', borderRadius: '16px',
+                border: '2px solid #6C4CFF',
+                cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px',
+              }}
+            >
+              ▶ Explore Playground
+            </button>
+          </div>
+
+          {/* Loved by learners pill */}
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: '10px',
+            background: 'white', borderRadius: '99px',
+            padding: '6px 14px', border: '1.5px solid #E2E8F0',
+            width: 'fit-content', marginTop: '8px',
+            boxShadow: '0 4px 14px rgba(0,0,0,0.04)',
+          }}>
+            <div style={{ display: 'flex', marginRight: '4px' }}>
+              {['boy1', 'girl1', 'boy2'].map((seed, i) => (
+                <div key={i} style={{
+                  width: '26px', height: '26px', borderRadius: '50%',
+                  border: '2px solid white', overflow: 'hidden', marginLeft: i > 0 ? '-8px' : '0',
+                }}>
+                  <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}`} alt="avatar" style={{ width: '100%', height: '100%' }} />
+                </div>
+              ))}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <span style={{ color: '#FFD54A', fontSize: '12px' }}>★★★★★</span>
+              <span style={{ fontFamily: 'Nunito', fontWeight: 800, fontSize: '11px', color: '#475569' }}>
+                Loved by 10,000+ learners worldwide
+              </span>
+            </div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          
-          {/* Card 1: Reading */}
-          <div className="bg-white p-6 rounded-[36px] border-4 border-b-8 border-slate-200/60 shadow-sm hover-pop transition-all text-left">
-            <div className="w-full h-40 bg-slate-50 border-2 border-slate-100 rounded-3xl flex items-center justify-center mb-6 overflow-hidden">
-              <img src="/vocab_book.png" alt="Reading Illustration" className="w-32 h-32 object-contain" />
-            </div>
-            <h3 className="text-lg font-black text-slate-850 mb-2">📖 Reading Matches</h3>
-            <p className="text-slate-500 text-xs font-bold leading-relaxed">Play matching cards to connect sounds, letters, and words with beautiful picture sticker blocks.</p>
+        {/* ══ COLUMN 2: Center Hero Kids & Magic Book Illustration ══ */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+          {/* Floating Let's Learn speech bubble */}
+          <div className="animate-bobble" style={{
+            background: 'white',
+            borderRadius: '99px',
+            padding: '6px 16px',
+            border: '2px solid #FF4FA3',
+            boxShadow: '0 6px 18px rgba(255,79,163,0.3)',
+            fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: '#FF4FA3',
+            marginBottom: '-14px', zIndex: 10,
+          }}>
+            Let's Learn! ✨
           </div>
 
-          {/* Card 2: Writing */}
-          <div className="bg-white p-6 rounded-[36px] border-4 border-b-8 border-slate-200/60 shadow-sm hover-pop transition-all text-left">
-            <div className="w-full h-40 bg-slate-50 border-2 border-slate-100 rounded-3xl flex items-center justify-center mb-6 overflow-hidden">
-              <img src="/level_sentences_1783340032385.png" alt="Writing Illustration" className="w-32 h-32 object-contain" />
-            </div>
-            <h3 className="text-lg font-black text-slate-850 mb-2">✍️ Tracing Sentences</h3>
-            <p className="text-slate-500 text-xs font-bold leading-relaxed">Practice writing sentences and study capitalization rules with real-time spelling check tips.</p>
+          {/* SVG Illustration of Open Magical Book & Floating Letters */}
+          <svg width="340" height="280" viewBox="0 0 340 280" fill="none">
+            {/* Glowing aura */}
+            <circle cx="170" cy="180" r="110" fill="url(#heroGlow)" opacity="0.6" />
+            
+            {/* Floating Letters */}
+            <g className="animate-float">
+              <rect x="60" y="40" width="36" height="36" rx="10" fill="#8A5CFF" />
+              <text x="78" y="65" textAnchor="middle" fontSize="22" fontWeight="900" fill="white" fontFamily="Poppins">B</text>
+            </g>
+
+            <g className="animate-float" style={{ animationDelay: '1s' }}>
+              <rect x="240" y="30" width="36" height="36" rx="10" fill="#FF4FA3" />
+              <text x="258" y="55" textAnchor="middle" fontSize="22" fontWeight="900" fill="white" fontFamily="Poppins">C</text>
+            </g>
+
+            {/* Big A and Z on book */}
+            <g className="animate-bobble">
+              <text x="140" y="140" fontSize="56" fontWeight="900" fill="#FFD54A" fontFamily="Poppins" filter="drop-shadow(0 4px 8px rgba(0,0,0,0.2))">A</text>
+              <text x="190" y="145" fontSize="48" fontWeight="900" fill="#4D9DFF" fontFamily="Poppins" filter="drop-shadow(0 4px 8px rgba(0,0,0,0.2))">Z</text>
+            </g>
+
+            {/* OPEN MAGICAL BOOK */}
+            <path d="M 40 210 Q 170 185 300 210 L 300 240 Q 170 215 40 240 Z" fill="#8B4513" />
+            <path d="M 46 202 Q 170 178 294 202 L 294 232 Q 170 208 46 232 Z" fill="#FFFDE7" />
+            <path d="M 52 195 Q 170 172 288 195 L 288 225 Q 170 202 52 225 Z" fill="#FFFFFF" />
+            <line x1="170" y1="172" x2="170" y2="225" stroke="#E2E8F0" strokeWidth="3" />
+
+            {/* Floating Sparkles around */}
+            <circle cx="100" cy="110" r="4" fill="#FFD54A" />
+            <circle cx="230" cy="110" r="5" fill="#4D9DFF" />
+            <circle cx="170" cy="70" r="6" fill="#FF4FA3" />
+
+            <defs>
+              <radialGradient id="heroGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#FFD54A" />
+                <stop offset="100%" stopColor="#6C4CFF" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+          </svg>
+        </div>
+
+        {/* ══ COLUMN 3: Welcome Back Login Card ══ */}
+        <div style={{
+          background: 'white',
+          borderRadius: '24px',
+          padding: '24px',
+          border: '1.5px solid #E2E8F0',
+          boxShadow: '0 16px 40px rgba(0,0,0,0.08)',
+          display: 'flex', flexDirection: 'column', gap: '14px',
+        }}>
+          <div style={{ textAlign: 'center' }}>
+            <h3 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', color: '#1e1040', margin: '0 0 2px' }}>
+              Welcome Back! 👋
+            </h3>
+            <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '11px', color: '#64748B', margin: 0 }}>
+              Continue your learning adventure
+            </p>
           </div>
 
-          {/* Card 3: Speaking */}
-          <div className="bg-white p-6 rounded-[36px] border-4 border-b-8 border-slate-200/60 shadow-sm hover-pop transition-all text-left">
-            <div className="w-full h-40 bg-slate-50 border-2 border-slate-100 rounded-3xl flex items-center justify-center mb-6 overflow-hidden">
-              <img src="/level_alphabet_1783340004005.png" alt="Speaking Illustration" className="w-32 h-32 object-contain" />
-            </div>
-            <h3 className="text-lg font-black text-slate-850 mb-2">🎤 Voice Pronunciation</h3>
-            <p className="text-slate-500 text-xs font-bold leading-relaxed">Speak aloud into your microphone! Get immediate scores showing syllable stress advice and timing.</p>
+          {/* Login / Sign Up Tabs */}
+          <div style={{
+            display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px',
+            background: '#F1F5F9', padding: '3px', borderRadius: '14px',
+          }}>
+            <button
+              onClick={() => setActiveTab('login')}
+              style={{
+                background: activeTab === 'login' ? 'linear-gradient(135deg, #6C4CFF, #8A5CFF)' : 'transparent',
+                color: activeTab === 'login' ? 'white' : '#64748B',
+                border: 'none', borderRadius: '11px', padding: '8px',
+                fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px',
+                cursor: 'pointer', boxShadow: activeTab === 'login' ? '0 4px 12px rgba(108,76,255,0.3)' : 'none',
+              }}
+            >
+              Login
+            </button>
+            <button
+              onClick={() => navigate('/register')}
+              style={{
+                background: 'transparent', color: '#64748B',
+                border: 'none', borderRadius: '11px', padding: '8px',
+                fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px',
+                cursor: 'pointer',
+              }}
+            >
+              Sign Up
+            </button>
           </div>
 
-          {/* Card 4: AI recommendation */}
-          <div className="bg-white p-6 rounded-[36px] border-4 border-b-8 border-slate-200/60 shadow-sm hover-pop transition-all text-left">
-            <div className="w-full h-40 bg-slate-50 border-2 border-slate-100 rounded-3xl flex items-center justify-center mb-6 overflow-hidden">
-              <img src="/level_mastery_1783340074714.png" alt="AI Recommendation Illustration" className="w-32 h-32 object-contain" />
+          {/* Form */}
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              background: '#F8FAFF', border: '1.5px solid #E2E8F0',
+              borderRadius: '12px', padding: '10px 12px',
+            }}>
+              <span style={{ opacity: 0.5 }}>📧</span>
+              <input
+                type="text"
+                placeholder="Email or Username"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                style={{ border: 'none', outline: 'none', background: 'transparent', width: '100%', fontFamily: 'Nunito', fontWeight: 700, fontSize: '12px', color: '#1e1040' }}
+              />
             </div>
-            <h3 className="text-lg font-black text-slate-850 mb-2">🤖 Smart Study Recommendations</h3>
-            <p className="text-slate-500 text-xs font-bold leading-relaxed">The AI tutor checks your quiz logs and dynamically suggests the best two lessons in your level to complete next.</p>
+
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              background: '#F8FAFF', border: '1.5px solid #E2E8F0',
+              borderRadius: '12px', padding: '10px 12px',
+            }}>
+              <span style={{ opacity: 0.5 }}>🔒</span>
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                style={{ border: 'none', outline: 'none', background: 'transparent', width: '100%', fontFamily: 'Nunito', fontWeight: 700, fontSize: '12px', color: '#1e1040' }}
+              />
+              <span style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#6C4CFF', cursor: 'pointer' }}>Forgot?</span>
+            </div>
+
+            <button
+              type="submit"
+              className="btn-3d"
+              style={{
+                background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
+                color: 'white', fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px',
+                padding: '11px', borderRadius: '12px', border: 'none',
+                borderBottom: '3.5px solid #4D2FCC', cursor: 'pointer',
+                boxShadow: '0 6px 18px rgba(108,76,255,0.4)', marginTop: '4px',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+              }}
+            >
+              🔒 Login →
+            </button>
+          </form>
+
+          {/* Social login divider */}
+          <div style={{ textAlign: 'center', position: 'relative', margin: '4px 0' }}>
+            <span style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#94A3B8', background: 'white', padding: '0 8px', position: 'relative', zIndex: 1 }}>
+              or continue with
+            </span>
+            <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '1px', background: '#E2E8F0' }} />
           </div>
 
-          {/* Card 5: Sticker book */}
-          <div className="bg-white p-6 rounded-[36px] border-4 border-b-8 border-slate-200/60 shadow-sm hover-pop transition-all text-left">
-            <div className="w-full h-40 bg-slate-50 border-2 border-slate-100 rounded-3xl flex items-center justify-center mb-6 overflow-hidden">
-              <img src="/vocab_banana.png" alt="Sticker Book Illustration" className="w-32 h-32 object-contain animate-float" />
-            </div>
-            <h3 className="text-lg font-black text-slate-850 mb-2">🎨 Sticker Album</h3>
-            <p className="text-slate-500 text-xs font-bold leading-relaxed">Unlock cool animal, fruit, and tool stickers for your profile album by passing reading and talking drills!</p>
+          {/* Social Buttons */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+            <button
+              onClick={() => navigate('/dashboard')}
+              style={{
+                background: '#F8FAFF', border: '1.5px solid #E2E8F0', borderRadius: '10px',
+                padding: '8px', fontFamily: 'Poppins', fontWeight: 800, fontSize: '11px', color: '#334155',
+                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+              }}
+            >
+              <span>G</span> Google
+            </button>
+            <button
+              onClick={() => navigate('/dashboard')}
+              style={{
+                background: '#F8FAFF', border: '1.5px solid #E2E8F0', borderRadius: '10px',
+                padding: '8px', fontFamily: 'Poppins', fontWeight: 800, fontSize: '11px', color: '#334155',
+                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+              }}
+            >
+              <span></span> Apple
+            </button>
           </div>
 
-          {/* Card 6: Champions League */}
-          <div className="bg-white p-6 rounded-[36px] border-4 border-b-8 border-slate-200/60 shadow-sm hover-pop transition-all text-left">
-            <div className="w-full h-40 bg-slate-50 border-2 border-slate-100 rounded-3xl flex items-center justify-center mb-6 overflow-hidden">
-              <img src="/level_stories_1783340046772.png" alt="Champions League Illustration" className="w-32 h-32 object-contain" />
+          <div style={{ textAlign: 'center', fontFamily: 'Nunito', fontWeight: 700, fontSize: '11px', color: '#64748B' }}>
+            New to NeoLit? <span onClick={() => navigate('/register')} style={{ color: '#6C4CFF', cursor: 'pointer', fontWeight: 900 }}>Register now</span>
+          </div>
+        </div>
+
+      </section>
+
+      {/* ── MIDDLE SECTION: "EXPLORE OUR MAGICAL WORLD" ── */}
+      <section style={{
+        maxWidth: '1440px', margin: '0 auto',
+        padding: '20px 24px 40px',
+        display: 'flex', flexDirection: 'column', gap: '20px',
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '24px', color: '#1e1040', margin: '0 0 4px' }}>
+            ✦ Explore Our <span style={{ color: '#6C4CFF' }}>Magical World</span> ✦
+          </div>
+          <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', color: '#64748B', margin: 0 }}>
+            Tap on any activity to start your learning adventure!
+          </p>
+        </div>
+
+        {/* 8 Activity Cards (2 rows of 4) */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+
+          {/* Card 1: Reading Matches */}
+          <div className="hover-lift" onClick={() => navigate('/lesson/1')} style={{
+            background: '#F0FDF4', borderRadius: '20px', border: '1.5px solid #DCFCE7',
+            padding: '16px', display: 'flex', alignItems: 'center', gap: '14px', cursor: 'pointer',
+          }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: '#DCFCE7', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', flexShrink: 0 }}>📖</div>
+            <div style={{ flex: 1 }}>
+              <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: '#166534', margin: '0 0 2px' }}>Reading Matches</h4>
+              <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#475569', margin: 0, lineHeight: 1.3 }}>
+                Match cards to connect sounds, letters and words with picture sticker blocks.
+              </p>
             </div>
-            <h3 className="text-lg font-black text-slate-850 mb-2">🏆 Weekly Champions League</h3>
-            <p className="text-slate-500 text-xs font-bold leading-relaxed">Compete with online friends, maintain your daily study streaks, and rank at the top of the leaderboards!</p>
+            <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#22C55E', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 900, flexShrink: 0 }}>→</div>
+          </div>
+
+          {/* Card 2: Tracing Sentences */}
+          <div className="hover-lift" onClick={() => navigate('/lesson/2')} style={{
+            background: '#FFFDF0', borderRadius: '20px', border: '1.5px solid #FEF08A',
+            padding: '16px', display: 'flex', alignItems: 'center', gap: '14px', cursor: 'pointer',
+          }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: '#FEF08A', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', flexShrink: 0 }}>✍️</div>
+            <div style={{ flex: 1 }}>
+              <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: '#854D0E', margin: '0 0 2px' }}>Tracing Sentences</h4>
+              <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#475569', margin: 0, lineHeight: 1.3 }}>
+                Practice writing sentences and study capitalization rules with real-time spelling check tips.
+              </p>
+            </div>
+            <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#EAB308', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 900, flexShrink: 0 }}>→</div>
+          </div>
+
+          {/* Card 3: Voice Pronunciation */}
+          <div className="hover-lift" onClick={() => navigate('/voice-practice')} style={{
+            background: '#F0F5FF', borderRadius: '20px', border: '1.5px solid #DBEAFE',
+            padding: '16px', display: 'flex', alignItems: 'center', gap: '14px', cursor: 'pointer',
+          }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: '#DBEAFE', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', flexShrink: 0 }}>🎙️</div>
+            <div style={{ flex: 1 }}>
+              <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: '#1E40AF', margin: '0 0 2px' }}>Voice Pronunciation</h4>
+              <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#475569', margin: 0, lineHeight: 1.3 }}>
+                Speak aloud into your microphone! Get immediate scores showing syllable stress advice and timing.
+              </p>
+            </div>
+            <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#3B82F6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 900, flexShrink: 0 }}>→</div>
+          </div>
+
+          {/* Card 4: Smart Study Recommendations */}
+          <div className="hover-lift" onClick={() => navigate('/learn-with-ai')} style={{
+            background: '#FFF0F5', borderRadius: '20px', border: '1.5px solid #FCE7F3',
+            padding: '16px', display: 'flex', alignItems: 'center', gap: '14px', cursor: 'pointer',
+          }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: '#FCE7F3', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', flexShrink: 0 }}>🧠</div>
+            <div style={{ flex: 1 }}>
+              <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: '#9D174D', margin: '0 0 2px' }}>Smart Study Recommendations</h4>
+              <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#475569', margin: 0, lineHeight: 1.3 }}>
+                The AI tutor checks your quiz logs and suggests the best two lessons in your level to complete next.
+              </p>
+            </div>
+            <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#EC4899', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 900, flexShrink: 0 }}>→</div>
+          </div>
+
+          {/* Card 5: Sticker Album */}
+          <div className="hover-lift" onClick={() => navigate('/vocabulary')} style={{
+            background: '#F5F3FF', borderRadius: '20px', border: '1.5px solid #DDD6FE',
+            padding: '16px', display: 'flex', alignItems: 'center', gap: '14px', cursor: 'pointer',
+          }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: '#DDD6FE', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', flexShrink: 0 }}>📓</div>
+            <div style={{ flex: 1 }}>
+              <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: '#5B21B6', margin: '0 0 2px' }}>Sticker Album</h4>
+              <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#475569', margin: 0, lineHeight: 1.3 }}>
+                Unlock cool animal, fruit, and tool stickers for your profile album by passing reading and talking drills!
+              </p>
+            </div>
+            <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#8B5CF6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 900, flexShrink: 0 }}>→</div>
+          </div>
+
+          {/* Card 6: Weekly Champions League */}
+          <div className="hover-lift" onClick={() => navigate('/leaderboard')} style={{
+            background: '#FFF7ED', borderRadius: '20px', border: '1.5px solid #FFEDD5',
+            padding: '16px', display: 'flex', alignItems: 'center', gap: '14px', cursor: 'pointer',
+          }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: '#FFEDD5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', flexShrink: 0 }}>🏆</div>
+            <div style={{ flex: 1 }}>
+              <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: '#9A3412', margin: '0 0 2px' }}>Weekly Champions League</h4>
+              <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#475569', margin: 0, lineHeight: 1.3 }}>
+                Compete with online friends, maintain your daily study streaks, and rank at the top of the leaderboards!
+              </p>
+            </div>
+            <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#F97316', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 900, flexShrink: 0 }}>→</div>
+          </div>
+
+          {/* Card 7: Story Time Corner */}
+          <div className="hover-lift" onClick={() => navigate('/lesson/3')} style={{
+            background: '#F0FDFA', borderRadius: '20px', border: '1.5px solid #CCFBF1',
+            padding: '16px', display: 'flex', alignItems: 'center', gap: '14px', cursor: 'pointer',
+          }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: '#CCFBF1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', flexShrink: 0 }}>🏰</div>
+            <div style={{ flex: 1 }}>
+              <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: '#115E59', margin: '0 0 2px' }}>Story Time Corner</h4>
+              <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#475569', margin: 0, lineHeight: 1.3 }}>
+                Read short stories, answer fun questions and collect stars to level up your reading journey!
+              </p>
+            </div>
+            <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#14B8A6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 900, flexShrink: 0 }}>→</div>
+          </div>
+
+          {/* Card 8: Daily Goals */}
+          <div className="hover-lift" onClick={() => navigate('/dashboard')} style={{
+            background: '#FFF1F2', borderRadius: '20px', border: '1.5px solid #FFE4E6',
+            padding: '16px', display: 'flex', alignItems: 'center', gap: '14px', cursor: 'pointer',
+          }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: '#FFE4E6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', flexShrink: 0 }}>🎯</div>
+            <div style={{ flex: 1 }}>
+              <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: '#9F1239', margin: '0 0 2px' }}>Daily Goals</h4>
+              <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#475569', margin: 0, lineHeight: 1.3 }}>
+                Complete daily tasks, earn points and build your streak to become a literacy champion!
+              </p>
+            </div>
+            <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#F43F5E', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 900, flexShrink: 0 }}>→</div>
           </div>
 
         </div>
       </section>
 
-      {/* Bubbly Footer */}
-      <footer className="bg-slate-900 text-slate-400 py-12 px-6 border-t-4 border-slate-950 text-center">
-        <div className="max-w-7xl mx-auto space-y-4">
-          <p className="text-xs font-black tracking-widest text-slate-500 uppercase">Magical Literacy Playground © 2026</p>
-          <p className="text-[10px] text-slate-650 font-bold max-w-md mx-auto leading-relaxed">Created to help children and basic learners build reading, writing, and communication confidence with gaming UI feedback.</p>
+      {/* ── BOTTOM PURPLE COUNTER BAR ── */}
+      <footer style={{
+        maxWidth: '1440px', margin: '0 auto 20px',
+        background: 'linear-gradient(135deg, #3D1D99 0%, #2D1278 50%, #1E0A5E 100%)',
+        borderRadius: '24px',
+        padding: '16px 28px',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        color: 'white',
+        boxShadow: '0 16px 40px rgba(45,18,120,0.4)',
+        border: '1.5px solid rgba(255,255,255,0.12)',
+      }}>
+        {/* Robot mascot on left */}
+        <div className="animate-bobble" style={{ width: '60px', height: '60px', flexShrink: 0 }}>
+          <RobotMascot size={60} />
+        </div>
+
+        {/* 4 Stats counters */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '36px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ fontSize: '26px' }}>🔥</span>
+            <div>
+              <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', lineHeight: 1 }}>12</div>
+              <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', opacity: 0.8 }}>Day Streak</div>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ fontSize: '26px' }}>⭐</span>
+            <div>
+              <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', lineHeight: 1 }}>450</div>
+              <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', opacity: 0.8 }}>Stars Earned</div>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ fontSize: '26px' }}>📚</span>
+            <div>
+              <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', lineHeight: 1 }}>27</div>
+              <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', opacity: 0.8 }}>Lessons Completed</div>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ fontSize: '26px' }}>🏅</span>
+            <div>
+              <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', lineHeight: 1 }}>3</div>
+              <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', opacity: 0.8 }}>Badges Earned</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Lion mascot & bubble on right */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{
+            background: 'white', color: '#1e1040',
+            borderRadius: '99px', padding: '6px 14px',
+            fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          }}>
+            Keep learning, keep shining! ⭐
+          </div>
+          <div className="animate-bobble" style={{ fontSize: '36px' }}>🦁</div>
         </div>
       </footer>
 
