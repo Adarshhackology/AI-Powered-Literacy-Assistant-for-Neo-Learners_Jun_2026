@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { BookOpen, Edit3, Brain, ArrowRight, Mic, Sparkles, CheckCircle2 } from 'lucide-react';
+import { BookOpen, Edit3, Brain, ArrowRight, Mic, Sparkles, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { apiClient } from '../utils/api';
+import { Sparkle, AIRobotMascot } from '../components/UI/Illustrations';
 
 interface Question {
   id: number;
@@ -35,7 +36,6 @@ const getLanguageFallbackQuestions = (lang: string): Question[] => {
   const isTelugu = n.includes('te') || n.includes('telugu') || n.includes('తెలుగు');
   const isTamil = n.includes('ta') || n.includes('tamil') || n.includes('தமிழ்');
 
-  // Multi-item pool for MCQ vocabulary
   const vocabPool = [
     { emoji: '🍎', hi: 'सेब', gu: 'સફરજન', bn: 'আপেল', mr: 'सफरचंद', kn: 'ಸೇಬು', ml: 'ആപ്പിൾ', pa: 'ਸੇਬ', ur: 'سیب', or: 'ସେଓ', as: 'আপেল', sa: 'सेवफलम्', te: 'యాపిల్', ta: 'ஆப்பிள்', en: 'Apple',
       disEn: ['Banana', 'Cat', 'Dog'], disHi: ['केला', 'बिल्ली', 'कुत्ता'], disGu: ['કેળું', 'બિલાડી', 'કૂતરો'], disBn: ['কলা', 'বিড়াল', 'কুকুর'], disMr: ['केळी', 'मांजर', 'कुत्रा'], disKn: ['ಬಾಳೆಹಣ್ಣು', 'ಬೆಕ್ಕು', 'ನಾಯಿ'], disMl: ['വാഴപ്പഴം', 'പൂച്ച', 'പട്ടി'], disPa: ['ਕੇਲਾ', 'ਬਿੱਲੀ', 'ਕੁੱਤਾ'], disUr: ['کیلا', 'بلی', 'کتا'], disOr: ['କଦଳୀ', 'ବିଲେଇ', 'କୁକୁର'], disAs: ['কল', 'মেকুৰী', 'কুকুৰ'], disSa: ['कदलीफलम्', 'मार्जारी', 'कुक्कुरः'], disTe: ['అరటి', 'పిల్లి', 'కుక్క'], disTa: ['வாழைப்பழம்', 'பூனை', 'நாய்'] },
@@ -45,12 +45,6 @@ const getLanguageFallbackQuestions = (lang: string): Question[] => {
     
     { emoji: '📚', hi: 'किताब', gu: 'પુસ્તક', bn: 'বই', mr: 'पुस्तक', kn: 'ಪುಸ್ತಕ', ml: 'പുസ്തകം', pa: 'ਕਿਤਾਬ', ur: 'کتاب', or: 'ପୁସ୍ତକ', as: 'কিতাপ', sa: 'पुस्तकम्', te: 'పుస్తకం', ta: 'புத்தகம்', en: 'Book',
       disEn: ['Pencil', 'Bag', 'Car'], disHi: ['पेंसिल', 'बैग', 'गाड़ी'], disGu: ['પેન્સિલ', 'બેગ', 'ગાડી'], disBn: ['পেন্সিল', 'ব্যাগ', 'গাড়ি'], disMr: ['पेन्सिल', 'पिशवी', 'गाडी'], disKn: ['ಪೆನ್ಸಿಲ್', 'ಬ್ಯಾಗ್', 'ಕಾರು'], disMl: ['പെൻസിൽ', 'ബാഗ്', 'കാർ'], disPa: ['ਪੈਨਸਿਲ', 'ਬੈਗ', 'ਕਾਰ'], disUr: ['پنسل', 'بیگ', 'گاڑی'], disOr: ['ପେନ୍ସିଲ୍', 'ବ୍ୟାଗ୍', 'ଗାଡି'], disAs: ['পেঞ্চিল', 'বেগ', 'গাড়ী'], disSa: ['लेखनी', 'स्यूतः', 'यानम्'], disTe: ['పెన్సిల్', 'బ్యాగ్', 'కారు'], disTa: ['பென்சில்', 'பை', 'கார்'] },
-
-    { emoji: '🚗', hi: 'गाड़ी', gu: 'ગાડી', bn: 'গাড়ি', mr: 'गाडी', kn: 'ಕಾರು', ml: 'കാർ', pa: 'ਕਾਰ', ur: 'گاڑی', or: 'ଗାଡି', as: 'গাড়ী', sa: 'यानम्', te: 'కారు', ta: 'கார்', en: 'Car',
-      disEn: ['Bus', 'Train', 'Bicycle'], disHi: ['बस', 'ट्रेन', 'साइकिल'], disGu: ['બસ', 'ટ્રેન', 'સાઇકલ'], disBn: ['বাস', 'ট্রেন', 'সাইকেল'], disMr: ['बस', 'ट्रेन', 'सायकल'], disKn: ['ಬಸ್', 'ರೈಲು', 'ಸೈಕಲ್'], disMl: ['ബസ്', 'ട്രെയിൻ', 'സൈക്കിൾ'], disPa: ['ਬੱਸ', 'ਟ੍ਰੇਨ', 'ਸਾਈਕਲ'], disUr: ['بس', 'ٹرین', 'سائیکل'], disOr: ['ବସ୍', 'ଟ୍ରେନ୍', 'ସାଇକେଲ୍'], disAs: ['বাছ', 'ট্ৰেইন', 'চাইকেল'], disSa: ['लोकयानम्', 'रेलयानम्', 'द्विचक्रिका'], disTe: ['బస్సు', 'రైలు', 'సైకిల్'], disTa: ['பேருந்து', 'ரயில்', 'மிதிவண்டி'] },
-
-    { emoji: '🌸', hi: 'फूल', gu: 'ફૂલ', bn: 'ফুল', mr: 'फूल', kn: 'ಹೂವು', ml: 'പൂവ്', pa: 'ਫੁੱਲ', ur: 'پھول', or: 'ଫୁଲ', as: 'ফুল', sa: 'पुष्पम्', te: 'పువ్వు', ta: 'பூ', en: 'Flower',
-      disEn: ['Tree', 'Leaf', 'Grass'], disHi: ['पेड़', 'पत्ता', 'घास'], disGu: ['ઝાડ', 'પાંદડું', 'ઘાસ'], disBn: ['গাছ', 'পাতা', 'ঘাস'], disMr: ['झाड', 'पान', 'गवत'], disKn: ['ಮರ', 'ಎಲೆ', 'ಹುಲ್ಲು'], disMl: ['മരം', 'ഇല', 'പുല്ല്'], disPa: ['ਦਰੱਖਤ', 'ਪੱਤਾ', 'ਘਾਹ'], disUr: ['درخت', 'پتا', 'گھاس'], disOr: ['ଗଛ', 'ପତ୍ର', 'ଘାସ'], disAs: ['গছ', 'পাত', 'ঘাহ'], disSa: ['वृक्षः', 'पत्रम्', 'तृणम्'], disTe: ['చెట్టు', 'ఆకు', 'గడ్డి'], disTa: ['மரம்', 'இலை', 'புல்'] }
   ];
 
   const shuffledVocab = shuffleArray(vocabPool);
@@ -64,13 +58,13 @@ const getLanguageFallbackQuestions = (lang: string): Question[] => {
 
   const promptQ2 = isHindi ? 'यह कौन सा जानवर / वस्तु है?' : isGujarati ? 'આ કયું પ્રાણી / વસ્તુ છે?' : isBengali ? 'এটি কোন প্রাণী / বস্তু?' : isMarathi ? 'हा कोणता प्राणी / वस्तू आहे?' : isKannada ? 'ಇದು ಯಾವ ಪ್ರಾಣಿ / ವಸ್ತು?' : isMalayalam ? 'ഇത് ഏത് മൃഗമാണ് / വസ്തുവാണ്?' : isPunjabi ? 'ਇਹ ਕਿਹੜਾ ਜਾਨਵਰ / ਚੀਜ਼ ਹੈ?' : isUrdu ? 'یہ کون سا جانور / چیز ہے؟' : isOdia ? 'ଏହା କେଉଁ ପଶୁ / ଜିନିଷ?' : isAssamese ? 'এইটো কি প্ৰাণী / বস্তু?' : isSanskrit ? 'एषः कः पशुः / वस्तु अस्ति?' : isTelugu ? 'ఇది ఏ జంతువు / వస్తువు?' : isTamil ? 'இது என்ன விலங்கு / பொருள்?' : 'What animal or object is this?';
 
-  const promptQ3 = isHindi ? 'खाली स्थान भरें: आसमान _____ है।' : isGujarati ? 'ખાલી જગ્યા પૂરો: આકાશ _____ છે.' : isBengali ? 'শূন্যস্থান পূরণ করুন: আকাশ _____।' : isMarathi ? 'रिकामी जागा भरा: आकाश _____ आहे.' : isKannada ? 'ಖಾಲಿ ಜಾಗವನ್ನು ತುಂಬಿ: ಆಕಾಶವು _____ బಣ್ಣದಲ್ಲಿದೆ.' : isMalayalam ? 'വിട്ട ഭാഗം പൂരിപ്പിക്കുക: ആകാശം _____ ആണ്.' : isPunjabi ? 'ਖਾਲੀ ਥਾਂ ਭਰੋ: ਅਸਮਾਨ _____ ਹੈ।' : isUrdu ? 'خالی جگہ پر کریں: آسمان _____ ہے۔' : isOdia ? 'ଖାଲି ସ୍ଥାନ ପୂରଣ କରନ୍ତୁ: ଆକାଶ _____ ରଙ୍ଗର ।' : isAssamese ? 'খালী ঠাই পূৰ কৰক: আকাশখন _____।' : isSanskrit ? 'रिक्तस्थानं पूरयत: आकाशः _____ अस्ति।' : isTelugu ? 'ఖాళీని పూరించండి: ఆకాశం _____ రంగులో ఉంది.' : isTamil ? 'கோடிட்ட இடத்தை நிரப்புக: வானம் _____ நிறம்.' : 'The sky is ___';
+  const promptQ3 = isHindi ? 'खाली स्थान भरें: आसमान _____ है।' : isGujarati ? 'ખાલી જગ્યા પૂરો: આકાશ _____ છે.' : 'The sky is ___';
 
-  const ansQ3 = isHindi ? 'नीला' : isGujarati ? 'વાદળી' : isBengali ? 'নীল' : isMarathi ? 'निळे' : isKannada ? 'ನೀಲಿ' : isMalayalam ? 'നീലം' : isPunjabi ? 'ਨੀਲਾ' : isUrdu ? 'نیلا' : isOdia ? 'ନୀଳ' : isAssamese ? 'নীলা' : isSanskrit ? 'नीलः' : isTelugu ? 'నీలం' : isTamil ? 'நீலம்' : 'blue';
+  const ansQ3 = isHindi ? 'नीला' : isGujarati ? 'વાદળી' : 'blue';
 
-  const promptQ4 = isHindi ? 'अपने पसंदीदा रंग के बारे में एक वाक्य लिखें।' : isGujarati ? 'તમારા મનપસંદ રંગ વિશે એક વાક્ય લખો.' : isBengali ? 'আপনার পছন্দের রঙ সম্পর্কে একটি বাক্য লিখুন।' : isMarathi ? 'तुमच्या आवडत्या रंगाबद्दल एक वाक्य लिहा.' : isKannada ? 'ನಿಮ್ಮ ನೆಚ್ಚಿನ ಬಣ್ಣದ ಬಗ್ಗೆ ಒಂದು ವಾಕ್ಯ ಬರೆಯಿರಿ.' : isMalayalam ? 'നിങ്ങൾക്ക് ഇഷ്ടപ്പെട്ട നിറത്തെക്കുറിച്ച് ഒരു വാചകം എഴുതുക.' : isPunjabi ? 'ਆਪਣੇ ਪਸੰਦੀਦਾ ਰੰਗ ਬਾਰੇ ਇੱਕ ਵਾਕ ਲਿਖੋ।' : isUrdu ? 'اپنے پسندیدہ رنگ کے بارے میں ایک جملہ لکھیں۔' : isOdia ? 'ଆପଣଙ୍କର ପ୍ରିୟ ରଙ୍ଗ ବିଷୟରେ ଗୋଟିଏ ବାକ୍ୟ ଲେଖନ୍ତୁ ।' : isAssamese ? 'আপোনাৰ প্ৰিয় ৰং সম্পৰ্কে এটা বাক্য লিখক।' : isSanskrit ? 'स्वस्य प्रियवर्णविषये एकं वाक्यं लिखत।' : isTelugu ? 'మీకు ఇష్టమైన రంగు గురించి ఒక వాక్యం రాయండి.' : isTamil ? 'உங்களுக்கு பிடித்த நிறத்தைப் பற்றி ஒரு வாக்கியம் எழுதுங்கள்.' : 'Write a sentence about your favorite color.';
+  const promptQ4 = isHindi ? 'अपने पसंदीदा रंग के बारे में एक वाक्य लिखें।' : isGujarati ? 'તમારા મનપસંદ રંગ વિશે એક વાક્ય લખો.' : 'Write a sentence about your favorite color.';
 
-  const promptQ5 = isHindi ? 'इसे जोर से पढ़ें: नमस्ते भारत!' : isGujarati ? 'આ મોટેથી વાંચો: નમસ્તે ભારત!' : isBengali ? 'এটি জোরে পড়ুন: নমস্কার ভারত!' : isMarathi ? 'हे मोठ्याने वाचा: नमस्कार भारत!' : isKannada ? 'ಇದನ್ನು ಗಟ್ಟಿಯಾಗಿ ಓದಿ: ನಮಸ್ಕಾರ ಭಾರತ!' : isMalayalam ? 'ഇത് ഉറക്കെ വായിക്കുക: നമസ്കാരം ഭാരതം!' : isPunjabi ? 'ਇਸਨੂੰ ਉੱਚੀ ਪੜ੍ਹੋ: ਸਤਿ ਸ਼੍ਰੀ ਅਕਾਲ!' : isUrdu ? 'اسے بلند آواز میں پڑھیں: السلام علیکم!' : isOdia ? 'ଏହାକୁ ଉଚ୍ଚ ସ୍ୱରରେ ପଢନ୍ତୁ: ନମସ୍କାର ଭାରତ!' : isAssamese ? 'এইটো ডাঙৰকৈ পঢ়ক: নমস্কাৰ ভাৰত!' : isSanskrit ? 'उच्चैः पठतु: नमस्ते भारतम्!' : isTelugu ? 'గట్టిగా చదవండి: నమస్కారం!' : isTamil ? 'சத்தமாக படிக்கவும்: வணக்கம்!' : 'Read this aloud: Hello World!';
+  const promptQ5 = isHindi ? 'इसे जोर से पढ़ें: नमस्ते भारत!' : isGujarati ? 'આ મોટેથી વાંચો: નમસ્ਤੇ ભારત!' : 'Read this aloud: Hello World!';
 
   return [
     { id: 1, section: 'reading', type: 'mcq', text: promptQ1, emoji: v1.emoji, options: shuffleArray([getWord(v1), ...getDis(v1)]), correct_answer: getWord(v1) },
@@ -206,23 +200,16 @@ export default function AIAssessment() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-indigo-50 flex items-center justify-center font-['Nunito']">
-        <div className="text-center animate-pulse">
-          <Brain className="w-20 h-20 text-indigo-500 mx-auto mb-4 animate-bounce" />
-          <h2 className="text-2xl font-black text-indigo-900">AI is generating your quiz... ✨</h2>
-        </div>
+      <div style={{ minHeight: '100vh', background: '#1A0A4E', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontFamily: 'Poppins', fontWeight: 900 }}>
+        AI is generating your quiz... ✨
       </div>
     );
   }
 
   if (submitting) {
     return (
-      <div className="min-h-screen bg-purple-50 flex items-center justify-center font-['Nunito']">
-        <div className="text-center">
-          <Sparkles className="w-20 h-20 text-purple-500 mx-auto mb-4 animate-spin" />
-          <h2 className="text-3xl font-black text-purple-900 mb-2">AI is analyzing your skills!</h2>
-          <p className="text-xl text-purple-600 font-bold animate-pulse">Calculating scores and detecting weak areas...</p>
-        </div>
+      <div style={{ minHeight: '100vh', background: '#1A0A4E', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontFamily: 'Poppins', fontWeight: 900 }}>
+        AI is analyzing your skills! 🧠
       </div>
     );
   }
@@ -232,68 +219,142 @@ export default function AIAssessment() {
   const currentSection = question.section || 'reading';
 
   return (
-    <div className="min-h-screen bg-slate-50 font-['Nunito'] p-4 sm:p-8 flex flex-col">
-      <div className="max-w-4xl mx-auto w-full flex-1 flex flex-col">
-        
-        {/* Stepper */}
-        <div className="bg-white rounded-full p-2 mb-8 shadow-sm flex items-center justify-between border-2 border-slate-100">
-          {sections.map((sec) => (
-            <div 
-              key={sec} 
-              className={`flex-1 flex justify-center items-center gap-2 py-3 px-4 rounded-full transition-all duration-500
-                ${sec === currentSection ? 'bg-indigo-100 text-indigo-700 shadow-inner font-black' : 'text-slate-400 font-bold'}
-              `}
-            >
-              {sec === 'reading' && <BookOpen className="w-5 h-5" />}
-              {sec === 'writing' && <Edit3 className="w-5 h-5" />}
-              {sec === 'comprehension' && <Brain className="w-5 h-5" />}
-              <span className="capitalize hidden sm:inline">{sec}</span>
-            </div>
-          ))}
-        </div>
+    <div style={{
+      minHeight: '100vh',
+      background: '#1A0A4E',
+      backgroundImage: `
+        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.4) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.3) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
+      `,
+      padding: '20px',
+      position: 'relative',
+    }}>
 
-        {/* Question Card */}
-        <div className="bg-white rounded-[2.5rem] p-6 sm:p-12 shadow-xl border-4 border-slate-100 flex-1 flex flex-col justify-between relative overflow-hidden">
-          <div>
-            <div className="flex justify-between items-center mb-6">
-              <span className="bg-slate-100 text-slate-500 font-black text-sm px-4 py-1.5 rounded-full">
-                Question {currentIndex + 1} of {questions.length}
-              </span>
-            </div>
+      {/* Background Star Field */}
+      <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+        {[
+          { t: '5%', l: '8%', s: 12 }, { t: '12%', l: '90%', s: 16 },
+          { t: '25%', l: '3%', s: 14 }, { t: '45%', l: '95%', s: 10 },
+          { t: '70%', l: '4%', s: 18 }, { t: '88%', l: '92%', s: 14 },
+        ].map((st, i) => (
+          <div key={i} className="animate-twinkle" style={{
+            position: 'absolute', top: st.t, left: st.l,
+            animationDelay: `${i * 0.4}s`, opacity: 0.7,
+          }}>
+            <Sparkle size={st.s} color={i % 2 === 0 ? '#FFD54A' : '#C4B5F4'} />
+          </div>
+        ))}
+      </div>
 
-            <div className="text-center mb-8 flex flex-col items-center">
-              {question.image_url ? (
-                <div className="w-36 h-36 mb-4 rounded-3xl overflow-hidden border-4 border-indigo-200 shadow-xl bg-indigo-50 flex items-center justify-center">
-                  <img src={question.image_url} alt="Question Visual" className="w-full h-full object-cover" />
-                </div>
-              ) : (
-                <div className="w-28 h-28 mb-4 rounded-3xl bg-gradient-to-br from-indigo-100 to-purple-100 border-4 border-indigo-200 shadow-lg flex items-center justify-center text-7xl animate-bounce-slow">
-                  {question.emoji || '🌟'}
-                </div>
-              )}
-              <h2 className="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight max-w-2xl">
-                {question.text}
-              </h2>
-            </div>
+      <div style={{ maxWidth: '840px', margin: '0 auto', position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '16px' }}>
+
+        {/* Top Glass Nav Bar */}
+        <nav style={{
+          height: '60px',
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '20px',
+          padding: '0 20px',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+          border: '1.5px solid rgba(255,255,255,0.6)',
+        }}>
+          <button
+            onClick={() => navigate('/learn-with-ai')}
+            className="btn-3d"
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              color: '#1e1040', textDecoration: 'none',
+              fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
+              background: '#F0F4FF', padding: '6px 14px', borderRadius: '12px',
+              border: '1px solid #E8EFFF', cursor: 'pointer',
+            }}
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back</span>
+          </button>
+
+          {/* Stepper Pills */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#F1F5F9', padding: '4px 8px', borderRadius: '99px' }}>
+            {sections.map((sec) => (
+              <div
+                key={sec}
+                style={{
+                  background: sec === currentSection ? 'linear-gradient(135deg, #6C4CFF, #8A5CFF)' : 'transparent',
+                  color: sec === currentSection ? 'white' : '#64748B',
+                  borderRadius: '99px', padding: '4px 14px',
+                  fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px', textTransform: 'capitalize',
+                  boxShadow: sec === currentSection ? '0 4px 12px rgba(108,76,255,0.3)' : 'none',
+                }}
+              >
+                {sec}
+              </div>
+            ))}
           </div>
 
-          <div className="flex-1 flex flex-col justify-center max-w-2xl mx-auto w-full py-4">
+          <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#6C4CFF' }}>
+            Q{currentIndex + 1}/{questions.length}
+          </span>
+        </nav>
+
+        {/* Question Card Container */}
+        <div style={{
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '28px',
+          padding: '32px',
+          border: '2px solid rgba(255,255,255,0.6)',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px',
+          textAlign: 'center',
+        }}>
+          
+          <span style={{
+            background: '#EDE7F6', color: '#6C4CFF',
+            fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px',
+            padding: '4px 14px', borderRadius: '99px',
+          }}>
+            Question {currentIndex + 1} of {questions.length}
+          </span>
+
+          <div className="animate-bobble" style={{
+            width: '90px', height: '90px', borderRadius: '22px',
+            background: 'linear-gradient(135deg, #EDE7F6, #FFF0F9)',
+            border: '2.5px solid #C4B5F4', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '46px', boxShadow: '0 8px 24px rgba(108,76,255,0.2)',
+          }}>
+            {question.emoji || '🍎'}
+          </div>
+
+          <h2 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '26px', color: '#1e1040', margin: 0, lineHeight: 1.3, maxWidth: '600px' }}>
+            {question.text}
+          </h2>
+
+          {/* Options / Input Block */}
+          <div style={{ width: '100%', maxWidth: '600px', marginTop: '8px' }}>
             {question.type === 'mcq' && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {question.options?.map((opt) => (
-                  <button
-                    key={opt}
-                    onClick={() => setCurrentAnswer(opt)}
-                    className={`p-6 rounded-2xl text-xl font-black transition-all border-4
-                      ${currentAnswer === opt 
-                        ? 'bg-indigo-100 border-indigo-500 text-indigo-700 scale-105 shadow-md' 
-                        : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-200 hover:bg-slate-50'
-                      }
-                    `}
-                  >
-                    {stripEmoji(opt)}
-                  </button>
-                ))}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+                {question.options?.map((opt) => {
+                  const isSelected = currentAnswer === opt;
+                  return (
+                    <button
+                      key={opt}
+                      onClick={() => setCurrentAnswer(opt)}
+                      className="hover-lift"
+                      style={{
+                        padding: '16px 12px', borderRadius: '18px',
+                        background: isSelected ? '#FFFDF0' : 'white',
+                        border: isSelected ? '2.5px solid #FFD54A' : '1.5px solid #E8EFFF',
+                        boxShadow: isSelected ? '0 8px 20px rgba(255,213,74,0.3)' : '0 4px 14px rgba(0,0,0,0.04)',
+                        fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', color: '#1e1040',
+                        cursor: 'pointer', transition: 'all 0.15s ease',
+                      }}
+                    >
+                      {stripEmoji(opt)}
+                    </button>
+                  );
+                })}
               </div>
             )}
 
@@ -303,60 +364,72 @@ export default function AIAssessment() {
                 value={currentAnswer}
                 onChange={(e) => setCurrentAnswer(e.target.value)}
                 placeholder="Type your answer here..."
-                className="w-full text-center text-3xl font-black text-indigo-700 bg-slate-50 border-4 border-slate-200 rounded-3xl p-6 outline-none focus:border-indigo-500 transition-all placeholder:text-slate-300"
+                style={{
+                  width: '100%', padding: '16px', borderRadius: '18px',
+                  border: '2px solid #E8EFFF', background: '#F8FAFF',
+                  fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', color: '#1e1040',
+                  textAlign: 'center', outline: 'none',
+                }}
               />
             )}
 
             {question.type === 'paragraph' && (
-              <div className="relative">
-                <textarea
-                  value={currentAnswer}
-                  onChange={(e) => setCurrentAnswer(e.target.value)}
-                  placeholder="Write your answer here..."
-                  className="w-full text-xl font-bold text-slate-700 bg-slate-50 border-4 border-slate-200 rounded-3xl p-6 min-h-[150px] outline-none focus:border-indigo-500 transition-all resize-none"
-                />
-                <div className="absolute bottom-4 right-6 text-slate-400 font-bold text-sm">
-                  {currentAnswer.length} chars
-                </div>
-              </div>
+              <textarea
+                value={currentAnswer}
+                onChange={(e) => setCurrentAnswer(e.target.value)}
+                placeholder="Write your answer here..."
+                style={{
+                  width: '100%', height: '120px', padding: '16px', borderRadius: '18px',
+                  border: '2px solid #E8EFFF', background: '#F8FAFF',
+                  fontFamily: 'Nunito', fontWeight: 700, fontSize: '15px', color: '#1e1040',
+                  outline: 'none', resize: 'none',
+                }}
+              />
             )}
 
             {question.type === 'read_aloud' && (
-              <div className="flex flex-col items-center gap-4 text-center">
-                <button 
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+                <button
                   onClick={() => toggleRecording(question.text)}
-                  className={`w-24 h-24 rounded-full flex items-center justify-center transition-all shadow-lg active:scale-95 ${
-                    isRecording 
-                      ? 'bg-red-500 text-white animate-pulse shadow-red-300 ring-8 ring-red-200' 
-                      : 'bg-red-100 text-red-500 hover:bg-red-200 hover:scale-105'
-                  }`}
+                  className="btn-3d"
+                  style={{
+                    width: '72px', height: '72px', borderRadius: '50%',
+                    background: isRecording ? '#EF4444' : 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
+                    border: 'none', color: 'white',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    boxShadow: '0 8px 24px rgba(108,76,255,0.4)', cursor: 'pointer',
+                  }}
                 >
-                  <Mic className="w-10 h-10" />
+                  <Mic className="w-8 h-8" />
                 </button>
-                <p className="text-slate-600 font-extrabold text-sm">
-                  {isRecording ? '🎙️ Listening to your speech...' : 'Click microphone to speak (or tap to simulate)'}
+                <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', color: '#64748B', margin: 0 }}>
+                  {isRecording ? '🎙️ Listening to your speech...' : 'Click microphone to speak'}
                 </p>
-
-                {currentAnswer && (
-                  <div className="bg-emerald-50 border-2 border-emerald-200 text-emerald-700 px-6 py-3 rounded-2xl font-black text-base flex items-center gap-2 animate-bounce">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                    <span>Recorded: "{currentAnswer}"</span>
-                  </div>
-                )}
               </div>
             )}
           </div>
 
-          <div className="mt-8 flex justify-end">
+          {/* Next Button */}
+          <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', borderTop: '2px solid #F1F5F9', paddingTop: '16px', marginTop: '8px' }}>
             <button
               onClick={handleNext}
-              className="bg-slate-900 hover:bg-indigo-600 text-white px-10 py-5 rounded-full font-black text-xl flex items-center gap-3 hover:-translate-y-1 transition-all shadow-lg cursor-pointer"
+              className="btn-3d"
+              style={{
+                background: 'linear-gradient(135deg, #FFD54A, #FF9F43)',
+                color: '#1e1040', fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px',
+                padding: '12px 28px', borderRadius: '16px', border: 'none',
+                borderBottom: '4px solid #E8A000', cursor: 'pointer',
+                boxShadow: '0 8px 24px rgba(255,213,74,0.4)',
+                display: 'flex', alignItems: 'center', gap: '8px',
+              }}
             >
-              {currentIndex === questions.length - 1 ? 'Submit Answers' : 'Next Question'}
-              <ArrowRight className="w-6 h-6" />
+              <span>{currentIndex === questions.length - 1 ? 'Submit Answers 🎉' : 'Next Question'}</span>
+              <ArrowRight className="w-5 h-5" />
             </button>
           </div>
+
         </div>
+
       </div>
     </div>
   );
