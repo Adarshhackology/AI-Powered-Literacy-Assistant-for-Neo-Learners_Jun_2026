@@ -5,7 +5,6 @@ import { DragonMascot, Sparkle } from '../UI/Illustrations';
 const navItems = [
   { to: '/dashboard', icon: '🏠', label: 'Dashboard', active: true },
   { to: '/learn-with-ai', icon: '🧠', label: 'Learn with AI', badge: 'NEW' },
-  { to: '/learn-with-ai', icon: '🎯', label: 'आज के लक्ष्य' },
   { to: '/vocabulary', icon: '📚', label: 'Sticker Book' },
   { to: '/reports', icon: '📊', label: 'My Progress' },
   { to: '/store', icon: '🎁', label: 'Rewards Store' },
