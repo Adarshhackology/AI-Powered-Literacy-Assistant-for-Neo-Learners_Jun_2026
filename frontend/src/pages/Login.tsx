@@ -3,7 +3,8 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { apiClient } from '../utils/api';
 import { SupportedLanguage, translations } from '../utils/translationHelper';
-import { ShieldCheck, Mail, Lock, Sparkles } from 'lucide-react';
+import { ArrowLeft, User, Lock, Sparkles } from 'lucide-react';
+import { Sparkle, RobotMascot } from '../components/UI/Illustrations';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -14,29 +15,6 @@ export default function Login() {
   const [lang, setLang] = useState<SupportedLanguage>('english');
   
   const navigate = useNavigate();
-
-  const handleGoogleSuccess = async (credentialResponse: any) => {
-    setLoading(true);
-    setError('');
-    try {
-      const response = await apiClient.googleLogin(credentialResponse.credential);
-      if (response.message === 'Login successful') {
-        localStorage.setItem('user', JSON.stringify(response.user));
-        localStorage.setItem('username', response.user.username);
-        if (response.isNewUser) {
-          navigate('/profile-setup');
-        } else if (response.user.profile && response.user.profile.fullName) {
-          navigate('/dashboard');
-        } else {
-          navigate('/profile-setup');
-        }
-      }
-    } catch (err: any) {
-      setError(err.message || 'Google Login failed. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
   const location = useLocation();
   const successMessage = (location.state as any)?.message;
 
@@ -58,7 +36,6 @@ export default function Login() {
       if (response.message === 'Login successful') {
         localStorage.setItem('user', JSON.stringify(response.user));
         localStorage.setItem('username', response.user.username);
-        // check if they already have completed profiles, else profile-setup
         if (response.user.profile && response.user.profile.fullName) {
           navigate('/dashboard');
         } else {
@@ -72,144 +49,222 @@ export default function Login() {
     }
   };
 
-  return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-slate-50 via-slate-100 to-blue-50/50 px-4 relative font-inter">
-      {/* Decorative Radial Background Lights */}
-      <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-gradient-to-tr from-blue-400/10 to-indigo-400/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-gradient-to-br from-violet-400/10 to-purple-400/10 rounded-full blur-[140px] pointer-events-none" />
+  const handleGoogleSuccess = async (credentialResponse: any) => {
+    setLoading(true);
+    setError('');
+    try {
+      const response = await apiClient.googleLogin(credentialResponse.credential);
+      if (response.message === 'Login successful') {
+        localStorage.setItem('user', JSON.stringify(response.user));
+        localStorage.setItem('username', response.user.username);
+        if (response.isNewUser) {
+          navigate('/profile-setup');
+        } else {
+          navigate('/dashboard');
+        }
+      }
+    } catch (err: any) {
+      setError(err.message || 'Google Login failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      {/* Language Toggle in Corner */}
-      <div className="absolute top-6 right-6 z-20">
-        <select
-          value={lang}
-          onChange={(e) => {
-            const newL = e.target.value as SupportedLanguage;
-            setLang(newL);
-            localStorage.setItem('preferredLanguage', newL);
-          }}
-          className="bg-white/80 backdrop-blur-md border border-slate-200/80 text-slate-700 text-xs font-semibold rounded-2xl px-4 py-2.5 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all cursor-pointer"
-        >
-          <option value="english">🇬🇧 English</option>
-          <option value="hindi">🇮🇳 हिंदी (Hindi)</option>
-          <option value="telugu">🇮🇳 తెలుగు (Telugu)</option>
-          <option value="tamil">🇮🇳 தமிழ் (Tamil)</option>
-          <option value="kannada">🇮🇳 ಕನ್ನಡ (Kannada)</option>
-          <option value="malayalam">🇮🇳 Malayalam</option>
-          <option value="marathi">🇮🇳 Marathi</option>
-          <option value="bengali">🇮🇳 Bengali</option>
-          <option value="gujarati">🇮🇳 Gujarati</option>
-          <option value="punjabi">🇮🇳 Punjabi</option>
-        </select>
+  return (
+    <div style={{
+      minHeight: '100vh',
+      background: '#1A0A4E',
+      backgroundImage: `
+        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.4) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.3) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
+      `,
+      padding: '20px',
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      position: 'relative',
+    }}>
+
+      {/* Background Star Field */}
+      <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+        {[
+          { t: '5%', l: '8%', s: 12 }, { t: '12%', l: '90%', s: 16 },
+          { t: '25%', l: '3%', s: 14 }, { t: '45%', l: '95%', s: 10 },
+          { t: '70%', l: '4%', s: 18 }, { t: '88%', l: '92%', s: 14 },
+        ].map((st, i) => (
+          <div key={i} className="animate-twinkle" style={{
+            position: 'absolute', top: st.t, left: st.l,
+            animationDelay: `${i * 0.4}s`, opacity: 0.7,
+          }}>
+            <Sparkle size={st.s} color={i % 2 === 0 ? '#FFD54A' : '#C4B5F4'} />
+          </div>
+        ))}
       </div>
 
-      <div className="backdrop-blur-xl bg-white/90 border border-slate-200/50 p-8 md:p-10 rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgba(99,102,241,0.06)] w-full max-w-md relative z-10 transition-all duration-300">
-        {/* Header / Logo */}
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-indigo-600/20 transition-all hover:scale-105 duration-300">
-            <span className="text-3xl leading-none">📚</span>
-          </div>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight font-poppins">{t.login}</h1>
-          <p className="text-slate-500 font-medium text-sm mt-1.5">AI-Powered Literacy Assistant</p>
-        </div>
+      <div style={{ maxWidth: '440px', width: '100%', position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-        {/* Messages */}
-        {successMessage && (
-          <div className="bg-emerald-50/50 border border-emerald-100/80 text-emerald-800 rounded-2xl px-4 py-3.5 mb-6 text-xs font-semibold flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-emerald-500 shrink-0" />
-            <span>{successMessage}</span>
-          </div>
-        )}
+        {/* Top Glass Nav Bar */}
+        <nav style={{
+          height: '60px',
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '20px',
+          padding: '0 20px',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+          border: '1.5px solid rgba(255,255,255,0.6)',
+        }}>
+          <button
+            onClick={() => navigate('/')}
+            className="btn-3d"
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              color: '#1e1040', textDecoration: 'none',
+              fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
+              background: '#F0F4FF', padding: '6px 14px', borderRadius: '12px',
+              border: '1px solid #E8EFFF', cursor: 'pointer',
+            }}
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Home</span>
+          </button>
 
-        {error && (
-          <div className="bg-amber-50/50 border border-amber-100/80 text-amber-800 rounded-2xl px-4 py-3.5 mb-6 text-xs font-semibold flex items-start gap-2">
-            <span className="text-sm leading-none mt-0.5">⚠️</span>
-            <span>{error}</span>
-          </div>
-        )}
+          <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', color: '#1e1040' }}>
+            NeoLit Login
+          </span>
 
-        {/* Input Form */}
-        <form onSubmit={handleLogin} className="space-y-5">
-          <div className="space-y-1.5">
-            <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider pl-1">Username</label>
-            <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400/80" />
+          <div style={{ width: '40px' }} />
+        </nav>
+
+        {/* Login Card */}
+        <div style={{
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '28px',
+          padding: '32px',
+          border: '2px solid rgba(255,255,255,0.6)',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+          display: 'flex', flexDirection: 'column', gap: '20px',
+        }}>
+
+          {/* Logo & Header */}
+          <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+            <div style={{
+              width: '56px', height: '56px', borderRadius: '18px',
+              background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '28px', boxShadow: '0 8px 20px rgba(108,76,255,0.3)',
+            }}>
+              📚
+            </div>
+            <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '24px', color: '#1e1040', margin: '4px 0 0' }}>
+              {t.login}
+            </h1>
+            <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', color: '#64748B', margin: 0 }}>
+              AI-Powered Literacy Assistant
+            </p>
+          </div>
+
+          {successMessage && (
+            <div style={{ background: '#ECFDF5', border: '1px solid #A7F3D0', color: '#065F46', borderRadius: '12px', padding: '10px 14px', fontFamily: 'Nunito', fontWeight: 700, fontSize: '12px' }}>
+              ✅ {successMessage}
+            </div>
+          )}
+
+          {error && (
+            <div style={{ background: '#FEF2F2', border: '1px solid #FCA5A5', color: '#991B1B', borderRadius: '12px', padding: '10px 14px', fontFamily: 'Nunito', fontWeight: 700, fontSize: '12px' }}>
+              ⚠️ {error}
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <div>
+              <label style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '10px', color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                Username
+              </label>
               <input
                 type="text"
-                className="w-full pl-12 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl text-slate-800 focus:outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-500 transition-all duration-200 font-medium text-sm placeholder:text-slate-400"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter username (e.g. adarsh)"
                 required
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                placeholder="Enter username (e.g. adarsh)"
+                style={{
+                  width: '100%', padding: '12px 14px', borderRadius: '14px',
+                  border: '1.5px solid #E8EFFF', background: '#F8FAFF',
+                  fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', color: '#1e1040', outline: 'none',
+                }}
               />
             </div>
-          </div>
 
-          <div className="space-y-1.5">
-            <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider pl-1">Password</label>
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400/80" />
+            <div>
+              <label style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '10px', color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                Password
+              </label>
               <input
                 type="password"
-                className="w-full pl-12 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl text-slate-800 focus:outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-500 transition-all duration-200 font-medium text-sm placeholder:text-slate-400"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password (e.g. password)"
                 required
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="Enter password"
+                style={{
+                  width: '100%', padding: '12px 14px', borderRadius: '14px',
+                  border: '1.5px solid #E8EFFF', background: '#F8FAFF',
+                  fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', color: '#1e1040', outline: 'none',
+                }}
               />
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontFamily: 'Nunito', fontWeight: 700, fontSize: '12px', color: '#64748B' }}>
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={e => setRememberMe(e.target.checked)}
+                />
+                Remember Me
+              </label>
+              <span style={{ fontFamily: 'Nunito', fontWeight: 800, fontSize: '12px', color: '#6C4CFF', cursor: 'pointer' }}>Forgot Password?</span>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-3d"
+              style={{
+                background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
+                color: 'white', fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px',
+                padding: '12px', borderRadius: '14px', border: 'none',
+                borderBottom: '3.5px solid #4D2FCC', cursor: loading ? 'not-allowed' : 'pointer',
+                boxShadow: '0 6px 18px rgba(108,76,255,0.4)', marginTop: '4px',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+              }}
+            >
+              <Sparkles className="w-4 h-4" />
+              <span>{loading ? 'Logging in...' : 'Log In'}</span>
+            </button>
+          </form>
+
+          {/* Social login divider */}
+          <div style={{ textAlign: 'center', position: 'relative', margin: '4px 0' }}>
+            <span style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#94A3B8', background: 'white', padding: '0 8px', position: 'relative', zIndex: 1 }}>
+              or sign in with
+            </span>
+            <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '1px', background: '#E8EFFF' }} />
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => setError('Google login failed')}
+            />
+            
+            <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '12px', color: '#64748B' }}>
+              New here? <Link to="/register" style={{ color: '#6C4CFF', fontWeight: 900, textDecoration: 'none' }}>Register</Link>
             </div>
           </div>
 
-          <div className="flex items-center justify-between text-xs font-semibold pt-1">
-            <label className="flex items-center gap-2 text-slate-500 cursor-pointer select-none">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-4 h-4 text-indigo-600 border-slate-200 rounded focus:ring-indigo-500/20"
-              />
-              Remember Me
-            </label>
-            <a href="#" className="text-indigo-600 hover:underline">Forgot Password?</a>
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full mt-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-bold py-4 rounded-2xl hover:shadow-[0_8px_20px_rgba(99,102,241,0.25)] active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? (
-              <span>⏳ Logging in...</span>
-            ) : (
-              <>
-                <Sparkles className="w-4 h-4" />
-                <span>Log In</span>
-              </>
-            )}
-          </button>
-        </form>
-
-        {/* Separator */}
-        <div className="relative my-6 text-center">
-          <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-100" /></div>
-          <span className="relative bg-[#fafafa] px-4 text-[10px] font-bold uppercase tracking-widest text-slate-400/80">or sign in with</span>
         </div>
 
-        {/* Google OAuth Component */}
-        <div className="flex justify-center mt-2">
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={() => setError('Google Authentication Failed.')}
-            useOneTap
-          />
-        </div>
-
-        {/* Footer */}
-        <p className="mt-8 text-center text-slate-400 text-xs font-semibold">
-          New here?{' '}
-          <Link to="/register" className="text-indigo-600 font-bold hover:underline">
-            {t.register}
-          </Link>
-        </p>
       </div>
     </div>
   );

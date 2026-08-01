@@ -157,11 +157,13 @@ export const Navbar: React.FC<NavbarProps> = ({ profile, searchQuery, setSearchQ
             border: '2px solid white', overflow: 'hidden',
             boxShadow: '0 3px 10px rgba(108,76,255,0.35)',
           }}>
-            <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.fullName}`} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.fullName || 'Guest'}`} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
           <div>
-            <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px', color: '#1e1040', lineHeight: 1.1 }}>{profile.fullName}</div>
-            <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#8A5CFF' }}>Level {profile.level}</div>
+            <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px', color: '#1e1040', lineHeight: 1.1 }}>
+              {(!profile.fullName || profile.fullName.toUpperCase() === 'GOOGLE_USER' || profile.fullName.toUpperCase() === 'GUEST') ? 'Guest Learner' : profile.fullName}
+            </div>
+            <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#8A5CFF' }}>Level {profile.level || 1}</div>
           </div>
           <ChevronDown style={{ width: '14px', height: '14px', color: '#6C4CFF', transform: showMenu ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
         </div>
