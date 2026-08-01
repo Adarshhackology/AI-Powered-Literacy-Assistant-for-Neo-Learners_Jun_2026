@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Download, Sparkles, TrendingUp, BookOpen, Edit3, Mic, Brain, Trophy, Calendar, CheckCircle2, Award, Zap, BarChart2 } from 'lucide-react';
+import { ArrowLeft, Download, Sparkles, TrendingUp, BarChart2, Award } from 'lucide-react';
 import { apiClient } from '../utils/api';
+import { Sparkle, TrophySVG } from '../components/UI/Illustrations';
 
 export default function Reports() {
   const navigate = useNavigate();
@@ -30,21 +31,21 @@ export default function Reports() {
   }, [username]);
 
   const reportTabs = [
-    { id: 'ai_summary', label: '🤖 AI Report', icon: '🧠' },
-    { id: 'daily', label: '📅 Daily Progress', icon: '☀️' },
-    { id: 'weekly', label: '📈 Weekly Trend', icon: '📊' },
-    { id: 'monthly', label: '🗓️ Monthly Overview', icon: '🗓️' },
-    { id: 'lesson_completion', label: '📖 Lesson Completion', icon: '📚' },
-    { id: 'reading', label: '📖 Reading Report', icon: '📖' },
-    { id: 'writing', label: '✍️ Writing Report', icon: '✍️' },
-    { id: 'speaking', label: '🗣️ Speaking Report', icon: '🎙️' },
-    { id: 'pronunciation', label: '🎯 Pronunciation', icon: '🎯' },
-    { id: 'vocabulary', label: '🌸 Vocabulary Growth', icon: '🌸' },
-    { id: 'study_time', label: '⏰ Study Time', icon: '⏱️' },
-    { id: 'weak_skills', label: '🔍 Weak Skills', icon: '🔍' },
-    { id: 'strong_skills', label: '⭐ Strong Skills', icon: '⭐' },
-    { id: 'achievements', label: '🏆 Achievements', icon: '🏅' },
-    { id: 'streak', label: '🔥 Streak Report', icon: '🔥' },
+    { id: 'ai_summary', label: 'AI Report', icon: '🤖' },
+    { id: 'daily', label: 'Daily Progress', icon: '☀️' },
+    { id: 'weekly', label: 'Weekly Trend', icon: '📊' },
+    { id: 'monthly', label: 'Monthly Overview', icon: '🗓️' },
+    { id: 'lesson_completion', label: 'Lesson Completion', icon: '📚' },
+    { id: 'reading', label: 'Reading Report', icon: '📖' },
+    { id: 'writing', label: 'Writing Report', icon: '✍️' },
+    { id: 'speaking', label: 'Speaking Report', icon: '🎙️' },
+    { id: 'pronunciation', label: 'Pronunciation', icon: '🎯' },
+    { id: 'vocabulary', label: 'Vocabulary Growth', icon: '🌸' },
+    { id: 'study_time', label: 'Study Time', icon: '⏱️' },
+    { id: 'weak_skills', label: 'Weak Skills', icon: '🔍' },
+    { id: 'strong_skills', label: 'Strong Skills', icon: '⭐' },
+    { id: 'achievements', label: 'Achievements', icon: '🏅' },
+    { id: 'streak', label: 'Streak Report', icon: '🔥' },
   ];
 
   const summaries = reportData?.report_summaries || {
@@ -72,54 +73,138 @@ export default function Reports() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col text-slate-800 font-nunito">
-      
+    <div style={{
+      minHeight: '100vh',
+      background: '#1A0A4E',
+      backgroundImage: `
+        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.4) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.3) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
+      `,
+      padding: '20px',
+      position: 'relative',
+    }}>
+
       {/* Header Bar */}
-      <nav className="h-16 bg-white border-b-4 border-slate-100 px-6 py-4 flex items-center justify-between shrink-0">
-        <Link to="/dashboard" className="flex items-center gap-2 text-slate-600 hover:text-slate-900 font-bold transition-colors">
-          <ArrowLeft className="w-5 h-5" />
+      <nav style={{
+        height: '64px',
+        background: 'rgba(255,255,255,0.95)',
+        backdropFilter: 'blur(20px)',
+        borderRadius: '20px',
+        padding: '0 20px',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        marginBottom: '20px',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+        border: '1.5px solid rgba(255,255,255,0.6)',
+      }}>
+        <Link to="/dashboard" className="btn-3d" style={{
+          display: 'flex', alignItems: 'center', gap: '8px',
+          color: '#1e1040', textDecoration: 'none',
+          fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px',
+          background: '#F0F4FF', padding: '8px 16px', borderRadius: '12px',
+          border: '1px solid #E8EFFF',
+        }}>
+          <ArrowLeft className="w-4 h-4" />
           <span>Back to Dashboard</span>
         </Link>
-        <div className="flex items-center gap-2">
-          <TrendingUp className="w-6 h-6 text-indigo-600" />
-          <span className="font-black text-slate-900 text-lg">Comprehensive Learning Reports (15 Analytics)</span>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span style={{ fontSize: '22px' }}>📊</span>
+          <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', color: '#1e1040' }}>
+            Comprehensive Learning Reports
+          </span>
+          <span style={{
+            background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
+            color: 'white', fontFamily: 'Poppins', fontWeight: 800, fontSize: '11px',
+            padding: '3px 10px', borderRadius: '99px',
+          }}>
+            15 Analytics
+          </span>
         </div>
-        <button 
+
+        <button
           onClick={() => setShowCertModal(true)}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs px-4 py-2 rounded-xl shadow-sm flex items-center gap-1.5 cursor-pointer"
+          className="btn-3d"
+          style={{
+            background: 'linear-gradient(135deg, #FFD54A, #FF9F43)',
+            color: '#1e1040',
+            fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
+            padding: '8px 18px', borderRadius: '12px',
+            border: 'none', borderBottom: '3px solid #E8A000',
+            cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px',
+            boxShadow: '0 4px 14px rgba(255,213,74,0.4)',
+          }}
         >
-          <Download className="w-4 h-4" /> Certificate
+          <Download className="w-4 h-4" /> Certificate 🎓
         </button>
       </nav>
 
-      {/* Main Layout */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-6 md:p-8 space-y-8">
+      {/* Main Content */}
+      <main style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '20px' }}>
         
         {/* Gemini AI Recommendations Banner Card */}
-        <div className="bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-700 rounded-[2.5rem] p-6 md:p-8 text-white shadow-xl relative overflow-hidden border-b-6 border-indigo-900">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative z-10">
-            <div className="space-y-2 max-w-2xl">
-              <div className="inline-flex items-center gap-2 bg-yellow-400 text-slate-900 font-black text-xs px-3.5 py-1 rounded-full uppercase tracking-wider">
-                <Sparkles className="w-4 h-4 text-indigo-900 animate-spin" /> Personalized AI Recommendations
-              </div>
-              <h1 className="text-3xl md:text-4xl font-black tracking-tight">AI Tutor Improvement Recommendations 🧠</h1>
-              <p className="text-purple-100 font-semibold text-sm">
-                Generated from your speech attempts, lesson scores, and practice evaluations.
-              </p>
+        <div style={{
+          borderRadius: '24px',
+          background: 'linear-gradient(135deg, #6C4CFF 0%, #8A5CFF 40%, #FF4FA3 100%)',
+          padding: '24px 28px',
+          color: 'white',
+          position: 'relative',
+          overflow: 'hidden',
+          boxShadow: '0 16px 48px rgba(108,76,255,0.35)',
+          border: '2px solid rgba(255,255,255,0.25)',
+        }}>
+          {/* Sparkles background */}
+          <div style={{ position: 'absolute', top: '12px', right: '20px', opacity: 0.6 }}>
+            <Sparkle size={24} color="#FFD54A" />
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: '6px',
+              background: '#FFD54A', color: '#1e1040',
+              fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px',
+              padding: '4px 14px', borderRadius: '99px',
+              boxShadow: '0 4px 12px rgba(255,213,74,0.4)',
+              width: 'fit-content',
+            }}>
+              <Sparkles className="w-3.5 h-3.5" /> PERSONALIZED AI RECOMMENDATIONS
             </div>
+            <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '26px', margin: 0, color: 'white', lineHeight: 1.2 }}>
+              AI Tutor Improvement Recommendations 🧠
+            </h1>
+            <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', color: 'rgba(255,255,255,0.9)', margin: 0 }}>
+              Generated from your speech attempts, lesson scores, and practice evaluations.
+            </p>
           </div>
 
           {/* AI Action Items Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px' }}>
             {recommendations.map((rec: any, idx: number) => (
-              <div key={idx} className="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex flex-col justify-between space-y-3">
+              <div key={idx} style={{
+                background: 'rgba(255,255,255,0.15)',
+                backdropFilter: 'blur(12px)',
+                border: '1.5px solid rgba(255,255,255,0.25)',
+                padding: '16px',
+                borderRadius: '18px',
+                display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+                gap: '12px',
+              }}>
                 <div>
-                  <h4 className="font-black text-white text-base mb-1">{rec.title}</h4>
-                  <p className="text-xs font-medium text-purple-100 leading-relaxed">{rec.desc}</p>
+                  <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: 'white', margin: '0 0 6px' }}>{rec.title}</h4>
+                  <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '11px', color: 'rgba(255,255,255,0.85)', margin: 0, lineHeight: 1.4 }}>{rec.desc}</p>
                 </div>
-                <button 
+                <button
                   onClick={() => navigate(rec.action_link || '/voice-practice')}
-                  className="bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-black text-xs py-2 px-4 rounded-xl text-center shadow-md transition-all active:translate-y-0.5"
+                  className="btn-3d"
+                  style={{
+                    background: '#FFD54A',
+                    color: '#1e1040',
+                    fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px',
+                    padding: '8px 14px', borderRadius: '10px',
+                    border: 'none', borderBottom: '3px solid #E8A000',
+                    cursor: 'pointer', width: 'fit-content',
+                    boxShadow: '0 4px 12px rgba(255,213,74,0.4)',
+                  }}
                 >
                   Start Practice →
                 </button>
@@ -129,59 +214,88 @@ export default function Reports() {
         </div>
 
         {/* 15 Detailed Report Tabs Navigation */}
-        <div className="bg-white p-4 rounded-[2rem] border-4 border-slate-100 shadow-md">
-          <h3 className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 px-2">Select Report Category (15 Detailed Reports)</h3>
-          <div className="flex flex-wrap gap-2">
-            {reportTabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`px-4 py-2.5 rounded-xl font-extrabold text-xs transition-all flex items-center gap-1.5 cursor-pointer ${
-                  activeTab === tab.id
-                    ? 'bg-indigo-600 text-white shadow-md border-b-4 border-indigo-800'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200'
-                }`}
-              >
-                <span>{tab.icon}</span>
-                <span>{tab.label}</span>
-              </button>
-            ))}
+        <div style={{
+          background: 'white',
+          borderRadius: '22px',
+          padding: '18px',
+          border: '1.5px solid #E8EFFF',
+          boxShadow: '0 8px 30px rgba(0,0,0,0.06)',
+        }}>
+          <h3 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 12px' }}>
+            Select Report Category (15 Detailed Reports)
+          </h3>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            {reportTabs.map((tab) => {
+              const active = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  style={{
+                    padding: '8px 14px',
+                    borderRadius: '12px',
+                    fontFamily: 'Poppins', fontWeight: 800, fontSize: '12px',
+                    cursor: 'pointer',
+                    border: active ? 'none' : '1.5px solid #E8EFFF',
+                    background: active ? 'linear-gradient(135deg, #6C4CFF, #8A5CFF)' : '#F8FAFF',
+                    color: active ? 'white' : '#475569',
+                    boxShadow: active ? '0 4px 14px rgba(108,76,255,0.35)' : 'none',
+                    transition: 'all 0.18s ease',
+                    display: 'flex', alignItems: 'center', gap: '6px',
+                  }}
+                >
+                  <span>{tab.icon}</span>
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
         {/* Active Report Detail Card */}
-        <div className="bg-white rounded-[2.5rem] p-8 border-4 border-slate-100 shadow-xl space-y-6">
-          <div className="flex items-center justify-between border-b-2 border-slate-100 pb-4">
-            <h2 className="text-2xl font-black text-slate-800 capitalize flex items-center gap-2">
-              <BarChart2 className="w-6 h-6 text-indigo-600" />
-              <span>{reportTabs.find(t => t.id === activeTab)?.label || 'Report Details'}</span>
+        <div style={{
+          background: 'white',
+          borderRadius: '22px',
+          padding: '24px',
+          border: '1.5px solid #E8EFFF',
+          boxShadow: '0 8px 30px rgba(0,0,0,0.06)',
+          display: 'flex', flexDirection: 'column', gap: '18px',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '2px solid #F1F5F9', paddingBottom: '14px' }}>
+            <h2 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', color: '#1e1040', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <BarChart2 className="w-5 h-5 text-indigo-600" />
+              <span>{reportTabs.find(t => t.id === activeTab)?.icon} {reportTabs.find(t => t.id === activeTab)?.label}</span>
             </h2>
-            <span className="bg-emerald-100 text-emerald-800 font-black text-xs px-3 py-1 rounded-full border border-emerald-200">
+            <span style={{
+              background: '#DCFCE7', color: '#166534',
+              fontFamily: 'Poppins', fontWeight: 800, fontSize: '11px',
+              padding: '4px 12px', borderRadius: '99px', border: '1px solid #BBF7D0',
+            }}>
               Live Verified Data
             </span>
           </div>
 
-          <div className="bg-slate-50 border-2 border-slate-200/80 p-6 rounded-2xl">
-            <p className="text-lg font-bold text-slate-700 leading-relaxed">
+          <div style={{ background: '#F8FAFF', border: '1.5px solid #E8EFFF', padding: '18px', borderRadius: '16px' }}>
+            <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '15px', color: '#334155', margin: 0, lineHeight: 1.6 }}>
               {summaries[activeTab] || 'No summary available for this report section.'}
             </p>
           </div>
 
           {/* Graphical Analytics Display */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-            <div className="bg-indigo-50 border-2 border-indigo-100 p-5 rounded-2xl text-center">
-              <h4 className="text-xs font-black text-indigo-600 uppercase tracking-wider mb-1">Average Accuracy</h4>
-              <div className="text-3xl font-black text-indigo-900">86%</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+            <div style={{ background: '#EEF2FF', border: '1.5px solid #C7D2FE', padding: '16px', borderRadius: '16px', textAlign: 'center' }}>
+              <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px', color: '#4338CA', textTransform: 'uppercase', margin: '0 0 4px' }}>Average Accuracy</h4>
+              <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '32px', color: '#1E1B4B' }}>86%</div>
             </div>
 
-            <div className="bg-emerald-50 border-2 border-emerald-100 p-5 rounded-2xl text-center">
-              <h4 className="text-xs font-black text-emerald-600 uppercase tracking-wider mb-1">Total Active Days</h4>
-              <div className="text-3xl font-black text-emerald-900">5 Days</div>
+            <div style={{ background: '#ECFDF5', border: '1.5px solid #A7F3D0', padding: '16px', borderRadius: '16px', textAlign: 'center' }}>
+              <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px', color: '#047857', textTransform: 'uppercase', margin: '0 0 4px' }}>Total Active Days</h4>
+              <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '32px', color: '#064E3B' }}>5 Days</div>
             </div>
 
-            <div className="bg-amber-50 border-2 border-amber-100 p-5 rounded-2xl text-center">
-              <h4 className="text-xs font-black text-amber-600 uppercase tracking-wider mb-1">Lessons Completed</h4>
-              <div className="text-3xl font-black text-amber-900">14 / 20</div>
+            <div style={{ background: '#FFFBEB', border: '1.5px solid #FDE68A', padding: '16px', borderRadius: '16px', textAlign: 'center' }}>
+              <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px', color: '#B45309', textTransform: 'uppercase', margin: '0 0 4px' }}>Lessons Completed</h4>
+              <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '32px', color: '#78350F' }}>14 / 20</div>
             </div>
           </div>
         </div>
@@ -190,16 +304,43 @@ export default function Reports() {
 
       {/* Certificate Modal */}
       {showCertModal && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-[2.5rem] p-8 max-w-lg w-full border-4 border-indigo-200 shadow-2xl text-center space-y-6 relative animate-scale-up">
-            <div className="text-6xl">🎓</div>
-            <h2 className="text-3xl font-black text-slate-800">Literacy Completion Certificate</h2>
-            <p className="text-slate-600 font-bold text-sm">
+        <div style={{
+          position: 'fixed', inset: 0,
+          background: 'rgba(15,23,42,0.65)',
+          backdropFilter: 'blur(8px)',
+          zIndex: 50,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          padding: '20px',
+        }}>
+          <div style={{
+            background: 'white',
+            borderRadius: '28px',
+            padding: '32px',
+            maxWidth: '480px', width: '100%',
+            border: '2px solid #E8EFFF',
+            boxShadow: '0 25px 50px rgba(0,0,0,0.25)',
+            textAlign: 'center',
+            display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center',
+          }}>
+            <div style={{ fontSize: '64px', lineHeight: 1 }}>🎓</div>
+            <h2 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '24px', color: '#1e1040', margin: 0 }}>
+              Literacy Completion Certificate
+            </h2>
+            <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', color: '#64748B', margin: 0, lineHeight: 1.5 }}>
               Congratulations <b>{username}</b>! You have completed 70% of your AI Literacy path. Keep practicing to unlock your official PDF badge!
             </p>
-            <button 
+            <button
               onClick={() => setShowCertModal(false)}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3 rounded-2xl shadow-md cursor-pointer"
+              className="btn-3d"
+              style={{
+                width: '100%',
+                background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
+                color: 'white',
+                fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px',
+                padding: '12px', borderRadius: '14px',
+                border: 'none', borderBottom: '3px solid rgba(0,0,0,0.3)',
+                cursor: 'pointer', boxShadow: '0 4px 16px rgba(108,76,255,0.4)',
+              }}
             >
               Close Preview
             </button>
