@@ -4,10 +4,10 @@ import { ArrowLeft, Mic, MicOff, Volume2, Sparkles, RefreshCw, CheckCircle2 } fr
 import { apiClient } from '../utils/api';
 
 const wordsToPractice = [
-  { text: 'Beautiful', phonetic: '/ˈbjuːtɪfl/', help: 'Stress should be on "Beau"', stressWord: 'Beau' },
-  { text: 'Literacy', phonetic: '/ˈlɪtərəsi/', help: 'Ensure you sound out all three syllables: Lit-er-a-cy', stressWord: 'Lit' },
-  { text: 'Education', phonetic: '/ˌedʒuˈkeɪʃn/', help: 'Stress is on "ca". Sound out the "sh" sound clearly.', stressWord: 'ca' },
-  { text: 'Personalized', phonetic: '/ˈpɜːsənəlaɪzd/', help: 'Pronounce the "s" as /z/ at the end.', stressWord: 'Per' },
+  { text: 'Beautiful', phonetic: '/ˈbjuːtɪfl/', help: 'Stress should be on "Beau"', stressWord: 'Beau', emoji: '🌸', imageUrl: 'https://api.dicebear.com/7.x/bottts/svg?seed=flower' },
+  { text: 'Literacy', phonetic: '/ˈlɪtərəsi/', help: 'Ensure you sound out all three syllables: Lit-er-a-cy', stressWord: 'Lit', emoji: '📚', imageUrl: 'https://api.dicebear.com/7.x/bottts/svg?seed=book' },
+  { text: 'Education', phonetic: '/ˌedʒuˈkeɪʃn/', help: 'Stress is on "ca". Sound out the "sh" sound clearly.', stressWord: 'ca', emoji: '🏫', imageUrl: 'https://api.dicebear.com/7.x/bottts/svg?seed=school' },
+  { text: 'Personalized', phonetic: '/ˈpɜːsənəlaɪzd/', help: 'Pronounce the "s" as /z/ at the end.', stressWord: 'Per', emoji: '⭐', imageUrl: 'https://api.dicebear.com/7.x/bottts/svg?seed=star' },
 ];
 
 export default function VoicePractice() {
@@ -176,9 +176,13 @@ export default function VoicePractice() {
             <p className="text-slate-400 font-bold text-xs">Practice Word {currentIndex + 1} of {wordsToPractice.length}</p>
           </div>
 
-          <div className="space-y-2">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-32 h-32 rounded-3xl bg-gradient-to-tr from-indigo-100 via-purple-100 to-pink-100 p-2 border-4 border-indigo-200 shadow-xl overflow-hidden flex items-center justify-center">
+              <img src={currentWord.imageUrl} alt={currentWord.text} className="w-full h-full object-contain animate-bounce-slow" />
+            </div>
+            
             <h1 className="text-5xl md:text-6xl font-black text-slate-950 tracking-tight leading-none">
-              {currentWord.text}
+              {currentWord.text} {currentWord.emoji}
             </h1>
             <p className="text-lg text-blue-600 font-bold font-serif tracking-wider">{currentWord.phonetic}</p>
           </div>

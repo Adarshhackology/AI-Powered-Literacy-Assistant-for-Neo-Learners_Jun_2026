@@ -106,9 +106,11 @@ export default function LandingPage() {
         {/* Visual Mock Showcase (Sticker Board Mock) */}
         <div className="lg:col-span-5 flex justify-center relative">
           <div className="bg-white border-4 border-b-8 border-slate-100 p-7 rounded-[40px] shadow-xl w-full max-w-sm relative z-10 hover:scale-[1.02] transition-transform duration-300">
-            {/* Mascot Image */}
-            <div className="flex justify-center mb-6">
-              <img src="/register_boy.png" alt="NeoLit Kid Mascot" className="w-24 h-24 object-contain animate-float" />
+            {/* Mascot Image Illustration */}
+            <div className="flex justify-center mb-4">
+              <div className="w-28 h-28 rounded-3xl bg-gradient-to-tr from-amber-100 to-indigo-100 p-2 border-4 border-indigo-200 shadow-lg flex items-center justify-center">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=neolit-mascot" alt="NeoLit Kid Mascot" className="w-full h-full object-contain animate-bounce-slow" />
+              </div>
             </div>
             
             {/* Mock Chat Card with AI tutor */}

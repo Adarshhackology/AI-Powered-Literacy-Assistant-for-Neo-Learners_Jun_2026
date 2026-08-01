@@ -4,7 +4,8 @@ import { apiClient } from '../utils/api';
 import { SupportedLanguage, translations } from '../utils/translationHelper';
 import { 
   BookOpen, Mic, Trophy, Calendar, LogOut, 
-  Settings, Bell, Search, Sparkles, TrendingUp 
+  Settings, Bell, Search, Sparkles, TrendingUp,
+  Flame, Coins, Award, Lock, ChevronRight, Play, Check, Shield
 } from 'lucide-react';
 
 export default function Dashboard() {
@@ -13,27 +14,20 @@ export default function Dashboard() {
   const [activeLevel, setActiveLevel] = useState<string>('Beginner');
   
   const [profile, setProfile] = useState<any>({
-    fullName: username,
+    fullName: username.toUpperCase(),
     avatar: '🧑‍🎓',
-    xp: 150,
-    coins: 45,
-    streak: 15,
-    level: 2,
-    badges: ['First Lesson', '7 Day Streak'],
-    completedLessons: [1]
+    xp: 249,
+    coins: 80,
+    streak: 1,
+    level: 3,
+    badges: ['First Lesson', '7 Day Streak', 'Level Explorer', 'Reading Star', 'Perfect Score'],
+    completedLessons: [1, 2]
   });
-
-  useEffect(() => {
-    if (profile && profile.level) {
-      const levels = ['Beginner', 'Intermediate', 'Advanced'];
-      const currentLevelName = levels[Math.min(profile.level - 1, levels.length - 1)] || 'Beginner';
-      setActiveLevel(currentLevelName);
-    }
-  }, [profile]);
 
   const [lessons, setLessons] = useState<any[]>([]);
   const [leaderboard, setLeaderboard] = useState<any[]>([]);
   const [lang, setLang] = useState<SupportedLanguage>('english');
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     // Check if user is logged in
@@ -51,13 +45,20 @@ export default function Dashboard() {
     const fetchData = async () => {
       try {
         const prof = await apiClient.getProfile(username);
-        setProfile(prof);
+        if (prof) {
+          setProfile({
+            ...prof,
+            fullName: (prof.fullName || username).toUpperCase()
+          });
+        }
 
         const less = await apiClient.getLessons();
-        setLessons(less);
+        setLessons(less || []);
 
-        const lb = await apiClient.getLeaderboard();
-        setLeaderboard(lb);
+        const lb = await apiClient.getGamificationLeaderboard();
+        if (lb && lb.leaderboard) {
+          setLeaderboard(lb.leaderboard);
+        }
       } catch (err) {
         console.error(err);
       }
@@ -73,433 +74,543 @@ export default function Dashboard() {
     navigate('/login');
   };
 
-  const getLevelName = (lvl: number) => {
-    const levels = ['Beginner 🎈', 'Learner 🦄', 'Explorer 🚀', 'Achiever 🏆', 'Master 👑'];
-    return levels[Math.min(lvl - 1, levels.length - 1)] || 'Learner 🦄';
-  };
+  const championsList = [
+    { rank: 1, name: 'Adarsh', level: 5, xp: 1560, avatar: '👨‍🎓' },
+    { rank: 2, name: 'Siddharth', level: 5, xp: 1480, avatar: '👨‍🎓' },
+    { rank: 3, name: 'Priya', level: 5, xp: 1350, avatar: '👩‍🎓' },
+    { rank: 4, name: 'Aashi', level: 4, xp: 1200, avatar: '👧' },
+    { rank: 5, name: 'Yashwi', level: 4, xp: 1100, avatar: '👦' },
+  ];
 
-  const filteredLessons = lessons.filter(l => l.difficulty.toLowerCase() === activeLevel.toLowerCase());
-  const displayedLessons = filteredLessons;
+  const continueLessons = [
+    { id: 1, title: 'Reading Comprehension', subtitle: 'Module 2 • Lesson 4', progress: 75, color: 'from-purple-500 to-indigo-600', icon: '📖' },
+    { id: 2, title: 'Creative Writing', subtitle: 'Module 1 • Lesson 3', progress: 40, color: 'from-pink-500 to-rose-600', icon: '✍️' },
+    { id: 3, title: 'Spoken English', subtitle: 'Module 3 • Lesson 1', progress: 60, color: 'from-sky-500 to-blue-600', icon: '🗣️' },
+    { id: 4, title: 'Vocabulary Builder', subtitle: 'Module 2 • Lesson 6', progress: 30, color: 'from-emerald-500 to-teal-600', icon: '📚' },
+  ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex text-slate-800">
+    <div className="min-h-screen bg-gradient-to-b from-[#EAF7FF] via-[#F5FAFF] to-[#FDFDFF] text-slate-800 font-nunito p-4 md:p-6 relative overflow-x-hidden">
       
-      {/* Sidebar Navigation */}
-      <aside className="w-64 bg-white border-r-4 border-slate-100 hidden md:flex flex-col justify-between py-6 px-4 shrink-0">
-        <div className="space-y-8">
-          {/* Logo */}
-          <div className="flex items-center gap-2.5 px-3">
-            <div className="w-11 h-11 bg-gradient-to-tr from-yellow-400 via-amber-400 to-orange-500 rounded-2xl flex items-center justify-center text-white text-2xl shadow-md rotate-[-3deg] animate-float">
-              📚
-            </div>
-            <span className="text-xl font-black text-slate-850 tracking-tight">NeoLit Game</span>
-          </div>
+      {/* Animated Sky Background Decorations */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <span className="absolute top-8 left-[20%] text-4xl opacity-30 animate-float select-none">☁️</span>
+        <span className="absolute top-16 right-[15%] text-5xl opacity-30 animate-float select-none" style={{ animationDelay: '1.5s' }}>☁️</span>
+        <span className="absolute top-32 left-[45%] text-3xl opacity-20 animate-float select-none" style={{ animationDelay: '2.5s' }}>🎈</span>
+        <span className="absolute top-48 right-[30%] text-3xl opacity-25 animate-float select-none">✨</span>
+      </div>
 
-          {/* Navigation Links */}
-          <nav className="space-y-2">
-            <Link 
-              to="/dashboard" 
-              className="flex items-center gap-3 bg-indigo-50 border-2 border-indigo-150 text-indigo-700 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all hover-pop"
-            >
-              <Trophy className="w-5 h-5 text-indigo-600" />
-              <span>🏠 {t.dashboard}</span>
-            </Link>
-
-            <Link 
-              to="/learn-with-ai" 
-              className="flex items-center gap-3 bg-gradient-to-r from-purple-600 to-indigo-600 border-2 border-purple-400 text-white font-black px-4 py-3 rounded-2xl text-sm transition-all hover-pop shadow-md shadow-purple-200"
-            >
-              <Sparkles className="w-5 h-5 text-yellow-300 animate-pulse" />
-              <span>🧠 Learn with AI</span>
-            </Link>
-            
-            <Link 
-              to="/lesson/1" 
-              className="flex items-center gap-3 bg-white border-2 border-slate-100 text-slate-600 hover:border-sky-300 hover:text-sky-700 hover:bg-sky-50 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all hover-pop"
-            >
-              <BookOpen className="w-5 h-5 text-sky-500" />
-              <span>📖 {t.lessons}</span>
-            </Link>
-            
-            <Link 
-              to="/voice-practice" 
-              className="flex items-center gap-3 bg-white border-2 border-slate-100 text-slate-600 hover:border-pink-300 hover:text-pink-700 hover:bg-pink-50 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all hover-pop"
-            >
-              <Mic className="w-5 h-5 text-pink-500" />
-              <span>🎙️ {t.voiceLearning}</span>
-            </Link>
-
-            <Link 
-              to="/vocabulary" 
-              className="flex items-center gap-3 bg-white border-2 border-slate-100 text-slate-600 hover:border-emerald-300 hover:text-emerald-700 hover:bg-emerald-50 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all hover-pop"
-            >
-              <Sparkles className="w-5 h-5 text-emerald-500" />
-              <span>🎨 Sticker Book</span>
-            </Link>
-
-            <Link 
-              to="/reports" 
-              className="flex items-center gap-3 bg-white border-2 border-slate-100 text-slate-600 hover:border-amber-300 hover:text-amber-700 hover:bg-amber-50 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all hover-pop"
-            >
-              <TrendingUp className="w-5 h-5 text-amber-500" />
-              <span>📊 My Progress</span>
-            </Link>
-
-            <Link 
-              to="/store" 
-              className="flex items-center gap-3 bg-white border-2 border-slate-100 text-slate-600 hover:border-amber-400 hover:text-amber-700 hover:bg-amber-50 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all hover-pop"
-            >
-              <span className="text-xl">🎁</span>
-              <span>Rewards Store</span>
-            </Link>
-
-            <Link 
-              to="/leaderboard" 
-              className="flex items-center gap-3 bg-white border-2 border-slate-100 text-slate-600 hover:border-yellow-400 hover:text-yellow-700 hover:bg-yellow-50 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all hover-pop"
-            >
-              <Trophy className="w-5 h-5 text-yellow-500" />
-              <span>Leaderboard</span>
-            </Link>
-
-            <Link 
-              to="/admin" 
-              className="flex items-center gap-3 bg-white border-2 border-slate-100 text-slate-600 hover:border-indigo-300 hover:text-indigo-700 hover:bg-indigo-50 font-extrabold px-4 py-3 rounded-2xl text-sm transition-all hover-pop"
-            >
-              <Settings className="w-5 h-5 text-slate-400" />
-              <span>🛠️ Admin Desk</span>
-            </Link>
-          </nav>
-        </div>
-
-        {/* User Profile Card */}
-        <div className="space-y-4 pt-6 border-t-2 border-slate-100">
-          <div className="bg-slate-50 border-2 border-slate-100/80 p-3.5 rounded-3xl flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl bg-white border-2 border-indigo-200/80 flex items-center justify-center text-3xl shadow-sm rotate-[4deg]">
-              {profile.avatar}
-            </div>
-            <div>
-              <h4 className="font-extrabold text-sm text-slate-850 truncate max-w-[110px]">{profile.fullName}</h4>
-              <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wide">Level {profile.level}</p>
-            </div>
-          </div>
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 bg-rose-50 border-2 border-rose-100 text-rose-600 hover:bg-rose-100 font-extrabold py-3 rounded-2xl text-xs transition-all cursor-pointer active-pop"
-          >
-            <LogOut className="w-4 h-4" />
-            <span>{t.logout}</span>
-          </button>
-        </div>
-      </aside>
-
-      {/* Main Container */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="max-w-[1680px] mx-auto flex flex-col lg:flex-row gap-6 relative z-10">
         
-        {/* Top Header Stats bar */}
-        <header className="bg-white border-b-4 border-slate-100 px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3 bg-slate-50 border-2 border-slate-100 px-4 py-2 rounded-2xl max-w-xs w-full">
-            <Search className="w-4 h-4 text-slate-400 shrink-0" />
-            <input type="text" placeholder="Search stages..." className="bg-transparent text-sm w-full focus:outline-none font-bold placeholder:text-slate-400/80" />
-          </div>
-
-          <div className="flex items-center gap-4">
-            {/* Playful stats */}
-            <div className="flex items-center gap-3 text-xs font-black">
-              <span className="flex items-center gap-1.5 text-orange-600 bg-orange-50 border-2 border-orange-100 px-3.5 py-2 rounded-2xl shadow-sm hover-pop">
-                🔥 <span>{profile.streak} Days</span>
-              </span>
-              <span className="flex items-center gap-1.5 text-yellow-600 bg-yellow-50 border-2 border-yellow-100 px-3.5 py-2 rounded-2xl shadow-sm hover-pop">
-                🪙 <span>{profile.coins}</span>
-              </span>
-              <span className="flex items-center gap-1.5 text-indigo-600 bg-indigo-50 border-2 border-indigo-100 px-3.5 py-2 rounded-2xl shadow-sm hover-pop">
-                🏆 <span>{profile.xp} XP</span>
-              </span>
-            </div>
-
-            <button className="relative w-10 h-10 bg-slate-50 border-2 border-slate-150 hover:bg-slate-100 text-slate-600 rounded-2xl flex items-center justify-center transition-all hover-pop">
-              <Bell className="w-5 h-5 text-slate-500" />
-              <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white" />
-            </button>
-          </div>
-        </header>
-
-        {/* Content Body */}
-        <main className="flex-1 p-6 md:p-8 overflow-y-auto space-y-8">
+        {/* ================= SIDEBAR (280px, Glass Effect, rounded-32px) ================= */}
+        <aside className="w-full lg:w-[280px] bg-white/90 backdrop-blur-xl border-4 border-white shadow-2xl shadow-indigo-100 rounded-[32px] p-5 flex flex-col justify-between shrink-0 space-y-6">
           
-          {/* Welcome Kids Banner */}
-          <div className="relative bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-[36px] p-6 md:p-8 text-white shadow-xl shadow-indigo-500/10 overflow-hidden border-b-6 border-indigo-700/60">
-            {/* Decorative items */}
-            <div className="absolute right-[-5%] top-[-10%] text-9xl opacity-15 pointer-events-none animate-float select-none">🎈</div>
-            <div className="absolute left-[30%] bottom-[-15%] text-7xl opacity-10 pointer-events-none select-none">✨</div>
-            
-            <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-              <div className="space-y-3">
-                <span className="bg-yellow-400/90 text-slate-900 font-extrabold text-xs uppercase tracking-wider px-3.5 py-1.5 rounded-full border border-yellow-300">
-                  {getLevelName(profile.level)}
-                </span>
-                <h1 className="text-3xl font-black tracking-tight">{t.welcomeBack}, {profile.fullName}! 👋</h1>
-                <p className="text-indigo-100 font-semibold max-w-md">Let's play and learn! Go to your map below to unlock stages and earn stars!</p>
+          <div className="space-y-6">
+            {/* Animated Logo */}
+            <div className="flex items-center gap-3 px-2 cursor-pointer hover-pop" onClick={() => navigate('/')}>
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-yellow-400 to-amber-500 flex items-center justify-center text-3xl shadow-lg border-2 border-yellow-200 animate-bounce-slow">
+                ⭐
               </div>
+              <div>
+                <h1 className="text-2xl font-black text-indigo-900 tracking-tight font-poppins leading-none">NeoLit</h1>
+                <span className="text-sm font-black text-amber-500 tracking-wider uppercase font-poppins">Game</span>
+              </div>
+            </div>
 
-              {lessons.length > 0 && (
-                <div className="bg-white/10 backdrop-blur border-2 border-white/20 p-5 rounded-3xl space-y-3.5 shrink-0 max-w-[280px]">
-                  <h4 className="text-xs font-black text-yellow-300 uppercase tracking-wider">🌟 Up Next Stage</h4>
-                  <p className="font-extrabold text-sm truncate">{lessons[0].title}</p>
-                  <Link
-                    to={`/lesson/${lessons[0].id}`}
-                    className="inline-block w-full bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-black text-center py-3 rounded-2xl text-xs transition-all shadow-md active-pop"
-                  >
-                    Play Stage 🚀
-                  </Link>
+            {/* Navigation Menu */}
+            <nav className="space-y-2">
+              <Link 
+                to="/dashboard" 
+                className="flex items-center justify-between bg-gradient-to-r from-[#6C4DFF] to-[#8B5CFF] text-white font-black px-4 py-3 rounded-2xl text-sm shadow-lg shadow-purple-200 transition-all hover-pop border-b-4 border-indigo-900"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-lg">🏠</span>
+                  <span>Dashboard</span>
                 </div>
-              )}
-            </div>
-          </div>
+                <ChevronRight className="w-4 h-4 text-white" />
+              </Link>
 
-          {/* Learn with AI Featured Hero Banner */}
-          <div className="bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-700 rounded-[32px] p-6 text-white shadow-lg border-b-6 border-indigo-900 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
-            <div className="absolute right-0 top-0 text-9xl opacity-10 pointer-events-none select-none">🧠</div>
-            <div className="space-y-2 max-w-xl z-10">
-              <span className="bg-yellow-400 text-slate-900 font-black text-xs px-3 py-1 rounded-full uppercase tracking-wider">NEW MODULE 🚀</span>
-              <h2 className="text-2xl md:text-3xl font-black">Learn with AI Tutor 🧠</h2>
-              <p className="text-purple-100 text-sm font-semibold">
-                Personalized skill assessment in Reading, Writing & Comprehension with AI-generated practice modules in 14+ languages!
-              </p>
-            </div>
-            <Link
-              to="/learn-with-ai"
-              className="bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-black text-sm px-6 py-3.5 rounded-2xl shadow-lg hover-pop border-b-4 border-yellow-600 shrink-0 z-10 flex items-center gap-2"
-            >
-              <Sparkles className="w-5 h-5 text-indigo-700 animate-spin" />
-              <span>Start AI Tutor Session →</span>
-            </Link>
-          </div>
-
-          {/* Quick Metrics (Bubbly Cards) */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            
-            <div className="bg-yellow-50/50 border-4 border-yellow-100 p-5 rounded-[28px] shadow-sm flex items-center gap-4 hover-pop">
-              <div className="w-12 h-12 rounded-2xl bg-yellow-150 text-yellow-600 flex items-center justify-center shrink-0 shadow-sm text-2xl font-bold">
-                📖
-              </div>
-              <div>
-                <h4 className="text-yellow-600 font-extrabold text-xs uppercase tracking-wider">Reading</h4>
-                <p className="text-xl font-black text-slate-800 mt-0.5">78%</p>
-              </div>
-            </div>
-
-            <div className="bg-rose-50/50 border-4 border-rose-100 p-5 rounded-[28px] shadow-sm flex items-center gap-4 hover-pop">
-              <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0 shadow-sm text-2xl font-bold">
-                ✍️
-              </div>
-              <div>
-                <h4 className="text-rose-600 font-extrabold text-xs uppercase tracking-wider">Writing</h4>
-                <p className="text-xl font-black text-slate-800 mt-0.5">45%</p>
-              </div>
-            </div>
-
-            <div className="bg-sky-50/50 border-4 border-sky-100 p-5 rounded-[28px] shadow-sm flex items-center gap-4 hover-pop">
-              <div className="w-12 h-12 rounded-2xl bg-sky-100 text-sky-650 flex items-center justify-center shrink-0 shadow-sm text-2xl font-bold">
-                🗣️
-              </div>
-              <div>
-                <h4 className="text-sky-650 font-extrabold text-xs uppercase tracking-wider">Speaking</h4>
-                <p className="text-xl font-black text-slate-800 mt-0.5">67%</p>
-              </div>
-            </div>
-
-            <Link to="/vocabulary" className="bg-emerald-50/50 border-4 border-emerald-100 p-5 rounded-[28px] shadow-sm flex items-center gap-4 hover-pop transition-all hover:shadow-md cursor-pointer">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 shadow-sm text-2xl font-bold">
-                🌸
-              </div>
-              <div>
-                <h4 className="text-emerald-650 font-extrabold text-xs uppercase tracking-wider">Sticker Book</h4>
-                <p className="text-xl font-black text-slate-800 mt-0.5">Explore</p>
-              </div>
-            </Link>
-
-          </div>
-
-          {/* Child-Friendly Game Board and Dashboard Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
-            {/* Left: Playful Game Winding Path Map */}
-            <div className="lg:col-span-7 space-y-6">
-              <div className="space-y-4">
-                <h3 className="text-xl font-black text-slate-850 flex items-center gap-2">
-                  <span>🗺️ Learning Adventure Map</span>
-                </h3>
-
-                {/* Level Tabs Selectors */}
-                <div className="flex flex-wrap gap-2.5 mb-4">
-                  {['Beginner', 'Intermediate', 'Advanced'].map((lvlName, idx) => {
-                    const lvlNum = idx + 1;
-                    const isUnlocked = profile.level >= lvlNum;
-                    const isActive = activeLevel === lvlName;
-                    return (
-                      <button
-                        key={lvlName}
-                        disabled={!isUnlocked}
-                        onClick={() => setActiveLevel(lvlName)}
-                        className={`px-4.5 py-2.5 rounded-2xl text-xs font-black border-2 border-b-6 transition-all hover-pop active:border-b-0 active:mt-1.5 ${
-                          isActive
-                            ? 'bg-gradient-to-r from-indigo-500 to-blue-500 border-indigo-750 text-white shadow-md'
-                            : isUnlocked
-                              ? 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 shadow-sm'
-                              : 'bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed opacity-50'
-                        }`}
-                      >
-                        {lvlName === 'Beginner' ? '🎈' : lvlName === 'Intermediate' ? '🦄' : '🚀'} {lvlName} {isUnlocked ? '' : '🔒'}
-                      </button>
-                    );
-                  })}
+              <Link 
+                to="/learn-with-ai" 
+                className="flex items-center justify-between bg-white hover:bg-purple-50 text-slate-700 hover:text-purple-700 font-extrabold px-4 py-3 rounded-2xl text-sm border-2 border-slate-100 transition-all hover-pop"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-lg">🧠</span>
+                  <span>Learn with AI</span>
                 </div>
+                <span className="bg-pink-500 text-white font-black text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider animate-pulse">NEW</span>
+              </Link>
 
-                {/* Game Path Layout (Scrollable showing ~5 stages in preview) */}
-                <div className="bg-gradient-to-b from-sky-100 via-indigo-50/60 to-purple-100/60 p-8 rounded-[40px] border-4 border-dashed border-indigo-250 relative h-[580px] overflow-y-auto flex flex-col items-center shadow-inner scroll-smooth">
-                  {/* Decorative background visual cues */}
-                  <span className="absolute top-4 right-6 text-5xl opacity-20 select-none animate-float">🎈</span>
-                  <span className="absolute bottom-6 left-6 text-5xl opacity-20 select-none">🏡</span>
-                  <span className="absolute top-[40%] left-4 text-5xl opacity-15 select-none">🦕</span>
+              <Link 
+                to="/learn-with-ai" 
+                className="flex items-center justify-between bg-white hover:bg-amber-50 text-slate-700 hover:text-amber-700 font-extrabold px-4 py-3 rounded-2xl text-sm border-2 border-slate-100 transition-all hover-pop"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-lg">🎯</span>
+                  <span>आज के लक्ष्य</span>
+                </div>
+              </Link>
 
-                  <div className="flex flex-col gap-12 items-center w-full max-w-sm relative z-10 py-6">
-                    {displayedLessons.map((les, index) => {
-                      const isCompleted = profile.completedLessons?.includes(les.id);
-                      const isNext = !isCompleted && (index === 0 || profile.completedLessons?.includes(displayedLessons[index - 1]?.id));
-                      const offsetClass = index % 2 === 0 ? 'translate-x-12' : '-translate-x-12';
+              <Link 
+                to="/vocabulary" 
+                className="flex items-center justify-between bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 font-extrabold px-4 py-3 rounded-2xl text-sm border-2 border-slate-100 transition-all hover-pop"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-lg">🎨</span>
+                  <span>Sticker Book</span>
+                </div>
+              </Link>
 
-                      return (
-                        <div key={les.id} className={`flex flex-col items-center transition-all ${offsetClass} hover-pop relative`}>
-                          
-                          {/* Connection dash line for stages */}
-                          <div className="absolute bottom-[-50px] w-1.5 h-12 border-l-4 border-dashed border-indigo-300 pointer-events-none" />
+              <Link 
+                to="/reports" 
+                className="flex items-center justify-between bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 font-extrabold px-4 py-3 rounded-2xl text-sm border-2 border-slate-100 transition-all hover-pop"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-lg">📊</span>
+                  <span>My Progress</span>
+                </div>
+              </Link>
 
-                          <Link
-                            to={`/lesson/${les.id}`}
-                            className={`w-20 h-20 rounded-full flex flex-col items-center justify-center border-b-6 shadow-lg transition-all text-3xl font-black active:border-b-0 active:mt-1.5 ${
-                              isCompleted
-                                ? 'bg-gradient-to-br from-green-400 to-emerald-500 border-emerald-600 text-white hover:brightness-105 shadow-emerald-250/30'
-                                : isNext
-                                  ? 'bg-gradient-to-br from-yellow-400 to-amber-500 border-amber-600 text-white animate-bounce shadow-amber-300/40'
-                                  : 'bg-white border-slate-300 text-slate-350 cursor-not-allowed pointer-events-none'
-                            }`}
-                          >
-                            {isCompleted ? '⭐' : isNext ? '🎯' : '🔒'}
-                          </Link>
-                          <div className="mt-2.5 text-center max-w-[130px]">
-                            <p className="text-[9px] font-black text-indigo-500 uppercase tracking-widest leading-none">Stage {index + 1}</p>
-                            <h5 className="font-extrabold text-[11px] text-slate-800 leading-snug mt-0.5">{les.title}</h5>
-                          </div>
-                        </div>
-                      );
-                    })}
+              <Link 
+                to="/store" 
+                className="flex items-center justify-between bg-white hover:bg-amber-50 text-slate-700 hover:text-amber-700 font-extrabold px-4 py-3 rounded-2xl text-sm border-2 border-slate-100 transition-all hover-pop"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-lg">🎁</span>
+                  <span>Rewards Store</span>
+                </div>
+              </Link>
 
-                    {/* Level Test Path Node */}
-                    <div className="flex flex-col items-center translate-x-0 hover-pop mt-6 relative">
-                      <Link
-                        to={`/assessment?levelTest=true&level=${activeLevel}`}
-                        className="w-22 h-22 rounded-3xl bg-gradient-to-tr from-yellow-400 to-amber-500 border-b-8 border-amber-600 shadow-xl flex items-center justify-center text-4xl font-black animate-pulse hover:brightness-105 active:border-b-0 active:mt-1.5"
-                      >
-                        🎓
-                      </Link>
-                      <div className="mt-2 text-center max-w-[150px]">
-                        <p className="text-[9px] font-black text-amber-500 uppercase tracking-widest leading-none">Graduation Test</p>
-                        <h5 className="font-extrabold text-[11px] text-slate-800 leading-snug mt-0.5">Unlock Next Level! 🏆</h5>
-                      </div>
-                    </div>
+              <Link 
+                to="/leaderboard" 
+                className="flex items-center justify-between bg-white hover:bg-yellow-50 text-slate-700 hover:text-yellow-700 font-extrabold px-4 py-3 rounded-2xl text-sm border-2 border-slate-100 transition-all hover-pop"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-lg">🏆</span>
+                  <span>Leaderboard</span>
+                </div>
+              </Link>
 
+              <Link 
+                to="/reports" 
+                className="flex items-center justify-between bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 font-extrabold px-4 py-3 rounded-2xl text-sm border-2 border-slate-100 transition-all hover-pop"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-lg">🛡️</span>
+                  <span>My Badges</span>
+                </div>
+              </Link>
+
+              <Link 
+                to="/admin" 
+                className="flex items-center justify-between bg-white hover:bg-slate-100 text-slate-700 font-extrabold px-4 py-3 rounded-2xl text-sm border-2 border-slate-100 transition-all hover-pop"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-lg">⚙️</span>
+                  <span>Admin Desk</span>
+                </div>
+              </Link>
+            </nav>
+          </div>
+
+          {/* Bottom Sidebar Mascots & Daily Tip Card */}
+          <div className="space-y-4 pt-4 border-t-2 border-slate-100">
+            {/* Waving Dragon Mascot */}
+            <div className="relative bg-gradient-to-tr from-purple-600 to-indigo-600 rounded-3xl p-4 text-white flex items-center justify-between shadow-lg overflow-hidden border-2 border-purple-300">
+              <div className="flex items-center gap-3 z-10">
+                <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur p-1 overflow-hidden shrink-0 flex items-center justify-center">
+                  <img src="https://api.dicebear.com/7.x/bottts/svg?seed=dino-mascot" alt="Dino Mascot" className="w-full h-full object-contain animate-bounce-slow" />
+                </div>
+                <div>
+                  <div className="bg-white text-indigo-900 font-black text-[10px] px-2 py-0.5 rounded-full inline-block shadow-sm">
+                    You Are Amazing!
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Right Sideboards: Sticker album & Leaderboard */}
-            <div className="lg:col-span-5 space-y-8">
+            {/* Daily Tip Card */}
+            <div className="bg-gradient-to-r from-purple-700 to-indigo-800 text-white p-4 rounded-3xl space-y-1 shadow-md border border-purple-400/40">
+              <h5 className="font-black text-xs text-yellow-300 flex items-center gap-1">
+                <span>💡</span> Daily Tip
+              </h5>
+              <p className="text-xs font-bold text-purple-100 leading-snug">
+                Small steps today, big dreams tomorrow! 🌟
+              </p>
+            </div>
+          </div>
+
+        </aside>
+
+        {/* ================= MAIN CONTENT AREA ================= */}
+        <div className="flex-1 space-y-6 min-w-0">
+          
+          {/* TOP NAVIGATION BAR (90px height, Floating Glass Bar) */}
+          <header className="h-[90px] bg-white/90 backdrop-blur-xl border-4 border-white rounded-[32px] px-6 flex items-center justify-between shadow-xl shadow-indigo-100 gap-4">
+            
+            {/* Search Bar with AI Voice Button */}
+            <div className="flex items-center gap-2 bg-slate-100/80 border-2 border-slate-200/80 px-4 py-2.5 rounded-full max-w-md w-full focus-within:border-indigo-400 transition-all">
+              <Search className="w-5 h-5 text-slate-400 shrink-0" />
+              <input 
+                type="text" 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search for lessons, games and more..." 
+                className="bg-transparent text-sm font-bold w-full focus:outline-none placeholder:text-slate-400" 
+              />
+              <button 
+                onClick={() => navigate('/voice-practice')}
+                className="w-8 h-8 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center shrink-0 shadow-sm transition-all active:scale-90"
+              >
+                <Mic className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Stats & Profile Pills */}
+            <div className="flex items-center gap-3">
+              {/* Streak Pill */}
+              <div className="flex items-center gap-2 bg-orange-50 border-2 border-orange-200 px-3.5 py-2 rounded-full shadow-sm text-orange-600 font-black text-xs hover-pop">
+                <Flame className="w-4 h-4 text-orange-500 fill-orange-500 animate-pulse" />
+                <span>1 Day Streak</span>
+              </div>
+
+              {/* Coins Pill */}
+              <div className="flex items-center gap-2 bg-amber-50 border-2 border-amber-200 px-3.5 py-2 rounded-full shadow-sm text-amber-600 font-black text-xs hover-pop">
+                <Coins className="w-4 h-4 text-amber-500 fill-amber-500" />
+                <span className="font-baloo text-sm">{profile.coins} Coins</span>
+              </div>
+
+              {/* XP Pill */}
+              <div className="flex items-center gap-2 bg-purple-50 border-2 border-purple-200 px-3.5 py-2 rounded-full shadow-sm text-purple-600 font-black text-xs hover-pop">
+                <span className="text-base">💎</span>
+                <span className="font-baloo text-sm">{profile.xp} XP</span>
+              </div>
+
+              {/* Notification Pill */}
+              <button className="relative w-10 h-10 bg-slate-100 border-2 border-slate-200 hover:bg-slate-200 text-slate-700 rounded-full flex items-center justify-center transition-all hover-pop">
+                <Bell className="w-5 h-5" />
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 text-white font-black text-[10px] rounded-full flex items-center justify-center border-2 border-white">
+                  3
+                </span>
+              </button>
+
+              {/* Profile Avatar Pill */}
+              <div className="flex items-center gap-2.5 bg-indigo-50 border-2 border-indigo-200 pl-1.5 pr-4 py-1.5 rounded-full shadow-sm cursor-pointer hover-pop" onClick={() => navigate('/profile-setup')}>
+                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 text-white flex items-center justify-center font-black text-sm border-2 border-white shadow-sm">
+                  <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=poluytre" alt="Avatar" className="w-full h-full object-cover rounded-full" />
+                </div>
+                <div className="text-left leading-tight">
+                  <h4 className="font-black text-xs text-indigo-900 truncate max-w-[80px]">{profile.fullName}</h4>
+                  <p className="text-[10px] font-extrabold text-indigo-500 uppercase">Level {profile.level}</p>
+                </div>
+              </div>
+            </div>
+
+          </header>
+
+          {/* ================= HERO SECTION (Split 2 Cards) ================= */}
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+            
+            {/* Card 1: Welcome Card (Pink -> Purple Gradient) */}
+            <div className="xl:col-span-7 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 rounded-[32px] p-6 text-white shadow-xl shadow-purple-200 relative overflow-hidden border-b-8 border-indigo-900 flex flex-col justify-between min-h-[220px]">
+              <div className="absolute right-[-10%] bottom-[-20%] text-9xl opacity-15 pointer-events-none select-none">🚀</div>
               
-              {/* Achievement Badge Sticker Book showcase */}
-              <div className="bg-white p-6 rounded-[32px] border-4 border-slate-100 shadow-sm space-y-4">
-                <h3 className="text-base font-black text-slate-850 flex items-center gap-1.5">
-                  <span>🏆 Badge Sticker Album</span>
-                </h3>
-                <div className="grid grid-cols-3 gap-4 text-center">
-                  {[
-                    { badge: '🏅', title: 'First Lesson', desc: 'Finished 1 lesson' },
-                    { badge: '🔥', title: '7 Day Streak', desc: 'Study 7 days consecutive' },
-                    { badge: '📚', title: 'Reading Expert', desc: 'Completed reading path' },
-                    { badge: '🎤', title: 'Voice Master', desc: '90%+ speech score' },
-                    { badge: '🏆', title: 'Lvl 2 Explorer', desc: 'Reached level 2' },
-                    { badge: '🎖', title: 'Perfect Score', desc: '100% on assessments' }
-                  ].map((bg, idx) => {
-                    const userHasBadge = profile.badges?.some((b: string) => b.toLowerCase().includes(bg.title.toLowerCase()) || b.toLowerCase().includes(bg.title.split(' ')[0].toLowerCase()));
-                    return (
-                      <div key={idx} className={`space-y-1.5 transition-opacity ${userHasBadge ? 'opacity-100' : 'opacity-25'}`} title={bg.desc}>
-                        <div className={`w-14 h-14 mx-auto rounded-2xl flex items-center justify-center text-3xl bg-slate-50 border-2 ${
-                          userHasBadge ? 'border-amber-300 bg-amber-50/50 shadow-sm rotate-[3deg]' : 'border-slate-100'
-                        } hover-pop`}>
-                          {bg.badge}
-                        </div>
-                        <h5 className="text-[10px] font-black text-slate-800 leading-none truncate max-w-[70px] mx-auto">{bg.title}</h5>
-                      </div>
-                    );
-                  })}
+              <div className="relative z-10 flex items-center gap-5">
+                <div className="w-28 h-28 rounded-3xl bg-white/20 backdrop-blur border-4 border-white/40 shadow-xl overflow-hidden shrink-0 flex items-center justify-center p-2">
+                  <img src="https://api.dicebear.com/7.x/bottts/svg?seed=helmet-robot" alt="Robot Mascot" className="w-full h-full object-contain animate-bounce-slow" />
+                </div>
+
+                <div className="space-y-2">
+                  <div className="inline-flex items-center gap-1.5 bg-yellow-400 text-slate-900 font-black text-xs px-3.5 py-1 rounded-full uppercase tracking-wider border border-yellow-300">
+                    <span>⭐ SUPER LEARNER MODE</span>
+                  </div>
+                  <h2 className="text-2xl md:text-3xl font-black tracking-tight font-poppins">
+                    आपका स्वागत है, {profile.fullName}!
+                  </h2>
+                  <p className="text-xs md:text-sm font-bold text-purple-100 max-w-md leading-relaxed">
+                    Let's play and learn! Unlock new stages, earn rewards and become a superstar! 🌟
+                  </p>
                 </div>
               </div>
 
-              {/* Weekly target progress bar visual */}
-              <div className="bg-white p-6 rounded-[32px] border-4 border-slate-100 shadow-sm space-y-4">
-                <h3 className="text-base font-black text-slate-850 flex items-center gap-1.5">
-                  <Calendar className="w-5 h-5 text-indigo-500" />
-                  <span>Weekly Goal progress</span>
-                </h3>
-                <div className="flex justify-between items-center text-xs font-black">
-                  <span>Goal: Study 5 Days</span>
-                  <span className="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-lg">5/7 Days</span>
+              <div className="relative z-10 pt-4 flex justify-start pl-32">
+                <button 
+                  onClick={() => navigate('/lesson/1')}
+                  className="bg-yellow-400 hover:bg-yellow-300 active:translate-y-1 text-slate-900 font-black text-sm px-6 py-3 rounded-2xl shadow-lg border-b-4 border-yellow-600 flex items-center gap-2 transition-all cursor-pointer hover-pop"
+                >
+                  <span>Start Adventure 🎮</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Card 2: AI Tutor Card (Blue -> Purple Gradient) */}
+            <div className="xl:col-span-5 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 rounded-[32px] p-6 text-white shadow-xl shadow-indigo-200 relative overflow-hidden border-b-8 border-purple-950 flex flex-col justify-between min-h-[220px]">
+              <div className="absolute right-2 top-2 w-28 h-28 opacity-90 pointer-events-none select-none">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=ai-tutor-bot" alt="AI Bot" className="w-full h-full object-contain animate-float" />
+              </div>
+
+              <div className="relative z-10 space-y-2 max-w-xs">
+                <div className="inline-flex items-center gap-1.5 bg-indigo-500/80 border border-indigo-300/40 text-yellow-300 font-black text-xs px-3 py-1 rounded-full uppercase tracking-wider">
+                  <span>🤖 AI TUTOR</span>
                 </div>
-                <div className="flex justify-between gap-2 pt-1">
-                  {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, idx) => (
-                    <div key={idx} className="flex-1 text-center space-y-1">
-                      <div className={`h-8 rounded-xl flex items-center justify-center text-xs font-black border-b-4 border-2 transition-all ${
+                <h3 className="text-xl md:text-2xl font-black tracking-tight font-poppins">
+                  Learn with AI Tutor 🤖
+                </h3>
+                <p className="text-xs font-bold text-indigo-100 leading-relaxed">
+                  Personalized lessons, instant help, and fun practice made just for you! ✨
+                </p>
+              </div>
+
+              <div className="relative z-10 pt-4">
+                <button 
+                  onClick={() => navigate('/learn-with-ai')}
+                  className="bg-indigo-500 hover:bg-indigo-400 text-white font-black text-sm px-6 py-3 rounded-2xl shadow-lg border-b-4 border-indigo-900 flex items-center gap-2 transition-all cursor-pointer hover-pop"
+                >
+                  <Sparkles className="w-4 h-4 text-yellow-300 animate-spin" />
+                  <span>Start AI Tutor 🚀</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          {/* ================= PROGRESS CARDS (4 Bubbly Cards) ================= */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            {/* Card 1: Reading */}
+            <div className="bg-white/90 backdrop-blur border-4 border-indigo-100 p-4.5 rounded-[28px] shadow-lg shadow-indigo-100/50 flex items-center justify-between hover-pop">
+              <div className="flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-2xl shrink-0">
+                  📖
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">Reading</div>
+                  <div className="text-2xl font-black text-indigo-900 font-baloo">78%</div>
+                  <p className="text-[10px] font-bold text-indigo-600">Great! Keep it up! 🔥</p>
+                </div>
+              </div>
+              <button onClick={() => navigate('/learn-with-ai')} className="w-8 h-8 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-600 flex items-center justify-center">
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Card 2: Writing */}
+            <div className="bg-white/90 backdrop-blur border-4 border-pink-100 p-4.5 rounded-[28px] shadow-lg shadow-pink-100/50 flex items-center justify-between hover-pop">
+              <div className="flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center text-2xl shrink-0">
+                  ✏️
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">Writing</div>
+                  <div className="text-2xl font-black text-pink-900 font-baloo">45%</div>
+                  <p className="text-[10px] font-bold text-pink-600">Keep practicing! 💪</p>
+                </div>
+              </div>
+              <button onClick={() => navigate('/learn-with-ai')} className="w-8 h-8 rounded-full bg-pink-50 hover:bg-pink-100 text-pink-600 flex items-center justify-center">
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Card 3: Speaking */}
+            <div className="bg-white/90 backdrop-blur border-4 border-sky-100 p-4.5 rounded-[28px] shadow-lg shadow-sky-100/50 flex items-center justify-between hover-pop">
+              <div className="flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center text-2xl shrink-0">
+                  🎙️
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">Speaking</div>
+                  <div className="text-2xl font-black text-sky-900 font-baloo">67%</div>
+                  <p className="text-[10px] font-bold text-sky-600">Good progress! 🌈</p>
+                </div>
+              </div>
+              <button onClick={() => navigate('/voice-practice')} className="w-8 h-8 rounded-full bg-sky-50 hover:bg-sky-100 text-sky-600 flex items-center justify-center">
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Card 4: Sticker Book */}
+            <div className="bg-white/90 backdrop-blur border-4 border-emerald-100 p-4.5 rounded-[28px] shadow-lg shadow-emerald-100/50 flex items-center justify-between hover-pop cursor-pointer" onClick={() => navigate('/vocabulary')}>
+              <div className="flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl shrink-0">
+                  🌸
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">Sticker Power</div>
+                  <div className="text-xl font-black text-emerald-900 font-poppins">Explore</div>
+                  <p className="text-[10px] font-bold text-emerald-600">Collect & unlock stickers</p>
+                </div>
+              </div>
+              <button className="w-8 h-8 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+
+          </div>
+
+          {/* ================= MIDDLE GRID (Adventure Map + Right Widgets) ================= */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* LEFT: LEARNING ADVENTURE MAP (8 Cols) */}
+            <div className="lg:col-span-7 bg-white/90 backdrop-blur-xl border-4 border-white rounded-[32px] p-6 shadow-xl space-y-6">
+              
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-slate-100 pb-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">🗺️</span>
+                  <h3 className="text-xl font-black text-slate-800 font-poppins">Learning Adventure Map</h3>
+                </div>
+
+                {/* Level Tabs */}
+                <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-full text-xs font-black">
+                  <button 
+                    onClick={() => setActiveLevel('Beginner')}
+                    className={`px-4 py-1.5 rounded-full transition-all ${activeLevel === 'Beginner' ? 'bg-[#6C4DFF] text-white shadow-md' : 'text-slate-600'}`}
+                  >
+                    🔮 Beginner
+                  </button>
+                  <button disabled className="px-4 py-1.5 rounded-full text-slate-400 flex items-center gap-1">
+                    <Lock className="w-3 h-3" /> Intermediate
+                  </button>
+                  <button disabled className="px-4 py-1.5 rounded-full text-slate-400 flex items-center gap-1">
+                    <Lock className="w-3 h-3" /> Advanced
+                  </button>
+                </div>
+              </div>
+
+              {/* Fantasy Island Map Visual Card */}
+              <div className="relative bg-gradient-to-b from-sky-200 via-emerald-100 to-indigo-100 rounded-[32px] p-8 min-h-[380px] flex flex-col justify-between overflow-hidden border-4 border-sky-300 shadow-inner">
+                {/* Visual decorations */}
+                <div className="absolute top-4 left-6 text-4xl opacity-40 animate-float">🏰</div>
+                <div className="absolute top-8 right-12 text-4xl opacity-40 animate-float" style={{ animationDelay: '1s' }}>🎈</div>
+                <div className="absolute bottom-6 left-12 text-4xl opacity-30">🌈</div>
+
+                {/* Curved Stage Nodes */}
+                <div className="relative z-10 flex flex-wrap justify-between items-center gap-6 my-auto">
+                  
+                  {/* Stage 1 */}
+                  <div className="flex flex-col items-center gap-2 hover-pop cursor-pointer" onClick={() => navigate('/lesson/1')}>
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-500 border-4 border-white shadow-xl flex items-center justify-center text-3xl text-white font-black animate-glow">
+                      📖
+                    </div>
+                    <div className="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-center shadow-md border border-emerald-200">
+                      <div className="text-xs font-black text-slate-800">Stage 1</div>
+                      <div className="text-[10px] font-bold text-slate-500">Start Your Journey</div>
+                      <div className="text-xs">⭐⭐⭐</div>
+                    </div>
+                  </div>
+
+                  {/* Daily Challenge */}
+                  <div className="flex flex-col items-center gap-2 hover-pop cursor-pointer" onClick={() => navigate('/learn-with-ai')}>
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-600 border-4 border-white shadow-xl flex items-center justify-center text-2xl text-white font-black">
+                      ⭐
+                    </div>
+                    <div className="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-center shadow-md border border-purple-200">
+                      <div className="text-xs font-black text-purple-900">Daily Challenge</div>
+                      <div className="text-[10px] font-bold text-purple-600">Unlocked</div>
+                    </div>
+                  </div>
+
+                  {/* Stage 2 */}
+                  <div className="flex flex-col items-center gap-2 hover-pop cursor-pointer" onClick={() => navigate('/lesson/2')}>
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-blue-500 to-sky-500 border-4 border-white shadow-xl flex items-center justify-center text-3xl text-white font-black">
+                      🚀
+                    </div>
+                    <div className="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-center shadow-md border border-blue-200">
+                      <div className="text-xs font-black text-slate-800">Stage 2</div>
+                      <div className="text-[10px] font-bold text-slate-500">Keep Going!</div>
+                      <div className="text-xs">⭐⭐</div>
+                    </div>
+                  </div>
+
+                  {/* Stage 3 (Locked) */}
+                  <div className="flex flex-col items-center gap-2 opacity-70">
+                    <div className="w-16 h-16 rounded-full bg-slate-400 border-4 border-white shadow-md flex items-center justify-center text-2xl text-white font-black">
+                      🔒
+                    </div>
+                    <div className="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-center shadow-sm border border-slate-200">
+                      <div className="text-xs font-black text-slate-600">Stage 3</div>
+                      <div className="text-[10px] font-bold text-slate-400">Coming Soon</div>
+                    </div>
+                  </div>
+
+                  {/* Grand Mission Chest */}
+                  <div className="flex flex-col items-center gap-2 hover-pop cursor-pointer" onClick={() => navigate('/store')}>
+                    <div className="w-24 h-24 rounded-3xl bg-gradient-to-tr from-amber-400 to-yellow-500 border-4 border-white shadow-2xl flex items-center justify-center text-5xl animate-bounce-slow">
+                      🎁
+                    </div>
+                    <div className="bg-amber-400 text-slate-900 px-3 py-1 rounded-full text-center shadow-md font-black text-xs border border-amber-300">
+                      Grand Mission
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* RIGHT SIDEBAR WIDGETS (5 Cols) */}
+            <div className="lg:col-span-5 space-y-6">
+              
+              {/* Daily Goal / Mission Widget */}
+              <div className="bg-white/90 backdrop-blur-xl border-4 border-white rounded-[32px] p-6 shadow-xl space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-slate-800 font-black text-base">
+                    <Flame className="w-5 h-5 text-orange-500 fill-orange-500" />
+                    <span>Daily Goal</span>
+                  </div>
+                  <span className="text-xs font-black text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+                    5 / 7 Days
+                  </span>
+                </div>
+
+                <p className="text-xs font-bold text-slate-500">Study 6 Days</p>
+
+                {/* Weekday checkmark pills */}
+                <div className="grid grid-cols-7 gap-1.5 pt-1">
+                  {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, idx) => (
+                    <div key={day} className="text-center space-y-1">
+                      <div className={`h-9 rounded-2xl flex items-center justify-center text-xs font-black transition-all ${
                         idx < 5 
-                          ? 'bg-gradient-to-br from-indigo-500 to-blue-500 text-white border-blue-600 border-b-blue-700 shadow-sm' 
-                          : 'bg-slate-50 text-slate-350 border-slate-150 border-b-slate-200'
+                          ? 'bg-gradient-to-b from-[#6C4DFF] to-[#8B5CFF] text-white shadow-md' 
+                          : 'bg-slate-100 text-slate-400 border border-slate-200'
                       }`}>
-                        {idx < 5 ? '⭐' : '•'}
+                        {idx < 5 ? <Check className="w-4 h-4" /> : ''}
                       </div>
-                      <span className="text-[10px] font-black text-slate-400">{day}</span>
+                      <span className="text-[10px] font-extrabold text-slate-400">{day}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Top Champions List */}
-              <div className="bg-white p-6 rounded-[32px] border-4 border-slate-100 shadow-sm space-y-4">
-                <h3 className="text-base font-black text-slate-850 flex items-center gap-1.5">
-                  <Trophy className="w-5 h-5 text-amber-500 animate-float" />
-                  <span>Champions League</span>
-                </h3>
+              {/* Champions League (Leaderboard) Widget */}
+              <div className="bg-white/90 backdrop-blur-xl border-4 border-white rounded-[32px] p-6 shadow-xl space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-slate-800 font-black text-base">
+                    <Trophy className="w-5 h-5 text-amber-500" />
+                    <span>Champions League</span>
+                  </div>
+                  <Link to="/leaderboard" className="text-xs font-black text-indigo-600 hover:underline">
+                    View All
+                  </Link>
+                </div>
 
-                <div className="space-y-3.5">
-                  {leaderboard.slice(0, 5).map((lb, idx) => (
-                    <div key={idx} className="flex items-center justify-between text-xs font-bold bg-slate-50/50 p-2.5 rounded-2xl border border-slate-100">
+                <div className="space-y-2.5">
+                  {championsList.map((c) => (
+                    <div key={c.rank} className="flex items-center justify-between p-2.5 rounded-2xl bg-slate-50 border border-slate-150 hover:bg-slate-100 transition-all">
                       <div className="flex items-center gap-3">
-                        <span className={`w-6 h-6 font-black text-xs rounded-xl flex items-center justify-center text-center shadow-sm ${
-                          idx === 0 
-                            ? 'bg-amber-400 text-slate-900 border-b-4 border-amber-600' 
-                            : idx === 1 
-                              ? 'bg-slate-300 text-slate-800 border-b-4 border-slate-500' 
-                              : idx === 2 
-                                ? 'bg-amber-700 text-white border-b-4 border-amber-900' 
-                                : 'bg-white text-slate-400 border border-slate-200'
+                        <span className={`w-6 h-6 rounded-full font-black text-xs flex items-center justify-center ${
+                          c.rank === 1 ? 'bg-amber-400 text-slate-900' : c.rank === 2 ? 'bg-slate-300 text-slate-800' : c.rank === 3 ? 'bg-amber-600 text-white' : 'bg-slate-200 text-slate-600'
                         }`}>
-                          {idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : idx + 1}
+                          {c.rank}
                         </span>
+                        <span className="text-xl">{c.avatar}</span>
                         <div>
-                          <h5 className="font-extrabold text-slate-800 text-xs leading-none">{lb.name}</h5>
-                          <p className="text-[9px] font-extrabold text-slate-400 mt-1">Level {lb.level} • {lb.streak}d streak</p>
+                          <h5 className="font-black text-xs text-slate-800">{c.name}</h5>
+                          <p className="text-[10px] font-bold text-slate-400">Level {c.level} • {c.xp} XP</p>
                         </div>
                       </div>
-                      <span className="font-black text-indigo-650 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-lg text-[10px]">
-                        {lb.xp} XP
+                      <span className="font-baloo text-xs font-black text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg">
+                        {c.xp} XP
                       </span>
                     </div>
                   ))}
@@ -507,8 +618,143 @@ export default function Dashboard() {
               </div>
 
             </div>
+
           </div>
-        </main>
+
+          {/* ================= BOTTOM ROW GRID (3 Cols: Badges, Store, Milestone) ================= */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            {/* Col 1: My Badges */}
+            <div className="bg-white/90 backdrop-blur-xl border-4 border-white rounded-[32px] p-6 shadow-xl space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-slate-800 font-black text-base">
+                  <Shield className="w-5 h-5 text-indigo-600" />
+                  <span>My Badges</span>
+                </div>
+                <Link to="/reports" className="text-xs font-black text-indigo-600 hover:underline">
+                  View All
+                </Link>
+              </div>
+
+              {/* 3D Trading Cards Badges */}
+              <div className="flex items-center justify-between gap-2 overflow-x-auto py-2">
+                {[
+                  { title: 'First Lesson', icon: '🥇', bg: 'from-amber-400 to-yellow-500' },
+                  { title: '7 Day Streak', icon: '🔥', bg: 'from-rose-500 to-pink-600' },
+                  { title: 'Level Explorer', icon: '🚀', bg: 'from-emerald-400 to-teal-500' },
+                  { title: 'Reading Star', icon: '⭐', bg: 'from-purple-500 to-indigo-600' },
+                  { title: 'Perfect Score', icon: '🏅', bg: 'from-sky-400 to-blue-500' },
+                ].map((b, i) => (
+                  <div key={i} className="flex flex-col items-center gap-1.5 shrink-0 hover-pop cursor-pointer">
+                    <div className={`w-14 h-16 rounded-2xl bg-gradient-to-b ${b.bg} border-2 border-white shadow-md flex items-center justify-center text-2xl`}>
+                      {b.icon}
+                    </div>
+                    <span className="text-[10px] font-black text-slate-700 truncate max-w-[65px] text-center">{b.title}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Col 2: Rewards Store */}
+            <div className="bg-white/90 backdrop-blur-xl border-4 border-white rounded-[32px] p-6 shadow-xl space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-slate-800 font-black text-base">
+                  <span className="text-xl">🎁</span>
+                  <span>Rewards Store</span>
+                </div>
+                <Link to="/store" className="text-xs font-black text-indigo-600 hover:underline">
+                  View All
+                </Link>
+              </div>
+
+              <div className="flex items-center gap-4 bg-amber-50 p-3.5 rounded-2xl border border-amber-200">
+                <div className="text-4xl animate-bounce-slow">🎁</div>
+                <div className="space-y-1">
+                  <p className="text-xs font-extrabold text-amber-900">Earn XP and coins to unlock exciting rewards!</p>
+                  <div className="w-full bg-amber-200 h-3 rounded-full overflow-hidden">
+                    <div className="bg-amber-500 h-full rounded-full" style={{ width: '40%' }} />
+                  </div>
+                  <span className="text-[10px] font-black text-amber-700">80 / 500 Coins</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Col 3: Upcoming Milestone */}
+            <div className="bg-white/90 backdrop-blur-xl border-4 border-white rounded-[32px] p-6 shadow-xl space-y-4">
+              <div className="flex items-center gap-2 text-slate-800 font-black text-base">
+                <span className="text-xl">🎯</span>
+                <span>Upcoming Milestone</span>
+              </div>
+
+              <p className="text-xs font-bold text-slate-500">Keep your streak alive!</p>
+
+              {/* Stepper Path */}
+              <div className="flex items-center justify-between pt-2">
+                {[
+                  { days: '3 Days', active: true },
+                  { days: '7 Days', active: true },
+                  { days: '14 Days', active: false },
+                  { days: '30 Days', active: false },
+                ].map((m, i) => (
+                  <div key={i} className="flex flex-col items-center gap-1">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs ${
+                      m.active ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-200 text-slate-400'
+                    }`}>
+                      {i + 1}
+                    </div>
+                    <span className="text-[10px] font-extrabold text-slate-600">{m.days}</span>
+                  </div>
+                ))}
+                <div className="text-2xl animate-float">🏆</div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* ================= BOTTOM CAROUSEL: CONTINUE LEARNING + DINO BOOSTER ================= */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* Carousel (9 Cols) */}
+            <div className="lg:col-span-9 bg-white/90 backdrop-blur-xl border-4 border-white rounded-[32px] p-6 shadow-xl space-y-4">
+              <div className="flex items-center gap-2 text-slate-800 font-black text-base">
+                <span className="text-xl">📖</span>
+                <span>Continue Learning</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {continueLessons.map((item) => (
+                  <div key={item.id} className="bg-slate-50 border-2 border-slate-150 p-4 rounded-2xl space-y-3 hover-pop cursor-pointer" onClick={() => navigate(`/lesson/${item.id}`)}>
+                    <div className="flex items-center justify-between">
+                      <span className="text-2xl">{item.icon}</span>
+                      <span className="text-[10px] font-black text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">{item.progress}%</span>
+                    </div>
+                    <div>
+                      <h5 className="font-black text-xs text-slate-800 leading-tight truncate">{item.title}</h5>
+                      <p className="text-[10px] font-bold text-slate-400">{item.subtitle}</p>
+                    </div>
+                    <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                      <div className={`bg-gradient-to-r ${item.color} h-full rounded-full`} style={{ width: `${item.progress}%` }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Dino Booster (3 Cols) */}
+            <div className="lg:col-span-3 bg-gradient-to-r from-purple-600 to-indigo-700 rounded-[32px] p-6 text-white shadow-xl flex items-center justify-between border-b-6 border-indigo-950">
+              <div className="space-y-1">
+                <h4 className="font-black text-sm text-yellow-300">Keep Going! 💜</h4>
+                <p className="text-xs font-bold text-purple-100">You're doing great!</p>
+              </div>
+              <div className="w-16 h-16 shrink-0">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=purple-dino" alt="Purple Dino" className="w-full h-full object-contain animate-bounce-slow" />
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
     </div>
   );

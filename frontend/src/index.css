@@ -1,57 +1,86 @@
 @import "tailwindcss";
 
-/* Custom playful, rounded font 'Nunito' for child-friendly NEO-learners */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;850;900;1000&display=swap');
+/* Google Fonts for NeoLit Kids Edition: Poppins (headings), Nunito (body), Baloo 2 (numbers) */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@400;600;700;850;900;1000&family=Poppins:wght@700;800;900&display=swap');
+
+:root {
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Nunito', sans-serif;
+  --font-numbers: 'Baloo 2', cursive;
+}
 
 * {
-  font-family: 'Nunito', sans-serif;
+  font-family: var(--font-body);
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Nunito', sans-serif;
+  font-family: var(--font-heading);
   font-weight: 900;
 }
 
-button, a.btn, select, input, textarea {
-  font-family: 'Nunito', sans-serif;
-  font-weight: 850;
+.font-baloo {
+  font-family: var(--font-numbers);
+}
+
+.font-poppins {
+  font-family: var(--font-heading);
 }
 
 body {
-  background-color: #f8fafc;
+  background: linear-gradient(180deg, #EAF7FF 0%, #F5FAFF 50%, #FDFDFF 100%);
+  min-height: 100vh;
+  color: #1e293b;
 }
 
 /* Playful child animations */
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
 }
 
 .animate-float {
-  animation: float 3s ease-in-out infinite;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2.5s ease-in-out infinite;
 }
 
 @keyframes wiggle {
   0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-3deg); }
-  75% { transform: rotate(3deg); }
+  25% { transform: rotate(-4deg); }
+  75% { transform: rotate(4deg); }
 }
 
 .animate-wiggle {
-  animation: wiggle 0.5s ease-in-out infinite;
+  animation: wiggle 0.6s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 15px rgba(108, 77, 255, 0.4); }
+  50% { box-shadow: 0 0 25px rgba(255, 184, 0, 0.6); }
+}
+
+.animate-glow {
+  animation: pulse-glow 3s infinite;
 }
 
 /* Tactile 3D pop effect for kids */
 .hover-pop {
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .hover-pop:hover {
-  transform: scale(1.04);
+  transform: scale(1.035) translateY(-2px);
 }
 
 .active-pop:active {
-  transform: scale(0.96);
+  transform: scale(0.96) translateY(2px);
 }
 
 /* Custom scrollbars */
@@ -61,7 +90,8 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(226, 232, 240, 0.5);
+  border-radius: 99px;
 }
 
 ::-webkit-scrollbar-thumb {
