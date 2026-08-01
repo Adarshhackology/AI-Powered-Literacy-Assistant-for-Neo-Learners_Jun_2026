@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiClient } from '../utils/api';
-import { Sparkles, ArrowRight, ArrowLeft, User, CheckCircle2, Globe } from 'lucide-react';
+import { Sparkles, ArrowRight, ArrowLeft, Globe } from 'lucide-react';
 import type { SupportedLanguage } from '../utils/translationHelper';
+import { Sparkle } from '../components/UI/Illustrations';
 
 const avatars = [
   { id: '1', emoji: '🧑‍🎓', label: 'Learner' },
@@ -131,129 +132,6 @@ const profileTranslations: Record<string, any> = {
     continueText: "आगे बढ़ें",
     back: "पीछे",
     complete: "पंजीकरण पूरा करें"
-  },
-  telugu: {
-    langTitle: "మీ భాషను ఎంచుకోండి",
-    langSubtitle: "వెబ్‌సైట్ మొత్తం ఈ భాషలోకి మారుతుంది.",
-    detailsTitle: "మీ ప్రొఫైల్‌ను నిర్మించుకుందాం",
-    detailsSubtitle: "మీ పేరు చెప్పండి మరియు ఒక అవతార్‌ను ఎంచుకోండి.",
-    avatarLabel: "మీ అవతార్‌ను ఎంచుకోండి",
-    nameLabel: "మీ పేరు ఏమిటి?",
-    ageLabel: "మీ వయస్సు ఎంత?",
-    goalTitle: "మీ అభ్యాస లక్ష్యం ఏమిటి?",
-    goalSubtitle: "ఈ అసిస్టెంట్‌తో మీరు ఏమి సాధించాలనుకుంటున్నారో ఎంచుకోండి.",
-    goals: {
-      'Read newspapers and signs': { title: 'బోర్డులు & వార్తలు చదవండి', desc: 'నోటీసు బోర్డులు, వార్తాపత్రికలు మరియు సంకేతాలను అర్థం చేసుకోండి.' },
-      'Write basic letters & forms': { title: 'లేఖలు & ఫారమ్‌లు రాయండి', desc: 'పత్రాలు, దరఖాస్తు ఫారమ్‌లు నింపండి మరియు లేఖలు రాయండి.' },
-      'Chat with family & kids': { title: 'కుటుంబంతో మాట్లాడండి', desc: 'పిల్లలు మరియు బంధువులతో నమ్మకంగా మాట్లాడండి.' },
-      'Prepare for job applications': { title: 'ఉద్యోగ తయారీ', desc: 'ఈమెయిల్స్ రాయడం, రెజ్యూమెలు చదవడం మరియు ప్రాక్టీస్ చేయడం.' }
-    },
-    readingTitle: "మీ పఠన నైపుణ్యం",
-    readingSubtitle: "మీ చదివే నైపుణ్యాన్ని ఉత్తమంగా వివరించే ఎంపికను ఎంచుకోండి.",
-    readingOptions: {
-      'Beginner': { label: 'ప్రారంభకుడు (Beginner)', desc: 'ఇంకా పూర్తి వాక్యాలను చదవలేరు.' },
-      'Intermediate': { label: 'మధ్యస్థం (Intermediate)', desc: 'ప్రాథమిక పదాలుและ సాధారణ వాక్యాలను చదవగలరు.' },
-      'Advanced': { label: 'అధునాతన (Advanced)', desc: 'వార్తాపత్రిక కథనాలు మరియు పుస్తకాలను చదవగలరు.' }
-    },
-    writingTitle: "మీ లేఖన నైపుణ్యం",
-    writingSubtitle: "మీ రాసే నైపుణ్యాన్ని ఉత్తమంగా వివరించే ఎంపికను ఎంచుకోండి.",
-    writingOptions: {
-      'Beginner': { label: 'ప్రారంభకుడు (Beginner)', desc: 'ఇంకా అక్షరాలు లేదా పూర్తి పదాలను రాయలేరు.' },
-      'Intermediate': { label: 'మధ్యస్థం (Intermediate)', desc: 'ప్రాథమిక పదాలు మరియు సాధారణ సందేశాలను రాయగలరు.' },
-      'Advanced': { label: 'అధునాతన (Advanced)', desc: 'పూర్తి పేరాలు మరియు లేఖలను రాయగలరు.' }
-    },
-    speakingTitle: "మాట్లాడే నైపుణ్యం",
-    speakingSubtitle: "బయటకు మాట్లాడటానికి మీ సౌకర్యాన్ని ఎంచుకోండి.",
-    speakingOptions: {
-      'Shy': { label: 'సిగ్గుపడే / ప్రాక్టీస్ కావాలి', desc: 'నేను బయటకు మాట్లాడటానికి కొంచెం భయపడతాను.' },
-      'Average': { label: 'సగటు / ప్రాథమికంగా మాట్లాడగలను', desc: 'నేను సాధారణ రోజువారీ వాక్యాలను మాట్లాడగలను.' },
-      'Fluent': { label: 'ధారాళంగా మాట్లాడగలను', desc: 'నేను నా ఆలోచనలను స్పష్టంగా మాట్లాడి వ్యక్తపరచగలను.' }
-    },
-    continueText: "కొనసాగించండి",
-    back: "వెనుకకు",
-    complete: "పూర్తి చేయండి"
-  },
-  tamil: {
-    langTitle: "உங்கள் மொழியைத் தேர்ந்தெடுக்கவும்",
-    langSubtitle: "முழு இணையதளமும் இந்த மொழிக்கு மாற்றப்படும்.",
-    detailsTitle: "உங்கள் சுயவிவரத்தை உருவாக்குவோம்",
-    detailsSubtitle: "உங்கள் பெயரைச் சொல்லி, ஒரு அவதாரத்தைத் தேர்ந்தெடுக்கவும்.",
-    avatarLabel: "உங்கள் அவதாரத்தைத் தேர்ந்தெடுக்கவும்",
-    nameLabel: "உங்கள் பெயர் என்ன?",
-    ageLabel: "உங்கள் வயது என்ன?",
-    goalTitle: "உங்கள் கற்றல் இலக்கு என்ன?",
-    goalSubtitle: "இந்த உதவியாளருடன் நீங்கள் என்ன சாதிக்க விரும்புகிறீர்கள் என்பதைத் தேர்ந்தெடுக்கவும்.",
-    goals: {
-      'Read newspapers and signs': { title: 'பலகைகள் & செய்திகளைப் படிக்கவும்', desc: 'அறிவிப்பு பலகைகள், செய்தித்தாள்கள் மற்றும் பலகைகளைப் புரிந்து கொள்ளுங்கள்.' },
-      'Write basic letters & forms': { title: 'கடிதங்கள் & படிவங்களை எழுதுங்கள்', desc: 'ஆவணங்கள், விண்ணப்பப் படிவங்களை நிரப்பவும் மற்றும் கடிதங்கள் எழுதவும்.' },
-      'Chat with family & kids': { title: 'குடும்பத்தினருடன் அரட்டையடிக்கவும்', desc: 'குழந்தைகள் மற்றும் உறவினர்களுடன் நம்பிக்கையுடன் பேசவும்.' },
-      'Prepare for job applications': { title: 'வேலை தயாரிப்பு', desc: 'மின்னஞ்சல்களை எழுதுங்கள், விண்ணப்பங்களைப் படியுங்கள்.' }
-    },
-    readingTitle: "உங்கள் வாசிப்புத் திறன்",
-    readingSubtitle: "உங்கள் வாசிப்புத் திறனைச் சிறப்பாக விளக்கும் விருப்பத்தைத் தேர்ந்தெடுக்கவும்.",
-    readingOptions: {
-      'Beginner': { label: 'தொடக்கநிலை (Beginner)', desc: 'இன்னும் முழு வாக்கியங்களைப் படிக்க முடியாது.' },
-      'Intermediate': { label: 'இடைநிலை (Intermediate)', desc: 'அடிப்படை சொற்கள் மற்றும் எளிய வாக்கியங்களைப் படிக்க முடியும்.' },
-      'Advanced': { label: 'மேம்பட்ட நிலை (Advanced)', desc: 'செய்தித்தாள் கட்டுரைகள் மற்றும் புத்தகங்களைப் படிக்க முடியும்.' }
-    },
-    writingTitle: "உங்கள் எழுத்துத் திறன்",
-    writingSubtitle: "உங்கள் எழுத்துத் திறனைச் சிறப்பாக விளக்கும் விருப்பத்தைத் தேர்ந்தெடுக்கவும்.",
-    writingOptions: {
-      'Beginner': { label: 'தொடக்கநிலை (Beginner)', desc: 'இன்னும் எழுத்துக்கள் அல்லது முழு சொற்களை எழுத முடியாது.' },
-      'Intermediate': { label: 'இடைநிலை (Intermediate)', desc: 'அடிப்படை சொற்கள் மற்றும் எளிய செய்திகளை எழுத முடியும்.' },
-      'Advanced': { label: 'மேம்பட்ட நிலை (Advanced)', desc: 'முழு பத்திகள் மற்றும் கடிதங்களை எழுத முடியும்.' }
-    },
-    speakingTitle: "பேசும் நம்பிக்கை",
-    speakingSubtitle: "சத்தமாக பேசுவதில் உங்களுக்கு எவ்வளவு வசதி என்பதைத் தேர்ந்தெடுக்கவும்.",
-    speakingOptions: {
-      'Shy': { label: 'வெட்கப்படுபவர் / பயிற்சி தேவை', desc: 'சத்தமாக பேசுவதற்கு நான் கவலைப்படுகிறேன்.' },
-      'Average': { label: 'சராசரி / அடிப்படை பேச முடியும்', desc: 'நான் எளிய அன்றாட வாக்கியங்களை பேச முடியும்.' },
-      'Fluent': { label: 'சரளமாக பேச முடியும்', desc: 'நான் என் கருத்துக்களை தெளிவாக பேசவும் வெளிப்படுத்தவும் முடியும்.' }
-    },
-    continueText: "தொடரவும்",
-    back: "பின்னால்",
-    complete: "முடிந்தது"
-  },
-  kannada: {
-    langTitle: "ನಿಮ್ಮ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
-    langSubtitle: "ಇಡೀ ವೆಬ್‌ಸೈಟ್ ಈ ಭಾಷೆಗೆ ಅನುವಾದಗೊಳ್ಳುತ್ತದೆ.",
-    detailsTitle: "ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಅನ್ನು ನಿರ್ಮಿಸೋಣ",
-    detailsSubtitle: "ನಿಮ್ಮ ಹೆಸರನ್ನು ತಿಳಿಸಿ ಮತ್ತು ಒಂದು ಅವತಾರವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ.",
-    avatarLabel: "ನಿಮ್ಮ ಅವತಾರವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
-    nameLabel: "ನಿಮ್ಮ ಹೆಸರೇನು?",
-    ageLabel: "ನಿಮ್ಮ ವಯಸ್ಸು ಎಷ್ಟು?",
-    goalTitle: "ನಿಮ್ಮ ಕಲಿಕೆಯ ಉದ್ದೇಶವೇನು?",
-    goalSubtitle: "ಈ ಸಹಾಯಕನೊಂದಿಗೆ ನೀವು ಏನನ್ನು ಸಾಧಿಸಲು ಬಯಸುತ್ತೀರಿ ಎಂಬುದನ್ನು ಆಯ್ಕೆ ಮಾಡಿ.",
-    goals: {
-      'Read newspapers and signs': { title: 'ಸಂಕೇತಗಳು ಮತ್ತು ಸುದ್ದಿ ಓದಿ', desc: 'ಮಾಹಿತಿ ಫಲಕಗಳು, ವೃತ್ತಪತ್ರಿಕೆಗಳು ಮತ್ತು ಸಂಕೇತಗಳನ್ನು ಅರ್ಥಮಾಡಿಕೊಳ್ಳಿ.' },
-      'Write basic letters & forms': { title: 'ಪತ್ರಗಳು ಮತ್ತು ಫಾರ್ಮ್‌ಗಳನ್ನು ಬರೆಯಿರಿ', desc: 'ದಾಖಲೆಗಳು, ಅರ್ಜಿ ನಮೂನೆಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ ಮತ್ತು ಪತ್ರಗಳನ್ನು ಬರೆಯಿರಿ.' },
-      'Chat with family & kids': { title: 'ಕುಟುಂಬದೊಂದಿಗೆ ಚಾಟ್ ಮಾಡಿ', desc: 'ಮಕ್ಕಳು ಮತ್ತು ಸಂಬಂಧಿಕರೊಂದಿಗೆ ಆತ್ಮವಿಶ್ವಾಸದಿಂದ ಮಾತನಾಡಿ.' },
-      'Prepare for job applications': { title: 'ಕೆಲಸದ ತಯಾರಿ', desc: 'ಇಮೇಲ್‌ಗಳನ್ನು ಬರೆಯಿರಿ, ರೆಸ್ಯೂಮ್‌ಗಳನ್ನು ಓದಿ.' }
-    },
-    readingTitle: "ನಿಮ್ಮ ಓದುವ ಕೌಶಲ್ಯ",
-    readingSubtitle: "ನಿಮ್ಮ ಓದುವ ಕೌಶಲ್ಯವನ್ನು ಉತ್ತಮವಾಗಿ ವಿವರಿಸುವ ಆಯ್ಕೆಯನ್ನು ಆರಿಸಿ.",
-    readingOptions: {
-      'Beginner': { label: 'ಆರಂಭಿಕ (Beginner)', desc: 'ಇನ್ನೂ ಪೂರ್ಣ ವಾಕ್ಯಗಳನ್ನು ಓದಲು ಸಾಧ್ಯವಿಲ್ಲ.' },
-      'Intermediate': { label: 'ಮಧ್ಯಮ (Intermediate)', desc: 'ಮೂಲ ಪದಗಳು ಮತ್ತು ಸರಳ ವಾಕ್ಯಗಳನ್ನು ಓದಬಹುದು.' },
-      'Advanced': { label: 'ಸುಧಾರಿತ (Advanced)', desc: 'ವೃತ್ತಪತ್ರಿಕೆ ಲೇಖನಗಳು ಮತ್ತು ಪುಸ್ತಕಗಳನ್ನು ಓದಬಹುದು.' }
-    },
-    writingTitle: "ನಿಮ್ಮ ಬರವಣಿಗೆ ಕೌಶಲ್ಯ",
-    writingSubtitle: "ನಿಮ್ಮ ಬರವಣಿಗೆ ಕೌಶಲ್ಯವನ್ನು ಉತ್ತಮವಾಗಿ ವಿವರಿಸುವ ಆಯ್ಕೆಯನ್ನು ಆರಿಸಿ.",
-    writingOptions: {
-      'Beginner': { label: 'ಆರಂಭಿಕ (Beginner)', desc: 'ಇನ್ನೂ ಅಕ್ಷರಗಳನ್ನು ಅಥವಾ ಪೂರ್ಣ ಪದಗಳನ್ನು ಬರೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ.' },
-      'Intermediate': { label: 'ಮಧ್ಯಮ (Intermediate)', desc: 'ಮೂಲ ಪದಗಳು ಮತ್ತು ಸರಳ ಸಂದೇಶಗಳನ್ನು ಬರೆಯಬಹುದು.' },
-      'Advanced': { label: 'ಸುಧಾರಿತ (Advanced)', desc: 'ಪೂರ್ಣ ಪ್ಯಾರಾಗಳು ಮತ್ತು ಪತ್ರಗಳನ್ನು ಬರೆಯಬಹುದು.' }
-    },
-    speakingTitle: "ಮಾತನಾಡುವ ಆತ್ಮವಿಶ್ವಾಸ",
-    speakingSubtitle: "ಗಟ್ಟಿಯಾಗಿ ಮಾತನಾಡಲು ನಿಮ್ಮ ಅನುಕೂಲತೆಯನ್ನು ಆರಿಸಿ.",
-    speakingOptions: {
-      'Shy': { label: 'ನಾಚಿಕೆಪಡುವ / ಅಭ್ಯಾಸದ ಅಗತ್ಯವಿದೆ', desc: 'ನನಗೆ ಗಟ್ಟಿಯಾಗಿ ಮಾತನಾಡಲು ಗಾಬರಿಯಾಗುತ್ತದೆ.' },
-      'Average': { label: 'ಸರಾಸರಿ / ಮೂಲಭೂತವಾಗಿ ಮಾತನಾಡಬಹುದು', desc: 'ನಾನು ಸರಳ ದಿನನಿತ್ಯದ ವಾಕ್ಯಗಳನ್ನು ಮಾತನಾಡಬಲ್ಲೆ.' },
-      'Fluent': { label: 'ಸರಾಗವಾಗಿ ಮಾತನಾಡಬಲ್ಲೆ', desc: 'ನಾನು ನನ್ನ ಆಲೋಚನೆಗಳನ್ನು ಸ್ಪಷ್ಟವಾಗಿ ಮಾತನಾಡಬಹುದು.' }
-    },
-    continueText: "ಮುಂದುವರೆಯಿರಿ",
-    back: "ಹಿಂದೆ",
-    complete: "ಪೂರ್ಣಗೊಳಿಸಿ"
   }
 };
 
@@ -261,11 +139,9 @@ export default function ProfileSetup() {
   const username = localStorage.getItem('username') || 'guest';
   const navigate = useNavigate();
 
-  // Onboarding wizard steps: 1 to 6
   const [step, setStep] = useState<1 | 2 | 3 | 4 | 5 | 6>(1);
   const [prefLang, setPrefLang] = useState<SupportedLanguage>('english');
 
-  // Form states
   const [avatar, setAvatar] = useState('1');
   const [fullName, setFullName] = useState('');
   const [age, setAge] = useState('');
@@ -277,13 +153,11 @@ export default function ProfileSetup() {
 
   const [loading, setLoading] = useState(false);
 
-  // Load language settings on mount
   useEffect(() => {
     const saved = (localStorage.getItem('preferredLanguage') || 'english') as SupportedLanguage;
     setPrefLang(saved);
   }, []);
 
-  // Update fullName & age state when localStorage user changes
   useEffect(() => {
     try {
       const userStr = localStorage.getItem('user');
@@ -295,20 +169,15 @@ export default function ProfileSetup() {
           setFullName(parsed.profile.fullName);
         } else if (username && username !== 'google_user' && username !== 'guest') {
           setFullName(username);
-        } else {
-          setFullName('');
         }
-
         if (parsed.profile && parsed.profile.age) {
           setAge(parsed.profile.age);
         }
       } else if (username && username !== 'google_user' && username !== 'guest') {
         setFullName(username);
-      } else {
-        setFullName('');
       }
     } catch (e) {
-      setFullName('');
+      console.error(e);
     }
   }, [username]);
 
@@ -317,7 +186,6 @@ export default function ProfileSetup() {
   const handleLanguageSelect = (code: SupportedLanguage) => {
     setPrefLang(code);
     localStorage.setItem('preferredLanguage', code);
-    // Dispatch custom event to let components know language changed
     window.dispatchEvent(new Event('storage'));
   };
 
@@ -362,7 +230,6 @@ export default function ProfileSetup() {
       
       const res = await apiClient.saveProfile(username, profileData);
       
-      // Update global user structure in localStorage
       const user = JSON.parse(localStorage.getItem('user') || '{}');
       user.profile = res;
       localStorage.setItem('user', JSON.stringify(user));
@@ -375,7 +242,6 @@ export default function ProfileSetup() {
     }
   };
 
-  // Safe translations lookup
   const getGoalData = (id: string) => {
     const goalsObj = t?.goals || profileTranslations.english.goals;
     return goalsObj[id] || profileTranslations.english.goals[id] || { title: id, desc: '' };
@@ -397,366 +263,424 @@ export default function ProfileSetup() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-6 flex flex-col items-center justify-center relative font-inter">
-      {/* Decorative Lights */}
-      <div className="absolute top-10 left-10 w-48 h-48 bg-blue-300/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-64 h-64 bg-indigo-300/10 rounded-full blur-3xl pointer-events-none" />
+    <div style={{
+      minHeight: '100vh',
+      background: '#1A0A4E',
+      backgroundImage: `
+        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.4) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.3) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
+      `,
+      padding: '20px',
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      position: 'relative',
+    }}>
 
-      <div className="max-w-2xl w-full bg-white border border-slate-200/50 p-8 md:p-10 rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.03)] relative z-10 space-y-8">
-        
-        {/* Wizard Step Progress Tracker */}
-        <div className="space-y-2.5">
-          <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">
-            <span>Step {step} of 6</span>
-            <span>{Math.round((step / 6) * 100)}% Complete</span>
+      {/* Background Star Field */}
+      <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+        {[
+          { t: '8%', l: '6%', s: 14 }, { t: '15%', l: '92%', s: 18 },
+          { t: '40%', l: '5%', s: 12 }, { t: '65%', l: '94%', s: 16 },
+        ].map((st, i) => (
+          <div key={i} className="animate-twinkle" style={{
+            position: 'absolute', top: st.t, left: st.l,
+            animationDelay: `${i * 0.4}s`, opacity: 0.7,
+          }}>
+            <Sparkle size={st.s} color={i % 2 === 0 ? '#FFD54A' : '#C4B5F4'} />
           </div>
-          <div className="grid grid-cols-6 gap-1.5 h-2">
-            {[1, 2, 3, 4, 5, 6].map((s) => (
-              <div 
-                key={s} 
-                className={`rounded-full transition-all duration-300 ${
-                  step >= s ? 'bg-indigo-600' : 'bg-slate-100'
-                }`} 
-              />
-            ))}
-          </div>
-        </div>
+        ))}
+      </div>
 
-        {/* STEP 1: Select Spoken / Interface Language */}
-        {step === 1 && (
-          <div className="space-y-6">
-            <div className="text-center space-y-2">
-              <div className="inline-flex items-center gap-1.5 bg-indigo-50 border border-indigo-100 text-indigo-700 font-extrabold px-4 py-1.5 rounded-full text-xs">
-                <Globe className="w-4 h-4" />
-                <span>Language Selection</span>
-              </div>
-              <h2 className="text-2.5xl font-black text-slate-900 tracking-tight">{t.langTitle}</h2>
-              <p className="text-slate-500 font-semibold text-sm">{t.langSubtitle}</p>
+      <div style={{ maxWidth: '700px', width: '100%', position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '16px' }}>
+
+        {/* Top Glass Navigation Bar */}
+        <nav style={{
+          height: '60px',
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '20px',
+          padding: '0 20px',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+          border: '1.5px solid rgba(255,255,255,0.6)',
+        }}>
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="btn-3d"
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              color: '#1e1040', textDecoration: 'none',
+              fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
+              background: '#F0F4FF', padding: '6px 14px', borderRadius: '12px',
+              border: '1px solid #E8EFFF', cursor: 'pointer',
+            }}
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Dashboard</span>
+          </button>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ fontSize: '20px' }}>🌟</span>
+            <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', color: '#1e1040' }}>
+              Profile Setup
+            </span>
+          </div>
+
+          <span style={{
+            background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
+            color: 'white', fontFamily: 'Poppins', fontWeight: 800, fontSize: '11px',
+            padding: '4px 12px', borderRadius: '99px',
+          }}>
+            Step {step} of 6
+          </span>
+        </nav>
+
+        {/* Main Card Container */}
+        <div style={{
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '28px',
+          padding: '32px',
+          border: '2px solid rgba(255,255,255,0.6)',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+          display: 'flex', flexDirection: 'column', gap: '24px',
+        }}>
+
+          {/* Progress Tracker Bar */}
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontFamily: 'Poppins', fontWeight: 800, fontSize: '11px', color: '#94A3B8' }}>
+              <span>Step {step} of 6</span>
+              <span style={{ color: '#6C4CFF' }}>{Math.round((step / 6) * 100)}% Complete</span>
             </div>
+            <div style={{ height: '8px', borderRadius: '99px', background: '#F1F5F9', overflow: 'hidden' }}>
+              <div style={{
+                height: '100%', width: `${(step / 6) * 100}%`,
+                background: 'linear-gradient(90deg, #6C4CFF, #FF4FA3)',
+                borderRadius: '99px', transition: 'width 0.3s ease',
+              }} />
+            </div>
+          </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3.5 pt-4">
-              {languagesList.map((lang) => (
-                <div
-                  key={lang.code}
-                  onClick={() => handleLanguageSelect(lang.code as SupportedLanguage)}
-                  className={`p-4 rounded-2xl border cursor-pointer text-center transition-all select-none hover:scale-[1.02] ${
-                    prefLang === lang.code
-                      ? 'border-indigo-600 bg-indigo-50/20 shadow-md ring-4 ring-indigo-500/5'
-                      : 'border-slate-100 bg-white hover:border-slate-300'
-                  }`}
-                >
-                  <div className="text-2xl mb-1">{lang.flag}</div>
-                  <h4 className="font-extrabold text-slate-950 text-sm leading-none">{lang.nativeName}</h4>
-                  <p className="text-[10px] text-slate-400 font-semibold mt-1">{lang.name}</p>
+          {/* STEP 1: Select Language */}
+          {step === 1 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '6px',
+                  background: '#EDE7F6', color: '#6C4CFF',
+                  fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px',
+                  padding: '4px 14px', borderRadius: '99px', marginBottom: '8px',
+                }}>
+                  <Globe className="w-4 h-4" /> Language Selection
                 </div>
-              ))}
-            </div>
+                <h2 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '24px', color: '#1e1040', margin: '0 0 4px' }}>{t.langTitle}</h2>
+                <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', color: '#64748B', margin: 0 }}>{t.langSubtitle}</p>
+              </div>
 
-            <div className="flex justify-end pt-4">
-              <button
-                onClick={handleNext}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm px-8 py-3.5 rounded-2xl shadow-md hover:shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer"
-              >
-                <span>{t.continueText}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+                {languagesList.map((lang) => (
+                  <div
+                    key={lang.code}
+                    onClick={() => handleLanguageSelect(lang.code as SupportedLanguage)}
+                    className="hover-lift"
+                    style={{
+                      padding: '14px 10px',
+                      borderRadius: '16px',
+                      textAlign: 'center',
+                      cursor: 'pointer',
+                      background: prefLang === lang.code ? '#FFFDF0' : '#F8FAFF',
+                      border: prefLang === lang.code ? '2.5px solid #FFD54A' : '1.5px solid #E8EFFF',
+                      boxShadow: prefLang === lang.code ? '0 8px 20px rgba(255,213,74,0.3)' : 'none',
+                    }}
+                  >
+                    <div style={{ fontSize: '24px', marginBottom: '4px' }}>{lang.flag}</div>
+                    <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', color: '#1e1040', margin: 0 }}>{lang.nativeName}</h4>
+                    <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#94A3B8', margin: '2px 0 0' }}>{lang.name}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* STEP 2: Personal Details */}
-        {step === 2 && (
-          <div className="space-y-6">
-            <div className="text-center space-y-2">
-              <h2 className="text-2.5xl font-black text-slate-900 tracking-tight">{t.detailsTitle}</h2>
-              <p className="text-slate-500 font-semibold text-sm">{t.detailsSubtitle}</p>
-            </div>
+          {/* STEP 2: Name & Age & Avatar */}
+          {step === 2 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ textAlign: 'center' }}>
+                <h2 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '24px', color: '#1e1040', margin: '0 0 4px' }}>{t.detailsTitle}</h2>
+                <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', color: '#64748B', margin: 0 }}>{t.detailsSubtitle}</p>
+              </div>
 
-            <div className="space-y-6 pt-4">
-              {/* Avatar Picker */}
-              <div className="space-y-3">
-                <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider text-center">{t.avatarLabel}</label>
-                <div className="flex justify-center gap-3">
-                  {avatars.map((av) => (
+              {/* Avatars */}
+              <div>
+                <label style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#1e1040', display: 'block', marginBottom: '8px' }}>
+                  {t.avatarLabel}
+                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
+                  {avatars.map((a) => (
                     <div
-                      key={av.id}
-                      onClick={() => setAvatar(av.id)}
-                      className={`w-14 h-14 rounded-2xl flex items-center justify-center text-3xl border transition-all hover:scale-105 cursor-pointer ${
-                        avatar === av.id
-                          ? 'border-indigo-600 bg-indigo-50/20 shadow-md ring-4 ring-indigo-500/5'
-                          : 'border-slate-100 bg-slate-50 hover:border-slate-300'
-                      }`}
-                      title={av.label}
+                      key={a.id}
+                      onClick={() => setAvatar(a.id)}
+                      className="hover-lift"
+                      style={{
+                        flex: 1, padding: '12px 6px', borderRadius: '16px', textAlign: 'center', cursor: 'pointer',
+                        background: avatar === a.id ? '#EDE7F6' : '#F8FAFF',
+                        border: avatar === a.id ? '2.5px solid #6C4CFF' : '1.5px solid #E8EFFF',
+                        boxShadow: avatar === a.id ? '0 8px 20px rgba(108,76,255,0.3)' : 'none',
+                      }}
                     >
-                      {av.emoji}
+                      <div style={{ fontSize: '32px', marginBottom: '4px' }}>{a.emoji}</div>
+                      <div style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: '10px', color: '#1e1040' }}>{a.label}</div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Full Name */}
-              <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider pl-1">{t.nameLabel}</label>
-                <div className="relative">
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400/80" />
+              {/* Name & Age Inputs */}
+              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '12px' }}>
+                <div>
+                  <label style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#1e1040', display: 'block', marginBottom: '6px' }}>
+                    {t.nameLabel}
+                  </label>
                   <input
                     type="text"
-                    required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="w-full pl-12 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl text-slate-800 focus:outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-500 transition-all font-semibold text-sm placeholder:text-slate-400"
-                    placeholder="e.g. Adarsh Kumar"
+                    placeholder="Enter your name"
+                    style={{
+                      width: '100%', padding: '12px 16px', borderRadius: '14px',
+                      border: '1.5px solid #E8EFFF', background: '#F8FAFF',
+                      fontFamily: 'Nunito', fontWeight: 700, fontSize: '14px', color: '#1e1040',
+                      outline: 'none',
+                    }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#1e1040', display: 'block', marginBottom: '6px' }}>
+                    {t.ageLabel}
+                  </label>
+                  <input
+                    type="number"
+                    value={age}
+                    onChange={(e) => setAge(e.target.value)}
+                    placeholder="Age"
+                    style={{
+                      width: '100%', padding: '12px 16px', borderRadius: '14px',
+                      border: '1.5px solid #E8EFFF', background: '#F8FAFF',
+                      fontFamily: 'Nunito', fontWeight: 700, fontSize: '14px', color: '#1e1040',
+                      outline: 'none',
+                    }}
                   />
                 </div>
               </div>
+            </div>
+          )}
 
-              {/* Age */}
-              <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider pl-1">{t.ageLabel}</label>
-                <input
-                  type="number"
-                  required
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                  className="w-full px-4 py-3.5 bg-white border border-slate-200 rounded-2xl text-slate-800 focus:outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-500 transition-all font-semibold text-sm placeholder:text-slate-400"
-                  placeholder="Age"
-                />
+          {/* STEP 3: Goal */}
+          {step === 3 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ textAlign: 'center' }}>
+                <h2 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '24px', color: '#1e1040', margin: '0 0 4px' }}>{t.goalTitle}</h2>
+                <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', color: '#64748B', margin: 0 }}>{t.goalSubtitle}</p>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+                {goals.map((g) => {
+                  const data = getGoalData(g.id);
+                  const isSelected = learningGoal === g.id;
+                  return (
+                    <div
+                      key={g.id}
+                      onClick={() => setLearningGoal(g.id)}
+                      className="hover-lift"
+                      style={{
+                        padding: '16px', borderRadius: '18px', cursor: 'pointer',
+                        background: isSelected ? '#FFFDF0' : '#F8FAFF',
+                        border: isSelected ? '2.5px solid #FFD54A' : '1.5px solid #E8EFFF',
+                        boxShadow: isSelected ? '0 8px 20px rgba(255,213,74,0.3)' : 'none',
+                      }}
+                    >
+                      <div style={{ fontSize: '28px', marginBottom: '6px' }}>{g.emoji}</div>
+                      <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: '#1e1040', margin: '0 0 2px' }}>{data.title}</h4>
+                      <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '11px', color: '#64748B', margin: 0 }}>{data.desc}</p>
+                    </div>
+                  );
+                })}
               </div>
             </div>
+          )}
 
-            <div className="flex justify-between pt-6 border-t border-slate-100">
-              <button
-                onClick={handleBack}
-                className="inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-900 font-bold text-sm cursor-pointer"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                <span>{t.back}</span>
-              </button>
-              <button
-                onClick={handleNext}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm px-8 py-3.5 rounded-2xl shadow-md hover:shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer"
-              >
-                <span>{t.continueText}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        )}
+          {/* STEP 4: Reading Level */}
+          {step === 4 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ textAlign: 'center' }}>
+                <h2 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '24px', color: '#1e1040', margin: '0 0 4px' }}>{t.readingTitle}</h2>
+                <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', color: '#64748B', margin: 0 }}>{t.readingSubtitle}</p>
+              </div>
 
-        {/* STEP 3: Learning Goal */}
-        {step === 3 && (
-          <div className="space-y-6">
-            <div className="text-center space-y-2">
-              <h2 className="text-2.5xl font-black text-slate-900 tracking-tight">{t.goalTitle}</h2>
-              <p className="text-slate-500 font-semibold text-sm">{t.goalSubtitle}</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-              {goals.map((g) => {
-                const goalData = getGoalData(g.id);
-                return (
-                  <div
-                    key={g.id}
-                    onClick={() => setLearningGoal(g.id)}
-                    className={`p-5 rounded-2xl border cursor-pointer text-left transition-all ${
-                      learningGoal === g.id
-                        ? 'border-indigo-600 bg-indigo-50/20 shadow-md ring-4 ring-indigo-500/5'
-                        : 'border-slate-100 bg-white hover:border-slate-300 hover:shadow-sm'
-                    }`}
-                  >
-                    <div className="text-3xl mb-2.5">{g.emoji}</div>
-                    <h4 className="font-extrabold text-slate-950 text-sm leading-snug">{goalData.title}</h4>
-                    <p className="text-slate-400 text-xs font-semibold mt-1 leading-relaxed">{goalData.desc}</p>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="flex justify-between pt-6 border-t border-slate-100">
-              <button
-                onClick={handleBack}
-                className="inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-900 font-bold text-sm cursor-pointer"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                <span>{t.back}</span>
-              </button>
-              <button
-                onClick={handleNext}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm px-8 py-3.5 rounded-2xl shadow-md hover:shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer"
-              >
-                <span>{t.continueText}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* STEP 4: Reading Confidence */}
-        {step === 4 && (
-          <div className="space-y-6">
-            <div className="text-center space-y-2">
-              <h2 className="text-2.5xl font-black text-slate-900 tracking-tight">{t.readingTitle}</h2>
-              <p className="text-slate-500 font-semibold text-sm">{t.readingSubtitle}</p>
-            </div>
-
-            <div className="space-y-4 pt-4">
-              {readingOptions.map((opt) => {
-                const readingData = getReadingData(opt.level);
-                return (
-                  <div
-                    key={opt.level}
-                    onClick={() => setReadingLevel(opt.level)}
-                    className={`p-5 rounded-2xl border cursor-pointer flex items-center gap-4 text-left transition-all ${
-                      readingLevel === opt.level
-                        ? 'border-indigo-600 bg-indigo-50/20 shadow-md ring-4 ring-indigo-500/5'
-                        : 'border-slate-100 bg-white hover:border-slate-300 hover:shadow-sm'
-                    }`}
-                  >
-                    <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-xl shrink-0">
-                      {opt.emoji}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {readingOptions.map((r) => {
+                  const data = getReadingData(r.level);
+                  const isSelected = readingLevel === r.level;
+                  return (
+                    <div
+                      key={r.level}
+                      onClick={() => setReadingLevel(r.level)}
+                      className="hover-lift"
+                      style={{
+                        padding: '16px 20px', borderRadius: '18px', cursor: 'pointer',
+                        background: isSelected ? '#EDE7F6' : '#F8FAFF',
+                        border: isSelected ? '2.5px solid #6C4CFF' : '1.5px solid #E8EFFF',
+                        display: 'flex', alignItems: 'center', gap: '14px',
+                      }}
+                    >
+                      <div style={{ fontSize: '24px' }}>{r.emoji}</div>
+                      <div>
+                        <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', color: '#1e1040', margin: 0 }}>{data.label}</h4>
+                        <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '12px', color: '#64748B', margin: 0 }}>{data.desc}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-extrabold text-slate-955 text-sm leading-snug">{readingData.label}</h4>
-                      <p className="text-slate-400 text-xs font-semibold mt-0.5">{readingData.desc}</p>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* STEP 5: Writing Level */}
+          {step === 5 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ textAlign: 'center' }}>
+                <h2 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '24px', color: '#1e1040', margin: '0 0 4px' }}>{t.writingTitle}</h2>
+                <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', color: '#64748B', margin: 0 }}>{t.writingSubtitle}</p>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {writingOptions.map((w) => {
+                  const data = getWritingData(w.level);
+                  const isSelected = writingLevel === w.level;
+                  return (
+                    <div
+                      key={w.level}
+                      onClick={() => setWritingLevel(w.level)}
+                      className="hover-lift"
+                      style={{
+                        padding: '16px 20px', borderRadius: '18px', cursor: 'pointer',
+                        background: isSelected ? '#EDE7F6' : '#F8FAFF',
+                        border: isSelected ? '2.5px solid #6C4CFF' : '1.5px solid #E8EFFF',
+                        display: 'flex', alignItems: 'center', gap: '14px',
+                      }}
+                    >
+                      <div style={{ fontSize: '24px' }}>{w.emoji}</div>
+                      <div>
+                        <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', color: '#1e1040', margin: 0 }}>{data.label}</h4>
+                        <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '12px', color: '#64748B', margin: 0 }}>{data.desc}</p>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
+          )}
 
-            <div className="flex justify-between pt-6 border-t border-slate-100">
-              <button
-                onClick={handleBack}
-                className="inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-900 font-bold text-sm cursor-pointer"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                <span>{t.back}</span>
-              </button>
-              <button
-                onClick={handleNext}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm px-8 py-3.5 rounded-2xl shadow-md hover:shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer"
-              >
-                <span>{t.continueText}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        )}
+          {/* STEP 6: Speaking Confidence */}
+          {step === 6 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ textAlign: 'center' }}>
+                <h2 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '24px', color: '#1e1040', margin: '0 0 4px' }}>{t.speakingTitle}</h2>
+                <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', color: '#64748B', margin: 0 }}>{t.speakingSubtitle}</p>
+              </div>
 
-        {/* STEP 5: Writing Confidence */}
-        {step === 5 && (
-          <div className="space-y-6">
-            <div className="text-center space-y-2">
-              <h2 className="text-2.5xl font-black text-slate-900 tracking-tight">{t.writingTitle}</h2>
-              <p className="text-slate-500 font-semibold text-sm">{t.writingSubtitle}</p>
-            </div>
-
-            <div className="space-y-4 pt-4">
-              {writingOptions.map((opt) => {
-                const writingData = getWritingData(opt.level);
-                return (
-                  <div
-                    key={opt.level}
-                    onClick={() => setWritingLevel(opt.level)}
-                    className={`p-5 rounded-2xl border cursor-pointer flex items-center gap-4 text-left transition-all ${
-                      writingLevel === opt.level
-                        ? 'border-indigo-600 bg-indigo-50/20 shadow-md ring-4 ring-indigo-500/5'
-                        : 'border-slate-100 bg-white hover:border-slate-300 hover:shadow-sm'
-                    }`}
-                  >
-                    <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-xl shrink-0">
-                      {opt.emoji}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {speakingOptions.map((s) => {
+                  const data = getSpeakingData(s.level);
+                  const isSelected = speakingLevel === s.level;
+                  return (
+                    <div
+                      key={s.level}
+                      onClick={() => {
+                        setSpeakingLevel(s.level);
+                        setSpeakingConfidence(s.value);
+                      }}
+                      className="hover-lift"
+                      style={{
+                        padding: '16px 20px', borderRadius: '18px', cursor: 'pointer',
+                        background: isSelected ? '#FFFDF0' : '#F8FAFF',
+                        border: isSelected ? '2.5px solid #FFD54A' : '1.5px solid #E8EFFF',
+                        display: 'flex', alignItems: 'center', gap: '14px',
+                      }}
+                    >
+                      <div style={{ fontSize: '24px' }}>{s.emoji}</div>
+                      <div>
+                        <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', color: '#1e1040', margin: 0 }}>{data.label}</h4>
+                        <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '12px', color: '#64748B', margin: 0 }}>{data.desc}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-extrabold text-slate-955 text-sm leading-snug">{writingData.label}</h4>
-                      <p className="text-slate-400 text-xs font-semibold mt-0.5">{writingData.desc}</p>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
+          )}
 
-            <div className="flex justify-between pt-6 border-t border-slate-100">
-              <button
-                onClick={handleBack}
-                className="inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-900 font-bold text-sm cursor-pointer"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                <span>{t.back}</span>
-              </button>
-              <button
-                onClick={handleNext}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm px-8 py-3.5 rounded-2xl shadow-md hover:shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer"
-              >
-                <span>{t.continueText}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* STEP 6: Speaking Confidence */}
-        {step === 6 && (
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="text-center space-y-2">
-              <h2 className="text-2.5xl font-black text-slate-900 tracking-tight">{t.speakingTitle}</h2>
-              <p className="text-slate-500 font-semibold text-sm">{t.speakingSubtitle}</p>
-            </div>
-
-            <div className="space-y-4 pt-4">
-              {speakingOptions.map((opt) => {
-                const speakingData = getSpeakingData(opt.level);
-                return (
-                  <div
-                    key={opt.level}
-                    onClick={() => {
-                      setSpeakingLevel(opt.level);
-                      setSpeakingConfidence(opt.value);
-                    }}
-                    className={`p-5 rounded-2xl border cursor-pointer flex items-center gap-4 text-left transition-all ${
-                      speakingLevel === opt.level
-                        ? 'border-indigo-600 bg-indigo-50/20 shadow-md ring-4 ring-indigo-500/5'
-                        : 'border-slate-100 bg-white hover:border-slate-300 hover:shadow-sm'
-                    }`}
-                  >
-                    <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-2xl shrink-0">
-                      {opt.emoji}
-                    </div>
-                    <div>
-                      <h4 className="font-extrabold text-slate-950 text-sm leading-snug">{speakingData.label}</h4>
-                      <p className="text-slate-400 text-xs font-semibold mt-0.5">{speakingData.desc}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="flex justify-between pt-6 border-t border-slate-100 items-center">
+          {/* Navigation Buttons Row */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '2px solid #F1F5F9', paddingTop: '16px' }}>
+            {step > 1 ? (
               <button
                 type="button"
                 onClick={handleBack}
-                className="inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-900 font-bold text-sm cursor-pointer"
+                className="btn-3d"
+                style={{
+                  padding: '10px 20px', borderRadius: '14px',
+                  background: '#F1F5F9', color: '#475569',
+                  fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
+                  border: 'none', cursor: 'pointer',
+                }}
               >
-                <ArrowLeft className="w-4 h-4" />
-                <span>{t.back}</span>
+                ← {t.back}
               </button>
+            ) : <div />}
+
+            {step < 6 ? (
               <button
-                type="submit"
-                disabled={loading}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-extrabold text-sm px-8 py-4 rounded-2xl shadow-lg shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer disabled:opacity-60"
+                type="button"
+                onClick={handleNext}
+                className="btn-3d"
+                style={{
+                  padding: '12px 28px', borderRadius: '14px',
+                  background: 'linear-gradient(135deg, #FFD54A, #FF9F43)',
+                  color: '#1e1040',
+                  fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px',
+                  border: 'none', borderBottom: '3.5px solid #E8A000',
+                  cursor: 'pointer', boxShadow: '0 6px 18px rgba(255,213,74,0.4)',
+                  display: 'flex', alignItems: 'center', gap: '8px',
+                }}
               >
-                {loading ? (
-                  <span>Saving...</span>
-                ) : (
-                  <>
-                    <span>{t.complete}</span>
-                    <CheckCircle2 className="w-4 h-4" />
-                  </>
-                )}
+                <span>{t.continueText}</span>
+                <ArrowRight className="w-4 h-4" />
               </button>
-            </div>
-          </form>
-        )}
+            ) : (
+              <button
+                type="button"
+                onClick={handleSubmit}
+                disabled={loading}
+                className="btn-3d"
+                style={{
+                  padding: '14px 32px', borderRadius: '14px',
+                  background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
+                  color: 'white',
+                  fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px',
+                  border: 'none', borderBottom: '4px solid rgba(0,0,0,0.3)',
+                  cursor: loading ? 'not-allowed' : 'pointer',
+                  boxShadow: '0 8px 24px rgba(108,76,255,0.4)',
+                  display: 'flex', alignItems: 'center', gap: '8px',
+                }}
+              >
+                <Sparkles className="w-5 h-5" />
+                <span>{loading ? 'Saving...' : `${t.complete} ✨`}</span>
+              </button>
+            )}
+          </div>
+
+        </div>
+
       </div>
     </div>
   );

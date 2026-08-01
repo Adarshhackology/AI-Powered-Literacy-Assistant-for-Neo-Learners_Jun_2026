@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { apiClient } from '../utils/api';
 import { 
-  ArrowLeft, Volume2, BookOpen, Bookmark, CheckCircle, 
-  MessageSquare, Sparkles, Send, Edit, ChevronLeft, ChevronRight 
+  ArrowLeft, Volume2, Bookmark, CheckCircle, 
+  MessageSquare, Send, Edit
 } from 'lucide-react';
+import { Sparkle, AIRobotMascot } from '../components/UI/Illustrations';
 
 export default function LessonView() {
   const { id } = useParams<{ id: string }>();
@@ -40,11 +41,9 @@ export default function LessonView() {
         const prof = await apiClient.getProfile(username);
         setProfile(prof);
 
-        // Load bookmark state
         const bookmarks = JSON.parse(localStorage.getItem(`bookmark_${username}`) || '[]');
         setIsBookmarked(bookmarks.includes(lessonId));
 
-        // Load notes state
         const savedNotes = localStorage.getItem(`notes_${username}_${lessonId}`) || '';
         setNotes(savedNotes);
       } catch (err) {
@@ -56,8 +55,8 @@ export default function LessonView() {
 
   if (!lesson) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <p className="font-extrabold text-slate-500">Loading lesson...</p>
+      <div style={{ minHeight: '100vh', background: '#1A0A4E', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontFamily: 'Poppins', fontWeight: 900 }}>
+        Loading lesson...
       </div>
     );
   }
@@ -100,7 +99,6 @@ export default function LessonView() {
     setInputMessage('');
     setChatLoading(true);
 
-    // Simulate AI response based on keyword matching
     setTimeout(() => {
       let reply = "That is a great question! Feel free to ask me to simplify any word or phrase in Hindi or other regional language.";
       
@@ -126,88 +124,180 @@ export default function LessonView() {
       if (updatedProfile) {
         setProfile(updatedProfile);
         
-        // Update user state locally
         const user = JSON.parse(localStorage.getItem('user') || '{}');
         user.profile = updatedProfile;
         localStorage.setItem('user', JSON.stringify(user));
       }
-      // Go back to dashboard
       navigate('/dashboard');
     } catch (err) {
       console.error(err);
+      navigate('/dashboard');
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col relative text-slate-800">
-      {/* Navbar */}
-      <nav className="h-16 bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between">
-        <Link to="/dashboard" className="flex items-center gap-2 text-slate-600 hover:text-slate-900 font-bold transition-colors">
-          <ArrowLeft className="w-5 h-5" />
-          <span>Back to Dashboard</span>
-        </Link>
-        <span className="font-extrabold text-slate-900 text-lg">NeoLit Lesson Player</span>
-        <div className="flex items-center gap-3">
+    <div style={{
+      minHeight: '100vh',
+      background: '#1A0A4E',
+      backgroundImage: `
+        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.4) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.3) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
+      `,
+      padding: '20px',
+      position: 'relative',
+    }}>
+
+      {/* Background Star Field */}
+      <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+        {[
+          { t: '5%', l: '8%', s: 12 }, { t: '12%', l: '90%', s: 16 },
+          { t: '25%', l: '3%', s: 14 }, { t: '45%', l: '95%', s: 10 },
+          { t: '70%', l: '4%', s: 18 }, { t: '88%', l: '92%', s: 14 },
+        ].map((st, i) => (
+          <div key={i} className="animate-twinkle" style={{
+            position: 'absolute', top: st.t, left: st.l,
+            animationDelay: `${i * 0.4}s`, opacity: 0.7,
+          }}>
+            <Sparkle size={st.s} color={i % 2 === 0 ? '#FFD54A' : '#C4B5F4'} />
+          </div>
+        ))}
+      </div>
+
+      <div style={{ maxWidth: '1000px', margin: '0 auto', position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
+        {/* Top Glass Nav Bar */}
+        <nav style={{
+          height: '64px',
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '20px',
+          padding: '0 20px',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+          border: '1.5px solid rgba(255,255,255,0.6)',
+        }}>
+          <Link to="/dashboard" className="btn-3d" style={{
+            display: 'flex', alignItems: 'center', gap: '8px',
+            color: '#1e1040', textDecoration: 'none',
+            fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px',
+            background: '#F0F4FF', padding: '8px 16px', borderRadius: '12px',
+            border: '1px solid #E8EFFF',
+          }}>
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back to Dashboard</span>
+          </Link>
+
+          <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', color: '#1e1040' }}>
+            NeoLit Lesson Player
+          </span>
+
           <button
             onClick={handleBookmarkToggle}
-            className={`w-10 h-10 border rounded-xl flex items-center justify-center transition-all ${
-              isBookmarked 
-                ? 'border-amber-200 bg-amber-50 text-amber-500' 
-                : 'border-slate-100 hover:bg-slate-50 text-slate-400'
-            }`}
+            className="btn-3d"
+            style={{
+              width: '40px', height: '40px', borderRadius: '12px',
+              background: isBookmarked ? '#FEF3C7' : '#F8FAFF',
+              border: isBookmarked ? '1.5px solid #F59E0B' : '1.5px solid #E8EFFF',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: isBookmarked ? '#D97706' : '#94A3B8',
+              cursor: 'pointer',
+            }}
             title="Bookmark lesson"
           >
             <Bookmark className="w-5 h-5 fill-current" />
           </button>
-        </div>
-      </nav>
+        </nav>
 
-      {/* Main Workspace split */}
-      <div className="flex-1 flex flex-col lg:flex-row min-h-0 relative">
-        <div className="flex-1 p-6 md:p-8 overflow-y-auto space-y-6 max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <span className="bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+        {/* Main Lesson Workspace Card */}
+        <div style={{
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '28px',
+          padding: '32px',
+          border: '2px solid rgba(255,255,255,0.6)',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+          display: 'flex', flexDirection: 'column', gap: '20px',
+        }}>
+          
+          {/* Tags & Title */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{
+                background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)', color: 'white',
+                fontFamily: 'Poppins', fontWeight: 800, fontSize: '11px', textTransform: 'uppercase',
+                padding: '4px 12px', borderRadius: '99px',
+              }}>
                 {lesson.category}
               </span>
-              <span className="bg-slate-100 text-slate-500 text-xs font-bold px-3 py-1 rounded-full">
+              <span style={{
+                background: '#F1F5F9', color: '#475569',
+                fontFamily: 'Poppins', fontWeight: 700, fontSize: '11px',
+                padding: '4px 12px', borderRadius: '99px',
+              }}>
                 Est: {lesson.time}
               </span>
-              <span className="bg-slate-100 text-slate-500 text-xs font-bold px-3 py-1 rounded-full">
+              <span style={{
+                background: '#F1F5F9', color: '#475569',
+                fontFamily: 'Poppins', fontWeight: 700, fontSize: '11px',
+                padding: '4px 12px', borderRadius: '99px',
+              }}>
                 Difficulty: {lesson.difficulty}
               </span>
             </div>
-            <h1 className="text-3xl font-black text-slate-950 tracking-tight leading-tight">{lesson.title}</h1>
+            <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '28px', color: '#1e1040', margin: 0, lineHeight: 1.2 }}>
+              {lesson.title}
+            </h1>
           </div>
 
-          {/* Player controls */}
-          <div className="bg-blue-600 text-white p-6 rounded-3xl shadow-lg flex items-center justify-between gap-4">
-            <div className="space-y-1">
-              <h4 className="font-extrabold text-base">Listen & Read Along</h4>
-              <p className="text-blue-100 text-xs font-medium">Hear the correct pronunciation of words below.</p>
+          {/* Listen & Read Along Audio Card */}
+          <div style={{
+            borderRadius: '20px',
+            background: 'linear-gradient(135deg, #4D9DFF 0%, #6C4CFF 100%)',
+            padding: '20px 24px',
+            color: 'white',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px',
+            boxShadow: '0 10px 30px rgba(77,157,255,0.35)',
+          }}>
+            <div>
+              <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', margin: '0 0 4px', color: 'white' }}>Listen & Read Along</h4>
+              <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', margin: 0, color: 'rgba(255,255,255,0.9)' }}>
+                Hear the correct pronunciation of words below.
+              </p>
             </div>
             <button
               onClick={handleSpeak}
-              className="w-14 h-14 bg-white text-blue-600 rounded-full flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all shrink-0 cursor-pointer"
+              className="btn-3d"
+              style={{
+                width: '56px', height: '56px', borderRadius: '50%',
+                background: 'white', border: 'none',
+                color: '#6C4CFF', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 8px 20px rgba(0,0,0,0.15)', cursor: 'pointer', flexShrink: 0,
+              }}
             >
-              <Volume2 className="w-6 h-6 fill-current text-blue-600" />
+              <Volume2 className="w-7 h-7 fill-current text-indigo-600" />
             </button>
           </div>
 
-          {/* Lesson Text Content */}
-          <div className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 shadow-sm space-y-6">
-            <div className="prose max-w-none text-slate-800 leading-relaxed text-lg font-serif">
+          {/* Lesson Content */}
+          <div style={{
+            background: '#F8FAFF',
+            borderRadius: '20px',
+            border: '1.5px solid #E8EFFF',
+            padding: '24px',
+            display: 'flex', flexDirection: 'column', gap: '16px',
+          }}>
+            <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '17px', color: '#1e1040', lineHeight: 1.7 }}>
               {lesson.content}
             </div>
 
             {lesson.examples && lesson.examples.length > 0 && (
-              <div className="bg-slate-50 border border-slate-100 p-5 rounded-2xl space-y-3">
-                <h4 className="text-xs font-black text-slate-400 uppercase tracking-wide">Key Examples</h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div style={{ background: 'white', border: '1px solid #E8EFFF', padding: '16px', borderRadius: '16px', marginTop: '8px' }}>
+                <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px', color: '#94A3B8', textTransform: 'uppercase', margin: '0 0 10px' }}>Key Examples</h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
                   {lesson.examples.map((ex: string, idx: number) => (
-                    <div key={idx} className="bg-white border border-slate-100 p-3.5 rounded-xl font-bold text-sm text-slate-800 flex items-center gap-2">
-                      <span className="w-5 h-5 bg-blue-50 text-blue-600 text-xs font-black rounded-full flex items-center justify-center shrink-0">
+                    <div key={idx} style={{ background: '#F8FAFF', border: '1px solid #E8EFFF', padding: '10px', borderRadius: '12px', fontFamily: 'Poppins', fontWeight: 800, fontSize: '13px', color: '#1e1040', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ width: '22px', height: '22px', borderRadius: '50%', background: '#EDE7F6', color: '#6C4CFF', fontSize: '11px', fontWeight: 900, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                         {idx + 1}
                       </span>
                       <span>{ex}</span>
@@ -218,81 +308,103 @@ export default function LessonView() {
             )}
           </div>
 
-          {/* Actions Bar */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-100">
+          {/* Action Bar (Notes Workspace & Mark Complete) */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '14px', borderTop: '2px solid #F1F5F9', paddingTop: '16px' }}>
             <button
               onClick={() => setIsNotesOpen(!isNotesOpen)}
-              className="w-full sm:w-auto bg-white border border-slate-200 text-slate-700 font-extrabold text-sm px-6 py-3.5 rounded-2xl flex items-center justify-center gap-2 shadow-sm hover:bg-slate-50 transition-all cursor-pointer"
+              className="btn-3d"
+              style={{
+                background: '#F1F5F9', color: '#475569',
+                fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
+                padding: '12px 20px', borderRadius: '14px', border: 'none',
+                cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px',
+              }}
             >
-              <Edit className="w-5 h-5" />
+              <Edit className="w-4 h-4" />
               <span>Notes Workspace</span>
             </button>
 
-            <div className="flex items-center gap-4 w-full sm:w-auto">
-              <button
-                onClick={handleMarkComplete}
-                className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-extrabold text-sm px-8 py-3.5 rounded-2xl shadow-xl shadow-blue-500/20 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <CheckCircle className="w-5 h-5" />
-                <span>Mark Lesson Complete</span>
-              </button>
-            </div>
+            <button
+              onClick={handleMarkComplete}
+              className="btn-3d"
+              style={{
+                background: 'linear-gradient(135deg, #FFD54A, #FF9F43)',
+                color: '#1e1040',
+                fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px',
+                padding: '14px 32px', borderRadius: '16px',
+                border: 'none', borderBottom: '4px solid #E8A000',
+                cursor: 'pointer', boxShadow: '0 8px 24px rgba(255,213,74,0.5)',
+                display: 'flex', alignItems: 'center', gap: '8px',
+              }}
+            >
+              <CheckCircle className="w-5 h-5" />
+              <span>Mark Lesson Complete</span>
+            </button>
           </div>
 
           {/* Notes Sidebar block */}
           {isNotesOpen && (
-            <div className="bg-amber-50/50 border border-amber-100 rounded-3xl p-6 space-y-3 animate-fade-in">
-              <div className="flex justify-between items-center">
-                <h4 className="font-extrabold text-slate-900 text-base">Lesson Notes</h4>
-                <span className="text-xs text-amber-600 font-bold">Auto-saved to device</span>
+            <div style={{ background: '#FFFDF0', border: '1.5px solid #FFE082', borderRadius: '18px', padding: '18px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: '#1e1040', margin: 0 }}>Lesson Notes</h4>
+                <span style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '11px', color: '#D97706' }}>Auto-saved to device</span>
               </div>
               <textarea
                 value={notes}
                 onChange={handleNotesChange}
-                className="w-full h-32 p-4 bg-white border border-amber-100 rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/10 focus:border-amber-400 text-slate-800 font-semibold"
+                style={{
+                  width: '100%', height: '100px', padding: '12px', background: 'white',
+                  border: '1px solid #FFE082', borderRadius: '12px', outline: 'none',
+                  fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', color: '#1e1040',
+                }}
                 placeholder="Write your study notes, spellings or summaries here..."
               />
             </div>
           )}
+
         </div>
 
         {/* Floating AI Chat Assistant Window */}
-        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-          {isChatOpen ? (
-            <div className="w-[360px] h-[480px] bg-white border border-slate-100 rounded-3xl shadow-2xl flex flex-col mb-4 overflow-hidden animate-fade-in">
+        <div style={{ position: 'fixed', bottom: '24px', right: '24px', zIndex: 50, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+          {isChatOpen && (
+            <div style={{
+              width: '340px', height: '440px', background: 'white',
+              borderRadius: '24px', border: '1.5px solid #E8EFFF',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
+              display: 'flex', flexDirection: 'column', marginBottom: '12px',
+              overflow: 'hidden',
+            }}>
               {/* Header */}
-              <div className="bg-blue-600 text-white p-4 flex items-center justify-between shrink-0">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-lg">🤖</div>
+              <div style={{ background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)', color: 'white', padding: '14px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>🤖</div>
                   <div>
-                    <h4 className="font-extrabold text-sm">AI Tutor Doubts Portal</h4>
-                    <p className="text-[10px] text-blue-100 font-semibold">Active now</p>
+                    <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', margin: 0, color: 'white' }}>AI Tutor Doubts Portal</h4>
+                    <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: 'rgba(255,255,255,0.8)', margin: 0 }}>Active now</p>
                   </div>
                 </div>
-                <button
-                  onClick={() => setIsChatOpen(false)}
-                  className="text-white hover:text-blue-100 text-lg font-bold px-2"
-                >
-                  ✕
-                </button>
+                <button onClick={() => setIsChatOpen(false)} style={{ background: 'none', border: 'none', color: 'white', fontSize: '18px', cursor: 'pointer', fontWeight: 900 }}>✕</button>
               </div>
 
               {/* Chat Message Lists */}
-              <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-50 text-xs">
+              <div style={{ flex: 1, padding: '14px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', background: '#F8FAFF' }}>
                 {chatMessages.map((msg, idx) => (
-                  <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`p-3 rounded-2xl max-w-[80%] font-semibold leading-relaxed shadow-sm ${
-                      msg.sender === 'user'
-                        ? 'bg-blue-600 text-white rounded-tr-none'
-                        : 'bg-white text-slate-800 rounded-tl-none border border-slate-100'
-                    }`}>
+                  <div key={idx} style={{ display: 'flex', justifyContent: msg.sender === 'user' ? 'flex-end' : 'flex-start' }}>
+                    <div style={{
+                      padding: '10px 14px', borderRadius: '14px', maxWidth: '80%',
+                      fontFamily: 'Nunito', fontWeight: 700, fontSize: '12px', lineHeight: 1.4,
+                      background: msg.sender === 'user' ? '#6C4CFF' : 'white',
+                      color: msg.sender === 'user' ? 'white' : '#1e1040',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+                      border: msg.sender === 'user' ? 'none' : '1px solid #E8EFFF',
+                    }}>
                       {msg.text}
                     </div>
                   </div>
                 ))}
                 {chatLoading && (
-                  <div className="flex justify-start">
-                    <div className="bg-white text-slate-500 p-3 border border-slate-100 rounded-2xl rounded-tl-none font-bold animate-pulse">
+                  <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                    <div style={{ background: 'white', color: '#94A3B8', padding: '10px 14px', borderRadius: '14px', fontFamily: 'Nunito', fontWeight: 700, fontSize: '11px', border: '1px solid #E8EFFF' }}>
                       typing response...
                     </div>
                   </div>
@@ -300,34 +412,39 @@ export default function LessonView() {
               </div>
 
               {/* Input Form */}
-              <form onSubmit={handleSendMessage} className="p-3 border-t border-slate-100 bg-white flex items-center gap-2">
+              <form onSubmit={handleSendMessage} style={{ padding: '10px 12px', background: 'white', borderTop: '1px solid #F1F5F9', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <input
                   type="text"
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   placeholder="Ask a doubt (e.g. 'What is a noun?')"
-                  className="flex-1 bg-slate-50 border border-slate-200 px-4 py-3 rounded-2xl text-xs font-semibold focus:outline-none focus:border-blue-500"
+                  style={{ flex: 1, background: '#F8FAFF', border: '1px solid #E8EFFF', padding: '8px 12px', borderRadius: '12px', outline: 'none', fontFamily: 'Nunito', fontWeight: 700, fontSize: '12px', color: '#1e1040' }}
                 />
-                <button
-                  type="submit"
-                  className="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl flex items-center justify-center shrink-0 shadow-md cursor-pointer"
-                >
+                <button type="submit" style={{ width: '36px', height: '36px', borderRadius: '12px', background: '#6C4CFF', border: 'none', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}>
                   <Send className="w-4 h-4" />
                 </button>
               </form>
             </div>
-          ) : null}
+          )}
 
           {/* Toggle Button */}
           <button
             onClick={() => setIsChatOpen(!isChatOpen)}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-extrabold p-4 rounded-full shadow-2xl flex items-center gap-2 cursor-pointer hover:scale-105 active:scale-95 transition-all"
-            title="Ask AI Tutor"
+            className="btn-3d"
+            style={{
+              background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
+              color: 'white', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
+              padding: '12px 20px', borderRadius: '99px', border: 'none',
+              borderBottom: '3.5px solid rgba(0,0,0,0.3)',
+              boxShadow: '0 8px 24px rgba(108,76,255,0.4)',
+              cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px',
+            }}
           >
-            <MessageSquare className="w-6 h-6" />
-            {!isChatOpen && <span className="text-sm pr-1">Ask doubts</span>}
+            <MessageSquare className="w-5 h-5" />
+            <span>Ask Doubts</span>
           </button>
         </div>
+
       </div>
     </div>
   );

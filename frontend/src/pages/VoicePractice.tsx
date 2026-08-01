@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Mic, MicOff, Volume2, Sparkles, RefreshCw, CheckCircle2 } from 'lucide-react';
 import { apiClient } from '../utils/api';
+import { Sparkle, RobotMascot } from '../components/UI/Illustrations';
 
 const wordsToPractice = [
   { text: 'Beautiful', phonetic: '/ˈbjuːtɪfl/', help: 'Stress should be on "Beau"', stressWord: 'Beau', emoji: '🌸', imageUrl: 'https://api.dicebear.com/7.x/bottts/svg?seed=flower' },
@@ -11,18 +12,16 @@ const wordsToPractice = [
 ];
 
 export default function VoicePractice() {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [speechScores, setSpeechScores] = useState<any | null>(null);
   
   const currentWord = wordsToPractice[currentIndex];
-  
-  // Web Speech API recognition reference
   const recognitionRef = useRef<any | null>(null);
 
   useEffect(() => {
-    // Initialize Web Speech API if supported
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (SpeechRecognition) {
       const rec = new SpeechRecognition();
@@ -45,7 +44,6 @@ export default function VoicePractice() {
       rec.onerror = (e: any) => {
         console.error('Speech recognition error', e);
         setIsRecording(false);
-        // Fallback simulation if mic is blocked/failed
         simulateSpeechEvaluation();
       };
 
@@ -65,7 +63,6 @@ export default function VoicePractice() {
         recognitionRef.current.stop();
       }
     } else {
-      // Simulator for unsupported browsers
       setIsRecording(true);
       setTranscript('');
       setSpeechScores(null);
@@ -85,7 +82,6 @@ export default function VoicePractice() {
     }
   };
 
-  // Real Speech evaluation helper
   const evaluateSpeech = async (spokenText: string) => {
     const target = currentWord.text;
     const username = localStorage.getItem('username') || 'learner';
@@ -108,7 +104,6 @@ export default function VoicePractice() {
     }
   };
 
-  // Mock simulation helper
   const simulateSpeechEvaluation = () => {
     const simulatedTranscript = currentWord.text;
     setTranscript(simulatedTranscript);
@@ -118,217 +113,245 @@ export default function VoicePractice() {
       fluency: 90,
       confidence: 82,
     });
-
-    // Add badge or XP
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    if (user.profile) {
-      user.profile.xp = (user.profile.xp || 0) + 15;
-      if (!user.profile.badges.includes('Voice Master')) {
-        user.profile.badges.push('Voice Master');
-      }
-      localStorage.setItem('user', JSON.stringify(user));
-      
-      const username = localStorage.getItem('username') || 'guest';
-      const profiles = JSON.parse(localStorage.getItem('profiles') || '[]');
-      const idx = profiles.findIndex((p: any) => p.username === username);
-      if (idx !== -1) {
-        profiles[idx].xp = user.profile.xp;
-        if (!profiles[idx].badges.includes('Voice Master')) {
-          profiles[idx].badges.push('Voice Master');
-        }
-        localStorage.setItem('profiles', JSON.stringify(profiles));
-      }
-    }
   };
 
   const playTargetAudio = () => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(currentWord.text);
-      utterance.rate = 0.75; // slow phonetic sound
+      utterance.rate = 0.75;
       window.speechSynthesis.speak(utterance);
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col text-slate-800">
-      {/* Navbar */}
-      <nav className="h-16 bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between shrink-0">
-        <Link to="/dashboard" className="flex items-center gap-2 text-slate-600 hover:text-slate-900 font-bold transition-colors">
-          <ArrowLeft className="w-5 h-5" />
-          <span>Back to Dashboard</span>
-        </Link>
-        <span className="font-extrabold text-slate-900 text-lg">AI Voice Lab</span>
-        <div className="w-10 h-10" /> {/* spacer */}
-      </nav>
+    <div style={{
+      minHeight: '100vh',
+      background: '#1A0A4E',
+      backgroundImage: `
+        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.4) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.3) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
+      `,
+      padding: '20px',
+      position: 'relative',
+    }}>
 
-      {/* Main Container */}
-      <main className="flex-1 max-w-3xl w-full mx-auto p-6 md:p-8 flex flex-col justify-start overflow-y-auto space-y-8">
-        {/* Word Display Board */}
-        <div className="bg-white border border-slate-100 p-8 rounded-3xl shadow-xl text-center space-y-4 relative overflow-hidden">
-          {/* Accent decoration */}
-          <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-blue-500 to-indigo-500" />
+      {/* Background Star Field */}
+      <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+        {[
+          { t: '5%', l: '8%', s: 12 }, { t: '12%', l: '90%', s: 16 },
+          { t: '25%', l: '3%', s: 14 }, { t: '45%', l: '95%', s: 10 },
+          { t: '70%', l: '4%', s: 18 }, { t: '88%', l: '92%', s: 14 },
+        ].map((st, i) => (
+          <div key={i} className="animate-twinkle" style={{
+            position: 'absolute', top: st.t, left: st.l,
+            animationDelay: `${i * 0.4}s`, opacity: 0.7,
+          }}>
+            <Sparkle size={st.s} color={i % 2 === 0 ? '#FFD54A' : '#C4B5F4'} />
+          </div>
+        ))}
+      </div>
+
+      <div style={{ maxWidth: '800px', margin: '0 auto', position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
+        {/* Top Glass Nav Bar */}
+        <nav style={{
+          height: '64px',
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '20px',
+          padding: '0 20px',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+          border: '1.5px solid rgba(255,255,255,0.6)',
+        }}>
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="btn-3d"
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              color: '#1e1040', textDecoration: 'none',
+              fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px',
+              background: '#F0F4FF', padding: '8px 16px', borderRadius: '12px',
+              border: '1px solid #E8EFFF', cursor: 'pointer',
+            }}
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back to Dashboard</span>
+          </button>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '22px' }}>🎙️</span>
+            <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', color: '#1e1040' }}>
+              AI Voice Lab
+            </span>
+          </div>
+
+          <div style={{ width: '40px' }} />
+        </nav>
+
+        {/* Main Word Display Card */}
+        <div style={{
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '28px',
+          padding: '32px',
+          border: '2px solid rgba(255,255,255,0.6)',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px',
+          textAlign: 'center',
+        }}>
           
-          <div className="space-y-1">
-            <span className="bg-blue-50 text-blue-700 text-xs font-black uppercase tracking-wider px-3.5 py-1 rounded-full">
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+            <span style={{
+              background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)', color: 'white',
+              fontFamily: 'Poppins', fontWeight: 800, fontSize: '11px', textTransform: 'uppercase',
+              padding: '4px 14px', borderRadius: '99px',
+            }}>
               Syllables Pronunciation Drills
             </span>
-            <p className="text-slate-400 font-bold text-xs">Practice Word {currentIndex + 1} of {wordsToPractice.length}</p>
+            <span style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '12px', color: '#94A3B8' }}>
+              Practice Word {currentIndex + 1} of {wordsToPractice.length}
+            </span>
           </div>
 
-          <div className="flex flex-col items-center gap-3">
-            <div className="w-32 h-32 rounded-3xl bg-gradient-to-tr from-indigo-100 via-purple-100 to-pink-100 p-2 border-4 border-indigo-200 shadow-xl overflow-hidden flex items-center justify-center">
-              <img src={currentWord.imageUrl} alt={currentWord.text} className="w-full h-full object-contain animate-bounce-slow" />
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+            <div className="animate-bobble" style={{
+              width: '110px', height: '110px', borderRadius: '24px',
+              background: 'linear-gradient(135deg, #EDE7F6, #FFF0F9)',
+              border: '3px solid #C4B5F4', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 10px 24px rgba(108,76,255,0.2)',
+            }}>
+              <img src={currentWord.imageUrl} alt={currentWord.text} style={{ width: '80px', height: '80px', objectFit: 'contain' }} />
             </div>
-            
-            <h1 className="text-5xl md:text-6xl font-black text-slate-950 tracking-tight leading-none">
+
+            <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '42px', color: '#1e1040', margin: 0, lineHeight: 1 }}>
               {currentWord.text} {currentWord.emoji}
             </h1>
-            <p className="text-lg text-blue-600 font-bold font-serif tracking-wider">{currentWord.phonetic}</p>
+
+            <p style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: '18px', color: '#6C4CFF', margin: 0 }}>
+              {currentWord.phonetic}
+            </p>
           </div>
 
-          {/* TTS Player */}
-          <div className="flex justify-center pt-2">
-            <button
-              onClick={playTargetAudio}
-              className="bg-slate-50 border border-slate-100 hover:bg-slate-100 text-slate-700 font-bold px-5 py-2.5 rounded-2xl flex items-center gap-2 text-sm shadow-sm transition-all"
-            >
-              <Volume2 className="w-5 h-5 text-blue-600" />
-              <span>Listen Correct Pronunciation</span>
-            </button>
-          </div>
+          {/* Listen Button */}
+          <button
+            onClick={playTargetAudio}
+            className="btn-3d"
+            style={{
+              background: '#F0F4FF', border: '1.5px solid #E8EFFF',
+              color: '#6C4CFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
+              padding: '10px 20px', borderRadius: '14px',
+              cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px',
+            }}
+          >
+            <Volume2 className="w-5 h-5" />
+            <span>Listen Correct Pronunciation</span>
+          </button>
         </div>
 
-        {/* Recording Controls */}
-        <div className="bg-white border border-slate-100 p-6 md:p-8 rounded-3xl shadow-lg flex flex-col items-center space-y-6">
-          <div className="text-center space-y-1">
-            <h3 className="font-extrabold text-slate-900 text-lg">Click & Say the Word Aloud</h3>
-            <p className="text-slate-500 text-sm">Speak clearly into your microphone</p>
+        {/* Microphone Recording Action Card */}
+        <div style={{
+          background: 'white',
+          borderRadius: '24px',
+          padding: '24px',
+          border: '1.5px solid #E8EFFF',
+          boxShadow: '0 8px 30px rgba(0,0,0,0.06)',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px',
+          textAlign: 'center',
+        }}>
+          <div>
+            <h3 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', color: '#1e1040', margin: '0 0 4px' }}>
+              Click & Say the Word Aloud 🎙️
+            </h3>
+            <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', color: '#64748B', margin: 0 }}>
+              Speak clearly into your microphone
+            </p>
           </div>
-
-          {/* Recording wave visual */}
-          {isRecording ? (
-            <div className="flex items-center gap-1.5 h-12">
-              <span className="w-1.5 bg-blue-600 rounded-full animate-bounce h-6" style={{ animationDelay: '0.1s' }} />
-              <span className="w-1.5 bg-blue-600 rounded-full animate-bounce h-10" style={{ animationDelay: '0.3s' }} />
-              <span className="w-1.5 bg-blue-600 rounded-full animate-bounce h-8" style={{ animationDelay: '0.5s' }} />
-              <span className="w-1.5 bg-blue-600 rounded-full animate-bounce h-11" style={{ animationDelay: '0.2s' }} />
-              <span className="w-1.5 bg-blue-600 rounded-full animate-bounce h-6" style={{ animationDelay: '0.4s' }} />
-            </div>
-          ) : (
-            <div className="h-12 flex items-center">
-              <span className="text-slate-300 font-bold text-xs uppercase tracking-widest">Mic Ready</span>
-            </div>
-          )}
 
           {/* Big Mic Button */}
-          <div className="flex justify-center">
-            {isRecording ? (
-              <button
-                onClick={stopRecording}
-                className="w-20 h-20 bg-red-500 text-white rounded-full flex items-center justify-center shadow-xl shadow-red-500/20 hover:scale-105 active:scale-95 transition-all cursor-pointer border-4 border-red-100"
-              >
-                <MicOff className="w-8 h-8" />
-              </button>
-            ) : (
-              <button
-                onClick={startRecording}
-                className="w-20 h-20 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-xl shadow-blue-500/20 hover:scale-105 active:scale-95 transition-all cursor-pointer border-4 border-blue-100 animate-pulse"
-              >
-                <Mic className="w-8 h-8" />
-              </button>
-            )}
-          </div>
+          <button
+            onClick={isRecording ? stopRecording : startRecording}
+            className="btn-3d"
+            style={{
+              width: '80px', height: '80px', borderRadius: '50%',
+              background: isRecording ? 'linear-gradient(135deg, #FF4FA3, #EF4444)' : 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
+              border: 'none', color: 'white',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: isRecording ? '0 0 30px rgba(255,79,163,0.6)' : '0 10px 30px rgba(108,76,255,0.4)',
+              cursor: 'pointer',
+            }}
+          >
+            {isRecording ? <MicOff className="w-8 h-8 animate-pulse" /> : <Mic className="w-8 h-8" />}
+          </button>
 
-          {transcript && (
-            <div className="text-center p-3.5 bg-slate-50 border border-slate-100 rounded-2xl w-full max-w-md">
-              <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">AI Transcript</p>
-              <p className="font-extrabold text-slate-800 text-base mt-1">"{transcript}"</p>
-            </div>
-          )}
+          <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: isRecording ? '#FF4FA3' : '#6C4CFF' }}>
+            {isRecording ? 'RECORDING... SPEAK NOW!' : 'MIC READY - TAP TO SPEAK'}
+          </span>
         </div>
 
-        {/* Analysis Results Display */}
+        {/* Evaluation Results Card */}
         {speechScores && (
-          <div className="space-y-6 animate-fade-in">
-            {/* Success / Error Banner */}
-            {speechScores.pronunciation >= 75 ? (
-              <div className="bg-emerald-50 border-2 border-emerald-250 p-4.5 rounded-3xl flex items-center gap-3">
-                <span className="text-3xl">🎉</span>
-                <div className="text-left">
-                  <h4 className="font-extrabold text-sm text-emerald-800">Great Job! Pronounced Correctly!</h4>
-                  <p className="text-xs font-bold text-emerald-600">You earned +15 XP!</p>
-                </div>
-              </div>
-            ) : (
-              <div className="bg-rose-50 border-2 border-rose-250 p-4.5 rounded-3xl flex items-center gap-3">
-                <span className="text-3xl">❌</span>
-                <div className="text-left">
-                  <h4 className="font-extrabold text-sm text-rose-800">Oops! That doesn't sound quite right.</h4>
-                  <p className="text-xs font-bold text-rose-600">Listen to the pronunciation and try saying it again!</p>
-                </div>
-              </div>
+          <div style={{
+            background: '#FFFDF0',
+            borderRadius: '24px',
+            padding: '24px',
+            border: '2px solid #FFD54A',
+            boxShadow: '0 12px 30px rgba(255,213,74,0.3)',
+            display: 'flex', flexDirection: 'column', gap: '16px',
+            textAlign: 'center',
+          }}>
+            <div style={{ display: 'flex', itemsCenter: 'center', justifyCenter: 'center', gap: '6px' }}>
+              <CheckCircle2 className="w-6 h-6 text-green-500" />
+              <h3 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', color: '#1e1040', margin: 0 }}>
+                Pronunciation Analysis 🎉
+              </h3>
+            </div>
+
+            {transcript && (
+              <p style={{ fontFamily: 'Nunito', fontWeight: 800, fontSize: '14px', color: '#64748B', margin: 0 }}>
+                You said: <span style={{ color: '#6C4CFF' }}>"{transcript}"</span>
+              </p>
             )}
 
-            {/* Scores Cards grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-sm text-center">
-                <h4 className="text-slate-400 font-bold text-xs uppercase tracking-wider">Pronunciation</h4>
-                <p className="text-2xl font-black text-blue-600 mt-1">{speechScores.pronunciation}%</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+              <div style={{ background: 'white', padding: '14px', borderRadius: '16px', border: '1px solid #FFE082' }}>
+                <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '10px', color: '#94A3B8', textTransform: 'uppercase' }}>Pronunciation</div>
+                <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '24px', color: '#22C55E' }}>{speechScores.pronunciation}%</div>
               </div>
 
-              <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-sm text-center">
-                <h4 className="text-slate-400 font-bold text-xs uppercase tracking-wider">Speed</h4>
-                <p className="text-2xl font-black text-emerald-600 mt-1">{speechScores.speed}%</p>
+              <div style={{ background: 'white', padding: '14px', borderRadius: '16px', border: '1px solid #FFE082' }}>
+                <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '10px', color: '#94A3B8', textTransform: 'uppercase' }}>Fluency</div>
+                <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '24px', color: '#6C4CFF' }}>{speechScores.fluency}%</div>
               </div>
 
-              <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-sm text-center">
-                <h4 className="text-slate-400 font-bold text-xs uppercase tracking-wider">Fluency</h4>
-                <p className="text-2xl font-black text-amber-500 mt-1">{speechScores.fluency}%</p>
-              </div>
-
-              <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-sm text-center">
-                <h4 className="text-slate-400 font-bold text-xs uppercase tracking-wider">Confidence</h4>
-                <p className="text-2xl font-black text-indigo-600 mt-1">{speechScores.confidence}%</p>
+              <div style={{ background: 'white', padding: '14px', borderRadius: '16px', border: '1px solid #FFE082' }}>
+                <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '10px', color: '#94A3B8', textTransform: 'uppercase' }}>Confidence</div>
+                <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '24px', color: '#FF9F43' }}>{speechScores.confidence}%</div>
               </div>
             </div>
 
-            {/* AI Suggestion box */}
-            <div className="bg-blue-50 border border-blue-100 p-5 rounded-3xl space-y-3">
-              <h4 className="text-xs font-black text-blue-800 uppercase tracking-wide flex items-center gap-1">
-                <Sparkles className="w-4.5 h-4.5" />
-                <span>AI Pronunciation Advice</span>
-              </h4>
-              <p className="text-sm font-semibold text-slate-800 leading-relaxed">
-                Try pronouncing <b>"{currentWord.text}"</b> again. Make sure the primary vocal stress is placed on the syllable <b>"{currentWord.stressWord}"</b>. {currentWord.help}
-              </p>
-            </div>
-
-            {/* Navigator panel */}
-            <div className="flex gap-4">
-              <button
-                onClick={startRecording}
-                className="flex-1 bg-white border border-slate-200 text-slate-700 font-extrabold py-3.5 rounded-2xl flex items-center justify-center gap-2 hover:bg-slate-50 transition-all cursor-pointer shadow-sm"
-              >
-                <RefreshCw className="w-5 h-5 text-slate-400" />
-                <span>Try Word Again</span>
-              </button>
-
-              <button
-                onClick={() => {
-                  setTranscript('');
-                  setSpeechScores(null);
-                  setCurrentIndex((prev) => (prev + 1) % wordsToPractice.length);
-                }}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-extrabold py-3.5 rounded-2xl flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-blue-500/10"
-              >
-                <span>Next Practice Word</span>
-                <CheckCircle2 className="w-5 h-5" />
-              </button>
-            </div>
+            <button
+              onClick={() => {
+                setSpeechScores(null);
+                setCurrentIndex((prev) => (prev + 1) % wordsToPractice.length);
+              }}
+              className="btn-3d"
+              style={{
+                background: 'linear-gradient(135deg, #FFD54A, #FF9F43)',
+                color: '#1e1040', fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px',
+                padding: '12px 24px', borderRadius: '14px', border: 'none',
+                borderBottom: '3.5px solid #E8A000', cursor: 'pointer',
+                boxShadow: '0 6px 18px rgba(255,213,74,0.4)', margin: '0 auto',
+              }}
+            >
+              Next Word →
+            </button>
           </div>
         )}
-      </main>
+
+      </div>
     </div>
   );
 }
