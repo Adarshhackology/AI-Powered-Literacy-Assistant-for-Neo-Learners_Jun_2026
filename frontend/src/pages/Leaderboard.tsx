@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Trophy, Medal, Crown, Flame, ArrowLeft, Star, Award, Zap } from 'lucide-react';
+import { Trophy, ArrowLeft, Zap } from 'lucide-react';
 import { apiClient } from '../utils/api';
+import { championsList } from '../data/dashboardData';
+import { Sparkle, TrophySVG } from '../components/UI/Illustrations';
 
 interface LeaderEntry {
   rank: number;
@@ -24,11 +26,33 @@ export default function Leaderboard() {
       try {
         setLoading(true);
         const data = await apiClient.getGamificationLeaderboard();
-        if (data && data.leaderboard) {
+        if (data && data.leaderboard && data.leaderboard.length > 0) {
           setLeaders(data.leaderboard);
+        } else {
+          // Fallback to championsList
+          setLeaders(championsList.map(c => ({
+            rank: c.rank,
+            username: c.name.toLowerCase(),
+            name: c.name,
+            xp: c.xp,
+            level: c.level,
+            coins: 120,
+            avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${c.name}`,
+            badges: ['🏆']
+          })));
         }
       } catch (e) {
         console.error(e);
+        setLeaders(championsList.map(c => ({
+          rank: c.rank,
+          username: c.name.toLowerCase(),
+          name: c.name,
+          xp: c.xp,
+          level: c.level,
+          coins: 120,
+          avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${c.name}`,
+          badges: ['🏆']
+        })));
       } finally {
         setLoading(false);
       }
@@ -40,92 +64,181 @@ export default function Leaderboard() {
   const remaining = leaders.slice(3);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 text-white font-nunito p-6 pt-8">
-      <div className="max-w-4xl mx-auto">
-        
-        {/* Navigation */}
-        <button 
-          onClick={() => navigate('/dashboard')}
-          className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/20 text-white font-black hover:bg-white/20 transition-all mb-8 cursor-pointer"
-        >
-          <ArrowLeft className="w-5 h-5" /> Back to Dashboard
-        </button>
+    <div style={{
+      minHeight: '100vh',
+      background: '#1A0A4E',
+      backgroundImage: `
+        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.4) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.3) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
+      `,
+      padding: '20px',
+      position: 'relative',
+    }}>
 
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-yellow-500/20 text-yellow-300 px-4 py-1.5 rounded-full font-black text-sm mb-3 border border-yellow-400/30">
-            <Trophy className="w-4 h-4" /> Global Learner Leaderboard
+      {/* Background Stars */}
+      <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+        {[
+          { t: '8%', l: '6%', s: 14 }, { t: '15%', l: '92%', s: 18 },
+          { t: '40%', l: '5%', s: 12 }, { t: '65%', l: '94%', s: 16 },
+        ].map((st, i) => (
+          <div key={i} className="animate-twinkle" style={{
+            position: 'absolute', top: st.t, left: st.l,
+            animationDelay: `${i * 0.4}s`, opacity: 0.7,
+          }}>
+            <Sparkle size={st.s} color={i % 2 === 0 ? '#FFD54A' : '#C4B5F4'} />
           </div>
-          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight mb-3">
+        ))}
+      </div>
+
+      <div style={{ maxWidth: '1000px', margin: '0 auto', position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
+        {/* Top Nav Bar */}
+        <nav style={{
+          height: '64px',
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '20px',
+          padding: '0 20px',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+          border: '1.5px solid rgba(255,255,255,0.6)',
+        }}>
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="btn-3d"
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              color: '#1e1040', textDecoration: 'none',
+              fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px',
+              background: '#F0F4FF', padding: '8px 16px', borderRadius: '12px',
+              border: '1px solid #E8EFFF', cursor: 'pointer',
+            }}
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back to Dashboard</span>
+          </button>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <TrophySVG size={28} />
+            <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', color: '#1e1040' }}>
+              Champions Leaderboard
+            </span>
+          </div>
+        </nav>
+
+        {/* Title Header Card */}
+        <div style={{
+          borderRadius: '24px',
+          background: 'linear-gradient(135deg, #6C4CFF 0%, #8A5CFF 50%, #FF4FA3 100%)',
+          padding: '24px',
+          color: 'white',
+          textAlign: 'center',
+          boxShadow: '0 16px 48px rgba(108,76,255,0.35)',
+          border: '2px solid rgba(255,255,255,0.25)',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
+        }}>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: '6px',
+            background: '#FFD54A', color: '#1e1040',
+            fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px',
+            padding: '4px 14px', borderRadius: '99px',
+            boxShadow: '0 4px 12px rgba(255,213,74,0.4)',
+          }}>
+            <Trophy className="w-3.5 h-3.5" /> GLOBAL LEARNER LEADERBOARD
+          </div>
+          <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '32px', color: 'white', margin: 0, lineHeight: 1.2 }}>
             Top Literacy Champions 🏆
           </h1>
-          <p className="text-lg text-purple-200 font-bold max-w-lg mx-auto">
+          <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '14px', color: 'rgba(255,255,255,0.9)', margin: 0, maxWidth: '600px' }}>
             Earn XP by completing voice practice, reading lessons, and AI assessments to climb the weekly ranks!
           </p>
         </div>
 
         {/* Podium View (Top 3) */}
         {topThree.length >= 3 && (
-          <div className="grid grid-cols-3 gap-4 md:gap-8 items-end mb-12 max-w-2xl mx-auto pt-6">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', alignItems: 'flex-end', margin: '10px 0' }}>
             
             {/* Rank 2 - Silver */}
-            <div className="flex flex-col items-center">
-              <div className="relative mb-3 flex flex-col items-center">
-                <div className="w-20 h-20 bg-gradient-to-tr from-slate-300 to-slate-100 rounded-full p-1 shadow-lg flex items-center justify-center text-4xl">
-                  {topThree[1].avatar}
-                </div>
-                <div className="absolute -top-3 bg-slate-200 text-slate-800 font-black text-xs px-3 py-1 rounded-full border border-white shadow-md flex items-center gap-1">
-                  <Medal className="w-3.5 h-3.5 text-slate-600" /> #2
-                </div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{
+                width: '64px', height: '64px', borderRadius: '50%',
+                background: 'linear-gradient(135deg, #E2E8F0, #94A3B8)',
+                border: '3px solid white', boxShadow: '0 8px 20px rgba(0,0,0,0.15)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                overflow: 'hidden', marginBottom: '8px',
+              }}>
+                <img src={topThree[1].avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${topThree[1].name}`} alt="rank2" style={{ width: '100%', height: '100%' }} />
               </div>
-              <div className="w-full bg-slate-800/80 backdrop-blur-md border border-slate-700/80 rounded-t-3xl p-4 text-center shadow-2xl h-40 flex flex-col justify-between">
-                <div>
-                  <h3 className="font-black text-lg text-white truncate">{topThree[1].name}</h3>
-                  <div className="text-xs font-bold text-slate-400">Level {topThree[1].level}</div>
-                </div>
-                <div className="bg-slate-700/60 py-2 rounded-xl text-yellow-300 font-black text-lg">
+              <div style={{
+                background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)',
+                borderRadius: '20px 20px 0 0', padding: '16px', width: '100%',
+                textAlign: 'center', border: '1.5px solid #E8EFFF', borderBottom: 'none',
+                boxShadow: '0 8px 30px rgba(0,0,0,0.06)',
+              }}>
+                <span style={{ background: '#CBD5E1', color: '#1E293B', fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px', padding: '2px 8px', borderRadius: '99px' }}>
+                  🥈 #2
+                </span>
+                <h3 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', color: '#1e1040', margin: '6px 0 2px' }}>{topThree[1].name}</h3>
+                <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '11px', color: '#64748B', marginBottom: '8px' }}>Level {topThree[1].level}</div>
+                <div style={{ background: '#F1F5F9', color: '#475569', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', padding: '6px', borderRadius: '10px' }}>
                   {topThree[1].xp} XP
                 </div>
               </div>
             </div>
 
-            {/* Rank 1 - Gold (Center Highest) */}
-            <div className="flex flex-col items-center transform -translate-y-4">
-              <div className="relative mb-3 flex flex-col items-center">
-                <Crown className="w-8 h-8 text-yellow-400 animate-bounce absolute -top-9" />
-                <div className="w-24 h-24 bg-gradient-to-tr from-yellow-400 to-amber-200 rounded-full p-1.5 shadow-2xl shadow-yellow-500/50 flex items-center justify-center text-5xl border-4 border-yellow-300">
-                  {topThree[0].avatar}
-                </div>
-                <div className="absolute -top-3 bg-yellow-400 text-yellow-950 font-black text-sm px-3.5 py-1 rounded-full border-2 border-white shadow-lg flex items-center gap-1">
-                  🥇 #1
-                </div>
+            {/* Rank 1 - Gold */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div className="animate-bounce" style={{ fontSize: '24px', marginBottom: '-6px', zIndex: 2 }}>👑</div>
+              <div style={{
+                width: '80px', height: '80px', borderRadius: '50%',
+                background: 'linear-gradient(135deg, #FFD54A, #FF9F43)',
+                border: '4px solid white', boxShadow: '0 12px 30px rgba(255,213,74,0.5)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                overflow: 'hidden', marginBottom: '8px', zIndex: 1,
+              }}>
+                <img src={topThree[0].avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${topThree[0].name}`} alt="rank1" style={{ width: '100%', height: '100%' }} />
               </div>
-              <div className="w-full bg-gradient-to-b from-amber-900/90 to-slate-800/90 backdrop-blur-md border-2 border-yellow-400/60 rounded-t-3xl p-5 text-center shadow-2xl h-52 flex flex-col justify-between">
-                <div>
-                  <h3 className="font-black text-xl text-yellow-300 truncate">{topThree[0].name}</h3>
-                  <div className="text-sm font-bold text-amber-200">Level {topThree[0].level}</div>
-                </div>
-                <div className="bg-yellow-500/20 border border-yellow-400/40 py-2.5 rounded-xl text-yellow-300 font-black text-xl">
+              <div style={{
+                background: 'linear-gradient(180deg, #FFFDF0 0%, #FFFFFF 100%)',
+                borderRadius: '24px 24px 0 0', padding: '20px 16px', width: '100%',
+                textAlign: 'center', border: '2px solid #FFE082', borderBottom: 'none',
+                boxShadow: '0 12px 40px rgba(255,213,74,0.3)',
+              }}>
+                <span style={{ background: '#FFD54A', color: '#78350F', fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', padding: '3px 10px', borderRadius: '99px' }}>
+                  🥇 #1 CHAMPION
+                </span>
+                <h3 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', color: '#1e1040', margin: '8px 0 2px' }}>{topThree[0].name}</h3>
+                <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '12px', color: '#B45309', marginBottom: '10px' }}>Level {topThree[0].level}</div>
+                <div style={{ background: 'linear-gradient(135deg, #FFD54A, #FF9F43)', color: '#1e1040', fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', padding: '8px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(255,213,74,0.4)' }}>
                   {topThree[0].xp} XP
                 </div>
               </div>
             </div>
 
             {/* Rank 3 - Bronze */}
-            <div className="flex flex-col items-center">
-              <div className="relative mb-3 flex flex-col items-center">
-                <div className="w-20 h-20 bg-gradient-to-tr from-amber-700 to-amber-500 rounded-full p-1 shadow-lg flex items-center justify-center text-4xl">
-                  {topThree[2].avatar}
-                </div>
-                <div className="absolute -top-3 bg-amber-600 text-white font-black text-xs px-3 py-1 rounded-full border border-white shadow-md flex items-center gap-1">
-                  <Medal className="w-3.5 h-3.5 text-amber-200" /> #3
-                </div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{
+                width: '64px', height: '64px', borderRadius: '50%',
+                background: 'linear-gradient(135deg, #D97706, #B45309)',
+                border: '3px solid white', boxShadow: '0 8px 20px rgba(0,0,0,0.15)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                overflow: 'hidden', marginBottom: '8px',
+              }}>
+                <img src={topThree[2].avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${topThree[2].name}`} alt="rank3" style={{ width: '100%', height: '100%' }} />
               </div>
-              <div className="w-full bg-slate-800/80 backdrop-blur-md border border-slate-700/80 rounded-t-3xl p-4 text-center shadow-2xl h-36 flex flex-col justify-between">
-                <div>
-                  <h3 className="font-black text-lg text-white truncate">{topThree[2].name}</h3>
-                  <div className="text-xs font-bold text-slate-400">Level {topThree[2].level}</div>
-                </div>
-                <div className="bg-slate-700/60 py-2 rounded-xl text-yellow-300 font-black text-lg">
+              <div style={{
+                background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)',
+                borderRadius: '20px 20px 0 0', padding: '16px', width: '100%',
+                textAlign: 'center', border: '1.5px solid #E8EFFF', borderBottom: 'none',
+                boxShadow: '0 8px 30px rgba(0,0,0,0.06)',
+              }}>
+                <span style={{ background: '#FED7AA', color: '#7C2D12', fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px', padding: '2px 8px', borderRadius: '99px' }}>
+                  🥉 #3
+                </span>
+                <h3 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', color: '#1e1040', margin: '6px 0 2px' }}>{topThree[2].name}</h3>
+                <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '11px', color: '#64748B', marginBottom: '8px' }}>Level {topThree[2].level}</div>
+                <div style={{ background: '#F1F5F9', color: '#475569', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', padding: '6px', borderRadius: '10px' }}>
                   {topThree[2].xp} XP
                 </div>
               </div>
@@ -134,44 +247,62 @@ export default function Leaderboard() {
           </div>
         )}
 
-        {/* Leaderboard Table (Remaining Ranks) */}
-        <div className="bg-slate-800/60 backdrop-blur-xl border border-slate-700/80 rounded-[2.5rem] p-6 shadow-2xl">
-          <h2 className="text-2xl font-black text-white mb-6 pl-2 flex items-center gap-2">
-            <Zap className="w-6 h-6 text-yellow-400" /> Rank Standings
-          </h2>
+        {/* Full Ranks List Table Card */}
+        <div style={{
+          background: 'white',
+          borderRadius: '24px',
+          padding: '24px',
+          border: '1.5px solid #E8EFFF',
+          boxShadow: '0 8px 30px rgba(0,0,0,0.06)',
+          display: 'flex', flexDirection: 'column', gap: '12px',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', borderBottom: '2px solid #F1F5F9', paddingBottom: '12px' }}>
+            <Zap className="w-5 h-5 text-amber-500" />
+            <h2 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', color: '#1e1040', margin: 0 }}>
+              Rank Standings
+            </h2>
+          </div>
 
-          <div className="space-y-3">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {leaders.map((entry) => (
               <div 
                 key={entry.rank}
-                className={`p-4 rounded-2xl border transition-all flex items-center justify-between ${
-                  entry.rank <= 3
-                    ? 'bg-gradient-to-r from-purple-900/50 to-indigo-900/50 border-purple-500/40'
-                    : 'bg-slate-800/40 border-slate-700/50 hover:bg-slate-800/80'
-                }`}
+                className="hover-lift"
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '12px 16px', borderRadius: '16px',
+                  background: entry.rank <= 3 ? '#FFFDF0' : '#F8FAFF',
+                  border: entry.rank <= 3 ? '1.5px solid #FFE082' : '1.5px solid #E8EFFF',
+                }}
               >
-                <div className="flex items-center gap-4">
-                  <span className={`w-10 h-10 rounded-full font-black text-lg flex items-center justify-center ${
-                    entry.rank === 1 ? 'bg-yellow-400 text-yellow-950' : entry.rank === 2 ? 'bg-slate-300 text-slate-900' : entry.rank === 3 ? 'bg-amber-600 text-white' : 'bg-slate-700 text-slate-300'
-                  }`}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{
+                    width: '32px', height: '32px', borderRadius: '50%',
+                    background: entry.rank === 1 ? '#FFD54A' : entry.rank === 2 ? '#CBD5E1' : entry.rank === 3 ? '#FED7AA' : '#6C4CFF',
+                    color: entry.rank <= 3 ? '#1e1040' : 'white',
+                    fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                  }}>
                     {entry.rank}
-                  </span>
+                  </div>
 
-                  <span className="text-3xl">{entry.avatar}</span>
+                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', background: '#E2E8F0', flexShrink: 0 }}>
+                    <img src={entry.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${entry.name}`} alt={entry.name} style={{ width: '100%', height: '100%' }} />
+                  </div>
 
                   <div>
-                    <h3 className="font-black text-lg text-white">{entry.name}</h3>
-                    <div className="flex items-center gap-2 text-xs font-bold text-purple-300">
-                      <span>Level {entry.level}</span>
-                      <span>•</span>
-                      <span className="text-amber-400 font-bold">{entry.badges[0] || 'Learner'}</span>
-                    </div>
+                    <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: '#1e1040', margin: 0 }}>{entry.name}</h4>
+                    <span style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '11px', color: '#94A3B8' }}>Level {entry.level}</span>
                   </div>
                 </div>
 
-                <div className="text-right">
-                  <div className="text-xl font-black text-yellow-400">{entry.xp} XP</div>
-                  <div className="text-xs font-bold text-slate-400">🪙 {entry.coins} Coins</div>
+                <div style={{
+                  background: 'linear-gradient(135deg, #EDE7F6, #D8D0F0)',
+                  color: '#6C4CFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
+                  padding: '6px 14px', borderRadius: '99px',
+                }}>
+                  {entry.xp} XP
                 </div>
               </div>
             ))}

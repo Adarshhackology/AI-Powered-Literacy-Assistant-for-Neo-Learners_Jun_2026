@@ -152,13 +152,34 @@ export default function AdminDashboard() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 flex text-slate-800 font-sans">
+    <div style={{
+      minHeight: '100vh',
+      background: '#1A0A4E',
+      backgroundImage: `
+        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.4) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.3) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
+      `,
+      display: 'flex',
+      color: '#1e1040',
+      fontFamily: 'Nunito, sans-serif',
+      padding: '16px',
+      gap: '16px',
+    }}>
       {/* Admin Sidebar */}
-      <aside className="w-64 bg-white border-r border-slate-100 hidden md:flex flex-col justify-between py-6 px-4 shrink-0">
+      <aside style={{
+        width: '240px', minWidth: '240px',
+        background: 'linear-gradient(180deg, #3D1D99 0%, #2D1278 50%, #1E0A5E 100%)',
+        borderRadius: '24px',
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+        padding: '20px 14px',
+        border: '1.5px solid rgba(255,255,255,0.12)',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
+      }}>
         <div className="space-y-8">
-          <div className="flex items-center gap-2 px-3">
-            <div className="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center text-white text-lg font-bold">📚</div>
-            <span className="text-xl font-black text-blue-600">NeoLit Admin</span>
+          <div className="flex items-center gap-3 px-2">
+            <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-md">⚙️</div>
+            <span className="text-xl font-black text-white font-poppins">NeoLit Admin</span>
           </div>
 
           <nav className="space-y-1.5">
@@ -229,11 +250,20 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Main Panel */}
-      <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between">
-          <span className="font-extrabold text-slate-900 text-lg">System Management Console</span>
-          <span className="bg-red-50 text-red-600 border border-red-100 text-xs font-black px-3.5 py-1 rounded-full uppercase tracking-wider">
-            SuperAdmin Mode
+      <div className="flex-1 flex flex-col min-w-0 space-y-4">
+        <header style={{
+          height: '64px',
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '20px',
+          padding: '0 24px',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+          border: '1.5px solid rgba(255,255,255,0.6)',
+        }}>
+          <span className="font-black text-slate-900 text-lg font-poppins">System Management Console</span>
+          <span className="bg-red-100 text-red-700 border border-red-200 text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">
+            SuperAdmin Mode 🛡️
           </span>
         </header>
 
