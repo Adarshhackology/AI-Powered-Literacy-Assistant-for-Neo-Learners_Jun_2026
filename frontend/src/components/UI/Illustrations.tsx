@@ -1,252 +1,256 @@
 import React from 'react';
 
-/* ============================================================
-   NEOLIT ORIGINAL SVG ILLUSTRATION LIBRARY
-   All assets are 100% original SVG art — no placeholders
-   ============================================================ */
+// ═══════════════════════════════════════════════════════════
+// NEOLIT ORIGINAL SVG ASSET LIBRARY — 100% match to reference
+// ═══════════════════════════════════════════════════════════
 
-// ── Cute Robot Mascot (Orange Helmet, Wave Pose)
+// ── Cute Orange/Red Happy Robot (Hero Banner Left)
 export const RobotMascot: React.FC<{ size?: number; className?: string }> = ({ size = 120, className = '' }) => (
-  <svg width={size} height={size} viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    {/* Body glow */}
-    <ellipse cx="60" cy="110" rx="30" ry="8" fill="rgba(255,159,67,0.2)" />
-    {/* Body */}
-    <rect x="30" y="58" width="60" height="45" rx="14" fill="#FF9F43" />
-    <rect x="30" y="58" width="60" height="45" rx="14" fill="url(#bodyGrad)" />
-    {/* Body shine */}
-    <rect x="38" y="65" width="20" height="6" rx="3" fill="rgba(255,255,255,0.3)" />
-    {/* Chest panel */}
-    <rect x="42" y="76" width="36" height="22" rx="8" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" />
-    {/* Heart light */}
-    <circle cx="60" cy="87" r="5" fill="#FF4FA3" />
-    <circle cx="60" cy="87" r="3" fill="#FF8ACA" />
-    {/* Arms */}
-    <rect x="12" y="62" width="18" height="32" rx="9" fill="#FF9F43" transform="rotate(-10 12 62)" />
-    <rect x="90" y="62" width="18" height="32" rx="9" fill="#FF9F43" transform="rotate(10 90 62)" />
-    {/* Left hand wave */}
-    <circle cx="16" cy="94" r="8" fill="#FFB865" />
-    <circle cx="10" cy="89" r="5" fill="#FFB865" />
-    <circle cx="8" cy="82" r="4" fill="#FFB865" />
-    {/* Feet */}
-    <rect x="38" y="98" width="18" height="14" rx="7" fill="#E8873A" />
-    <rect x="64" y="98" width="18" height="14" rx="7" fill="#E8873A" />
-    {/* Head */}
-    <rect x="25" y="18" width="70" height="52" rx="20" fill="#FFB865" />
-    <rect x="25" y="18" width="70" height="52" rx="20" fill="url(#headGrad)" />
-    {/* Helmet visor */}
-    <rect x="30" y="24" width="60" height="36" rx="14" fill="#6C4CFF" opacity="0.9" />
-    <rect x="30" y="24" width="60" height="36" rx="14" fill="url(#visorGrad)" />
-    {/* Visor shine */}
-    <ellipse cx="52" cy="32" rx="8" ry="5" fill="rgba(255,255,255,0.3)" />
-    {/* Eyes */}
-    <circle cx="47" cy="42" r="8" fill="white" />
-    <circle cx="73" cy="42" r="8" fill="white" />
-    <circle cx="49" cy="43" r="4" fill="#1a0a3d" />
-    <circle cx="75" cy="43" r="4" fill="#1a0a3d" />
-    {/* Eye glints */}
-    <circle cx="51" cy="41" r="1.5" fill="white" />
-    <circle cx="77" cy="41" r="1.5" fill="white" />
-    {/* Mouth */}
-    <path d="M 50 54 Q 60 60 70 54" stroke="rgba(255,255,255,0.6)" strokeWidth="2" strokeLinecap="round" fill="none" />
-    {/* Antenna */}
-    <rect x="57" y="6" width="6" height="16" rx="3" fill="#FFB865" />
-    <circle cx="60" cy="5" r="6" fill="#FFD54A" />
-    <circle cx="60" cy="5" r="3" fill="white" />
-    {/* Ear ports */}
-    <circle cx="25" cy="40" r="5" fill="#E8873A" />
-    <circle cx="95" cy="40" r="5" fill="#E8873A" />
+  <svg width={size} height={size} viewBox="0 0 120 130" fill="none" className={className}>
     <defs>
-      <linearGradient id="bodyGrad" x1="30" y1="58" x2="90" y2="103" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="rgba(255,255,255,0.1)" />
-        <stop offset="100%" stopColor="rgba(0,0,0,0.1)" />
-      </linearGradient>
-      <linearGradient id="headGrad" x1="25" y1="18" x2="95" y2="70" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="rgba(255,255,255,0.2)" />
-        <stop offset="100%" stopColor="rgba(0,0,0,0.05)" />
-      </linearGradient>
-      <linearGradient id="visorGrad" x1="30" y1="24" x2="90" y2="60" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#8A5CFF" />
-        <stop offset="100%" stopColor="#4D2FCC" />
-      </linearGradient>
+      <radialGradient id="rBodyGrad" cx="40%" cy="30%" r="70%">
+        <stop offset="0%" stopColor="#FF8C42" />
+        <stop offset="100%" stopColor="#E8471A" />
+      </radialGradient>
+      <radialGradient id="rHeadGrad" cx="40%" cy="30%" r="70%">
+        <stop offset="0%" stopColor="#FF9F5A" />
+        <stop offset="100%" stopColor="#E8571A" />
+      </radialGradient>
+      <radialGradient id="eyeGrad" cx="35%" cy="30%" r="70%">
+        <stop offset="0%" stopColor="#3D1A8C" />
+        <stop offset="100%" stopColor="#1A0A40" />
+      </radialGradient>
     </defs>
-  </svg>
-);
-
-// ── AI Tutor Robot (White/Blue theme, with books)
-export const AIRobotMascot: React.FC<{ size?: number; className?: string }> = ({ size = 120, className = '' }) => (
-  <svg width={size} height={size} viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <ellipse cx="60" cy="112" rx="28" ry="7" fill="rgba(77,157,255,0.2)" />
-    {/* Body */}
-    <rect x="28" y="56" width="64" height="48" rx="16" fill="white" stroke="#E8EFFF" strokeWidth="2" />
-    <rect x="36" y="68" width="48" height="28" rx="10" fill="#F0F4FF" stroke="#E8EFFF" strokeWidth="1.5" />
-    {/* Screen on body */}
-    <rect x="40" y="72" width="40" height="20" rx="6" fill="#4D2FCC" />
-    {/* Screen content */}
-    <circle cx="50" cy="82" r="3" fill="#FFD54A" />
-    <rect x="56" y="80" width="18" height="2" rx="1" fill="rgba(255,255,255,0.6)" />
-    <rect x="56" y="84" width="12" height="2" rx="1" fill="rgba(255,255,255,0.4)" />
-    {/* Arms */}
-    <rect x="8" y="60" width="20" height="30" rx="10" fill="white" stroke="#E8EFFF" strokeWidth="2" />
-    <rect x="92" y="60" width="20" height="30" rx="10" fill="white" stroke="#E8EFFF" strokeWidth="2" />
-    {/* Book in left hand */}
-    <rect x="3" y="86" width="22" height="16" rx="4" fill="#6C4CFF" />
-    <rect x="3" y="86" width="3" height="16" rx="1.5" fill="#4D2FCC" />
-    <rect x="8" y="89" width="12" height="1.5" rx="0.75" fill="rgba(255,255,255,0.5)" />
-    <rect x="8" y="92" width="9" height="1.5" rx="0.75" fill="rgba(255,255,255,0.4)" />
-    <rect x="8" y="95" width="11" height="1.5" rx="0.75" fill="rgba(255,255,255,0.3)" />
-    {/* Magic wand in right hand */}
-    <rect x="105" y="82" width="4" height="20" rx="2" fill="#FFD54A" transform="rotate(-20 105 82)" />
-    <circle cx="107" cy="80" r="5" fill="#FFD54A" />
-    <circle cx="107" cy="80" r="2.5" fill="white" />
-    {/* Feet */}
-    <rect x="36" y="98" width="18" height="14" rx="7" fill="#E8EFFF" stroke="#D0DAFF" strokeWidth="1.5" />
-    <rect x="66" y="98" width="18" height="14" rx="7" fill="#E8EFFF" stroke="#D0DAFF" strokeWidth="1.5" />
-    {/* Head */}
-    <rect x="22" y="10" width="76" height="52" rx="22" fill="white" stroke="#E8EFFF" strokeWidth="2" />
-    {/* Face screen */}
-    <rect x="28" y="16" width="64" height="40" rx="16" fill="#4D9DFF" opacity="0.15" />
-    {/* Eyes - friendly screens */}
-    <rect x="36" y="26" width="18" height="14" rx="7" fill="#4D2FCC" />
-    <rect x="66" y="26" width="18" height="14" rx="7" fill="#4D2FCC" />
-    <circle cx="45" cy="33" r="4" fill="#4D9DFF" />
-    <circle cx="75" cy="33" r="4" fill="#4D9DFF" />
-    <circle cx="47" cy="31" r="1.5" fill="white" />
-    <circle cx="77" cy="31" r="1.5" fill="white" />
-    {/* Smile */}
-    <path d="M 48 48 Q 60 56 72 48" stroke="#4D9DFF" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-    {/* Antenna */}
-    <rect x="57" y="2" width="6" height="12" rx="3" fill="#E8EFFF" />
-    <circle cx="60" cy="1" r="6" fill="#4D9DFF" />
-    <circle cx="60" cy="1" r="3" fill="white" />
-    {/* Sparkles around head */}
-    <circle cx="22" cy="12" r="3" fill="#FFD54A" opacity="0.8" />
-    <circle cx="98" cy="14" r="2" fill="#FF4FA3" opacity="0.8" />
-    <circle cx="105" cy="30" r="2.5" fill="#FFD54A" opacity="0.6" />
-  </svg>
-);
-
-// ── Baby Dragon Mascot (Green, cute, wings)
-export const DragonMascot: React.FC<{ size?: number; className?: string }> = ({ size = 100, className = '' }) => (
-  <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <ellipse cx="50" cy="95" rx="22" ry="6" fill="rgba(90,214,111,0.25)" />
-    {/* Tail */}
-    <path d="M 58 78 Q 80 85 88 76 Q 92 70 85 65" stroke="#5AD66F" strokeWidth="8" strokeLinecap="round" fill="none" />
-    {/* Body */}
-    <ellipse cx="48" cy="70" rx="26" ry="24" fill="#5AD66F" />
-    <ellipse cx="48" cy="70" rx="18" ry="16" fill="#7DE891" opacity="0.5" />
-    {/* Belly */}
-    <ellipse cx="48" cy="74" rx="14" ry="12" fill="#A8F5B8" />
-    {/* Wings */}
-    <path d="M 22 58 Q 5 40 14 30 Q 20 25 28 38 Q 32 46 28 58 Z" fill="#4EC45E" opacity="0.85" />
-    <path d="M 74 58 Q 91 40 82 30 Q 76 25 68 38 Q 64 46 68 58 Z" fill="#4EC45E" opacity="0.85" />
-    {/* Wing texture lines */}
-    <path d="M 20 55 Q 12 42 18 34" stroke="#5AD66F" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-    <path d="M 26 57 Q 16 44 20 35" stroke="#5AD66F" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-    {/* Feet */}
-    <ellipse cx="38" cy="90" rx="10" ry="6" fill="#4EC45E" />
-    <ellipse cx="58" cy="90" rx="10" ry="6" fill="#4EC45E" />
-    {/* Toe bumps */}
-    <circle cx="32" cy="91" r="3" fill="#3DB64E" />
-    <circle cx="38" cy="93" r="3" fill="#3DB64E" />
-    <circle cx="44" cy="91" r="3" fill="#3DB64E" />
-    {/* Head */}
-    <circle cx="50" cy="38" r="26" fill="#5AD66F" />
-    {/* Head highlight */}
-    <ellipse cx="44" cy="28" rx="12" ry="8" fill="rgba(255,255,255,0.2)" />
-    {/* Snout */}
-    <ellipse cx="50" cy="50" rx="10" ry="7" fill="#4EC45E" />
-    {/* Nostrils */}
-    <circle cx="46" cy="49" r="2" fill="#3DB64E" />
-    <circle cx="54" cy="49" r="2" fill="#3DB64E" />
-    {/* Eyes */}
-    <circle cx="40" cy="34" r="9" fill="white" />
-    <circle cx="60" cy="34" r="9" fill="white" />
-    <circle cx="41" cy="35" r="5" fill="#1a0a3d" />
-    <circle cx="61" cy="35" r="5" fill="#1a0a3d" />
-    {/* Eye glints */}
-    <circle cx="43" cy="33" r="2" fill="white" />
-    <circle cx="63" cy="33" r="2" fill="white" />
-    {/* Horns */}
-    <path d="M 40 16 L 36 4 L 44 12 Z" fill="#FFD54A" />
-    <path d="M 60 16 L 64 4 L 56 12 Z" fill="#FFD54A" />
-    {/* Spikes on head */}
-    <ellipse cx="50" cy="14" rx="4" ry="6" fill="#FFD54A" />
-    {/* Smile */}
-    <path d="M 42 54 Q 50 60 58 54" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none" />
-    {/* Backpack straps */}
-    <rect x="36" y="60" width="5" height="16" rx="2.5" fill="#6C4CFF" opacity="0.7" />
-    <rect x="55" y="60" width="5" height="16" rx="2.5" fill="#6C4CFF" opacity="0.7" />
-    <rect x="36" y="72" width="24" height="3" rx="1.5" fill="#6C4CFF" opacity="0.7" />
-  </svg>
-);
-
-// ── Stars background cluster
-export const StarCluster: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <svg width="200" height="100" viewBox="0 0 200 100" fill="none" className={className}>
-    {[
-      [20,20,8],[50,10,5],[90,25,9],[130,8,6],[165,20,8],[190,40,5],
-      [10,60,6],[40,75,4],[70,55,7],[100,80,5],[140,70,8],[180,60,4],[160,85,6]
-    ].map(([x, y, r], i) => (
-      <g key={i}>
-        <circle cx={x} cy={y} r={r} fill="#FFD54A" opacity={0.8 - i * 0.03} />
-        <circle cx={x} cy={y} r={r * 0.5} fill="white" opacity={0.5} />
-        {/* 4 point star rays */}
-        <line x1={x - r*1.5} y1={y} x2={x + r*1.5} y2={y} stroke="#FFD54A" strokeWidth="1.5" opacity={0.4} />
-        <line x1={x} y1={y - r*1.5} x2={x} y2={y + r*1.5} stroke="#FFD54A" strokeWidth="1.5" opacity={0.4} />
-      </g>
-    ))}
-  </svg>
-);
-
-// ── Floating Cloud
-export const Cloud: React.FC<{ size?: number; color?: string; className?: string }> = ({ size = 80, color = '#E8F4FF', className = '' }) => (
-  <svg width={size} height={size * 0.6} viewBox="0 0 80 48" fill="none" className={className}>
-    <ellipse cx="40" cy="32" rx="36" ry="18" fill={color} />
-    <circle cx="28" cy="28" r="16" fill={color} />
-    <circle cx="52" cy="26" r="18" fill={color} />
-    <circle cx="40" cy="24" r="14" fill={color} />
-    {/* Shine */}
-    <ellipse cx="34" cy="20" rx="8" ry="4" fill="rgba(255,255,255,0.5)" />
-  </svg>
-);
-
-// ── Treasure Chest
-export const TreasureChest: React.FC<{ size?: number; className?: string }> = ({ size = 80, className = '' }) => (
-  <svg width={size} height={size} viewBox="0 0 80 80" fill="none" className={className}>
     {/* Shadow */}
-    <ellipse cx="40" cy="76" rx="28" ry="6" fill="rgba(0,0,0,0.15)" />
-    {/* Chest base */}
-    <rect x="8" y="40" width="64" height="32" rx="8" fill="#8B4513" />
-    <rect x="8" y="40" width="64" height="32" rx="8" fill="url(#chestBase)" />
-    {/* Chest lid */}
-    <rect x="6" y="18" width="68" height="28" rx="10" fill="#A0522D" />
-    <rect x="6" y="18" width="68" height="28" rx="10" fill="url(#chestLid)" />
-    {/* Gold trim */}
-    <rect x="6" y="40" width="68" height="5" rx="2" fill="#FFD54A" />
-    <rect x="8" y="44" width="64" height="2" rx="1" fill="#FFC107" />
-    {/* Vertical gold strips on lid */}
-    <rect x="22" y="18" width="4" height="28" rx="2" fill="#FFD54A" opacity="0.7" />
-    <rect x="54" y="18" width="4" height="28" rx="2" fill="#FFD54A" opacity="0.7" />
-    {/* Lock */}
-    <rect x="32" y="34" width="16" height="14" rx="5" fill="#FFD54A" />
-    <circle cx="40" cy="36" r="5" fill="#FFC107" stroke="#E8A000" strokeWidth="1" />
-    <rect x="37" y="38" width="6" height="6" rx="1" fill="#E8A000" />
-    {/* Shine on lid */}
-    <ellipse cx="32" cy="25" rx="12" ry="5" fill="rgba(255,255,255,0.2)" />
-    {/* Gold coins spilling out */}
-    <circle cx="16" cy="36" r="5" fill="#FFD54A" />
-    <circle cx="62" cy="34" r="4" fill="#FFD54A" />
-    <circle cx="70" cy="40" r="3" fill="#FFD54A" />
-    <circle cx="10" cy="44" r="3" fill="#FFC107" />
-    {/* Gem */}
-    <polygon points="40,8 45,14 40,20 35,14" fill="#FF4FA3" />
-    <polygon points="40,8 45,14 40,15 35,14" fill="rgba(255,255,255,0.4)" />
+    <ellipse cx="60" cy="126" rx="32" ry="6" fill="rgba(0,0,0,0.2)" />
+    {/* BODY */}
+    <rect x="28" y="60" width="64" height="52" rx="16" fill="url(#rBodyGrad)" />
+    {/* Body shine */}
+    <ellipse cx="45" cy="72" rx="10" ry="5" fill="rgba(255,255,255,0.25)" transform="rotate(-15 45 72)" />
+    {/* Belly button panel */}
+    <rect x="40" y="76" width="40" height="26" rx="10" fill="rgba(0,0,0,0.15)" />
+    <rect x="43" y="79" width="34" height="20" rx="7" fill="rgba(255,255,255,0.1)" />
+    {/* Heart indicator */}
+    <path d="M 60 87 C 60 85 57 82 54 84 C 51 86 51 90 60 95 C 69 90 69 86 66 84 C 63 82 60 85 60 87 Z" fill="#FF4FA3" opacity="0.9" />
+    {/* ARMS */}
+    {/* Left arm (waving up) */}
+    <rect x="8" y="55" width="20" height="34" rx="10" fill="url(#rBodyGrad)" transform="rotate(-30 8 55)" />
+    {/* Left hand */}
+    <circle cx="10" cy="52" r="10" fill="#FF9F5A" />
+    <circle cx="4" cy="47" r="6" fill="#FF9F5A" />
+    <circle cx="2" cy="41" r="5" fill="#FF9F5A" />
+    <circle cx="7" cy="38" r="4" fill="#FF9F5A" />
+    {/* Right arm */}
+    <rect x="92" y="62" width="20" height="30" rx="10" fill="url(#rBodyGrad)" transform="rotate(10 92 62)" />
+    <circle cx="108" cy="90" r="9" fill="#FF9F5A" />
+    {/* FEET */}
+    <rect x="36" y="106" width="20" height="16" rx="8" fill="#D44010" />
+    <rect x="64" y="106" width="20" height="16" rx="8" fill="#D44010" />
+    {/* Foot shine */}
+    <ellipse cx="42" cy="111" rx="5" ry="2.5" fill="rgba(255,255,255,0.2)" />
+    <ellipse cx="70" cy="111" rx="5" ry="2.5" fill="rgba(255,255,255,0.2)" />
+    {/* HEAD */}
+    <rect x="22" y="16" width="76" height="52" rx="22" fill="url(#rHeadGrad)" />
+    {/* Head shine */}
+    <ellipse cx="44" cy="25" rx="14" ry="7" fill="rgba(255,255,255,0.2)" transform="rotate(-10 44 25)" />
+    {/* EYES (big happy round eyes) */}
+    <circle cx="44" cy="40" r="12" fill="url(#eyeGrad)" />
+    <circle cx="76" cy="40" r="12" fill="url(#eyeGrad)" />
+    {/* Eye whites */}
+    <circle cx="44" cy="40" r="9" fill="#1A0A40" />
+    <circle cx="76" cy="40" r="9" fill="#1A0A40" />
+    {/* Iris sparkle */}
+    <circle cx="44" cy="40" r="5" fill="#5A3AFF" opacity="0.6" />
+    <circle cx="76" cy="40" r="5" fill="#5A3AFF" opacity="0.6" />
+    {/* Glint */}
+    <circle cx="48" cy="36" r="3" fill="white" />
+    <circle cx="80" cy="36" r="3" fill="white" />
+    <circle cx="47" cy="44" r="1.5" fill="rgba(255,255,255,0.5)" />
+    <circle cx="79" cy="44" r="1.5" fill="rgba(255,255,255,0.5)" />
+    {/* Happy mouth */}
+    <path d="M 47 52 Q 60 62 73 52" stroke="rgba(255,255,255,0.7)" strokeWidth="3" strokeLinecap="round" fill="none" />
+    {/* Rosy cheeks */}
+    <ellipse cx="34" cy="48" rx="7" ry="5" fill="#FF7750" opacity="0.5" />
+    <ellipse cx="86" cy="48" rx="7" ry="5" fill="#FF7750" opacity="0.5" />
+    {/* Ear circles */}
+    <circle cx="22" cy="40" r="6" fill="#D44010" />
+    <circle cx="98" cy="40" r="6" fill="#D44010" />
+    {/* ANTENNA */}
+    <rect x="56" y="4" width="8" height="16" rx="4" fill="#FF9F5A" />
+    <circle cx="60" cy="4" r="8" fill="#FFD54A" />
+    <circle cx="60" cy="4" r="5" fill="white" />
+    <circle cx="62" cy="2" r="2" fill="#FFD54A" />
+    {/* Stars around */}
+    <text x="105" y="25" fontSize="14" fill="#FFD54A" opacity="0.9">✦</text>
+    <text x="8" y="20" fontSize="10" fill="#FF4FA3" opacity="0.8">✦</text>
+    <text x="100" y="60" fontSize="10" fill="#5AD66F" opacity="0.8">✦</text>
+  </svg>
+);
+
+// ── White/Blue AI Tutor Robot (Hero Banner Right)
+export const AIRobotMascot: React.FC<{ size?: number; className?: string }> = ({ size = 130, className = '' }) => (
+  <svg width={size} height={size * 1.1} viewBox="0 0 130 143" fill="none" className={className}>
     <defs>
-      <linearGradient id="chestBase" x1="8" y1="40" x2="72" y2="72" gradientUnits="userSpaceOnUse">
+      <radialGradient id="aBodyGrad" cx="40%" cy="30%" r="70%">
+        <stop offset="0%" stopColor="#FFFFFF" />
+        <stop offset="100%" stopColor="#D0E8FF" />
+      </radialGradient>
+      <radialGradient id="aHeadGrad" cx="40%" cy="30%" r="70%">
+        <stop offset="0%" stopColor="#FFFFFF" />
+        <stop offset="100%" stopColor="#C4DEFF" />
+      </radialGradient>
+      <radialGradient id="aEyeGrad" cx="30%" cy="30%" r="70%">
+        <stop offset="0%" stopColor="#5A9DFF" />
+        <stop offset="100%" stopColor="#2460CC" />
+      </radialGradient>
+    </defs>
+    <ellipse cx="65" cy="138" rx="32" ry="6" fill="rgba(0,0,0,0.15)" />
+    {/* Body */}
+    <rect x="26" y="62" width="78" height="58" rx="18" fill="url(#aBodyGrad)" stroke="#C4DEFF" strokeWidth="2" />
+    <ellipse cx="50" cy="75" rx="12" ry="5" fill="rgba(255,255,255,0.6)" transform="rotate(-10 50 75)" />
+    {/* Body screen */}
+    <rect x="38" y="80" width="54" height="30" rx="10" fill="#1A2E6E" opacity="0.9" />
+    <rect x="40" y="82" width="50" height="26" rx="8" fill="#0D1A4D" />
+    {/* Screen content - face */}
+    <circle cx="55" cy="95" r="5" fill="#FFD54A" />
+    <circle cx="75" cy="95" r="5" fill="#4D9DFF" />
+    <path d="M 52 103 Q 65 110 78 103" stroke="#5AD66F" strokeWidth="2" strokeLinecap="round" fill="none" />
+    {/* Arms */}
+    <rect x="4" y="66" width="22" height="36" rx="11" fill="url(#aBodyGrad)" stroke="#C4DEFF" strokeWidth="1.5" />
+    <rect x="104" y="66" width="22" height="36" rx="11" fill="url(#aBodyGrad)" stroke="#C4DEFF" strokeWidth="1.5" />
+    {/* Book in left hand */}
+    <rect x="2" y="98" width="26" height="20" rx="5" fill="#6C4CFF" />
+    <rect x="2" y="98" width="4" height="20" rx="2" fill="#4D2FCC" />
+    <rect x="8" y="102" width="14" height="1.5" rx="0.75" fill="rgba(255,255,255,0.5)" />
+    <rect x="8" y="105" width="11" height="1.5" rx="0.75" fill="rgba(255,255,255,0.4)" />
+    <rect x="8" y="108" width="13" height="1.5" rx="0.75" fill="rgba(255,255,255,0.3)" />
+    {/* Big text on book */}
+    <text x="9" y="115" fontSize="6" fontWeight="900" fill="white" fontFamily="Poppins">BIG</text>
+    <text x="6" y="122" fontSize="5" fontWeight="700" fill="rgba(255,255,255,0.7)" fontFamily="Poppins">DREAMS</text>
+    {/* Pencil in right hand */}
+    <rect x="116" y="94" width="6" height="28" rx="3" fill="#FFD54A" transform="rotate(15 116 94)" />
+    <polygon points="118,122 124,118 120,128" fill="#FFC107" transform="rotate(15 118 118)" />
+    {/* Feet */}
+    <rect x="36" y="114" width="22" height="16" rx="8" fill="#C4DEFF" stroke="#A0C0F0" strokeWidth="1.5" />
+    <rect x="72" y="114" width="22" height="16" rx="8" fill="#C4DEFF" stroke="#A0C0F0" strokeWidth="1.5" />
+    {/* Head */}
+    <rect x="18" y="10" width="94" height="58" rx="24" fill="url(#aHeadGrad)" stroke="#C4DEFF" strokeWidth="2" />
+    <ellipse cx="42" cy="22" rx="16" ry="7" fill="rgba(255,255,255,0.5)" transform="rotate(-8 42 22)" />
+    {/* Eyes - cute screen style */}
+    <rect x="30" y="24" width="24" height="18" rx="9" fill="#1A2E6E" />
+    <rect x="76" y="24" width="24" height="18" rx="9" fill="#1A2E6E" />
+    <circle cx="42" cy="33" r="6" fill="url(#aEyeGrad)" />
+    <circle cx="88" cy="33" r="6" fill="url(#aEyeGrad)" />
+    <circle cx="44" cy="31" r="2.5" fill="white" />
+    <circle cx="90" cy="31" r="2.5" fill="white" />
+    {/* Rosy cheeks */}
+    <ellipse cx="24" cy="42" rx="8" ry="5" fill="#B8D4FF" opacity="0.5" />
+    <ellipse cx="106" cy="42" rx="8" ry="5" fill="#B8D4FF" opacity="0.5" />
+    {/* Smile */}
+    <path d="M 50 52 Q 65 62 80 52" stroke="#4D9DFF" strokeWidth="3" strokeLinecap="round" fill="none" />
+    {/* Antenna */}
+    <rect x="61" y="2" width="8" height="12" rx="4" fill="#C4DEFF" />
+    <circle cx="65" cy="1" r="8" fill="#4D9DFF" />
+    <circle cx="65" cy="1" r="5" fill="white" />
+    <circle cx="67" cy="-1" r="2" fill="#4D9DFF" opacity="0.6" />
+    {/* Floating elements around */}
+    <text x="108" y="22" fontSize="16" fill="#FFD54A">💡</text>
+    <text x="5" y="58" fontSize="12" fill="#FFD54A" opacity="0.8">✦</text>
+    <text x="115" y="55" fontSize="10" fill="#5AD66F" opacity="0.8">✦</text>
+  </svg>
+);
+
+// ── Baby Dragon (Sidebar bottom mascot)
+export const DragonMascot: React.FC<{ size?: number; className?: string }> = ({ size = 110, className = '' }) => (
+  <svg width={size} height={size * 1.1} viewBox="0 0 110 121" fill="none" className={className}>
+    <defs>
+      <radialGradient id="dGrad" cx="40%" cy="30%" r="70%">
+        <stop offset="0%" stopColor="#7EE899" />
+        <stop offset="100%" stopColor="#3AB85A" />
+      </radialGradient>
+    </defs>
+    <ellipse cx="55" cy="116" rx="28" ry="7" fill="rgba(0,0,0,0.2)" />
+    {/* Tail */}
+    <path d="M 64 92 Q 88 100 96 88 Q 100 80 90 76" stroke="#4EC46A" strokeWidth="10" strokeLinecap="round" fill="none" />
+    <path d="M 90 76 L 98 68 L 86 70 Z" fill="#FFD54A" />
+    {/* Body */}
+    <ellipse cx="55" cy="80" rx="30" ry="28" fill="url(#dGrad)" />
+    {/* Belly */}
+    <ellipse cx="55" cy="86" rx="18" ry="14" fill="#B8F5C8" />
+    {/* Wings */}
+    <path d="M 25 65 Q 5 44 14 30 Q 22 20 30 40 Q 35 52 30 66 Z" fill="#5AD66F" opacity="0.85" />
+    <path d="M 85 65 Q 105 44 96 30 Q 88 20 80 40 Q 75 52 80 66 Z" fill="#5AD66F" opacity="0.85" />
+    {/* Wing veins */}
+    <path d="M 22 60 Q 10 44 16 34" stroke="#3AB85A" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+    <path d="M 28 63 Q 14 46 18 35" stroke="#3AB85A" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+    {/* Feet */}
+    <ellipse cx="42" cy="105" rx="12" ry="7" fill="#4EC46A" />
+    <ellipse cx="68" cy="105" rx="12" ry="7" fill="#4EC46A" />
+    <circle cx="35" cy="107" r="4" fill="#3AB85A" />
+    <circle cx="42" cy="109" r="4" fill="#3AB85A" />
+    <circle cx="49" cy="107" r="4" fill="#3AB85A" />
+    {/* Head */}
+    <circle cx="55" cy="44" r="30" fill="url(#dGrad)" />
+    <ellipse cx="48" cy="32" rx="14" ry="8" fill="rgba(255,255,255,0.18)" />
+    {/* Snout */}
+    <ellipse cx="55" cy="58" rx="12" ry="8" fill="#4EC46A" />
+    <circle cx="50" cy="56" r="2.5" fill="#2A9040" />
+    <circle cx="60" cy="56" r="2.5" fill="#2A9040" />
+    {/* Eyes */}
+    <circle cx="44" cy="40" r="10" fill="white" />
+    <circle cx="66" cy="40" r="10" fill="white" />
+    <circle cx="45" cy="41" r="6" fill="#1A0A3d" />
+    <circle cx="67" cy="41" r="6" fill="#1A0A3d" />
+    <circle cx="47" cy="39" r="2.5" fill="white" />
+    <circle cx="69" cy="39" r="2.5" fill="white" />
+    {/* Rosy cheeks */}
+    <ellipse cx="35" cy="50" rx="7" ry="4" fill="#6ADA80" opacity="0.5" />
+    <ellipse cx="75" cy="50" rx="7" ry="4" fill="#6ADA80" opacity="0.5" />
+    {/* Horns */}
+    <path d="M 43 18 L 38 4 L 46 16 Z" fill="#FFD54A" />
+    <path d="M 67 18 L 72 4 L 64 16 Z" fill="#FFD54A" />
+    {/* Spiky back */}
+    <ellipse cx="55" cy="16" rx="5" ry="8" fill="#FFD54A" />
+    {/* Smile */}
+    <path d="M 46 62 Q 55 68 64 62" stroke="white" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+    {/* Waving hand */}
+    <circle cx="22" cy="72" r="7" fill="#5AD66F" />
+    <circle cx="16" cy="67" r="5" fill="#5AD66F" />
+    <circle cx="14" cy="61" r="4" fill="#5AD66F" />
+    <circle cx="18" cy="57" r="4" fill="#5AD66F" />
+    {/* Backpack strap */}
+    <rect x="42" y="68" width="5" height="18" rx="2.5" fill="#6C4CFF" opacity="0.8" />
+    <rect x="63" y="68" width="5" height="18" rx="2.5" fill="#6C4CFF" opacity="0.8" />
+    <rect x="42" y="82" width="26" height="4" rx="2" fill="#6C4CFF" opacity="0.8" />
+  </svg>
+);
+
+// ── Treasure chest
+export const TreasureChest: React.FC<{ size?: number; className?: string }> = ({ size = 80, className = '' }) => (
+  <svg width={size} height={size * 0.9} viewBox="0 0 80 72" fill="none" className={className}>
+    <ellipse cx="40" cy="68" rx="28" ry="6" fill="rgba(0,0,0,0.2)" />
+    <rect x="6" y="36" width="68" height="32" rx="8" fill="#8B4513" />
+    <rect x="6" y="36" width="68" height="32" rx="8" fill="url(#chestBaseG)" />
+    <rect x="4" y="16" width="72" height="26" rx="10" fill="#A0522D" />
+    <rect x="4" y="16" width="72" height="26" rx="10" fill="url(#chestLidG)" />
+    <rect x="4" y="36" width="72" height="6" rx="2" fill="#FFD54A" />
+    <rect x="20" y="16" width="4" height="26" rx="2" fill="#FFD54A" opacity="0.6" />
+    <rect x="56" y="16" width="4" height="26" rx="2" fill="#FFD54A" opacity="0.6" />
+    <rect x="30" y="30" width="20" height="16" rx="5" fill="#FFD54A" />
+    <circle cx="40" cy="32" r="6" fill="#FFC107" stroke="#E8A000" strokeWidth="1" />
+    <rect x="37" y="34" width="6" height="8" rx="1.5" fill="#E8A000" />
+    <ellipse cx="30" cy="24" rx="13" ry="5" fill="rgba(255,255,255,0.2)" />
+    <circle cx="14" cy="32" r="5" fill="#FFD54A" />
+    <circle cx="64" cy="30" r="5" fill="#FFD54A" />
+    <circle cx="72" cy="38" r="4" fill="#FFC107" />
+    <circle cx="8" cy="42" r="3" fill="#FFD54A" />
+    <polygon points="40,6 44,12 40,18 36,12" fill="#FF4FA3" />
+    <defs>
+      <linearGradient id="chestBaseG" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
         <stop offset="0%" stopColor="rgba(255,255,255,0.1)" />
         <stop offset="100%" stopColor="rgba(0,0,0,0.2)" />
       </linearGradient>
-      <linearGradient id="chestLid" x1="6" y1="18" x2="74" y2="46" gradientUnits="userSpaceOnUse">
+      <linearGradient id="chestLidG" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
         <stop offset="0%" stopColor="rgba(255,255,255,0.15)" />
         <stop offset="100%" stopColor="rgba(0,0,0,0.1)" />
       </linearGradient>
@@ -254,365 +258,276 @@ export const TreasureChest: React.FC<{ size?: number; className?: string }> = ({
   </svg>
 );
 
-// ── Rocket
-export const Rocket: React.FC<{ size?: number; className?: string }> = ({ size = 60, className = '' }) => (
-  <svg width={size} height={size * 1.6} viewBox="0 0 60 96" fill="none" className={className}>
-    {/* Flame */}
-    <ellipse cx="30" cy="88" rx="10" ry="14" fill="#FF9F43" opacity="0.8" />
-    <ellipse cx="30" cy="84" rx="6" ry="10" fill="#FFD54A" />
-    {/* Body */}
-    <path d="M 14 58 L 14 38 Q 14 10 30 4 Q 46 10 46 38 L 46 58 Z" fill="#6C4CFF" />
-    <path d="M 14 58 L 14 38 Q 14 10 30 4 Q 46 10 46 38 L 46 58 Z" fill="url(#rocketGrad)" />
-    {/* Window */}
-    <circle cx="30" cy="36" r="10" fill="#E8EFFF" stroke="white" strokeWidth="2" />
-    <circle cx="30" cy="36" r="7" fill="#4D9DFF" />
-    <circle cx="27" cy="33" r="3" fill="rgba(255,255,255,0.5)" />
-    {/* Wings */}
-    <path d="M 14 56 L 4 72 L 14 68 Z" fill="#FF4FA3" />
-    <path d="M 46 56 L 56 72 L 46 68 Z" fill="#FF4FA3" />
-    {/* Body shine */}
-    <path d="M 20 20 Q 22 12 28 8 L 28 50 L 20 50 Z" fill="rgba(255,255,255,0.15)" />
-    <defs>
-      <linearGradient id="rocketGrad" x1="14" y1="4" x2="46" y2="58" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#8A5CFF" />
-        <stop offset="100%" stopColor="#6C4CFF" />
-      </linearGradient>
-    </defs>
+// ── Coin
+export const CoinSVG: React.FC<{ size?: number; className?: string }> = ({ size = 28, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 28 28" fill="none" className={className}>
+    <circle cx="14" cy="14" r="13" fill="#FFD54A" />
+    <circle cx="14" cy="14" r="13" stroke="#FFC107" strokeWidth="1.5" />
+    <circle cx="14" cy="14" r="9" fill="#FFC107" opacity="0.3" />
+    <text x="14" y="18" textAnchor="middle" fontSize="10" fontWeight="900" fill="#B8860B" fontFamily="Poppins">₮</text>
+    <ellipse cx="10" cy="9" rx="4" ry="2" fill="rgba(255,255,255,0.4)" />
+  </svg>
+);
+
+// ── XP Gem
+export const XPGem: React.FC<{ size?: number; className?: string }> = ({ size = 28, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 28 28" fill="none" className={className}>
+    <polygon points="14,2 22,8 22,20 14,26 6,20 6,8" fill="#8A5CFF" />
+    <polygon points="14,2 22,8 14,14 6,8" fill="rgba(255,255,255,0.3)" />
+    <polygon points="14,14 22,20 14,26 6,20" fill="rgba(0,0,0,0.15)" />
+    <text x="14" y="19" textAnchor="middle" fontSize="7" fontWeight="900" fill="white" fontFamily="Poppins">XP</text>
+  </svg>
+);
+
+// ── Fire streak
+export const FireSVG: React.FC<{ size?: number; className?: string }> = ({ size = 24, className = '' }) => (
+  <svg width={size} height={size * 1.3} viewBox="0 0 24 31" fill="none" className={className}>
+    <path d="M 12 31 C 5 31 1 25 1 19 C 1 13 5 9 9 5 C 9 11 11 13 12 13 C 13 13 15 11 15 5 C 19 9 23 13 23 19 C 23 25 19 31 12 31 Z" fill="#FF9F43" />
+    <path d="M 12 28 C 7 28 4 24 4 19 C 4 15 7 12 9 10 C 9 14 11 16 12 16 C 13 16 15 14 15 10 C 17 12 20 15 20 19 C 20 24 17 28 12 28 Z" fill="#FFD54A" />
+    <path d="M 12 25 C 9 25 7 23 7 20 C 7 18 8 16 10 15 C 10 17 11 18 12 18 C 13 18 14 17 14 15 C 16 16 17 18 17 20 C 17 23 15 25 12 25 Z" fill="#FF6B35" />
   </svg>
 );
 
 // ── Trophy
-export const TrophySVG: React.FC<{ size?: number; color?: string; className?: string }> = ({ size = 50, color = '#FFD54A', className = '' }) => (
-  <svg width={size} height={size * 1.2} viewBox="0 0 50 60" fill="none" className={className}>
-    <ellipse cx="25" cy="57" rx="14" ry="4" fill="rgba(0,0,0,0.1)" />
-    {/* Base */}
-    <rect x="14" y="48" width="22" height="8" rx="3" fill={color} />
-    <rect x="10" y="54" width="30" height="5" rx="3" fill={color} />
-    {/* Stem */}
-    <rect x="22" y="40" width="6" height="12" rx="3" fill={color} />
-    {/* Cup */}
-    <path d="M 8 4 L 8 30 Q 8 42 25 42 Q 42 42 42 30 L 42 4 Z" fill={color} />
-    {/* Cup shine */}
-    <path d="M 12 6 L 12 28 Q 12 36 20 38 L 16 6 Z" fill="rgba(255,255,255,0.25)" />
-    {/* Handles */}
-    <path d="M 8 8 Q 2 8 2 18 Q 2 26 8 26" stroke={color} strokeWidth="5" strokeLinecap="round" fill="none" />
-    <path d="M 42 8 Q 48 8 48 18 Q 48 26 42 26" stroke={color} strokeWidth="5" strokeLinecap="round" fill="none" />
-    {/* Star on cup */}
-    <polygon points="25,12 27,18 33,18 28,22 30,28 25,24 20,28 22,22 17,18 23,18" fill="rgba(255,255,255,0.5)" />
+export const TrophySVG: React.FC<{ size?: number; className?: string }> = ({ size = 44, className = '' }) => (
+  <svg width={size} height={size * 1.2} viewBox="0 0 44 53" fill="none" className={className}>
+    <ellipse cx="22" cy="50" rx="12" ry="4" fill="rgba(0,0,0,0.15)" />
+    <rect x="12" y="42" width="20" height="8" rx="3" fill="#FFD54A" />
+    <rect x="8" y="48" width="28" height="4" rx="2" fill="#FFC107" />
+    <rect x="19" y="35" width="6" height="10" rx="3" fill="#FFD54A" />
+    <path d="M 6 4 L 6 26 Q 6 38 22 38 Q 38 38 38 26 L 38 4 Z" fill="#FFD54A" />
+    <path d="M 10 6 L 10 24 Q 10 32 18 34 L 14 6 Z" fill="rgba(255,255,255,0.25)" />
+    <path d="M 6 8 Q 0 8 0 18 Q 0 26 6 26" stroke="#FFD54A" strokeWidth="5" strokeLinecap="round" fill="none" />
+    <path d="M 38 8 Q 44 8 44 18 Q 44 26 38 26" stroke="#FFD54A" strokeWidth="5" strokeLinecap="round" fill="none" />
+    <polygon points="22,10 24,16 30,16 25,20 27,26 22,22 17,26 19,20 14,16 20,16" fill="rgba(255,255,255,0.5)" />
   </svg>
 );
 
-// ── Coin
-export const CoinSVG: React.FC<{ size?: number; className?: string }> = ({ size = 30, className = '' }) => (
-  <svg width={size} height={size} viewBox="0 0 30 30" fill="none" className={className}>
-    <circle cx="15" cy="15" r="14" fill="#FFD54A" />
-    <circle cx="15" cy="15" r="14" stroke="#FFC107" strokeWidth="1.5" />
-    <circle cx="15" cy="15" r="10" fill="#FFC107" opacity="0.4" />
-    <text x="15" y="19" textAnchor="middle" fontSize="10" fontWeight="900" fill="#E8A000" fontFamily="Poppins">₮</text>
-    <ellipse cx="11" cy="10" rx="4" ry="2" fill="rgba(255,255,255,0.35)" />
-  </svg>
-);
-
-// ── XP Crystal
-export const XPCrystal: React.FC<{ size?: number; className?: string }> = ({ size = 30, className = '' }) => (
-  <svg width={size} height={size} viewBox="0 0 30 30" fill="none" className={className}>
-    <polygon points="15,2 24,8 24,22 15,28 6,22 6,8" fill="#8A5CFF" />
-    <polygon points="15,2 24,8 24,22 15,28 6,22 6,8" fill="url(#crystalGrad)" />
-    <polygon points="15,2 24,8 15,14 6,8" fill="rgba(255,255,255,0.3)" />
-    <text x="15" y="20" textAnchor="middle" fontSize="8" fontWeight="900" fill="white" fontFamily="Poppins">XP</text>
-    <defs>
-      <linearGradient id="crystalGrad" x1="6" y1="2" x2="24" y2="28" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#C770FF" />
-        <stop offset="100%" stopColor="#6C4CFF" />
-      </linearGradient>
-    </defs>
-  </svg>
-);
-
-// ── Badge shapes
-export const BadgeSVG: React.FC<{ icon: string; bg: string; size?: number; className?: string }> = ({ icon, bg, size = 56, className = '' }) => (
-  <svg width={size} height={size * 1.1} viewBox="0 0 56 62" fill="none" className={className}>
-    {/* Shield shape */}
-    <path d="M 28 2 L 54 12 L 54 34 Q 54 54 28 60 Q 2 54 2 34 L 2 12 Z" fill={bg} />
-    <path d="M 28 2 L 54 12 L 54 34 Q 54 54 28 60 Q 2 54 2 34 L 2 12 Z" fill="url(#badgeGrad)" />
-    <path d="M 28 8 L 48 16 L 48 34 Q 48 50 28 54 Q 8 50 8 34 L 8 16 Z" fill="rgba(255,255,255,0.15)" />
-    {/* Shine */}
-    <path d="M 16 10 L 28 8 L 28 24 L 12 24 Z" fill="rgba(255,255,255,0.2)" />
-    {/* Icon text */}
-    <text x="28" y="38" textAnchor="middle" fontSize="20">{icon}</text>
-    {/* Star accent */}
-    <circle cx="48" cy="10" r="6" fill="#FFD54A" />
-    <polygon points="48,6 49.5,9 53,9 50.2,11.5 51.2,15 48,13 44.8,15 45.8,11.5 43,9 46.5,9" fill="white" />
-    <defs>
-      <linearGradient id="badgeGrad" x1="2" y1="2" x2="54" y2="60" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="rgba(255,255,255,0.2)" />
-        <stop offset="100%" stopColor="rgba(0,0,0,0.1)" />
-      </linearGradient>
-    </defs>
-  </svg>
-);
-
-// ── Fire Streak Icon
-export const FireStreakSVG: React.FC<{ size?: number; className?: string }> = ({ size = 28, className = '' }) => (
-  <svg width={size} height={size * 1.2} viewBox="0 0 28 34" fill="none" className={className}>
-    <path d="M 14 34 C 6 34 2 28 2 22 C 2 16 6 12 10 8 C 10 14 12 16 14 16 C 16 16 18 14 18 8 C 22 12 26 16 26 22 C 26 28 22 34 14 34 Z" fill="#FF9F43" />
-    <path d="M 14 30 C 9 30 6 26 6 22 C 6 18 8 15 10 13 C 10 17 12 19 14 19 C 16 19 18 17 18 13 C 20 15 22 18 22 22 C 22 26 19 30 14 30 Z" fill="#FFD54A" />
-    <path d="M 14 27 C 11 27 9 25 9 22 C 9 20 10 18 12 17 C 12 19 13 20 14 20 C 15 20 16 19 16 17 C 18 18 19 20 19 22 C 19 25 17 27 14 27 Z" fill="#FF6B35" />
-  </svg>
-);
-
-// ── Sparkle burst
-export const Sparkle: React.FC<{ size?: number; color?: string; className?: string }> = ({ size = 24, color = '#FFD54A', className = '' }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
-    <path d="M 12 2 L 13.5 9 L 20 8 L 14.5 12 L 18 18 L 12 14 L 6 18 L 9.5 12 L 4 8 L 10.5 9 Z" fill={color} />
-    <path d="M 12 4 L 13 9.5 L 18 8.5 L 14 12 L 17 17 L 12 13.5 L 7 17 L 10 12 L 6 8.5 L 11 9.5 Z" fill="rgba(255,255,255,0.35)" />
-  </svg>
-);
-
-// ── Reading Icon
-export const ReadingIcon: React.FC<{ size?: number; className?: string }> = ({ size = 48, className = '' }) => (
-  <svg width={size} height={size} viewBox="0 0 48 48" fill="none" className={className}>
-    <rect x="4" y="8" width="40" height="36" rx="6" fill="#6C4CFF" />
-    <rect x="4" y="8" width="20" height="36" rx="6" fill="#8A5CFF" />
-    <rect x="2" y="6" width="22" height="36" rx="6" fill="#6C4CFF" />
-    <rect x="2" y="6" width="4" height="36" rx="2" fill="#4D2FCC" />
-    <rect x="8" y="12" width="12" height="2" rx="1" fill="rgba(255,255,255,0.5)" />
-    <rect x="8" y="16" width="10" height="2" rx="1" fill="rgba(255,255,255,0.4)" />
-    <rect x="8" y="20" width="12" height="2" rx="1" fill="rgba(255,255,255,0.3)" />
-    <rect x="26" y="12" width="12" height="2" rx="1" fill="rgba(255,255,255,0.3)" />
-    <rect x="26" y="16" width="10" height="2" rx="1" fill="rgba(255,255,255,0.25)" />
-    <circle cx="36" cy="28" r="10" fill="#FFD54A" />
-    <text x="36" y="32" textAnchor="middle" fontSize="10" fill="#8B4513" fontWeight="900">📖</text>
-  </svg>
-);
-
-// ── Pencil/Writing Icon  
-export const WritingIcon: React.FC<{ size?: number; className?: string }> = ({ size = 48, className = '' }) => (
-  <svg width={size} height={size} viewBox="0 0 48 48" fill="none" className={className}>
-    <rect x="8" y="4" width="12" height="36" rx="4" fill="#FFD54A" transform="rotate(15 8 4)" />
-    <rect x="8" y="4" width="12" height="36" rx="4" fill="#FFD54A" />
-    <rect x="8" y="4" width="12" height="8" rx="4" fill="#FF9F43" />
-    <rect x="8" y="36" width="12" height="8" rx="3" fill="#FF4FA3" />
-    <polygon points="8,44 14,40 20,44 14,52" fill="#FFC8B0" />
-    <polygon points="14,48 14,40 20,44" fill="#F5A87A" />
-    {/* Sparkles from pencil tip */}
-    <circle cx="30" cy="20" r="4" fill="#FF4FA3" />
-    <circle cx="38" cy="12" r="3" fill="#6C4CFF" />
-    <circle cx="34" cy="30" r="3" fill="#4D9DFF" />
-    {/* Lines being drawn */}
-    <path d="M 26 38 Q 32 34 36 38 Q 40 42 44 38" stroke="#6C4CFF" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-    <path d="M 26 42 Q 30 40 34 42" stroke="#8A5CFF" strokeWidth="2" strokeLinecap="round" fill="none" strokeDasharray="3 2" />
-  </svg>
-);
-
-// ── Mic/Speaking Icon
-export const SpeakingIcon: React.FC<{ size?: number; className?: string }> = ({ size = 48, className = '' }) => (
-  <svg width={size} height={size} viewBox="0 0 48 48" fill="none" className={className}>
-    <rect x="16" y="4" width="16" height="26" rx="8" fill="#4D9DFF" />
-    <rect x="16" y="4" width="8" height="26" rx="8" fill="rgba(255,255,255,0.2)" />
-    {/* Stand */}
-    <path d="M 10 24 Q 10 36 24 36 Q 38 36 38 24" stroke="#4D9DFF" strokeWidth="3" strokeLinecap="round" fill="none" />
-    <rect x="21" y="36" width="6" height="8" rx="3" fill="#4D9DFF" />
-    <rect x="16" y="42" width="16" height="4" rx="2" fill="#4D9DFF" />
-    {/* Sound waves */}
-    <path d="M 40 20 Q 44 24 40 28" stroke="#5AD66F" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-    <path d="M 43 16 Q 49 24 43 32" stroke="#5AD66F" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.6" />
-    <path d="M 8 20 Q 4 24 8 28" stroke="#FF9F43" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-    <path d="M 5 16 Q -1 24 5 32" stroke="#FF9F43" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.6" />
-    {/* Recording dot */}
-    <circle cx="24" cy="16" r="4" fill="#FF4FA3" />
-    <circle cx="24" cy="16" r="2" fill="white" opacity="0.7" />
-  </svg>
-);
-
-// ── Star Rating (Filled)
-export const StarRating: React.FC<{ count: number; max?: number; size?: number }> = ({ count, max = 3, size = 16 }) => (
-  <div className="flex gap-0.5">
+// ── Star rating
+export const StarRating: React.FC<{ count: number; max?: number; size?: number }> = ({ count, max = 3, size = 14 }) => (
+  <div style={{ display: 'flex', gap: '2px' }}>
     {Array.from({ length: max }, (_, i) => (
-      <svg key={i} width={size} height={size} viewBox="0 0 16 16" fill="none">
-        <polygon points="8,1 10,6 15,6 11,10 12.5,15 8,12 3.5,15 5,10 1,6 6,6" fill={i < count ? '#FFD54A' : '#E8EFFF'} stroke={i < count ? '#FFC107' : '#D0DAFF'} strokeWidth="0.5" />
+      <svg key={i} width={size} height={size} viewBox="0 0 14 14" fill="none">
+        <polygon points="7,1 9,5 13,5 10,8.5 11,13 7,10.5 3,13 4,8.5 1,5 5,5" fill={i < count ? '#FFD54A' : 'rgba(255,255,255,0.25)'} />
       </svg>
     ))}
   </div>
 );
 
 // ── Circular Progress Ring
-export const ProgressRing: React.FC<{ percent: number; size?: number; color?: string; label?: string }> = ({ percent, size = 70, color = '#6C4CFF', label = '' }) => {
+export const ProgressRing: React.FC<{ percent: number; size?: number; color?: string }> = ({ percent, size = 72, color = '#6C4CFF' }) => {
   const r = (size - 12) / 2;
   const circ = 2 * Math.PI * r;
   const offset = circ - (percent / 100) * circ;
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-      <circle cx={size/2} cy={size/2} r={r} stroke="#E8EFFF" strokeWidth="8" fill="none" />
+      <circle cx={size/2} cy={size/2} r={r} stroke="rgba(255,255,255,0.2)" strokeWidth="8" fill="none" />
       <circle cx={size/2} cy={size/2} r={r} stroke={color} strokeWidth="8" fill="none"
         strokeDasharray={circ} strokeDashoffset={offset}
         strokeLinecap="round" transform={`rotate(-90 ${size/2} ${size/2})`} />
-      <text x={size/2} y={size/2 + 2} textAnchor="middle" dominantBaseline="middle" fontSize={size * 0.22} fontWeight="900" fill={color} fontFamily="Baloo 2, cursive">{percent}%</text>
-      {label && <text x={size/2} y={size/2 + size*0.24} textAnchor="middle" fontSize={size * 0.12} fill="#94A3B8" fontFamily="Nunito">{label}</text>}
+      <text x={size/2} y={size/2+1} textAnchor="middle" dominantBaseline="middle"
+        fontSize={size*0.22} fontWeight="900" fill={color} fontFamily="Baloo 2, cursive">{percent}%</text>
     </svg>
   );
 };
 
-// ── Adventure World Map SVG
-export const AdventureWorldMap: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <svg width="100%" height="100%" viewBox="0 0 900 400" fill="none" preserveAspectRatio="xMidYMid slice" className={className}>
-    {/* Sky background */}
+// ── Badge Shield
+export const BadgeSVG: React.FC<{ icon: string; color: string; size?: number; className?: string }> = ({ icon, color, size = 58, className = '' }) => (
+  <svg width={size} height={size * 1.1} viewBox="0 0 58 64" fill="none" className={className}>
     <defs>
-      <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-        <stop offset="0%" stopColor="#C5E8FF" />
-        <stop offset="50%" stopColor="#E8F7FF" />
-        <stop offset="100%" stopColor="#B8F5C8" />
+      <linearGradient id={`bg${color.replace('#','')}`} x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+        <stop offset="0%" stopColor={color} />
+        <stop offset="100%" stopColor={color} stopOpacity="0.7" />
       </linearGradient>
-      <linearGradient id="mountainGrad" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-        <stop offset="0%" stopColor="#8AB4D8" />
-        <stop offset="100%" stopColor="#6A96C0" />
+    </defs>
+    {/* Shield shadow */}
+    <path d="M 29 62 Q 56 52 56 35 L 56 12 L 29 3 L 2 12 L 2 35 Q 2 52 29 62 Z" fill="rgba(0,0,0,0.2)" transform="translate(2 3)" />
+    {/* Shield body */}
+    <path d="M 29 60 Q 56 50 56 33 L 56 10 L 29 1 L 2 10 L 2 33 Q 2 50 29 60 Z" fill={`url(#bg${color.replace('#','')})`} />
+    {/* Inner shine */}
+    <path d="M 29 6 L 51 14 L 51 33 Q 51 46 29 54 Q 7 46 7 33 L 7 14 Z" fill="rgba(255,255,255,0.15)" />
+    {/* Top shine streak */}
+    <path d="M 14 10 L 29 6 L 29 20 L 10 20 Z" fill="rgba(255,255,255,0.2)" />
+    {/* Icon */}
+    <text x="29" y="38" textAnchor="middle" fontSize="22">{icon}</text>
+    {/* Gold star top right */}
+    <circle cx="48" cy="10" r="7" fill="#FFD54A" />
+    <polygon points="48,6 49.5,9 53,9 50.3,11.3 51.4,15 48,13 44.6,15 45.7,11.3 43,9 46.5,9" fill="white" opacity="0.9" />
+  </svg>
+);
+
+// ── Full Adventure World Map SVG
+export const AdventureWorldMap: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <svg width="100%" height="100%" viewBox="0 0 860 370" fill="none" preserveAspectRatio="xMidYMid slice" className={className}>
+    <defs>
+      <linearGradient id="mapSky" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+        <stop offset="0%" stopColor="#87CEEB" />
+        <stop offset="40%" stopColor="#B0DCFF" />
+        <stop offset="100%" stopColor="#90E8A0" />
       </linearGradient>
-      <linearGradient id="groundGrad" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-        <stop offset="0%" stopColor="#7EE89A" />
-        <stop offset="100%" stopColor="#5AD66F" />
+      <linearGradient id="mapGround" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
+        <stop offset="0%" stopColor="#6ECC80" />
+        <stop offset="100%" stopColor="#4AAA5A" />
       </linearGradient>
-      <linearGradient id="riverGrad" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
-        <stop offset="0%" stopColor="#4D9DFF" />
-        <stop offset="100%" stopColor="#74BCFF" />
+      <linearGradient id="mapRiver" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
+        <stop offset="0%" stopColor="#5AB4FF" />
+        <stop offset="100%" stopColor="#80CCFF" />
       </linearGradient>
-      <linearGradient id="pathGrad" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
-        <stop offset="0%" stopColor="#FFD54A" stopOpacity="0.9" />
-        <stop offset="100%" stopColor="#FF9F43" stopOpacity="0.7" />
+      <linearGradient id="mapPath" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
+        <stop offset="0%" stopColor="#FFD54A" />
+        <stop offset="100%" stopColor="#FF9F43" />
       </linearGradient>
-      <filter id="glow">
-        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-        <feMerge><feMergeNode in="coloredBlur" /><feMergeNode in="SourceGraphic" /></feMerge>
+      <radialGradient id="islandGrad" cx="50%" cy="40%" r="60%">
+        <stop offset="0%" stopColor="#8EE0A0" />
+        <stop offset="100%" stopColor="#5AC870" />
+      </radialGradient>
+      <filter id="glow3d">
+        <feGaussianBlur stdDeviation="3" result="blur" />
+        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
       </filter>
     </defs>
 
-    {/* Sky */}
-    <rect x="0" y="0" width="900" height="400" fill="url(#skyGrad)" />
+    {/* SKY */}
+    <rect x="0" y="0" width="860" height="370" fill="url(#mapSky)" />
 
-    {/* Sun */}
-    <circle cx="820" cy="60" r="40" fill="#FFD54A" opacity="0.8" />
-    <circle cx="820" cy="60" r="30" fill="#FFE082" />
-    {[0,45,90,135,180,225,270,315].map((a, i) => (
-      <line key={i} x1={820 + 42*Math.cos(a*Math.PI/180)} y1={60 + 42*Math.sin(a*Math.PI/180)}
-        x2={820 + 55*Math.cos(a*Math.PI/180)} y2={60 + 55*Math.sin(a*Math.PI/180)}
-        stroke="#FFD54A" strokeWidth="4" strokeLinecap="round" opacity="0.6" />
+    {/* SUN */}
+    <circle cx="790" cy="55" r="36" fill="#FFE082" opacity="0.9" />
+    <circle cx="790" cy="55" r="26" fill="#FFD54A" />
+    {[0,45,90,135,180,225,270,315].map((a,i) => (
+      <line key={i} x1={790+38*Math.cos(a*Math.PI/180)} y1={55+38*Math.sin(a*Math.PI/180)}
+            x2={790+52*Math.cos(a*Math.PI/180)} y2={55+52*Math.sin(a*Math.PI/180)}
+            stroke="#FFD54A" strokeWidth="4" strokeLinecap="round" opacity="0.6" />
     ))}
 
-    {/* Background mountains */}
-    <path d="M 0 240 L 120 140 L 220 200 L 320 100 L 420 180 L 500 130 L 600 200 L 700 120 L 800 180 L 900 140 L 900 400 L 0 400 Z" fill="#C8DFF0" opacity="0.5" />
-    <path d="M 0 270 L 100 180 L 200 240 L 280 160 L 380 220 L 460 160 L 560 230 L 650 165 L 750 220 L 840 168 L 900 210 L 900 400 L 0 400 Z" fill="url(#mountainGrad)" opacity="0.7" />
+    {/* BACKGROUND MOUNTAINS */}
+    <path d="M 0 220 L 100 130 L 200 190 L 300 90 L 400 170 L 500 110 L 600 190 L 700 100 L 800 165 L 860 130 L 860 370 L 0 370 Z" fill="#9FC8E0" opacity="0.45" />
+    <path d="M 0 250 L 80 165 L 180 225 L 260 145 L 360 210 L 450 148 L 550 220 L 640 148 L 730 205 L 820 155 L 860 200 L 860 370 L 0 370 Z" fill="#7AAAC8" opacity="0.65" />
     {/* Snow caps */}
-    <path d="M 280 160 L 300 185 L 260 185 Z" fill="white" opacity="0.8" />
-    <path d="M 700 120 L 718 145 L 682 145 Z" fill="white" opacity="0.8" />
+    <polygon points="260,145 280,172 240,172" fill="white" opacity="0.8" />
+    <polygon points="640,148 658,172 622,172" fill="white" opacity="0.8" />
+    <polygon points="450,148 466,170 434,170" fill="white" opacity="0.7" />
 
-    {/* Ground */}
-    <path d="M 0 300 Q 225 280 450 300 Q 675 320 900 290 L 900 400 L 0 400 Z" fill="url(#groundGrad)" />
+    {/* GROUND */}
+    <path d="M 0 285 Q 215 265 430 285 Q 645 305 860 275 L 860 370 L 0 370 Z" fill="url(#mapGround)" />
 
-    {/* River */}
-    <path d="M 0 340 Q 150 320 300 335 Q 450 350 600 325 Q 700 310 900 330" stroke="url(#riverGrad)" strokeWidth="22" fill="none" opacity="0.8" />
-    <path d="M 0 340 Q 150 320 300 335 Q 450 350 600 325 Q 700 310 900 330" stroke="rgba(255,255,255,0.35)" strokeWidth="8" fill="none" />
-    {/* Ripples */}
-    <ellipse cx="200" cy="333" rx="20" ry="5" fill="rgba(255,255,255,0.25)" />
-    <ellipse cx="500" cy="340" rx="18" ry="4" fill="rgba(255,255,255,0.25)" />
+    {/* RIVER */}
+    <path d="M 0 325 Q 140 305 290 320 Q 430 335 570 308 Q 670 290 860 312" stroke="url(#mapRiver)" strokeWidth="22" fill="none" opacity="0.85" />
+    <path d="M 0 325 Q 140 305 290 320 Q 430 335 570 308 Q 670 290 860 312" stroke="rgba(255,255,255,0.3)" strokeWidth="8" fill="none" />
+    {/* Ripple */}
+    <ellipse cx="200" cy="318" rx="22" ry="6" fill="rgba(255,255,255,0.3)" />
+    <ellipse cx="480" cy="326" rx="18" ry="5" fill="rgba(255,255,255,0.25)" />
 
-    {/* Bridge */}
-    <rect x="430" y="322" width="90" height="16" rx="4" fill="#8B6B4A" />
-    <rect x="430" y="316" width="90" height="8" rx="3" fill="#A0825C" />
-    {[435,455,475,495,510].map((x,i) => (
-      <rect key={i} x={x} y="308" width="5" height="16" rx="2" fill="#8B6B4A" />
+    {/* BRIDGE */}
+    <rect x="400" y="305" width="100" height="18" rx="5" fill="#8B6B3A" />
+    <rect x="400" y="298" width="100" height="10" rx="4" fill="#A08050" />
+    {[406,420,434,448,462,476,490].map((x,i) => (
+      <rect key={i} x={x} y="290" width="5" height="16" rx="2" fill="#8B6B3A" />
     ))}
-    <path d="M 435 308 Q 475 298 515 308" stroke="#A0825C" strokeWidth="2.5" fill="none" />
+    <path d="M 406 290 Q 450 278 494 290" stroke="#A08050" strokeWidth="3" fill="none" />
 
-    {/* Trees */}
-    {[[80,280],[160,270],[350,265],[650,270],[780,275],[850,260]].map(([x,y],i) => (
+    {/* TREES — scattered */}
+    {[[60,265],[150,255],[300,250],[680,255],[760,260],[820,248]].map(([x,y],i) => (
       <g key={i}>
-        <rect x={x-4} y={y+18} width="8" height="16" rx="2" fill="#7B5E3E" />
-        <circle cx={x} cy={y} r="18" fill="#5AD66F" />
-        <circle cx={x-6} cy={y+6} r="12" fill="#4EC45E" />
-        <circle cx={x+6} cy={y+6} r="12" fill="#66D680" />
-        <circle cx={x} cy={y-8} r="10" fill="#78E492" />
+        <rect x={x-4} y={y+18} width="8" height="16" rx="2" fill="#7B4F2A" />
+        <circle cx={x} cy={y} r="20" fill="#5AD66F" />
+        <circle cx={x-7} cy={y+7} r="14" fill="#4EC45E" />
+        <circle cx={x+7} cy={y+6} r="14" fill="#6ADA7A" />
+        <circle cx={x} cy={y-10} r="12" fill="#7AE48A" />
       </g>
     ))}
 
-    {/* Castle (Stage Boss) */}
-    <g transform="translate(760, 195)">
-      <rect x="0" y="30" width="80" height="55" rx="4" fill="#8AB4D8" />
-      <rect x="0" y="30" width="80" height="55" rx="4" fill="url(#mountainGrad)" />
-      {/* Tower left */}
-      <rect x="-12" y="10" width="30" height="75" rx="4" fill="#7A9FC8" />
-      {/* Tower right */}
-      <rect x="62" y="10" width="30" height="75" rx="4" fill="#7A9FC8" />
-      {/* Battlements */}
-      {[-12,-4,4,12].map((dx,i) => <rect key={i} x={dx+3} y="6" width="6" height="8" rx="1" fill="#6A96C0" />)}
-      {[62,70,78,86].map((dx,i) => <rect key={i} x={dx} y="6" width="6" height="8" rx="1" fill="#6A96C0" />)}
-      {/* Main gate */}
-      <path d="M 28 85 L 28 55 Q 28 45 40 45 Q 52 45 52 55 L 52 85 Z" fill="#4D2FCC" />
-      {/* Door */}
-      <path d="M 30 85 L 30 58 Q 30 50 40 50 Q 50 50 50 58 L 50 85 Z" fill="#3A1FA8" />
+    {/* FLOATING ISLAND (left center) */}
+    <g transform="translate(120, 110)">
+      <ellipse cx="55" cy="65" rx="58" ry="24" fill="#4AAA5A" />
+      <ellipse cx="55" cy="70" rx="58" ry="20" fill="#3A9A4A" />
+      <ellipse cx="55" cy="78" rx="52" ry="26" fill="#2A8A3A" />
+      {/* Castle on island */}
+      <rect x="28" y="32" width="54" height="34" rx="4" fill="#7A9FC8" />
+      {/* Left tower */}
+      <rect x="14" y="18" width="26" height="48" rx="4" fill="#6A90B8" />
+      {/* Right tower */}
+      <rect x="64" y="18" width="26" height="48" rx="4" fill="#6A90B8" />
+      {/* Battlements left */}
+      {[14,20,26].map((x,i) => <rect key={i} x={x+i*0} y="14" width="7" height="8" rx="1.5" fill="#5A80A8" />)}
+      {[64,70,76].map((x,i) => <rect key={i} x={x} y="14" width="7" height="8" rx="1.5" fill="#5A80A8" />)}
+      {/* Gate */}
+      <path d="M 36 66 L 36 46 Q 36 36 55 36 Q 74 36 74 46 L 74 66 Z" fill="#3D2080" />
+      <path d="M 39 66 L 39 49 Q 39 40 55 40 Q 71 40 71 49 L 71 66 Z" fill="#2D1060" />
       {/* Windows */}
-      <rect x="5" y="25" width="14" height="16" rx="7" fill="#4D9DFF" opacity="0.8" />
-      <rect x="61" y="25" width="14" height="16" rx="7" fill="#4D9DFF" opacity="0.8" />
-      <rect x="15" y="42" width="12" height="14" rx="6" fill="#4D9DFF" opacity="0.8" />
-      <rect x="53" y="42" width="12" height="14" rx="6" fill="#4D9DFF" opacity="0.8" />
+      <rect x="18" y="28" width="14" height="16" rx="7" fill="#4D9DFF" opacity="0.85" />
+      <rect x="70" y="28" width="14" height="16" rx="7" fill="#4D9DFF" opacity="0.85" />
+      <rect x="23" y="48" width="12" height="14" rx="6" fill="#4D9DFF" opacity="0.7" />
+      <rect x="67" y="48" width="12" height="14" rx="6" fill="#4D9DFF" opacity="0.7" />
       {/* Flag */}
-      <line x1="40" y1="5" x2="40" y2="-18" stroke="#C0C0C0" strokeWidth="2" />
-      <polygon points="40,-18 55,-12 40,-6" fill="#FF4FA3" />
+      <line x1="55" y1="12" x2="55" y2="-8" stroke="#C0C0C0" strokeWidth="2.5" />
+      <polygon points="55,-8 68,-2 55,4" fill="#FF4FA3" />
+      {/* Island grass */}
+      <ellipse cx="55" cy="65" rx="55" ry="22" fill="url(#islandGrad)" opacity="0.7" />
     </g>
 
-    {/* Floating Islands */}
-    <g transform="translate(150, 130)">
-      <ellipse cx="50" cy="60" rx="55" ry="20" fill="#5AD66F" />
-      <ellipse cx="50" cy="64" rx="55" ry="15" fill="#4EC45E" />
-      <ellipse cx="50" cy="70" rx="50" ry="22" fill="#3DB64E" />
-      <rect x="30" y="32" width="40" height="28" rx="6" fill="#A0825C" />
-      <rect x="28" y="28" width="44" height="8" rx="4" fill="#8B6B4A" />
-      <circle cx="50" cy="28" r="20" fill="#5AD66F" />
-      <circle cx="40" cy="22" r="12" fill="#4EC45E" />
-      <circle cx="58" cy="24" r="10" fill="#66D680" />
-      {/* Star on island */}
-      <polygon points="50,10 52,16 58,16 53,20 55,26 50,22 45,26 47,20 42,16 48,16" fill="#FFD54A" />
+    {/* HOT AIR BALLOON */}
+    <g transform="translate(540,30)">
+      {/* Envelope */}
+      <ellipse cx="44" cy="54" rx="42" ry="56" fill="#FF4FA3" />
+      <path d="M 4 54 Q 22 18 44 8 Q 66 18 84 54 Z" fill="#FFD54A" />
+      <path d="M 4 54 Q 14 78 44 98 Q 74 78 84 54 Q 66 82 44 72 Q 22 82 4 54 Z" fill="#6C4CFF" />
+      <path d="M 44 8 L 44 98" stroke="rgba(255,255,255,0.25)" strokeWidth="2" />
+      <path d="M 4 54 Q 44 60 84 54" stroke="rgba(255,255,255,0.25)" strokeWidth="2" fill="none" />
+      {/* Shine */}
+      <ellipse cx="30" cy="30" rx="14" ry="22" fill="rgba(255,255,255,0.15)" />
+      {/* Ropes & basket */}
+      <line x1="28" y1="98" x2="28" y2="115" stroke="#8B6B3A" strokeWidth="2.5" />
+      <line x1="60" y1="98" x2="60" y2="115" stroke="#8B6B3A" strokeWidth="2.5" />
+      <rect x="20" y="115" width="48" height="22" rx="7" fill="#C8A266" />
+      <rect x="20" y="115" width="48" height="22" rx="7" stroke="#A08050" strokeWidth="1.5" fill="none" />
+      {/* Basket shine */}
+      <ellipse cx="35" cy="120" rx="10" ry="3" fill="rgba(255,255,255,0.2)" />
     </g>
 
-    {/* Hot Air Balloon */}
-    <g transform="translate(540, 60)">
-      <ellipse cx="40" cy="50" rx="38" ry="50" fill="#FF4FA3" />
-      <path d="M 4 50 Q 20 20 40 10 Q 60 20 76 50 Z" fill="#FFD54A" />
-      <path d="M 4 50 Q 12 70 40 90 Q 68 70 76 50 Q 60 80 40 70 Q 20 80 4 50 Z" fill="#6C4CFF" />
-      <path d="M 40 10 L 40 90" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" />
-      <path d="M 4 50 Q 40 55 76 50" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" fill="none" />
-      {/* Rope & basket */}
-      <line x1="28" y1="90" x2="28" y2="106" stroke="#8B6B4A" strokeWidth="2" />
-      <line x1="52" y1="90" x2="52" y2="106" stroke="#8B6B4A" strokeWidth="2" />
-      <rect x="22" y="106" width="36" height="18" rx="6" fill="#C8A266" />
-    </g>
+    {/* ANIMATED DOTTED PATH connecting stages */}
+    <path d="M 50 295 Q 120 272 220 280 Q 310 288 370 272 Q 435 255 490 270 Q 565 290 630 268 Q 700 248 770 262 Q 820 272 858 258"
+      stroke="url(#mapPath)" strokeWidth="12" fill="none" strokeLinecap="round"
+      strokeDasharray="20 14" filter="url(#glow3d)" opacity="0.9" />
+    {/* Path glow under */}
+    <path d="M 50 295 Q 120 272 220 280 Q 310 288 370 272 Q 435 255 490 270 Q 565 290 630 268 Q 700 248 770 262 Q 820 272 858 258"
+      stroke="#FFD54A" strokeWidth="5" fill="none" strokeLinecap="round" opacity="0.4" />
 
-    {/* Animated dotted path */}
-    <path d="M 60 308 Q 120 290 200 300 Q 280 310 340 295 Q 400 280 450 295 Q 540 315 610 295 Q 680 275 740 285 Q 800 295 860 280"
-      stroke="url(#pathGrad)" strokeWidth="10" fill="none" strokeLinecap="round"
-      strokeDasharray="20 12" filter="url(#glow)" />
-
-    {/* Path glow */}
-    <path d="M 60 308 Q 120 290 200 300 Q 280 310 340 295 Q 400 280 450 295 Q 540 315 610 295 Q 680 275 740 285 Q 800 295 860 280"
-      stroke="#FFD54A" strokeWidth="4" fill="none" strokeLinecap="round" opacity="0.4" />
-
-    {/* Clouds */}
-    {[[60,50],[250,30],[600,50],[730,35]].map(([x,y],i) => (
-      <g key={i} transform={`translate(${x}, ${y})`} opacity="0.85">
-        <ellipse cx="40" cy="25" rx="38" ry="14" fill="white" />
-        <circle cx="26" cy="20" rx="17" ry="17" fill="white" />
-        <circle cx="54" cy="18" rx="20" ry="20" fill="white" />
-        <circle cx="40" cy="16" rx="16" ry="16" fill="white" />
-        <ellipse cx="32" cy="13" rx="8" ry="4" fill="rgba(255,255,255,0.6)" />
+    {/* CLOUDS */}
+    {[[30,40],[220,24],[580,42],[700,28]].map(([x,y],i) => (
+      <g key={i} transform={`translate(${x},${y})`} opacity="0.9">
+        <ellipse cx="44" cy="28" rx="42" ry="16" fill="white" />
+        <circle cx="28" cy="22" r="18" fill="white" />
+        <circle cx="58" cy="20" r="22" fill="white" />
+        <circle cx="44" cy="17" r="18" fill="white" />
+        <ellipse cx="36" cy="14" rx="10" ry="5" fill="rgba(255,255,255,0.6)" />
       </g>
     ))}
 
-    {/* Sparkles floating */}
-    {[[100,100],[300,80],[550,110],[700,90],[180,200],[400,170]].map(([x,y],i) => (
-      <g key={i}>
-        <circle cx={x} cy={y} r="4" fill="#FFD54A" opacity={0.4 + (i%3)*0.2} />
-        <circle cx={x} cy={y} r="2" fill="white" opacity="0.6" />
-        <line x1={x-8} y1={y} x2={x+8} y2={y} stroke="#FFD54A" strokeWidth="1.5" opacity="0.3" />
-        <line x1={x} y1={y-8} x2={x} y2={y+8} stroke="#FFD54A" strokeWidth="1.5" opacity="0.3" />
+    {/* SPARKLES scattered */}
+    {[[90,100],[340,70],[510,95],[660,82],[200,190],[420,160]].map(([x,y],i) => (
+      <g key={i} opacity={0.5+i%3*0.1}>
+        <circle cx={x} cy={y} r="4" fill="#FFD54A" />
+        <line x1={x-8} y1={y} x2={x+8} y2={y} stroke="#FFD54A" strokeWidth="1.5" opacity="0.5" />
+        <line x1={x} y1={y-8} x2={x} y2={y+8} stroke="#FFD54A" strokeWidth="1.5" opacity="0.5" />
       </g>
     ))}
+  </svg>
+);
+
+// ── Tiny sparkle
+export const Sparkle: React.FC<{ size?: number; color?: string; className?: string }> = ({ size = 20, color = '#FFD54A', className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 20 20" fill="none" className={className}>
+    <polygon points="10,1 11.8,7.2 18,7 13.5,11 15.5,17.5 10,14 4.5,17.5 6.5,11 2,7 8.2,7.2" fill={color} />
+    <polygon points="10,3 11.5,7.8 17,7.5 13,10.8 14.8,16.5 10,13.5 5.2,16.5 7,10.8 3,7.5 8.5,7.8" fill="rgba(255,255,255,0.3)" />
+  </svg>
+);
+
+// ── Cloud
+export const Cloud: React.FC<{ size?: number; color?: string; className?: string }> = ({ size = 80, color = 'rgba(255,255,255,0.15)', className = '' }) => (
+  <svg width={size} height={size*0.55} viewBox="0 0 80 44" fill="none" className={className}>
+    <ellipse cx="40" cy="30" rx="36" ry="16" fill={color} />
+    <circle cx="26" cy="26" r="16" fill={color} />
+    <circle cx="52" cy="24" r="18" fill={color} />
+    <circle cx="40" cy="22" r="14" fill={color} />
   </svg>
 );

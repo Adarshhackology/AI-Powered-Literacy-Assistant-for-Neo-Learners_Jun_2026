@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CoinSVG, XPCrystal, FireStreakSVG, Sparkle } from '../UI/Illustrations';
+import { CoinSVG, XPGem, FireSVG } from '../UI/Illustrations';
 import { ProfileData } from '../../data/dashboardData';
 
 interface NavbarProps {
@@ -11,177 +11,131 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ profile, searchQuery, setSearchQuery }) => {
   const navigate = useNavigate();
-
   return (
     <header style={{
-      height: '80px',
+      height: '62px',
       background: 'rgba(255,255,255,0.95)',
-      backdropFilter: 'blur(30px)',
-      borderRadius: '24px',
-      border: '2px solid #E8EFFF',
-      boxShadow: '0 8px 32px rgba(108,76,255,0.1), 0 2px 8px rgba(108,76,255,0.05)',
-      display: 'flex',
-      alignItems: 'center',
+      backdropFilter: 'blur(20px)',
+      borderRadius: '18px',
+      border: '1.5px solid rgba(255,255,255,0.6)',
+      boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
+      display: 'flex', alignItems: 'center',
       justifyContent: 'space-between',
-      padding: '0 20px',
-      gap: '16px',
+      padding: '0 16px', gap: '12px',
     }}>
 
-      {/* Search Bar */}
+      {/* Search */}
       <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '10px',
-        background: '#F6F8FF',
-        border: '2px solid #E8EFFF',
-        borderRadius: '99px',
-        padding: '8px 16px',
-        flex: 1,
-        maxWidth: '460px',
-        transition: 'all 0.2s',
+        display: 'flex', alignItems: 'center', gap: '8px',
+        background: '#F6F8FF', border: '1.5px solid #E8EFFF',
+        borderRadius: '99px', padding: '7px 14px',
+        flex: 1, maxWidth: '400px',
       }}>
-        <span style={{ fontSize: '18px', opacity: 0.5 }}>🔍</span>
+        <span style={{ fontSize: '16px', opacity: 0.45 }}>🔍</span>
         <input
-          type="text"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search lessons, games, activities..."
+          onChange={e => setSearchQuery(e.target.value)}
+          placeholder="Search for lessons, games and more..."
           style={{
             border: 'none', outline: 'none', background: 'transparent',
-            fontFamily: 'Nunito', fontWeight: 700, fontSize: '14px',
+            fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px',
             color: '#374151', width: '100%',
           }}
         />
-        <button
-          onClick={() => navigate('/voice-practice')}
-          className="btn-3d"
-          style={{
-            width: '34px', height: '34px', borderRadius: '99px',
-            background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
-            border: 'none', color: 'white', fontSize: '14px',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 4px 12px rgba(108,76,255,0.4)',
-            cursor: 'pointer', flexShrink: 0,
-          }}
-        >
-          🎤
-        </button>
+        <button style={{
+          width: '30px', height: '30px', borderRadius: '99px', flexShrink: 0,
+          background: 'linear-gradient(135deg,#6C4CFF,#8A5CFF)',
+          border: 'none', color: 'white', fontSize: '13px',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: '0 3px 10px rgba(108,76,255,0.4)', cursor: 'pointer',
+        }}>🎤</button>
       </div>
 
-      {/* Stats & Profile Row */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      {/* Right side */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
 
-        {/* Streak Pill */}
+        {/* Streak */}
         <div className="hover-lift" style={{
-          display: 'flex', alignItems: 'center', gap: '6px',
-          background: 'linear-gradient(135deg, #FFF3E0, #FFE0B2)',
-          border: '2px solid #FFCC80',
-          borderRadius: '99px', padding: '8px 14px',
-          boxShadow: '0 4px 12px rgba(255,159,67,0.2)',
+          display: 'flex', alignItems: 'center', gap: '5px',
+          background: 'linear-gradient(135deg,#FFF3E0,#FFE0B2)',
+          border: '1.5px solid #FFCC80', borderRadius: '99px',
+          padding: '6px 12px',
+          boxShadow: '0 3px 10px rgba(255,159,67,0.2)',
         }}>
-          <div className="animate-heartbeat" style={{ display: 'flex' }}>
-            <FireStreakSVG size={22} />
-          </div>
-          <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', color: '#E65100' }}>
-            {profile.streak} Day
+          <div className="animate-heartbeat"><FireSVG size={18} /></div>
+          <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#E65100' }}>
+            {profile.streak} Day Streak
           </span>
         </div>
 
-        {/* Coins Pill */}
+        {/* Coins */}
         <div className="hover-lift" style={{
-          display: 'flex', alignItems: 'center', gap: '6px',
-          background: 'linear-gradient(135deg, #FFFDE7, #FFF9C4)',
-          border: '2px solid #FFE082',
-          borderRadius: '99px', padding: '8px 14px',
-          boxShadow: '0 4px 12px rgba(255,213,74,0.25)',
+          display: 'flex', alignItems: 'center', gap: '5px',
+          background: 'linear-gradient(135deg,#FFFDE7,#FFF9C4)',
+          border: '1.5px solid #FFE082', borderRadius: '99px',
+          padding: '6px 12px',
+          boxShadow: '0 3px 10px rgba(255,213,74,0.2)',
         }}>
-          <CoinSVG size={22} />
-          <span style={{ fontFamily: 'Baloo 2', fontWeight: 800, fontSize: '14px', color: '#F57F17' }}>
-            {profile.coins}
+          <CoinSVG size={20} />
+          <span style={{ fontFamily: 'Baloo 2', fontWeight: 800, fontSize: '13px', color: '#E65100' }}>
+            {profile.coins} Coins
           </span>
         </div>
 
-        {/* XP Pill */}
+        {/* XP */}
         <div className="hover-lift" style={{
-          display: 'flex', alignItems: 'center', gap: '6px',
-          background: 'linear-gradient(135deg, #EDE7F6, #D1C4E9)',
-          border: '2px solid #B39DDB',
-          borderRadius: '99px', padding: '8px 14px',
-          boxShadow: '0 4px 12px rgba(108,76,255,0.2)',
+          display: 'flex', alignItems: 'center', gap: '5px',
+          background: 'linear-gradient(135deg,#EDE7F6,#D8D0F0)',
+          border: '1.5px solid #C4B5F4', borderRadius: '99px',
+          padding: '6px 12px',
+          boxShadow: '0 3px 10px rgba(108,76,255,0.15)',
         }}>
-          <XPCrystal size={22} />
-          <span style={{ fontFamily: 'Baloo 2', fontWeight: 800, fontSize: '14px', color: '#4527A0' }}>
+          <XPGem size={20} />
+          <span style={{ fontFamily: 'Baloo 2', fontWeight: 800, fontSize: '13px', color: '#4527A0' }}>
             {profile.xp} XP
           </span>
         </div>
 
-        {/* Gift Button */}
-        <button className="btn-3d hover-lift" style={{
-          width: '42px', height: '42px', borderRadius: '14px',
-          background: 'linear-gradient(135deg, #FF4FA3, #FF6B35)',
-          border: '2px solid rgba(255,255,255,0.4)',
-          color: 'white', fontSize: '18px',
+        {/* Notification bell */}
+        <button style={{
+          width: '38px', height: '38px', borderRadius: '12px',
+          background: '#F6F8FF', border: '1.5px solid #E8EFFF',
+          fontSize: '16px', position: 'relative', cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: '0 4px 14px rgba(255,79,163,0.35)',
-          cursor: 'pointer',
-        }} onClick={() => navigate('/store')}>
-          🎁
-        </button>
-
-        {/* Notification Bell */}
-        <button className="btn-3d hover-lift" style={{
-          width: '42px', height: '42px', borderRadius: '14px',
-          background: '#F6F8FF', border: '2px solid #E8EFFF',
-          fontSize: '18px', position: 'relative',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: '0 2px 8px rgba(108,76,255,0.1)',
-          cursor: 'pointer',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
         }}>
           🔔
           <span style={{
-            position: 'absolute', top: '-4px', right: '-4px',
-            width: '18px', height: '18px', borderRadius: '50%',
+            position: 'absolute', top: '-3px', right: '-3px',
+            width: '16px', height: '16px', borderRadius: '50%',
             background: '#FF4FA3', color: 'white',
-            fontFamily: 'Poppins', fontWeight: 900, fontSize: '9px',
+            fontFamily: 'Poppins', fontWeight: 900, fontSize: '8px',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             border: '2px solid white',
-            boxShadow: '0 2px 6px rgba(255,79,163,0.5)',
           }}>3</span>
         </button>
 
-        {/* Profile Avatar Pill */}
+        {/* Profile pill */}
         <div className="hover-lift" onClick={() => navigate('/profile-setup')} style={{
-          display: 'flex', alignItems: 'center', gap: '10px',
-          background: 'linear-gradient(135deg, #EDE7F6, #E8EFFF)',
-          border: '2px solid #D1C4E9',
-          borderRadius: '99px', padding: '6px 16px 6px 6px',
+          display: 'flex', alignItems: 'center', gap: '8px',
+          background: '#F6F8FF', border: '1.5px solid #E8EFFF',
+          borderRadius: '99px', padding: '4px 14px 4px 4px',
           cursor: 'pointer',
-          boxShadow: '0 4px 14px rgba(108,76,255,0.12)',
         }}>
           <div style={{
-            width: '36px', height: '36px', borderRadius: '50%',
-            background: 'linear-gradient(135deg, #6C4CFF, #FF4FA3)',
-            border: '3px solid white',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '18px', fontWeight: 900, color: 'white',
-            boxShadow: '0 4px 12px rgba(108,76,255,0.4)',
-            overflow: 'hidden',
+            width: '34px', height: '34px', borderRadius: '50%',
+            background: 'linear-gradient(135deg,#6C4CFF,#FF4FA3)',
+            border: '2px solid white', overflow: 'hidden',
+            boxShadow: '0 3px 10px rgba(108,76,255,0.35)',
           }}>
-            <img
-              src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.fullName || 'player'}`}
-              alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
+            <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.fullName}`} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
           <div>
-            <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#1e1040', lineHeight: 1.2 }}>
-              {profile.fullName}
-            </div>
-            <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#8A5CFF' }}>
-              ⚡ Level {profile.level}
-            </div>
+            <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px', color: '#1e1040', lineHeight: 1.1 }}>{profile.fullName}</div>
+            <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#8A5CFF' }}>Level {profile.level}</div>
           </div>
+          <span style={{ color: '#9CA3AF', fontSize: '12px' }}>▾</span>
         </div>
-
       </div>
     </header>
   );
