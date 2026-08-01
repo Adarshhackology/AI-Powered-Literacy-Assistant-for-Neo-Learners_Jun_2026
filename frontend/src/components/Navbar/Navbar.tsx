@@ -1,82 +1,188 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Flame, Coins, Bell } from 'lucide-react';
+import { CoinSVG, XPCrystal, FireStreakSVG, Sparkle } from '../UI/Illustrations';
 import { ProfileData } from '../../data/dashboardData';
 
 interface NavbarProps {
   profile: ProfileData;
   searchQuery: string;
-  setSearchQuery: (query: string) => void;
+  setSearchQuery: (q: string) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ profile, searchQuery, setSearchQuery }) => {
   const navigate = useNavigate();
 
   return (
-    <header className="h-[90px] bg-white/90 backdrop-blur-xl border-4 border-white rounded-[32px] px-6 flex items-center justify-between shadow-xl shadow-indigo-100/60 gap-4">
-      
-      {/* Huge Rounded Search Bar */}
-      <div className="flex items-center gap-3 bg-slate-100/90 border-2 border-slate-200/80 px-5 py-3 rounded-full max-w-lg w-full focus-within:border-indigo-400 focus-within:bg-white transition-all shadow-inner">
-        <input 
-          type="text" 
+    <header style={{
+      height: '80px',
+      background: 'rgba(255,255,255,0.95)',
+      backdropFilter: 'blur(30px)',
+      borderRadius: '24px',
+      border: '2px solid #E8EFFF',
+      boxShadow: '0 8px 32px rgba(108,76,255,0.1), 0 2px 8px rgba(108,76,255,0.05)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: '0 20px',
+      gap: '16px',
+    }}>
+
+      {/* Search Bar */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        background: '#F6F8FF',
+        border: '2px solid #E8EFFF',
+        borderRadius: '99px',
+        padding: '8px 16px',
+        flex: 1,
+        maxWidth: '460px',
+        transition: 'all 0.2s',
+      }}>
+        <span style={{ fontSize: '18px', opacity: 0.5 }}>🔍</span>
+        <input
+          type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search for lessons, games and more..." 
-          className="bg-transparent text-sm font-bold w-full focus:outline-none placeholder:text-slate-400 font-nunito" 
+          placeholder="Search lessons, games, activities..."
+          style={{
+            border: 'none', outline: 'none', background: 'transparent',
+            fontFamily: 'Nunito', fontWeight: 700, fontSize: '14px',
+            color: '#374151', width: '100%',
+          }}
         />
-        <button 
+        <button
           onClick={() => navigate('/voice-practice')}
-          className="w-9 h-9 rounded-full bg-[#8B5CFF] hover:bg-[#6C4DFF] text-white flex items-center justify-center shrink-0 shadow-md transition-all active:scale-95 cursor-pointer"
+          className="btn-3d"
+          style={{
+            width: '34px', height: '34px', borderRadius: '99px',
+            background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
+            border: 'none', color: 'white', fontSize: '14px',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 4px 12px rgba(108,76,255,0.4)',
+            cursor: 'pointer', flexShrink: 0,
+          }}
         >
-          <Search className="w-4 h-4" />
+          🎤
         </button>
       </div>
 
-      {/* Floating Stats & Avatar Pills */}
-      <div className="flex items-center gap-3">
-        
+      {/* Stats & Profile Row */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+
         {/* Streak Pill */}
-        <div className="flex items-center gap-2 bg-orange-50 border-2 border-orange-200 px-4 py-2 rounded-full shadow-sm text-orange-600 font-black text-xs hover-pop">
-          <Flame className="w-4 h-4 text-orange-500 fill-orange-500 animate-pulse" />
-          <span className="font-poppins">{profile.streak} Day Streak</span>
+        <div className="hover-lift" style={{
+          display: 'flex', alignItems: 'center', gap: '6px',
+          background: 'linear-gradient(135deg, #FFF3E0, #FFE0B2)',
+          border: '2px solid #FFCC80',
+          borderRadius: '99px', padding: '8px 14px',
+          boxShadow: '0 4px 12px rgba(255,159,67,0.2)',
+        }}>
+          <div className="animate-heartbeat" style={{ display: 'flex' }}>
+            <FireStreakSVG size={22} />
+          </div>
+          <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', color: '#E65100' }}>
+            {profile.streak} Day
+          </span>
         </div>
 
         {/* Coins Pill */}
-        <div className="flex items-center gap-2 bg-amber-50 border-2 border-amber-200 px-4 py-2 rounded-full shadow-sm text-amber-600 font-black text-xs hover-pop">
-          <Coins className="w-4 h-4 text-amber-500 fill-amber-500" />
-          <span className="font-baloo text-sm">{profile.coins} Coins</span>
+        <div className="hover-lift" style={{
+          display: 'flex', alignItems: 'center', gap: '6px',
+          background: 'linear-gradient(135deg, #FFFDE7, #FFF9C4)',
+          border: '2px solid #FFE082',
+          borderRadius: '99px', padding: '8px 14px',
+          boxShadow: '0 4px 12px rgba(255,213,74,0.25)',
+        }}>
+          <CoinSVG size={22} />
+          <span style={{ fontFamily: 'Baloo 2', fontWeight: 800, fontSize: '14px', color: '#F57F17' }}>
+            {profile.coins}
+          </span>
         </div>
 
         {/* XP Pill */}
-        <div className="flex items-center gap-2 bg-purple-50 border-2 border-purple-200 px-4 py-2 rounded-full shadow-sm text-purple-700 font-black text-xs hover-pop">
-          <span className="text-base">💎</span>
-          <span className="font-baloo text-sm">{profile.xp} XP</span>
+        <div className="hover-lift" style={{
+          display: 'flex', alignItems: 'center', gap: '6px',
+          background: 'linear-gradient(135deg, #EDE7F6, #D1C4E9)',
+          border: '2px solid #B39DDB',
+          borderRadius: '99px', padding: '8px 14px',
+          boxShadow: '0 4px 12px rgba(108,76,255,0.2)',
+        }}>
+          <XPCrystal size={22} />
+          <span style={{ fontFamily: 'Baloo 2', fontWeight: 800, fontSize: '14px', color: '#4527A0' }}>
+            {profile.xp} XP
+          </span>
         </div>
 
-        {/* Notification Bell Pill */}
-        <button className="relative w-11 h-11 bg-slate-100/90 border-2 border-slate-200 hover:bg-slate-200 text-slate-700 rounded-full flex items-center justify-center transition-all hover-pop cursor-pointer">
-          <Bell className="w-5 h-5 text-indigo-900" />
-          <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 text-white font-black text-[10px] rounded-full flex items-center justify-center border-2 border-white shadow-md">
-            3
-          </span>
+        {/* Gift Button */}
+        <button className="btn-3d hover-lift" style={{
+          width: '42px', height: '42px', borderRadius: '14px',
+          background: 'linear-gradient(135deg, #FF4FA3, #FF6B35)',
+          border: '2px solid rgba(255,255,255,0.4)',
+          color: 'white', fontSize: '18px',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: '0 4px 14px rgba(255,79,163,0.35)',
+          cursor: 'pointer',
+        }} onClick={() => navigate('/store')}>
+          🎁
         </button>
 
-        {/* Avatar Profile Pill */}
-        <div 
-          className="flex items-center gap-3 bg-indigo-50 border-2 border-indigo-200/90 pl-1.5 pr-5 py-1.5 rounded-full shadow-sm cursor-pointer hover-pop"
-          onClick={() => navigate('/profile-setup')}
-        >
-          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 text-white flex items-center justify-center font-black text-sm border-2 border-white shadow-md overflow-hidden">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=poluytre" alt="Avatar" className="w-full h-full object-cover" />
+        {/* Notification Bell */}
+        <button className="btn-3d hover-lift" style={{
+          width: '42px', height: '42px', borderRadius: '14px',
+          background: '#F6F8FF', border: '2px solid #E8EFFF',
+          fontSize: '18px', position: 'relative',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: '0 2px 8px rgba(108,76,255,0.1)',
+          cursor: 'pointer',
+        }}>
+          🔔
+          <span style={{
+            position: 'absolute', top: '-4px', right: '-4px',
+            width: '18px', height: '18px', borderRadius: '50%',
+            background: '#FF4FA3', color: 'white',
+            fontFamily: 'Poppins', fontWeight: 900, fontSize: '9px',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            border: '2px solid white',
+            boxShadow: '0 2px 6px rgba(255,79,163,0.5)',
+          }}>3</span>
+        </button>
+
+        {/* Profile Avatar Pill */}
+        <div className="hover-lift" onClick={() => navigate('/profile-setup')} style={{
+          display: 'flex', alignItems: 'center', gap: '10px',
+          background: 'linear-gradient(135deg, #EDE7F6, #E8EFFF)',
+          border: '2px solid #D1C4E9',
+          borderRadius: '99px', padding: '6px 16px 6px 6px',
+          cursor: 'pointer',
+          boxShadow: '0 4px 14px rgba(108,76,255,0.12)',
+        }}>
+          <div style={{
+            width: '36px', height: '36px', borderRadius: '50%',
+            background: 'linear-gradient(135deg, #6C4CFF, #FF4FA3)',
+            border: '3px solid white',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '18px', fontWeight: 900, color: 'white',
+            boxShadow: '0 4px 12px rgba(108,76,255,0.4)',
+            overflow: 'hidden',
+          }}>
+            <img
+              src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.fullName || 'player'}`}
+              alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
           </div>
-          <div className="text-left leading-tight">
-            <h4 className="font-black text-xs text-indigo-950 font-poppins truncate max-w-[90px]">{profile.fullName}</h4>
-            <p className="text-[10px] font-extrabold text-indigo-500 uppercase tracking-wide">Level {profile.level}</p>
+          <div>
+            <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#1e1040', lineHeight: 1.2 }}>
+              {profile.fullName}
+            </div>
+            <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#8A5CFF' }}>
+              ⚡ Level {profile.level}
+            </div>
           </div>
         </div>
 
       </div>
-
     </header>
   );
 };

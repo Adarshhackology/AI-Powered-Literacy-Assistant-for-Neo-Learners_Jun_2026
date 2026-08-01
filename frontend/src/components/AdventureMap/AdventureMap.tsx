@@ -1,118 +1,173 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock } from 'lucide-react';
+import { AdventureWorldMap, TreasureChest, StarRating } from '../UI/Illustrations';
 
 interface AdventureMapProps {
   activeLevel: string;
-  setActiveLevel: (lvl: string) => void;
+  setActiveLevel: (l: string) => void;
 }
+
+const stages = [
+  { id: 1, label: 'Stage 1', sub: 'Start Your Journey', emoji: '📖', color: '#5AD66F', shadow: 'rgba(90,214,111,0.5)', stars: 3, x: 8, y: 58, unlocked: true },
+  { id: 2, label: 'Daily Challenge', sub: 'Unlocked', emoji: '⭐', color: '#FF9F43', shadow: 'rgba(255,159,67,0.5)', stars: 1, x: 28, y: 42, unlocked: true },
+  { id: 3, label: 'Stage 2', sub: 'Keep Going!', emoji: '🚀', color: '#4D9DFF', shadow: 'rgba(77,157,255,0.5)', stars: 2, x: 52, y: 58, unlocked: true },
+  { id: 4, label: 'Stage 3', sub: 'New Adventures', emoji: '🔒', color: '#94A3B8', shadow: 'rgba(148,163,184,0.3)', stars: 3, x: 72, y: 44, unlocked: false },
+];
 
 export const AdventureMap: React.FC<AdventureMapProps> = ({ activeLevel, setActiveLevel }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white/90 backdrop-blur-xl border-4 border-white rounded-[32px] p-6 shadow-xl space-y-6">
-      
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-slate-100 pb-4">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">🗺️</span>
-          <h3 className="text-xl font-black text-slate-900 font-poppins">Learning Adventure Map</h3>
+    <div style={{
+      background: 'rgba(255,255,255,0.95)',
+      backdropFilter: 'blur(20px)',
+      borderRadius: '28px',
+      border: '2px solid #E8EFFF',
+      padding: '22px',
+      boxShadow: '0 12px 40px rgba(108,76,255,0.1), 0 4px 16px rgba(108,76,255,0.05)',
+    }}>
+
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span style={{ fontSize: '24px' }}>🗺️</span>
+          <h3 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', color: '#1e1040', margin: 0 }}>
+            Learning Adventure Map
+          </h3>
         </div>
 
-        {/* Level Filter Tabs */}
-        <div className="flex items-center gap-2 bg-slate-100 p-1.5 rounded-full text-xs font-black">
-          <button 
-            onClick={() => setActiveLevel('Beginner')}
-            className={`px-4 py-1.5 rounded-full transition-all cursor-pointer font-poppins ${activeLevel === 'Beginner' ? 'bg-[#6C4DFF] text-white shadow-md' : 'text-slate-600'}`}
+        {/* Level tabs */}
+        <div style={{
+          display: 'flex', gap: '6px',
+          background: '#F6F8FF', padding: '5px', borderRadius: '99px',
+          border: '2px solid #E8EFFF',
+        }}>
+          {['🔮 Beginner', '🗡️ Intermediate', '⚔️ Advanced'].map((lvl, i) => {
+            const key = lvl.split(' ')[1];
+            const active = activeLevel === key;
+            return (
+              <button
+                key={i}
+                onClick={() => setActiveLevel(key)}
+                disabled={i > 0}
+                style={{
+                  padding: '6px 14px', borderRadius: '99px',
+                  fontFamily: 'Poppins', fontWeight: 800, fontSize: '11px',
+                  cursor: i > 0 ? 'not-allowed' : 'pointer',
+                  border: 'none',
+                  background: active ? 'linear-gradient(135deg, #6C4CFF, #8A5CFF)' : 'transparent',
+                  color: active ? 'white' : i > 0 ? '#C4B5F4' : '#6B7280',
+                  boxShadow: active ? '0 4px 14px rgba(108,76,255,0.4)' : 'none',
+                  transition: 'all 0.2s',
+                  opacity: i > 0 ? 0.6 : 1,
+                }}
+              >
+                {i > 0 ? '🔒 ' : ''}{key}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* MAP WORLD */}
+      <div style={{
+        borderRadius: '22px',
+        overflow: 'hidden',
+        position: 'relative',
+        minHeight: '340px',
+        border: '3px solid #B3D9FF',
+        boxShadow: 'inset 0 0 40px rgba(77,157,255,0.1)',
+      }}>
+        {/* Full SVG World Map background */}
+        <div style={{ position: 'absolute', inset: 0 }}>
+          <AdventureWorldMap />
+        </div>
+
+        {/* Stage Node Overlays */}
+        {stages.map((stage) => (
+          <div
+            key={stage.id}
+            onClick={() => stage.unlocked && navigate(`/lesson/${stage.id}`)}
+            className={stage.unlocked ? 'hover-lift animate-bobble' : ''}
+            style={{
+              position: 'absolute',
+              left: `${stage.x}%`,
+              top: `${stage.y}%`,
+              transform: 'translate(-50%, -50%)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '4px',
+              cursor: stage.unlocked ? 'pointer' : 'not-allowed',
+              animationDelay: `${stage.id * 0.3}s`,
+              zIndex: 10,
+            }}
           >
-            🔮 Beginner
-          </button>
-          <button disabled className="px-4 py-1.5 rounded-full text-slate-400 flex items-center gap-1 cursor-not-allowed">
-            <Lock className="w-3 h-3" /> Intermediate
-          </button>
-          <button disabled className="px-4 py-1.5 rounded-full text-slate-400 flex items-center gap-1 cursor-not-allowed">
-            <Lock className="w-3 h-3" /> Advanced
-          </button>
+            {/* Stage circle */}
+            <div style={{
+              width: stage.label.includes('Daily') ? '56px' : '68px',
+              height: stage.label.includes('Daily') ? '56px' : '68px',
+              borderRadius: '50%',
+              background: stage.unlocked
+                ? `radial-gradient(circle at 35% 35%, ${stage.color}EE, ${stage.color}88)`
+                : 'radial-gradient(circle at 35% 35%, #D1D5DB, #9CA3AF)',
+              border: '4px solid white',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: stage.label.includes('Daily') ? '22px' : '28px',
+              boxShadow: stage.unlocked
+                ? `0 8px 24px ${stage.shadow}, 0 0 0 4px ${stage.color}33`
+                : '0 4px 12px rgba(0,0,0,0.15)',
+              filter: stage.unlocked ? 'none' : 'grayscale(0.5)',
+              transition: 'all 0.25s',
+            }}>
+              {stage.emoji}
+            </div>
+
+            {/* Label bubble */}
+            <div style={{
+              background: 'rgba(255,255,255,0.95)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '12px',
+              padding: '4px 10px',
+              textAlign: 'center',
+              border: `2px solid ${stage.unlocked ? stage.color + '44' : '#E8EFFF'}`,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              minWidth: '90px',
+            }}>
+              <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '10px', color: '#1e1040' }}>{stage.label}</div>
+              <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '9px', color: '#6B7280' }}>{stage.sub}</div>
+              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2px' }}>
+                <StarRating count={stage.unlocked ? stage.stars : 0} max={3} size={10} />
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {/* Treasure Chest (end) */}
+        <div
+          className="hover-lift animate-bobble"
+          onClick={() => navigate('/store')}
+          style={{
+            position: 'absolute',
+            right: '4%', top: '50%',
+            transform: 'translateY(-50%)',
+            display: 'flex', flexDirection: 'column',
+            alignItems: 'center', gap: '6px',
+            cursor: 'pointer', zIndex: 10,
+          }}
+        >
+          <TreasureChest size={72} />
+          <div style={{
+            background: '#FFD54A',
+            color: '#1e1040',
+            fontFamily: 'Poppins', fontWeight: 900, fontSize: '10px',
+            padding: '4px 12px', borderRadius: '99px',
+            boxShadow: '0 4px 12px rgba(255,213,74,0.5)',
+          }}>
+            Grand Mission!
+          </div>
         </div>
       </div>
-
-      {/* Fantasy Island Map Visual Card */}
-      <div className="relative bg-gradient-to-b from-sky-200 via-emerald-100 to-indigo-100 rounded-[32px] p-8 min-h-[380px] flex flex-col justify-between overflow-hidden border-4 border-sky-300 shadow-inner">
-        
-        {/* Background Visual Illustrations */}
-        <div className="absolute top-4 left-6 text-4xl opacity-40 animate-float">🏰</div>
-        <div className="absolute top-8 right-12 text-4xl opacity-40 animate-float" style={{ animationDelay: '1s' }}>🎈</div>
-        <div className="absolute bottom-6 left-12 text-4xl opacity-30">🌈</div>
-
-        {/* Curved Path Overlay SVG */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40" strokeDasharray="8 8">
-          <path d="M 90 200 Q 220 100 350 200 T 600 200" fill="none" stroke="#6C4DFF" strokeWidth="4" />
-        </svg>
-
-        {/* Stage Nodes */}
-        <div className="relative z-10 flex flex-wrap justify-between items-center gap-6 my-auto">
-          
-          {/* Stage 1 */}
-          <div className="flex flex-col items-center gap-2 hover-pop cursor-pointer" onClick={() => navigate('/lesson/1')}>
-            <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-500 border-4 border-white shadow-xl flex items-center justify-center text-3xl text-white font-black animate-glow">
-              📖
-            </div>
-            <div className="bg-white/90 backdrop-blur px-3 py-1.5 rounded-full text-center shadow-md border border-emerald-200">
-              <div className="text-xs font-black text-slate-900 font-poppins">Stage 1</div>
-              <div className="text-[10px] font-bold text-slate-500">Start Your Journey</div>
-              <div className="text-xs tracking-widest text-amber-400">⭐⭐⭐</div>
-            </div>
-          </div>
-
-          {/* Daily Challenge */}
-          <div className="flex flex-col items-center gap-2 hover-pop cursor-pointer" onClick={() => navigate('/learn-with-ai')}>
-            <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-600 border-4 border-white shadow-xl flex items-center justify-center text-2xl text-white font-black">
-              ⭐
-            </div>
-            <div className="bg-white/90 backdrop-blur px-3 py-1.5 rounded-full text-center shadow-md border border-purple-200">
-              <div className="text-xs font-black text-purple-900 font-poppins">Daily Challenge</div>
-              <div className="text-[10px] font-bold text-purple-600">Unlocked</div>
-            </div>
-          </div>
-
-          {/* Stage 2 */}
-          <div className="flex flex-col items-center gap-2 hover-pop cursor-pointer" onClick={() => navigate('/lesson/2')}>
-            <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-blue-500 to-sky-500 border-4 border-white shadow-xl flex items-center justify-center text-3xl text-white font-black">
-              🚀
-            </div>
-            <div className="bg-white/90 backdrop-blur px-3 py-1.5 rounded-full text-center shadow-md border border-blue-200">
-              <div className="text-xs font-black text-slate-900 font-poppins">Stage 2</div>
-              <div className="text-[10px] font-bold text-slate-500">Keep Going!</div>
-              <div className="text-xs tracking-widest text-amber-400">⭐⭐</div>
-            </div>
-          </div>
-
-          {/* Stage 3 (Locked) */}
-          <div className="flex flex-col items-center gap-2 opacity-75">
-            <div className="w-16 h-16 rounded-full bg-slate-400 border-4 border-white shadow-md flex items-center justify-center text-2xl text-white font-black">
-              🔒
-            </div>
-            <div className="bg-white/90 backdrop-blur px-3 py-1.5 rounded-full text-center shadow-sm border border-slate-200">
-              <div className="text-xs font-black text-slate-600 font-poppins">Stage 3</div>
-              <div className="text-[10px] font-bold text-slate-400">Coming Soon</div>
-              <div className="text-xs tracking-widest text-slate-300">⭐⭐⭐</div>
-            </div>
-          </div>
-
-          {/* Grand Mission Chest */}
-          <div className="flex flex-col items-center gap-2 hover-pop cursor-pointer" onClick={() => navigate('/store')}>
-            <div className="w-24 h-24 rounded-3xl bg-gradient-to-tr from-amber-400 via-yellow-400 to-amber-500 border-4 border-white shadow-2xl flex items-center justify-center text-5xl animate-bounce-slow">
-              🎁
-            </div>
-            <div className="bg-amber-400 text-slate-950 px-3.5 py-1.5 rounded-full text-center shadow-md font-black text-xs border border-amber-300 font-poppins">
-              Grand Mission
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
     </div>
   );
 };
