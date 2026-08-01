@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Volume2, ArrowRight, Loader2 } from 'lucide-react';
+import { Volume2, ArrowRight, Loader2, ArrowLeft } from 'lucide-react';
+import { Sparkle } from '../components/UI/Illustrations';
 
 const languages = [
   { id: 'en', name: 'English', native: 'English', greeting: 'Hello', flag: '🇺🇸' },
@@ -26,9 +27,12 @@ export default function AILanguageSelect() {
 
   const handleSpeak = (e: React.MouseEvent, text: string, lang: string) => {
     e.stopPropagation();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang === 'en' ? 'en-US' : 'hi-IN'; // Fallback for regional 
-    window.speechSynthesis.speak(utterance);
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = lang === 'en' ? 'en-US' : 'hi-IN';
+      window.speechSynthesis.speak(utterance);
+    }
   };
 
   const handleContinue = async () => {
@@ -43,7 +47,7 @@ export default function AILanguageSelect() {
         body: JSON.stringify({ username, language: selectedLang })
       });
       
-      let sessionId = Date.now().toString(); // fallback
+      let sessionId = Date.now().toString();
       if (response.ok) {
         const data = await response.json();
         sessionId = data.session_id || sessionId;
@@ -54,7 +58,6 @@ export default function AILanguageSelect() {
       navigate(`/learn-with-ai/assessment/${sessionId}`);
     } catch (err) {
       console.error(err);
-      // Fallback
       const sessionId = Date.now().toString();
       localStorage.setItem('current_ai_lang', selectedLang);
       navigate(`/learn-with-ai/assessment/${sessionId}`);
@@ -64,83 +67,201 @@ export default function AILanguageSelect() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-100 to-indigo-100 p-4 sm:p-8 font-['Nunito'] flex flex-col">
-      <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col">
-        <button 
-          onClick={() => navigate('/learn-with-ai')}
-          className="w-fit mb-6 text-slate-500 hover:text-slate-800 flex items-center gap-2 font-black transition-colors bg-white/50 px-4 py-2 rounded-full"
-        >
-          ← Back
-        </button>
+    <div style={{
+      minHeight: '100vh',
+      background: '#1A0A4E',
+      backgroundImage: `
+        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.4) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.3) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
+      `,
+      padding: '20px',
+      paddingBottom: '110px',
+      position: 'relative',
+    }}>
 
-        <div className="text-center mb-10 animate-in fade-in slide-in-from-top-8 duration-700">
-          <h1 className="text-4xl sm:text-5xl font-black text-slate-800 mb-4 tracking-tight drop-shadow-sm">
+      {/* Background Star Field */}
+      <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+        {[
+          { t: '5%', l: '8%', s: 12 }, { t: '12%', l: '90%', s: 16 },
+          { t: '25%', l: '3%', s: 14 }, { t: '45%', l: '95%', s: 10 },
+          { t: '70%', l: '4%', s: 18 }, { t: '88%', l: '92%', s: 14 },
+        ].map((st, i) => (
+          <div key={i} className="animate-twinkle" style={{
+            position: 'absolute', top: st.t, left: st.l,
+            animationDelay: `${i * 0.4}s`, opacity: 0.7,
+          }}>
+            <Sparkle size={st.s} color={i % 2 === 0 ? '#FFD54A' : '#C4B5F4'} />
+          </div>
+        ))}
+      </div>
+
+      <div style={{ maxWidth: '1100px', margin: '0 auto', position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
+        {/* Top Nav Bar */}
+        <nav style={{
+          height: '64px',
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '20px',
+          padding: '0 20px',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+          border: '1.5px solid rgba(255,255,255,0.6)',
+        }}>
+          <button
+            onClick={() => navigate('/learn-with-ai')}
+            className="btn-3d"
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              color: '#1e1040', textDecoration: 'none',
+              fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px',
+              background: '#F0F4FF', padding: '8px 16px', borderRadius: '12px',
+              border: '1px solid #E8EFFF', cursor: 'pointer',
+            }}
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back</span>
+          </button>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '22px' }}>🌍</span>
+            <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', color: '#1e1040' }}>
+              Choose Your Language
+            </span>
+          </div>
+        </nav>
+
+        {/* Banner Header */}
+        <div style={{
+          borderRadius: '24px',
+          background: 'linear-gradient(135deg, #6C4CFF 0%, #8A5CFF 50%, #FF4FA3 100%)',
+          padding: '24px 32px',
+          color: 'white',
+          textAlign: 'center',
+          boxShadow: '0 16px 48px rgba(108,76,255,0.35)',
+          border: '2px solid rgba(255,255,255,0.25)',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px',
+        }}>
+          <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '32px', color: 'white', margin: 0, lineHeight: 1.2 }}>
             Choose Your Language 🌍
           </h1>
-          <p className="text-xl text-slate-600 font-bold">
-            Which language do you want to master today?
+          <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '15px', color: 'rgba(255,255,255,0.9)', margin: 0 }}>
+            Which language do you want to master today? Tap a card to start!
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 mb-24">
+        {/* Languages Grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
           {languages.map((lang) => {
             const isSelected = selectedLang === lang.name || selectedLang === lang.id;
             return (
               <div
                 key={lang.id}
                 onClick={() => setSelectedLang(lang.name)}
-                className={`relative bg-white rounded-3xl p-5 cursor-pointer transition-all duration-300 ease-out transform hover:-translate-y-2 hover:shadow-xl
-                  ${isSelected ? 'ring-4 ring-yellow-400 shadow-xl scale-105 bg-indigo-50/50' : 'shadow-md border-2 border-slate-100'}
-                `}
+                className="hover-lift"
+                style={{
+                  background: isSelected ? '#FFFDF0' : 'white',
+                  borderRadius: '20px',
+                  padding: '16px',
+                  cursor: 'pointer',
+                  border: isSelected ? '3px solid #FFD54A' : '1.5px solid #E8EFFF',
+                  boxShadow: isSelected ? '0 12px 30px rgba(255,213,74,0.4)' : '0 4px 20px rgba(0,0,0,0.06)',
+                  position: 'relative',
+                  display: 'flex', flexDirection: 'column', gap: '10px',
+                  transition: 'all 0.2s ease',
+                }}
               >
                 {isSelected && (
-                  <div className="absolute -top-3 -right-3 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-white border-2 border-white shadow-sm animate-bounce">
-                    ✅
+                  <div style={{
+                    position: 'absolute', top: '-10px', right: '-10px',
+                    width: '28px', height: '28px', borderRadius: '50%',
+                    background: '#FFD54A', color: '#1e1040',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontWeight: 900, fontSize: '14px',
+                    boxShadow: '0 4px 12px rgba(255,213,74,0.6)',
+                    border: '2px solid white',
+                  }}>
+                    ✓
                   </div>
                 )}
-                <div className="flex justify-between items-start mb-4">
-                  <span className="text-4xl">{lang.flag}</span>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{
+                    width: '36px', height: '36px', borderRadius: '50%',
+                    background: '#F0F4FF', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '18px', border: '1px solid #E8EFFF',
+                  }}>
+                    🌐
+                  </div>
                   <button 
                     onClick={(e) => handleSpeak(e, lang.greeting, lang.id)}
-                    className="w-10 h-10 rounded-full bg-slate-100 hover:bg-indigo-100 text-indigo-500 flex items-center justify-center transition-colors"
+                    style={{
+                      width: '32px', height: '32px', borderRadius: '50%',
+                      background: '#EDE7F6', border: 'none',
+                      color: '#6C4CFF', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      cursor: 'pointer',
+                    }}
                   >
-                    <Volume2 className="w-5 h-5" />
+                    <Volume2 className="w-4 h-4" />
                   </button>
                 </div>
-                <h3 className="text-xl font-black text-slate-800 mb-1">{lang.name}</h3>
-                <div className="text-indigo-600 font-bold mb-3">{lang.native}</div>
-                <div className="bg-slate-50 rounded-xl p-3 text-center border border-slate-100">
-                  <span className="text-sm font-bold text-slate-500">Says</span>
-                  <p className="text-lg font-black text-slate-700">"{lang.greeting}"</p>
+
+                <div>
+                  <h3 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', color: '#1e1040', margin: '0 0 2px' }}>{lang.name}</h3>
+                  <div style={{ fontFamily: 'Nunito', fontWeight: 800, fontSize: '12px', color: '#6C4CFF' }}>{lang.native}</div>
+                </div>
+
+                <div style={{ background: '#F8FAFF', borderRadius: '12px', padding: '8px 10px', textAlign: 'center', border: '1px solid #E8EFFF' }}>
+                  <span style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#94A3B8' }}>Says</span>
+                  <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: '#1e1040', margin: '2px 0 0' }}>"{lang.greeting}"</p>
                 </div>
               </div>
             );
           })}
         </div>
 
-        {/* Bottom fixed bar */}
-        <div className="fixed bottom-0 left-0 right-0 p-6 bg-white/80 backdrop-blur-lg border-t-2 border-slate-200/50 shadow-[0_-10px_40px_rgb(0,0,0,0.05)] z-50">
-          <div className="max-w-6xl mx-auto flex justify-between items-center">
-            <div className="text-slate-500 font-bold text-lg hidden sm:block">
-              {selectedLang ? 'Great choice! 🎉' : 'Select a language to continue'}
-            </div>
-            <button
-              onClick={handleContinue}
-              disabled={!selectedLang || loading}
-              className={`flex items-center gap-3 px-8 py-4 rounded-full font-black text-xl transition-all duration-300 w-full sm:w-auto justify-center
-                ${selectedLang 
-                  ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-1 active:translate-y-0' 
-                  : 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                }
-              `}
-            >
-              {loading ? (
-                <>Loading <Loader2 className="w-6 h-6 animate-spin" /></>
-              ) : (
-                <>Continue <ArrowRight className="w-6 h-6" /></>
-              )}
-            </button>
+      </div>
+
+      {/* Floating Bottom Action Bar */}
+      <div style={{
+        position: 'fixed', bottom: 0, left: 0, right: 0,
+        background: 'rgba(255,255,255,0.92)',
+        backdropFilter: 'blur(20px)',
+        borderTop: '2px solid rgba(255,255,255,0.6)',
+        padding: '14px 24px',
+        boxShadow: '0 -10px 40px rgba(0,0,0,0.15)',
+        zIndex: 50,
+      }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', color: selectedLang ? '#6C4CFF' : '#94A3B8' }}>
+            {selectedLang ? `Selected: ${selectedLang} 🎉` : 'Select a language to continue'}
           </div>
+          <button
+            onClick={handleContinue}
+            disabled={!selectedLang || loading}
+            className="btn-3d"
+            style={{
+              background: selectedLang
+                ? 'linear-gradient(135deg, #FFD54A, #FF9F43)'
+                : '#CBD5E1',
+              color: selectedLang ? '#1e1040' : '#94A3B8',
+              fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px',
+              padding: '12px 32px', borderRadius: '16px',
+              border: 'none',
+              borderBottom: selectedLang ? '4px solid #E8A000' : 'none',
+              cursor: selectedLang && !loading ? 'pointer' : 'not-allowed',
+              boxShadow: selectedLang ? '0 8px 24px rgba(255,213,74,0.5)' : 'none',
+              display: 'flex', alignItems: 'center', gap: '8px',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            {loading ? (
+              <>Loading <Loader2 className="w-5 h-5 animate-spin" /></>
+            ) : (
+              <>Continue <ArrowRight className="w-5 h-5" /></>
+            )}
+          </button>
         </div>
       </div>
     </div>

@@ -267,7 +267,17 @@ export default function AdminDashboard() {
           </span>
         </header>
 
-        <main className="flex-1 p-6 md:p-8 overflow-y-auto space-y-8">
+        <main style={{
+          flex: 1,
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '24px',
+          padding: '24px',
+          border: '1.5px solid rgba(255,255,255,0.6)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+          overflowY: 'auto',
+          display: 'flex', flexDirection: 'column', gap: '24px',
+        }}>
           
           {/* Overview tab */}
           {activeTab === 'overview' && (
