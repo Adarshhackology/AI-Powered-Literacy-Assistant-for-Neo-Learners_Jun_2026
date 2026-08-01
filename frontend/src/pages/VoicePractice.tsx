@@ -302,7 +302,7 @@ export default function VoicePractice() {
             display: 'flex', flexDirection: 'column', gap: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ display: 'flex', itemsCenter: 'center', justifyCenter: 'center', gap: '6px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
               <CheckCircle2 className="w-6 h-6 text-green-500" />
               <h3 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', color: '#1e1040', margin: 0 }}>
                 Pronunciation Analysis 🎉
