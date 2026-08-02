@@ -471,63 +471,38 @@ export default function AIAssessment() {
             </button>
           </div>
 
-          {/* ON-SCREEN ALPHABET KEYBOARD */}
-          <div style={{
-            width: '100%', maxWidth: '560px',
-            background: '#F8FAFF', border: '1.5px solid #E8EFFF',
-            borderRadius: '20px', padding: '12px',
-            display: 'flex', flexDirection: 'column', gap: '8px',
-          }}>
-            {keyboardRows.map((row, rIdx) => (
-              <div key={rIdx} style={{ display: 'flex', gap: '6px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                {row.map((char) => (
+          {/* MULTIPLE CHOICE OPTION CARDS GRID (INSTEAD OF KEYBOARD) */}
+          <div style={{ width: '100%', maxWidth: '560px', marginTop: '6px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '14px' }}>
+              {(question.options && question.options.length > 0
+                ? question.options
+                : ['नीला (Blue)', 'लाल (Red)', 'हरा (Green)', 'पीला (Yellow)']
+              ).map((opt) => {
+                const isSelected = currentAnswer === opt || currentAnswer === stripEmoji(opt);
+                return (
                   <button
-                    key={char}
-                    onClick={() => setCurrentAnswer(prev => prev + char)}
+                    key={opt}
+                    onClick={() => {
+                      setCurrentAnswer(stripEmoji(opt));
+                      speakText(stripEmoji(opt));
+                    }}
                     className="btn-3d hover-lift"
                     style={{
-                      width: '34px', height: '34px', borderRadius: '10px',
-                      background: 'white', border: '1px solid #E2E8F0',
-                      borderBottom: '2.5px solid #CBD5E1',
-                      fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: '#1e1040',
-                      cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      padding: '18px 16px', borderRadius: '20px',
+                      background: isSelected ? '#FFFDF0' : 'white',
+                      border: isSelected ? '3px solid #FFD54A' : '1.5px solid #E8EFFF',
+                      borderBottom: isSelected ? '4px solid #E8A000' : '3.5px solid #CBD5E1',
+                      boxShadow: isSelected ? '0 10px 24px rgba(255,213,74,0.4)' : '0 6px 18px rgba(0,0,0,0.05)',
+                      fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', color: isSelected ? '#B45309' : '#1e1040',
+                      cursor: 'pointer', transition: 'all 0.15s ease',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                     }}
                   >
-                    {char}
+                    <span>{opt}</span>
+                    {isSelected && <span style={{ fontSize: '18px' }}>✓</span>}
                   </button>
-                ))}
-                {rIdx === 0 && (
-                  <button
-                    onClick={() => setCurrentAnswer(prev => prev.slice(0, -1))}
-                    className="btn-3d hover-lift"
-                    style={{
-                      padding: '0 12px', height: '34px', borderRadius: '10px',
-                      background: '#EDE7F6', border: '1px solid #C4B5F4',
-                      color: '#6C4CFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
-                      cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    }}
-                  >
-                    ⌫
-                  </button>
-                )}
-              </div>
-            ))}
-
-            {/* Space Bar Row */}
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '4px' }}>
-              <button
-                onClick={() => setCurrentAnswer(prev => prev + ' ')}
-                className="btn-3d hover-lift"
-                style={{
-                  width: '180px', height: '34px', borderRadius: '10px',
-                  background: 'white', border: '1px solid #E2E8F0',
-                  borderBottom: '2.5px solid #CBD5E1',
-                  fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#475569',
-                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}
-              >
-                Space
-              </button>
+                );
+              })}
             </div>
           </div>
 
