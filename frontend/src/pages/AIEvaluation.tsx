@@ -83,11 +83,29 @@ export default function AIEvaluation() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-6 flex flex-col items-center justify-center relative">
-      <div className="absolute top-10 left-10 w-48 h-48 bg-blue-300/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-64 h-64 bg-indigo-300/10 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="max-w-xl w-full bg-white border border-slate-100 p-8 md:p-10 rounded-3xl shadow-2xl relative z-10">
+    <div style={{
+      minHeight: '100vh',
+      background: '#1A0A4E',
+      backgroundImage: `
+        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.4) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.3) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
+      `,
+      fontFamily: 'Nunito, sans-serif',
+      padding: '40px 20px',
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      position: 'relative',
+    }}>
+      <div style={{
+        maxWidth: '650px', width: '100%',
+        background: 'rgba(255,255,255,0.96)',
+        backdropFilter: 'blur(20px)',
+        border: '2px solid rgba(255,255,255,0.6)',
+        borderRadius: '32px',
+        padding: '36px',
+        boxShadow: '0 24px 64px rgba(0,0,0,0.35)',
+        position: 'relative', zIndex: 10,
+      }}>
         {phase === 'loading' ? (
           <div className="space-y-8 py-6">
             {/* Loading Header */}

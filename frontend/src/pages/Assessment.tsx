@@ -435,17 +435,43 @@ export default function Assessment() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-6 flex flex-col items-center justify-center font-inter relative">
+    <div style={{
+      minHeight: '100vh',
+      background: '#1A0A4E',
+      backgroundImage: `
+        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.4) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.3) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
+      `,
+      fontFamily: 'Nunito, sans-serif',
+      padding: '40px 20px',
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      position: 'relative',
+    }}>
       {/* Decorative background balloons */}
-      <span className="absolute top-10 left-10 text-6xl opacity-15 pointer-events-none animate-float select-none">🎈</span>
-      <span className="absolute bottom-10 right-10 text-6xl opacity-15 pointer-events-none animate-float select-none">🧸</span>
+      <span className="absolute top-10 left-10 text-6xl opacity-20 pointer-events-none animate-float select-none">🎈</span>
+      <span className="absolute bottom-10 right-10 text-6xl opacity-20 pointer-events-none animate-float select-none">🧸</span>
 
-      <div className="max-w-3xl w-full bg-white border-4 border-slate-100 p-8 md:p-10 rounded-[40px] shadow-[0_20px_50px_rgba(0,0,0,0.02)] space-y-8 relative z-10">
+      <div style={{
+        maxWidth: '850px', width: '100%',
+        background: 'rgba(255,255,255,0.96)',
+        backdropFilter: 'blur(20px)',
+        border: '2px solid rgba(255,255,255,0.6)',
+        borderRadius: '32px',
+        padding: '36px',
+        boxShadow: '0 24px 64px rgba(0,0,0,0.35)',
+        display: 'flex', flexDirection: 'column', gap: '24px',
+        position: 'relative', zIndex: 10,
+      }}>
         
         {/* Title */}
-        <div className="text-center space-y-2">
-          <h1 className="text-3.5xl font-black text-slate-900 tracking-tight leading-none">{t.title}</h1>
-          <p className="text-slate-500 font-extrabold text-sm">{t.subtitle}</p>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+          <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '32px', color: '#1e1040', margin: 0 }}>
+            {t.title}
+          </h1>
+          <p style={{ fontFamily: 'Nunito', fontWeight: 800, fontSize: '15px', color: '#64748B', margin: 0 }}>
+            {t.subtitle}
+          </p>
         </div>
 
         {/* Playful progress board */}
