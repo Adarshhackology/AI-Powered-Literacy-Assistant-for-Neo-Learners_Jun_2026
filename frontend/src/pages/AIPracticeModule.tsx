@@ -126,18 +126,29 @@ export default function AIPracticeModule() {
     }
   };
 
+  const speakText = (text: string) => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'hi-IN';
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
   const submitAnswer = async () => {
     const currentQ = questions[currentIndex];
     const finalAns = answer || currentQ.correct_answer || 'सूरज सुबह पूर्व में उगता है।';
     
     try {
       setSubmitting(true);
-      const isCorrect = true;
+      const msg = 'शाबाश! आपका उच्चारण बिल्कुल सही है! 🎉';
       setFeedback({
-        is_correct: isCorrect,
-        explanation: 'शाबाश! आपका उच्चारण बिल्कुल सही है! 🎉',
+        is_correct: true,
+        explanation: msg,
         score: 100
       });
+      speakText(msg);
     } finally {
       setSubmitting(false);
     }
