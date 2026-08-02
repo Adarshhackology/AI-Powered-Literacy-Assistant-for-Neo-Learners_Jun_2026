@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  ArrowLeft, Volume2, Mic, CheckCircle, Sparkles, Trophy, 
-  Gamepad2, Play, RefreshCw, Star, Flame, Award, Heart, HelpCircle
+  ArrowLeft, Volume2, Mic, Sparkles, Trophy, 
+  Play, RefreshCw, CheckCircle2, Flame, Award, Heart, HelpCircle
 } from 'lucide-react';
 import { apiClient } from '../utils/api';
 import { Sparkle, CoinSVG, XPGem, RobotMascot, DragonMascot } from '../components/UI/Illustrations';
@@ -30,8 +30,8 @@ const gamesList: GameItem[] = [
   // ✍️ Writing Games
   { id: 'drag_drop_sentence', title: '6. Drag & Drop Sentence', category: 'writing', icon: '🧩', badge: 'HOT', description: 'Arrange shuffled word chips into the correct grammar order.', xpReward: 15, coinReward: 5, color: '#8B5CF6' },
   { id: 'missing_letter', title: '7. Missing Letter', category: 'writing', icon: '✏️', description: 'Complete partially hidden words (e.g. A _ P L E).', xpReward: 12, coinReward: 4, color: '#EC4899' },
-  { id: 'build_word', title: '8. Build the Word', category: 'writing', icon: '🔤', description: 'Drag letters onto empty slots for 3, 5, and 8+ letter words.', xpReward: 15, coinReward: 5, color: '#10B981' },
-  { id: 'spell_bee', title: '9. Spell Bee Challenge', category: 'writing', icon: '🐝', badge: 'VOICE', description: 'AI speaks a word out loud. Type or drag to spell it correctly.', xpReward: 20, coinReward: 8, color: '#F59E0B' },
+  { id: 'build_word', title: '8. Build the Word', category: 'writing', icon: '🔤', description: 'Drag or tap letter tiles onto empty slots to build words.', xpReward: 15, coinReward: 5, color: '#10B981' },
+  { id: 'spell_bee', title: '9. Spell Bee Challenge', category: 'writing', icon: '🐝', badge: 'VOICE', description: 'AI speaks a word out loud. Type or click to spell it correctly.', xpReward: 20, coinReward: 8, color: '#F59E0B' },
   { id: 'emoji_sentence', title: '10. Emoji Sentence', category: 'writing', icon: '🍎', description: 'Convert emojis into complete written sentences.', xpReward: 18, coinReward: 6, color: '#EF4444' },
   { id: 'crossword', title: '11. Crossword Challenge', category: 'writing', icon: '📝', description: 'Kid-friendly crossword puzzle with picture clues.', xpReward: 25, coinReward: 10, color: '#06B6D4' },
   { id: 'unscramble', title: '12. Unscramble Words', category: 'writing', icon: '🌀', description: 'Arrange jumbled letters to unlock hidden vocabulary words.', xpReward: 15, coinReward: 5, color: '#6366F1' },
@@ -58,12 +58,24 @@ export default function LearnGames() {
   const [profile, setProfile] = useState<any>({ xp: 450, coins: 120, streak: 12 });
   const [activeGame, setActiveGame] = useState<GameItem | null>(null);
 
-  // Playable Mini-game state
-  const [gameStep, setGameStep] = useState<number>(0);
+  // Playable Mini-game States
   const [userScore, setUserScore] = useState<number>(0);
   const [feedback, setFeedback] = useState<string>('');
   const [selectedOpt, setSelectedOpt] = useState<string | null>(null);
+  const [textInput, setTextInput] = useState<string>('');
   const [gameCompleted, setGameCompleted] = useState<boolean>(false);
+  const [isRecording, setIsRecording] = useState<boolean>(false);
+
+  // Boss Battle state
+  const [bossHp, setBossHp] = useState<number>(100);
+
+  // Memory Match cards state
+  const [memoryCards, setMemoryCards] = useState<Array<{ id: number; icon: string; flipped: boolean; matched: boolean }>>([]);
+  const [flippedIndices, setFlippedIndices] = useState<number[]>([]);
+
+  // Timer state
+  const [timeLeft, setTimeLeft] = useState<number>(30);
+  const timerRef = useRef<any>(null);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -90,42 +102,45 @@ export default function LearnGames() {
 
   const handleLaunchGame = (game: GameItem) => {
     setActiveGame(game);
-    setGameStep(0);
     setUserScore(0);
     setFeedback('');
     setSelectedOpt(null);
+    setTextInput('');
     setGameCompleted(false);
+    setIsRecording(false);
+    setBossHp(100);
+    setTimeLeft(30);
 
     if (game.id === 'picture_detective') {
       speakText("Find the Apple!");
+    } else if (game.id === 'spell_bee') {
+      speakText("Spell the word: CAT");
     } else if (game.id === 'repeat_neo') {
       speakText("Say: Literacy is Fun!");
+    } else if (game.id === 'memory_match') {
+      const icons = ['🍎', '🍎', '🐶', '🐶', '🚀', '🚀', '⭐', '⭐'];
+      const shuffled = icons.sort(() => Math.random() - 0.5).map((icon, idx) => ({ id: idx, icon, flipped: false, matched: false }));
+      setMemoryCards(shuffled);
+      setFlippedIndices([]);
+    } else if (game.id === 'reading_race' || game.id === 'word_catcher') {
+      if (timerRef.current) clearInterval(timerRef.current);
+      timerRef.current = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(timerRef.current);
+            setFeedback("⏰ Time is up! Great effort!");
+            setGameCompleted(true);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
     }
   };
 
-  const handlePictureDetectiveAnswer = (ans: string) => {
-    setSelectedOpt(ans);
-    if (ans === 'Apple') {
-      setUserScore(100);
-      setFeedback('🎉 Correct! You found the Apple! +15 XP awarded!');
-      speakText("Awesome job! That is an Apple!");
-      setGameCompleted(true);
-      updateProfileXP(15, 5);
-    } else {
-      setFeedback('❌ Try again! Look for the red fruit.');
-      speakText("Try again!");
-    }
-  };
-
-  const handleDragDropAnswer = (sentence: string) => {
-    setSelectedOpt(sentence);
-    if (sentence === 'Neo loves reading books') {
-      setUserScore(100);
-      setFeedback('🎉 Perfect Sentence! +15 XP awarded!');
-      speakText("Perfect sentence! Neo loves reading books!");
-      setGameCompleted(true);
-      updateProfileXP(15, 5);
-    }
+  const handleCloseModal = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    setActiveGame(null);
   };
 
   const updateProfileXP = async (xpGain: number, coinGain: number) => {
@@ -140,6 +155,54 @@ export default function LearnGames() {
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const finishGameWithSuccess = (msg: string, xp: number, coins: number) => {
+    setUserScore(100);
+    setFeedback(msg);
+    setGameCompleted(true);
+    speakText(msg);
+    updateProfileXP(xp, coins);
+  };
+
+  // Memory card click
+  const handleCardClick = (index: number) => {
+    if (flippedIndices.length === 2 || memoryCards[index].flipped || memoryCards[index].matched) return;
+    const nextCards = [...memoryCards];
+    nextCards[index].flipped = true;
+    const nextFlipped = [...flippedIndices, index];
+    setMemoryCards(nextCards);
+    setFlippedIndices(nextFlipped);
+
+    if (nextFlipped.length === 2) {
+      const [firstIdx, secondIdx] = nextFlipped;
+      if (nextCards[firstIdx].icon === nextCards[secondIdx].icon) {
+        nextCards[firstIdx].matched = true;
+        nextCards[secondIdx].matched = true;
+        setMemoryCards(nextCards);
+        setFlippedIndices([]);
+        if (nextCards.every(c => c.matched)) {
+          finishGameWithSuccess("🎉 You matched all cards! Outstanding!", 15, 5);
+        }
+      } else {
+        setTimeout(() => {
+          nextCards[firstIdx].flipped = false;
+          nextCards[secondIdx].flipped = false;
+          setMemoryCards(nextCards);
+          setFlippedIndices([]);
+        }, 800);
+      }
+    }
+  };
+
+  // Mic speech simulation
+  const handleMicClick = (targetPhrase: string) => {
+    setIsRecording(true);
+    speakText(`Recording speech for: ${targetPhrase}`);
+    setTimeout(() => {
+      setIsRecording(false);
+      finishGameWithSuccess(`🎤 Great pronunciation! 98% Score for "${targetPhrase}"!`, activeGame?.xpReward || 20, activeGame?.coinReward || 8);
+    }, 2000);
   };
 
   return (
@@ -236,7 +299,7 @@ export default function LearnGames() {
             </div>
           </div>
           <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '14px', color: 'rgba(255,255,255,0.9)', margin: 0 }}>
-            Master reading, writing & speaking skills through 25+ gamified adventures! Earn XP, Coins, and unlock Stickers!
+            Master reading, writing & speaking skills through 22+ gamified adventures! Earn XP, Coins, and unlock Stickers!
           </p>
         </div>
 
@@ -377,20 +440,19 @@ export default function LearnGames() {
                 </div>
               </div>
               <button
-                onClick={() => setActiveGame(null)}
+                onClick={handleCloseModal}
                 style={{ background: '#F1F5F9', border: 'none', borderRadius: '50%', width: '36px', height: '36px', fontWeight: 900, fontSize: '16px', cursor: 'pointer', color: '#475569' }}
               >
                 ✕
               </button>
             </div>
 
-            {/* MINI-GAME 1: PICTURE DETECTIVE */}
+            {/* 1. PICTURE DETECTIVE */}
             {activeGame.id === 'picture_detective' && (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
                 <button onClick={() => speakText("Find the Apple!")} className="btn-3d" style={{ background: '#F0F4FF', border: '1px solid #E8EFFF', color: '#6C4CFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', padding: '8px 16px', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <Volume2 className="w-4 h-4" /> Listen AI Prompt: "Find the Apple"
                 </button>
-
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', width: '100%' }}>
                   {[
                     { name: 'Apple', emoji: '🍎', label: 'Apple' },
@@ -400,7 +462,15 @@ export default function LearnGames() {
                   ].map((item) => (
                     <div
                       key={item.name}
-                      onClick={() => handlePictureDetectiveAnswer(item.name)}
+                      onClick={() => {
+                        setSelectedOpt(item.name);
+                        if (item.name === 'Apple') {
+                          finishGameWithSuccess("🎉 Correct! You found the Apple! +15 XP awarded!", 15, 5);
+                        } else {
+                          setFeedback("❌ Try again! Look for the red fruit.");
+                          speakText("Try again!");
+                        }
+                      }}
                       className="hover-lift"
                       style={{
                         background: selectedOpt === item.name ? '#FFFDF0' : '#F8FAFF',
@@ -417,13 +487,12 @@ export default function LearnGames() {
               </div>
             )}
 
-            {/* MINI-GAME 6: DRAG & DROP SENTENCE */}
+            {/* 6. DRAG & DROP SENTENCE */}
             {activeGame.id === 'drag_drop_sentence' && (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
                 <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', color: '#1e1040', margin: 0 }}>
                   Select the correct sentence order:
                 </p>
-
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
                   {[
                     'Neo loves reading books',
@@ -432,14 +501,20 @@ export default function LearnGames() {
                   ].map((sent) => (
                     <button
                       key={sent}
-                      onClick={() => handleDragDropAnswer(sent)}
+                      onClick={() => {
+                        setSelectedOpt(sent);
+                        if (sent === 'Neo loves reading books') {
+                          finishGameWithSuccess("🎉 Perfect Sentence! +15 XP awarded!", 15, 5);
+                        } else {
+                          setFeedback("❌ Try again! Put subject first.");
+                        }
+                      }}
                       className="hover-lift"
                       style={{
                         background: selectedOpt === sent ? '#FFFDF0' : '#F8FAFF',
                         border: selectedOpt === sent ? '2.5px solid #FFD54A' : '1.5px solid #E8EFFF',
                         borderRadius: '16px', padding: '14px',
-                        fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', color: '#1e1040',
-                        cursor: 'pointer',
+                        fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', color: '#1e1040', cursor: 'pointer',
                       }}
                     >
                       "{sent}"
@@ -449,9 +524,168 @@ export default function LearnGames() {
               </div>
             )}
 
-            {/* DEFAULT MINI-GAME FALLBACK FOR OTHER 20+ GAMES */}
-            {activeGame.id !== 'picture_detective' && activeGame.id !== 'drag_drop_sentence' && (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center', padding: '20px 0' }}>
+            {/* 7. MISSING LETTER */}
+            {activeGame.id === 'missing_letter' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <span style={{ fontSize: '54px' }}>🍎</span>
+                <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '28px', color: '#1e1040', letterSpacing: '4px', margin: 0 }}>
+                  A _ P L E
+                </h4>
+                <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '14px', color: '#64748B', margin: 0 }}>
+                  Select the missing letter:
+                </p>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  {['P', 'B', 'M', 'T'].map((lettr) => (
+                    <button
+                      key={lettr}
+                      onClick={() => {
+                        setSelectedOpt(lettr);
+                        if (lettr === 'P') {
+                          finishGameWithSuccess("🎉 Correct! A-P-P-L-E = APPLE! +12 XP!", 12, 4);
+                        } else {
+                          setFeedback("❌ Try again!");
+                        }
+                      }}
+                      className="btn-3d"
+                      style={{
+                        width: '56px', height: '56px', borderRadius: '16px',
+                        background: selectedOpt === lettr ? '#FFD54A' : '#F0F4FF',
+                        border: 'none', color: '#1e1040', fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', cursor: 'pointer',
+                      }}
+                    >
+                      {lettr}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 9. SPELL BEE */}
+            {activeGame.id === 'spell_bee' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <button onClick={() => speakText("Spell the word: CAT")} className="btn-3d" style={{ background: '#F0F4FF', border: '1px solid #E8EFFF', color: '#6C4CFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', padding: '8px 16px', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Volume2 className="w-4 h-4" /> Listen Word Again 🔊
+                </button>
+                <input
+                  type="text"
+                  value={textInput}
+                  onChange={(e) => setTextInput(e.target.value.toUpperCase())}
+                  placeholder="Type the word you hear..."
+                  style={{ width: '100%', padding: '14px', borderRadius: '14px', border: '2px solid #E8EFFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', textAlign: 'center', outline: 'none' }}
+                />
+                <button
+                  onClick={() => {
+                    if (textInput.trim() === 'CAT') {
+                      finishGameWithSuccess("🎉 Spelled C-A-T correctly! +20 XP!", 20, 8);
+                    } else {
+                      setFeedback("❌ Spelled incorrectly! Listen closely.");
+                    }
+                  }}
+                  className="btn-3d"
+                  style={{ background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)', color: 'white', fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', padding: '10px 24px', borderRadius: '14px', border: 'none', cursor: 'pointer' }}
+                >
+                  Submit Spelling 🐝
+                </button>
+              </div>
+            )}
+
+            {/* 16, 17, 18, 19: SPEAKING GAMES WITH MIC */}
+            {(activeGame.category === 'speaking') && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <span style={{ fontSize: '56px' }}>{activeGame.icon}</span>
+                <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', color: '#1e1040', margin: 0 }}>
+                  Phrase to Speak: <span style={{ color: '#6C4CFF' }}>"Literacy is Fun!"</span>
+                </p>
+                <button
+                  onClick={() => handleMicClick("Literacy is Fun!")}
+                  className="btn-3d"
+                  style={{
+                    width: '72px', height: '72px', borderRadius: '50%',
+                    background: isRecording ? '#EF4444' : 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
+                    color: 'white', border: 'none', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    boxShadow: '0 8px 24px rgba(108,76,255,0.4)',
+                  }}
+                >
+                  <Mic className="w-8 h-8" />
+                </button>
+                <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', color: '#64748B', margin: 0 }}>
+                  {isRecording ? '🎙️ Listening to your speech...' : 'Click microphone to record your voice'}
+                </p>
+              </div>
+            )}
+
+            {/* 25. MEMORY MATCH */}
+            {activeGame.id === 'memory_match' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: '#1e1040', margin: 0 }}>
+                  Flip cards to find matching pairs:
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', width: '100%' }}>
+                  {memoryCards.map((card, idx) => (
+                    <div
+                      key={idx}
+                      onClick={() => handleCardClick(idx)}
+                      style={{
+                        height: '70px', borderRadius: '16px',
+                        background: card.flipped || card.matched ? '#FFFDF0' : 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
+                        border: card.matched ? '2px solid #22C55E' : '2px solid #C4B5F4',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: card.flipped || card.matched ? '32px' : '24px',
+                        color: 'white', cursor: 'pointer', transition: 'all 0.2s ease',
+                      }}
+                    >
+                      {card.flipped || card.matched ? card.icon : '❓'}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 27. BOSS BATTLE */}
+            {activeGame.id === 'boss_battle' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <div style={{ width: '100%', background: '#F1F5F9', borderRadius: '99px', height: '16px', overflow: 'hidden', border: '1px solid #CBD5E1' }}>
+                  <div style={{ width: `${bossHp}%`, background: 'linear-gradient(90deg, #EF4444, #F97316)', height: '100%', transition: 'width 0.3s' }} />
+                </div>
+                <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#EF4444' }}>
+                  🐉 WORD DRAGON HP: {bossHp} / 100
+                </span>
+
+                <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', color: '#1e1040', margin: 0 }}>
+                  Which word means "very happy"?
+                </p>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', width: '100%' }}>
+                  {['Joyful', 'Sad', 'Angry', 'Tired'].map((opt) => (
+                    <button
+                      key={opt}
+                      onClick={() => {
+                        if (opt === 'Joyful') {
+                          const newHp = Math.max(0, bossHp - 50);
+                          setBossHp(newHp);
+                          if (newHp === 0) {
+                            finishGameWithSuccess("🎉 YOU DEFEATED THE WORD DRAGON BOSS! +50 XP, +20 Coins!", 50, 20);
+                          } else {
+                            setFeedback("💥 Critical Hit! Dragon took 50 damage!");
+                          }
+                        } else {
+                          setFeedback("🛡️ Dragon blocked your attack! Try again!");
+                        }
+                      }}
+                      className="btn-3d"
+                      style={{ background: '#F8FAFF', border: '1.5px solid #E8EFFF', padding: '12px', borderRadius: '14px', fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', cursor: 'pointer' }}
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* DEFAULT FALLBACK FOR OTHER GAMES */}
+            {activeGame.id !== 'picture_detective' && activeGame.id !== 'drag_drop_sentence' && activeGame.id !== 'missing_letter' && activeGame.id !== 'spell_bee' && activeGame.category !== 'speaking' && activeGame.id !== 'memory_match' && activeGame.id !== 'boss_battle' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center', padding: '10px 0' }}>
                 <span style={{ fontSize: '56px' }}>{activeGame.icon}</span>
                 <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '22px', color: '#1e1040', margin: 0 }}>
                   Ready to play {activeGame.title}?
@@ -459,14 +693,8 @@ export default function LearnGames() {
                 <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '14px', color: '#64748B', margin: 0 }}>
                   {activeGame.description}
                 </p>
-
                 <button
-                  onClick={() => {
-                    setFeedback(`🎉 Challenge Completed! You earned +${activeGame.xpReward} XP!`);
-                    setGameCompleted(true);
-                    speakText(`Great job completing ${activeGame.title}!`);
-                    updateProfileXP(activeGame.xpReward, activeGame.coinReward);
-                  }}
+                  onClick={() => finishGameWithSuccess(`🎉 Challenge Completed! You earned +${activeGame.xpReward} XP!`, activeGame.xpReward, activeGame.coinReward)}
                   className="btn-3d"
                   style={{
                     background: 'linear-gradient(135deg, #FFD54A, #FF9F43)',
@@ -497,7 +725,7 @@ export default function LearnGames() {
             {/* Modal Footer */}
             {gameCompleted && (
               <button
-                onClick={() => setActiveGame(null)}
+                onClick={handleCloseModal}
                 className="btn-3d"
                 style={{
                   background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
