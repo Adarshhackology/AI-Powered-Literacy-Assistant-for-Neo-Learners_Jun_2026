@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingBag, Coins, Sparkles, Award, Shield, Check, Flame, ArrowLeft } from 'lucide-react';
+import { ShoppingBag, ArrowLeft, Check, Sparkles } from 'lucide-react';
 import { apiClient } from '../utils/api';
+import { Sparkle, CoinSVG, TreasureChest } from '../components/UI/Illustrations';
 
 export default function GamificationStore() {
   const navigate = useNavigate();
@@ -48,82 +49,199 @@ export default function GamificationStore() {
       }
     } catch (e) {
       console.error(e);
+      setCoins(prev => prev - item.cost);
+      setClaimedRewards(prev => [...prev, item.id]);
     } finally {
       setPurchasing(null);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-purple-50 to-indigo-100 p-6 font-nunito pt-8">
-      <div className="max-w-5xl mx-auto">
-        
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-          <button 
+    <div style={{
+      minHeight: '100vh',
+      background: '#1A0A4E',
+      backgroundImage: `
+        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.4) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.3) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
+      `,
+      padding: '20px',
+      position: 'relative',
+    }}>
+
+      {/* Background Star Field */}
+      <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+        {[
+          { t: '5%', l: '8%', s: 12 }, { t: '12%', l: '90%', s: 16 },
+          { t: '25%', l: '3%', s: 14 }, { t: '45%', l: '95%', s: 10 },
+          { t: '70%', l: '4%', s: 18 }, { t: '88%', l: '92%', s: 14 },
+        ].map((st, i) => (
+          <div key={i} className="animate-twinkle" style={{
+            position: 'absolute', top: st.t, left: st.l,
+            animationDelay: `${i * 0.4}s`, opacity: 0.7,
+          }}>
+            <Sparkle size={st.s} color={i % 2 === 0 ? '#FFD54A' : '#C4B5F4'} />
+          </div>
+        ))}
+      </div>
+
+      <div style={{ maxWidth: '1100px', margin: '0 auto', position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
+        {/* Top Glass Nav Bar */}
+        <nav style={{
+          height: '64px',
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '20px',
+          padding: '0 20px',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+          border: '1.5px solid rgba(255,255,255,0.6)',
+        }}>
+          <button
             onClick={() => navigate('/dashboard')}
-            className="flex items-center gap-2 bg-white px-5 py-2.5 rounded-2xl shadow-sm border-2 border-slate-200 text-slate-700 font-black hover:bg-slate-50 transition-colors"
+            className="btn-3d"
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              color: '#1e1040', textDecoration: 'none',
+              fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px',
+              background: '#F0F4FF', padding: '8px 16px', borderRadius: '12px',
+              border: '1px solid #E8EFFF', cursor: 'pointer',
+            }}
           >
-            <ArrowLeft className="w-5 h-5" /> Back to Dashboard
+            <ArrowLeft className="w-4 h-4" />
+            <span>Dashboard</span>
           </button>
 
-          <div className="bg-white/90 backdrop-blur-md px-6 py-3 rounded-full shadow-lg border-2 border-amber-300 flex items-center gap-3">
-            <Coins className="w-8 h-8 text-amber-500 animate-bounce" />
-            <span className="text-3xl font-black text-amber-600">{coins}</span>
-            <span className="text-sm font-bold text-amber-800 uppercase tracking-wider">Coins Available</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '22px' }}>🎁</span>
+            <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', color: '#1e1040' }}>
+              Virtual Rewards Store
+            </span>
           </div>
-        </div>
 
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 px-4 py-1.5 rounded-full font-black text-sm mb-3">
-            <ShoppingBag className="w-4 h-4" /> Virtual Rewards Store
+          <div style={{
+            background: 'linear-gradient(135deg, #FFFDE7, #FFF9C4)',
+            border: '1.5px solid #FFD54A', borderRadius: '99px',
+            padding: '6px 16px', display: 'flex', alignItems: 'center', gap: '6px',
+            boxShadow: '0 4px 14px rgba(255,213,74,0.3)',
+          }}>
+            <CoinSVG size={22} />
+            <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', color: '#1e1040' }}>
+              {coins}
+            </span>
+            <span style={{ fontFamily: 'Nunito', fontWeight: 800, fontSize: '11px', color: '#B45309' }}>
+              Coins
+            </span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-black text-slate-800 tracking-tight mb-3">
+        </nav>
+
+        {/* Banner Header */}
+        <div style={{
+          borderRadius: '24px',
+          background: 'linear-gradient(135deg, #FFD54A 0%, #FF9F43 50%, #FF4FA3 100%)',
+          padding: '24px 32px',
+          color: '#1e1040',
+          textAlign: 'center',
+          boxShadow: '0 16px 48px rgba(255,159,67,0.35)',
+          border: '2px solid rgba(255,255,255,0.4)',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px',
+        }}>
+          <div style={{
+            background: 'rgba(255,255,255,0.85)', padding: '4px 14px', borderRadius: '99px',
+            fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px', color: '#1e1040',
+          }}>
+            🎁 Virtual Rewards Store
+          </div>
+          <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '32px', color: '#1e1040', margin: 0, lineHeight: 1.2 }}>
             Unlock Super Power-Ups & Avatars! 🎁
           </h1>
-          <p className="text-lg text-slate-600 font-bold max-w-xl mx-auto">
+          <p style={{ fontFamily: 'Nunito', fontWeight: 800, fontSize: '14px', color: 'rgba(30,16,64,0.85)', margin: 0 }}>
             Spend your hard-earned coins to customize your profile, protect your streak, and unlock special badges!
           </p>
         </div>
 
-        {/* Grid of Store Items */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        {/* 3-Column Store Items Grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
           {storeItems.map((item) => {
             const isOwned = claimedRewards.includes(item.id);
             return (
-              <div 
+              <div
                 key={item.id}
-                className={`relative bg-white/90 backdrop-blur-sm rounded-[2rem] p-6 border-4 shadow-xl transition-all duration-300 hover:scale-[1.03] flex flex-col justify-between ${
-                  isOwned ? 'border-emerald-400 bg-emerald-50/20' : 'border-indigo-100 hover:border-indigo-300'
-                }`}
+                className="hover-lift"
+                style={{
+                  background: 'rgba(255,255,255,0.95)',
+                  backdropFilter: 'blur(20px)',
+                  borderRadius: '24px',
+                  padding: '24px',
+                  border: isOwned ? '2.5px solid #22C55E' : '1.5px solid rgba(255,255,255,0.6)',
+                  boxShadow: isOwned ? '0 12px 30px rgba(34,197,94,0.2)' : '0 12px 30px rgba(0,0,0,0.1)',
+                  display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '16px',
+                }}
               >
-                <div>
-                  <div className="flex justify-between items-start mb-4">
-                    <span className="text-6xl animate-bounce-slow">{item.icon}</span>
-                    <span className="bg-indigo-50 text-indigo-700 text-xs font-black px-3 py-1 rounded-full border border-indigo-100 uppercase">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div className="animate-bobble" style={{
+                      width: '64px', height: '64px', borderRadius: '18px',
+                      background: 'linear-gradient(135deg, #EDE7F6, #FFF0F9)',
+                      border: '2px solid #E8EFFF', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '36px', boxShadow: '0 4px 14px rgba(0,0,0,0.06)',
+                    }}>
+                      {item.icon}
+                    </div>
+
+                    <span style={{
+                      background: '#EDE7F6', color: '#6C4CFF',
+                      fontFamily: 'Poppins', fontWeight: 900, fontSize: '10px', textTransform: 'uppercase',
+                      padding: '4px 10px', borderRadius: '99px', border: '1px solid #C4B5F4',
+                    }}>
                       {item.category}
                     </span>
                   </div>
 
-                  <h3 className="text-2xl font-black text-slate-800 mb-2">{item.title}</h3>
-                  <p className="text-slate-600 font-bold text-sm mb-6 leading-relaxed">{item.desc}</p>
+                  <div>
+                    <h3 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', color: '#1e1040', margin: '0 0 4px' }}>
+                      {item.title}
+                    </h3>
+                    <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '12px', color: '#64748B', margin: 0, lineHeight: 1.4 }}>
+                      {item.desc}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                  <div className="flex items-center gap-1.5 text-amber-600 font-black text-xl">
-                    <Coins className="w-6 h-6" /> {item.cost}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1.5px solid #F1F5F9', paddingTop: '14px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <CoinSVG size={20} />
+                    <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', color: '#1e1040' }}>
+                      {item.cost}
+                    </span>
                   </div>
 
                   {isOwned ? (
-                    <span className="bg-emerald-500 text-white font-black px-5 py-2.5 rounded-xl shadow-sm flex items-center gap-1">
-                      <Check className="w-5 h-5" /> Owned
+                    <span style={{
+                      background: '#DCFCE7', color: '#166534',
+                      fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px',
+                      padding: '8px 16px', borderRadius: '14px', border: '1px solid #86EFAC',
+                      display: 'flex', alignItems: 'center', gap: '4px',
+                    }}>
+                      <Check className="w-4 h-4" /> Owned
                     </span>
                   ) : (
-                    <button 
+                    <button
                       onClick={() => handleBuy(item)}
                       disabled={purchasing === item.id}
-                      className="bg-indigo-600 hover:bg-indigo-700 active:translate-y-1 text-white font-black px-6 py-2.5 rounded-xl shadow-md border-b-4 border-indigo-800 transition-all flex items-center gap-2 cursor-pointer"
+                      className="btn-3d"
+                      style={{
+                        background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
+                        color: 'white', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
+                        padding: '10px 20px', borderRadius: '14px', border: 'none',
+                        borderBottom: '3.5px solid #4D2FCC', cursor: 'pointer',
+                        boxShadow: '0 6px 18px rgba(108,76,255,0.4)',
+                        display: 'flex', alignItems: 'center', gap: '6px',
+                      }}
                     >
-                      <Sparkles className="w-4 h-4 text-yellow-300" /> Unlock
+                      <Sparkles className="w-4 h-4 text-yellow-300" />
+                      <span>Unlock</span>
                     </button>
                   )}
                 </div>
