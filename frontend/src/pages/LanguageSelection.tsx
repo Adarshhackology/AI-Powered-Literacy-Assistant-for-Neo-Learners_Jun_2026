@@ -37,15 +37,35 @@ export default function LanguageSelection() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center py-12 px-6">
-      <div className="max-w-4xl w-full space-y-8">
+    <div style={{
+      minHeight: '100vh',
+      background: '#1A0A4E',
+      backgroundImage: `
+        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.4) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.3) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
+      `,
+      fontFamily: 'Nunito, sans-serif',
+      padding: '48px 24px',
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+    }}>
+      <div style={{ maxWidth: '900px', width: '100%', display: 'flex', flexDirection: 'column', gap: '32px' }}>
         {/* Header */}
-        <div className="text-center space-y-3">
-          <div className="inline-flex w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl items-center justify-center shadow-md mb-2">
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+          <div style={{
+            width: '64px', height: '64px', borderRadius: '20px',
+            background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: 'white', boxShadow: '0 8px 24px rgba(108,76,255,0.4)',
+          }}>
             <Globe className="w-8 h-8" />
           </div>
-          <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">Select Your Language</h1>
-          <p className="text-slate-500 font-medium text-lg">अपनी भाषा चुनें • మీ భాషను ఎంచుకోండి • ਆਪਣੀ ਭਾਸ਼ਾ ਚੁਣੋ</p>
+          <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '38px', color: 'white', margin: 0 }}>
+            Select Your <span style={{ color: '#FF4FA3' }}>Language</span>
+          </h1>
+          <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '15px', color: 'rgba(255,255,255,0.85)', margin: 0 }}>
+            अपनी भाषा चुनें • మీ భాషను ఎంచుకోండి • ਆਪਣੀ ਭਾਸ਼ਾ ਚੁਣੋ
+          </p>
         </div>
 
         {/* Card Grid */}

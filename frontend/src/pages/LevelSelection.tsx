@@ -180,7 +180,12 @@ export default function LevelSelection() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(180deg, #E0F2FE 0%, #F0F9FF 30%, #FAF5FF 100%)',
+      background: '#1A0A4E',
+      backgroundImage: `
+        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.4) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.3) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
+      `,
       fontFamily: 'Nunito, sans-serif',
       padding: '30px 24px',
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
@@ -205,19 +210,19 @@ export default function LevelSelection() {
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: '6px',
-            background: 'white', border: '1.5px solid #E2E8F0',
+            background: 'rgba(255,255,255,0.95)', border: '1.5px solid rgba(255,255,255,0.6)',
             borderRadius: '99px', padding: '6px 18px',
             fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#6C4CFF',
-            boxShadow: '0 4px 14px rgba(0,0,0,0.04)',
+            boxShadow: '0 4px 14px rgba(0,0,0,0.1)',
           }}>
             🚀 {t.badge} ✨
           </div>
 
-          <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '38px', color: '#1e1040', margin: '4px 0 0' }}>
-            Choose Your <span style={{ color: '#8A5CFF' }}>Learning</span> Level
+          <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '38px', color: 'white', margin: '4px 0 0' }}>
+            Choose Your <span style={{ color: '#FF4FA3' }}>Learning</span> Level
           </h1>
 
-          <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '14px', color: '#64748B', margin: 0, maxWidth: '600px' }}>
+          <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '14px', color: 'rgba(255,255,255,0.85)', margin: 0, maxWidth: '600px' }}>
             {t.subtitle}
           </p>
         </div>
