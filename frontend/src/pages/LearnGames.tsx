@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, Volume2, Mic, Sparkles, Trophy, 
-  Play, RefreshCw, CheckCircle2, Flame, Award, Heart, HelpCircle
+  Play, RefreshCw, CheckCircle2, Flame, Award, Heart, HelpCircle,
+  Zap, Search, BookOpen, Music, ShieldAlert
 } from 'lucide-react';
 import { apiClient } from '../utils/api';
 import { Sparkle, CoinSVG, XPGem, RobotMascot, DragonMascot } from '../components/UI/Illustrations';
@@ -28,9 +29,9 @@ const gamesList: GameItem[] = [
   { id: 'reading_race', title: '5. Reading Race', category: 'reading', icon: '🏎️', badge: 'TIMED', description: 'Timed 30-sec reading challenge! Speed & accuracy scoring.', xpReward: 25, coinReward: 10, color: '#F97316' },
 
   // ✍️ Writing Games
-  { id: 'drag_drop_sentence', title: '6. Drag & Drop Sentence', category: 'writing', icon: '🧩', badge: 'HOT', description: 'Arrange shuffled word chips into the correct grammar order.', xpReward: 15, coinReward: 5, color: '#8B5CF6' },
+  { id: 'drag_drop_sentence', title: '6. Drag & Drop Sentence', category: 'writing', icon: '🧩', badge: 'HOT', description: 'Arrange word chips into the correct grammar order.', xpReward: 15, coinReward: 5, color: '#8B5CF6' },
   { id: 'missing_letter', title: '7. Missing Letter', category: 'writing', icon: '✏️', description: 'Complete partially hidden words (e.g. A _ P L E).', xpReward: 12, coinReward: 4, color: '#EC4899' },
-  { id: 'build_word', title: '8. Build the Word', category: 'writing', icon: '🔤', description: 'Drag or tap letter tiles onto empty slots to build words.', xpReward: 15, coinReward: 5, color: '#10B981' },
+  { id: 'build_word', title: '8. Build the Word', category: 'writing', icon: '🔤', description: 'Tap letter tiles onto empty slots to build target words.', xpReward: 15, coinReward: 5, color: '#10B981' },
   { id: 'spell_bee', title: '9. Spell Bee Challenge', category: 'writing', icon: '🐝', badge: 'VOICE', description: 'AI speaks a word out loud. Type or click to spell it correctly.', xpReward: 20, coinReward: 8, color: '#F59E0B' },
   { id: 'emoji_sentence', title: '10. Emoji Sentence', category: 'writing', icon: '🍎', description: 'Convert emojis into complete written sentences.', xpReward: 18, coinReward: 6, color: '#EF4444' },
   { id: 'crossword', title: '11. Crossword Challenge', category: 'writing', icon: '📝', description: 'Kid-friendly crossword puzzle with picture clues.', xpReward: 25, coinReward: 10, color: '#06B6D4' },
@@ -59,22 +60,21 @@ export default function LearnGames() {
   const [activeGame, setActiveGame] = useState<GameItem | null>(null);
 
   // Playable Mini-game States
-  const [userScore, setUserScore] = useState<number>(0);
   const [feedback, setFeedback] = useState<string>('');
   const [selectedOpt, setSelectedOpt] = useState<string | null>(null);
   const [textInput, setTextInput] = useState<string>('');
   const [gameCompleted, setGameCompleted] = useState<boolean>(false);
   const [isRecording, setIsRecording] = useState<boolean>(false);
 
-  // Boss Battle state
+  // Specific Game States
+  const [wordHunterFound, setWordHunterFound] = useState<string[]>([]);
+  const [buildWordLetters, setBuildWordLetters] = useState<string[]>([]);
   const [bossHp, setBossHp] = useState<number>(100);
-
-  // Memory Match cards state
   const [memoryCards, setMemoryCards] = useState<Array<{ id: number; icon: string; flipped: boolean; matched: boolean }>>([]);
   const [flippedIndices, setFlippedIndices] = useState<number[]>([]);
-
-  // Timer state
   const [timeLeft, setTimeLeft] = useState<number>(30);
+  const [catcherBasketPos, setCatcherBasketPos] = useState<number>(50); // %
+  const [ninjaSlicedCount, setNinjaSlicedCount] = useState<number>(0);
   const timerRef = useRef<any>(null);
 
   useEffect(() => {
@@ -102,17 +102,21 @@ export default function LearnGames() {
 
   const handleLaunchGame = (game: GameItem) => {
     setActiveGame(game);
-    setUserScore(0);
     setFeedback('');
     setSelectedOpt(null);
     setTextInput('');
     setGameCompleted(false);
     setIsRecording(false);
+    setWordHunterFound([]);
+    setBuildWordLetters([]);
     setBossHp(100);
     setTimeLeft(30);
+    setNinjaSlicedCount(0);
 
     if (game.id === 'picture_detective') {
       speakText("Find the Apple!");
+    } else if (game.id === 'magic_reading') {
+      speakText("Read out loud: The sunshine brings joy to our little puppy.");
     } else if (game.id === 'spell_bee') {
       speakText("Spell the word: CAT");
     } else if (game.id === 'repeat_neo') {
@@ -158,14 +162,13 @@ export default function LearnGames() {
   };
 
   const finishGameWithSuccess = (msg: string, xp: number, coins: number) => {
-    setUserScore(100);
     setFeedback(msg);
     setGameCompleted(true);
     speakText(msg);
     updateProfileXP(xp, coins);
   };
 
-  // Memory card click
+  // Memory Card Logic
   const handleCardClick = (index: number) => {
     if (flippedIndices.length === 2 || memoryCards[index].flipped || memoryCards[index].matched) return;
     const nextCards = [...memoryCards];
@@ -195,7 +198,7 @@ export default function LearnGames() {
     }
   };
 
-  // Mic speech simulation
+  // Mic Record Logic
   const handleMicClick = (targetPhrase: string) => {
     setIsRecording(true);
     speakText(`Recording speech for: ${targetPhrase}`);
@@ -299,14 +302,14 @@ export default function LearnGames() {
             </div>
           </div>
           <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '14px', color: 'rgba(255,255,255,0.9)', margin: 0 }}>
-            Master reading, writing & speaking skills through 22+ gamified adventures! Earn XP, Coins, and unlock Stickers!
+            Master reading, writing & speaking skills through 21+ gamified adventures! Earn XP, Coins, and unlock Stickers!
           </p>
         </div>
 
         {/* Category Filter Pills */}
         <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
           {[
-            { id: 'all', label: '🌟 All Games (22+)', icon: '🎮' },
+            { id: 'all', label: '🌟 All Games (21+)', icon: '🎮' },
             { id: 'reading', label: '📖 Reading Games', icon: '📖' },
             { id: 'writing', label: '✍️ Writing & Spelling', icon: '✍️' },
             { id: 'speaking', label: '🎤 Speaking & Voice', icon: '🎤' },
@@ -447,7 +450,7 @@ export default function LearnGames() {
               </button>
             </div>
 
-            {/* 1. PICTURE DETECTIVE */}
+            {/* GAME 1: PICTURE DETECTIVE */}
             {activeGame.id === 'picture_detective' && (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
                 <button onClick={() => speakText("Find the Apple!")} className="btn-3d" style={{ background: '#F0F4FF', border: '1px solid #E8EFFF', color: '#6C4CFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', padding: '8px 16px', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -487,7 +490,112 @@ export default function LearnGames() {
               </div>
             )}
 
-            {/* 6. DRAG & DROP SENTENCE */}
+            {/* GAME 2: MAGIC READING ADVENTURE */}
+            {activeGame.id === 'magic_reading' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <div style={{ background: '#F8FAFF', border: '2px solid #E8EFFF', borderRadius: '20px', padding: '20px', width: '100%' }}>
+                  <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', color: '#1e1040', lineHeight: 1.6, margin: 0 }}>
+                    "The <span style={{ color: '#6C4CFF', textDecoration: 'underline' }}>sunshine</span> brings joy to our little puppy."
+                  </p>
+                </div>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <button onClick={() => speakText("The sunshine brings joy to our little puppy.")} className="btn-3d" style={{ background: '#F0F4FF', border: '1px solid #E8EFFF', color: '#6C4CFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', padding: '10px 18px', borderRadius: '14px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Volume2 className="w-4 h-4" /> AI Narrator
+                  </button>
+                  <button onClick={() => handleMicClick("The sunshine brings joy to our little puppy.")} className="btn-3d" style={{ background: 'linear-gradient(135deg,#6C4CFF,#8A5CFF)', color: 'white', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', padding: '10px 18px', borderRadius: '14px', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Mic className="w-4 h-4" /> Read Aloud Mic
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* GAME 3: WORD HUNTER */}
+            {activeGame.id === 'word_hunter' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', color: '#1e1040', margin: 0 }}>
+                  Tap the target words in the forest scene (Found: {wordHunterFound.length}/3):
+                </p>
+                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                  {['TREES 🌲', 'RIVER 🌊', 'BIRD 🐦', 'FLOWER 🌸'].map((w) => {
+                    const isFound = wordHunterFound.includes(w);
+                    return (
+                      <button
+                        key={w}
+                        onClick={() => {
+                          if (!isFound) {
+                            const next = [...wordHunterFound, w];
+                            setWordHunterFound(next);
+                            if (next.length >= 3) {
+                              finishGameWithSuccess("🎉 You found all hidden words! +15 XP!", 15, 5);
+                            }
+                          }
+                        }}
+                        className="btn-3d"
+                        style={{
+                          background: isFound ? '#DCFCE7' : '#F0F4FF',
+                          border: isFound ? '1.5px solid #86EFAC' : '1.5px solid #E8EFFF',
+                          color: isFound ? '#166534' : '#1e1040',
+                          fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px',
+                          padding: '12px 20px', borderRadius: '16px', cursor: 'pointer',
+                        }}
+                      >
+                        {w} {isFound && '✓'}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* GAME 4: STORY BUILDER */}
+            {activeGame.id === 'story_builder' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <div style={{ background: '#F8FAFF', border: '2px solid #E8EFFF', borderRadius: '20px', padding: '20px', width: '100%' }}>
+                  <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', color: '#1e1040', margin: 0 }}>
+                    "Once upon a time, a brave _____ flew to the moon."
+                  </p>
+                </div>
+                <div style={{ display: 'flex', gap: '10px', width: '100%' }}>
+                  {['Astronaut 👨‍🚀', 'Fish 🐟', 'Tree 🌳'].map((opt) => (
+                    <button
+                      key={opt}
+                      onClick={() => {
+                        if (opt.includes('Astronaut')) {
+                          finishGameWithSuccess("🎉 Story completed! The brave astronaut flew to the moon! +18 XP!", 18, 6);
+                        } else {
+                          setFeedback("❌ Try again! Who flies to the moon?");
+                        }
+                      }}
+                      className="btn-3d"
+                      style={{ flex: 1, background: '#F0F4FF', border: '1.5px solid #E8EFFF', padding: '12px', borderRadius: '14px', fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', cursor: 'pointer' }}
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* GAME 5: READING RACE */}
+            {activeGame.id === 'reading_race' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <div style={{ background: '#FFFDF0', border: '2px solid #FFD54A', padding: '8px 20px', borderRadius: '99px', fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', color: '#B45309' }}>
+                  ⏱️ TIME LEFT: {timeLeft}s
+                </div>
+                <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', color: '#1e1040', margin: 0 }}>
+                  Fast Read: "The quick brown fox jumps over the lazy dog."
+                </p>
+                <button
+                  onClick={() => finishGameWithSuccess(`🎉 Speed Champion! Finished with ${timeLeft}s remaining! +25 XP!`, 25, 10)}
+                  className="btn-3d"
+                  style={{ background: 'linear-gradient(135deg,#FFD54A,#FF9F43)', color: '#1e1040', fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', padding: '12px 28px', borderRadius: '16px', border: 'none', cursor: 'pointer' }}
+                >
+                  🏁 Tap Finish Reading!
+                </button>
+              </div>
+            )}
+
+            {/* GAME 6: DRAG & DROP SENTENCE */}
             {activeGame.id === 'drag_drop_sentence' && (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
                 <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', color: '#1e1040', margin: 0 }}>
@@ -524,7 +632,7 @@ export default function LearnGames() {
               </div>
             )}
 
-            {/* 7. MISSING LETTER */}
+            {/* GAME 7: MISSING LETTER */}
             {activeGame.id === 'missing_letter' && (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
                 <span style={{ fontSize: '54px' }}>🍎</span>
@@ -560,7 +668,39 @@ export default function LearnGames() {
               </div>
             )}
 
-            {/* 9. SPELL BEE */}
+            {/* GAME 8: BUILD THE WORD */}
+            {activeGame.id === 'build_word' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <span style={{ fontSize: '54px' }}>🐶</span>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  {['D', 'O', 'G'].map((char, idx) => (
+                    <div key={idx} style={{ width: '48px', height: '48px', borderRadius: '12px', background: '#F0F4FF', border: '2px solid #6C4CFF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Poppins', fontWeight: 900, fontSize: '22px', color: '#6C4CFF' }}>
+                      {buildWordLetters[idx] || '_'}
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  {['O', 'D', 'G', 'X'].map((letter) => (
+                    <button
+                      key={letter}
+                      onClick={() => {
+                        const next = [...buildWordLetters, letter];
+                        setBuildWordLetters(next);
+                        if (next.join('') === 'DOG') {
+                          finishGameWithSuccess("🎉 D-O-G = DOG! Word Built! +15 XP!", 15, 5);
+                        }
+                      }}
+                      className="btn-3d"
+                      style={{ width: '44px', height: '44px', borderRadius: '12px', background: '#FFD54A', border: 'none', fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', cursor: 'pointer' }}
+                    >
+                      {letter}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* GAME 9: SPELL BEE */}
             {activeGame.id === 'spell_bee' && (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
                 <button onClick={() => speakText("Spell the word: CAT")} className="btn-3d" style={{ background: '#F0F4FF', border: '1px solid #E8EFFF', color: '#6C4CFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', padding: '8px 16px', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -589,7 +729,96 @@ export default function LearnGames() {
               </div>
             )}
 
-            {/* 16, 17, 18, 19: SPEAKING GAMES WITH MIC */}
+            {/* GAME 10: EMOJI SENTENCE */}
+            {activeGame.id === 'emoji_sentence' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <span style={{ fontSize: '54px' }}>🍎 👦</span>
+                <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', color: '#1e1040', margin: 0 }}>
+                  What does this emoji sentence mean?
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
+                  {['The boy is eating an apple.', 'The boy is playing football.', 'The apple is sleeping.'].map((sent) => (
+                    <button
+                      key={sent}
+                      onClick={() => {
+                        if (sent.includes('eating an apple')) {
+                          finishGameWithSuccess("🎉 Correct emoji translation! +18 XP!", 18, 6);
+                        } else {
+                          setFeedback("❌ Try again!");
+                        }
+                      }}
+                      className="btn-3d"
+                      style={{ background: '#F8FAFF', border: '1.5px solid #E8EFFF', padding: '12px', borderRadius: '14px', fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', cursor: 'pointer' }}
+                    >
+                      "{sent}"
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* GAME 11: CROSSWORD */}
+            {activeGame.id === 'crossword' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', color: '#1e1040', margin: 0 }}>
+                  Clue 1: 🐶 Man's best friend (3 letters)
+                </p>
+                <input
+                  type="text"
+                  value={textInput}
+                  onChange={(e) => setTextInput(e.target.value.toUpperCase())}
+                  placeholder="D O G"
+                  style={{ width: '100%', padding: '12px', borderRadius: '14px', border: '2px solid #E8EFFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', textAlign: 'center', outline: 'none' }}
+                />
+                <button
+                  onClick={() => {
+                    if (textInput.trim() === 'DOG') {
+                      finishGameWithSuccess("🎉 Crossword Clue Solved: D-O-G! +25 XP!", 25, 10);
+                    } else {
+                      setFeedback("❌ Try again!");
+                    }
+                  }}
+                  className="btn-3d"
+                  style={{ background: 'linear-gradient(135deg,#6C4CFF,#8A5CFF)', color: 'white', fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', padding: '10px 24px', borderRadius: '14px', border: 'none', cursor: 'pointer' }}
+                >
+                  Solve Crossword 📝
+                </button>
+              </div>
+            )}
+
+            {/* GAME 12: UNSCRAMBLE */}
+            {activeGame.id === 'unscramble' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '32px', color: '#6C4CFF', letterSpacing: '6px', margin: 0 }}>
+                  L P P A E
+                </h4>
+                <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '14px', color: '#64748B', margin: 0 }}>
+                  Unscramble into a delicious fruit:
+                </p>
+                <input
+                  type="text"
+                  value={textInput}
+                  onChange={(e) => setTextInput(e.target.value.toUpperCase())}
+                  placeholder="APPLE"
+                  style={{ width: '100%', padding: '12px', borderRadius: '14px', border: '2px solid #E8EFFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', textAlign: 'center', outline: 'none' }}
+                />
+                <button
+                  onClick={() => {
+                    if (textInput.trim() === 'APPLE') {
+                      finishGameWithSuccess("🎉 Unscrambled correctly: APPLE! +15 XP!", 15, 5);
+                    } else {
+                      setFeedback("❌ Try again!");
+                    }
+                  }}
+                  className="btn-3d"
+                  style={{ background: 'linear-gradient(135deg,#6C4CFF,#8A5CFF)', color: 'white', fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', padding: '10px 24px', borderRadius: '14px', border: 'none', cursor: 'pointer' }}
+                >
+                  Unscramble 🌀
+                </button>
+              </div>
+            )}
+
+            {/* 16, 17, 18, 19, 21: SPEAKING GAMES WITH MIC */}
             {(activeGame.category === 'speaking') && (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
                 <span style={{ fontSize: '56px' }}>{activeGame.icon}</span>
@@ -615,6 +844,28 @@ export default function LearnGames() {
               </div>
             )}
 
+            {/* 24. WORD CATCHER */}
+            {activeGame.id === 'word_catcher' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <div style={{ background: '#FFFDF0', border: '2px solid #FFD54A', padding: '6px 18px', borderRadius: '99px', fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', color: '#B45309' }}>
+                  ⏱️ TIME: {timeLeft}s
+                </div>
+                <div style={{ height: '140px', width: '100%', background: '#F8FAFF', border: '2px dashed #CBD5E1', borderRadius: '20px', position: 'relative', overflow: 'hidden' }}>
+                  <div className="animate-bounce" style={{ position: 'absolute', top: '20px', left: `${catcherBasketPos}%`, transform: 'translateX(-50%)', fontSize: '32px' }}>
+                    🍎 APPLE
+                  </div>
+                  <div style={{ position: 'absolute', bottom: '10px', left: `${catcherBasketPos}%`, transform: 'translateX(-50%)', fontSize: '36px' }}>
+                    🧺
+                  </div>
+                </div>
+                <div style={{ display: 'flex', gap: '20px' }}>
+                  <button onClick={() => setCatcherBasketPos(Math.max(20, catcherBasketPos - 20))} className="btn-3d" style={{ padding: '8px 20px', borderRadius: '12px', background: '#F0F4FF', border: '1px solid #E8EFFF', fontFamily: 'Poppins', fontWeight: 900, cursor: 'pointer' }}>◀ Left</button>
+                  <button onClick={() => finishGameWithSuccess("🎉 Caught 5 Words into Basket! +15 XP!", 15, 5)} className="btn-3d" style={{ padding: '8px 20px', borderRadius: '12px', background: '#FFD54A', border: 'none', fontFamily: 'Poppins', fontWeight: 900, cursor: 'pointer' }}>🧺 Catch!</button>
+                  <button onClick={() => setCatcherBasketPos(Math.min(80, catcherBasketPos + 20))} className="btn-3d" style={{ padding: '8px 20px', borderRadius: '12px', background: '#F0F4FF', border: '1px solid #E8EFFF', fontFamily: 'Poppins', fontWeight: 900, cursor: 'pointer' }}>Right ▶</button>
+                </div>
+              </div>
+            )}
+
             {/* 25. MEMORY MATCH */}
             {activeGame.id === 'memory_match' && (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
@@ -637,6 +888,33 @@ export default function LearnGames() {
                     >
                       {card.flipped || card.matched ? card.icon : '❓'}
                     </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 26. SPEED READING NINJA */}
+            {activeGame.id === 'ninja_reading' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', color: '#1e1040', margin: 0 }}>
+                  Slice target words before they vanish! (Sliced: {ninjaSlicedCount}/3)
+                </p>
+                <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                  {['READING 📖', 'WRITING ✍️', 'SPEAKING 🎤'].map((w) => (
+                    <button
+                      key={w}
+                      onClick={() => {
+                        const next = ninjaSlicedCount + 1;
+                        setNinjaSlicedCount(next);
+                        if (next >= 3) {
+                          finishGameWithSuccess("⚔️ Reading Ninja Mastered! All words sliced! +20 XP!", 20, 8);
+                        }
+                      }}
+                      className="btn-3d hover-lift"
+                      style={{ background: '#FFF0F5', border: '2px solid #FF4FA3', color: '#FF4FA3', fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', padding: '16px 20px', borderRadius: '20px', cursor: 'pointer' }}
+                    >
+                      ⚔️ {w}
+                    </button>
                   ))}
                 </div>
               </div>
@@ -680,32 +958,6 @@ export default function LearnGames() {
                     </button>
                   ))}
                 </div>
-              </div>
-            )}
-
-            {/* DEFAULT FALLBACK FOR OTHER GAMES */}
-            {activeGame.id !== 'picture_detective' && activeGame.id !== 'drag_drop_sentence' && activeGame.id !== 'missing_letter' && activeGame.id !== 'spell_bee' && activeGame.category !== 'speaking' && activeGame.id !== 'memory_match' && activeGame.id !== 'boss_battle' && (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center', padding: '10px 0' }}>
-                <span style={{ fontSize: '56px' }}>{activeGame.icon}</span>
-                <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '22px', color: '#1e1040', margin: 0 }}>
-                  Ready to play {activeGame.title}?
-                </h4>
-                <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '14px', color: '#64748B', margin: 0 }}>
-                  {activeGame.description}
-                </p>
-                <button
-                  onClick={() => finishGameWithSuccess(`🎉 Challenge Completed! You earned +${activeGame.xpReward} XP!`, activeGame.xpReward, activeGame.coinReward)}
-                  className="btn-3d"
-                  style={{
-                    background: 'linear-gradient(135deg, #FFD54A, #FF9F43)',
-                    color: '#1e1040', fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px',
-                    padding: '12px 32px', borderRadius: '16px', border: 'none',
-                    borderBottom: '4px solid #E8A000', cursor: 'pointer',
-                    boxShadow: '0 8px 24px rgba(255,213,74,0.5)', marginTop: '10px',
-                  }}
-                >
-                  🚀 Start Challenge & Win +{activeGame.xpReward} XP
-                </button>
               </div>
             )}
 
