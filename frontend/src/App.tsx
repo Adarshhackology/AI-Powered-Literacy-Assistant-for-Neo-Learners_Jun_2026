@@ -27,6 +27,7 @@ import AIRetest from './pages/AIRetest';
 import AIComparison from './pages/AIComparison';
 import GamificationStore from './pages/GamificationStore';
 import Leaderboard from './pages/Leaderboard';
+import LearnGames from './pages/LearnGames';
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
         <Route path="/vocabulary" element={<Vocabulary />} />
         <Route path="/store" element={<GamificationStore />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/games" element={<LearnGames />} />
         <Route path="/admin" element={<AdminDashboard />} />
 
         {/* Learn with AI Routes */}
