@@ -51,6 +51,12 @@ const gamesList: GameItem[] = [
   { id: 'memory_match', title: '25. Memory Match', category: 'mixed', icon: '🃏', badge: 'ARCADE', description: 'Flip & match identical vocabulary cards in fewest moves.', xpReward: 15, coinReward: 5, color: '#8B5CF6' },
   { id: 'ninja_reading', title: '26. Speed Reading Ninja', category: 'mixed', icon: '🥷', description: 'Slice correct vocabulary words like a true reading ninja!', xpReward: 20, coinReward: 8, color: '#EF4444' },
   { id: 'boss_battle', title: '27. AI Boss Battle', category: 'mixed', icon: '👾', badge: 'BOSS', description: 'Defeat the Word Dragon Boss by answering quiz questions correctly!', xpReward: 50, coinReward: 20, color: '#8A5CFF' },
+  { id: 'word_maze', title: '28. Word Maze', category: 'mixed', icon: '🧩', badge: 'NEW', description: 'Navigate through letter maze tiles to spell the target word!', xpReward: 20, coinReward: 8, color: '#10B981' },
+  { id: 'sentence_builder', title: '29. Sentence Builder', category: 'writing', icon: '✍️', badge: 'NEW', description: 'Assemble sentence blocks to complete story passages.', xpReward: 18, coinReward: 6, color: '#3B82F6' },
+  { id: 'phonics_pop', title: '30. Phonics Pop', category: 'reading', icon: '🎈', badge: 'NEW', description: 'Pop floating sound bubbles matching the audio prompt.', xpReward: 15, coinReward: 5, color: '#F59E0B' },
+  { id: 'grammar_quest', title: '31. Grammar Quest', category: 'writing', icon: '🛡️', badge: 'NEW', description: 'Sort words into Noun, Verb, and Adjective treasure chests!', xpReward: 22, coinReward: 8, color: '#EC4899' },
+  { id: 'rhyme_match', title: '32. Rhyme Matcher', category: 'reading', icon: '🎵', badge: 'NEW', description: 'Match rhyming word cards (Cat & Hat, Star & Car).', xpReward: 16, coinReward: 6, color: '#8B5CF6' },
+  { id: 'speed_scramble', title: '33. Speed Scramble', category: 'mixed', icon: '⚡', badge: 'NEW', description: 'Unscramble words under 15-second timer challenge!', xpReward: 25, coinReward: 10, color: '#EF4444' },
 ];
 
 export default function LearnGames() {
@@ -1044,20 +1050,62 @@ export default function LearnGames() {
               </div>
             )}
 
-            {/* Modal Footer */}
+            {/* Victory & Next Level Progression Modal */}
             {gameCompleted && (
-              <button
-                onClick={handleCloseModal}
-                className="btn-3d"
-                style={{
-                  background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
-                  color: 'white', fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px',
-                  padding: '12px', borderRadius: '14px', border: 'none',
-                  cursor: 'pointer', textAlign: 'center',
-                }}
-              >
-                Back to Arcade 🎮
-              </button>
+              <div style={{
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px',
+                background: 'linear-gradient(135deg, #FFFDF0, #FFF9C4)',
+                border: '2.5px solid #FFD54A', borderRadius: '24px', padding: '20px',
+                marginTop: '12px', boxShadow: '0 8px 24px rgba(255,213,74,0.3)',
+              }}>
+                <div style={{ fontSize: '38px' }} className="animate-bobble">🎉 ⭐⭐⭐ 🎉</div>
+                <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', color: '#B45309' }}>
+                  Level {selectedLevel} Mastered!
+                </div>
+                <div style={{ display: 'flex', gap: '16px', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', color: '#1e1040' }}>
+                  <span>🪙 +20 Coins</span>
+                  <span>🏆 +50 XP</span>
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px', width: '100%', marginTop: '6px' }}>
+                  {/* Next Level Button */}
+                  <button
+                    onClick={() => {
+                      const nextLvl = Math.min(15, selectedLevel + 1);
+                      setSelectedLevel(nextLvl);
+                      setGameCompleted(false);
+                      setFeedback('');
+                      if (activeGame) {
+                        handleLaunchGame(activeGame);
+                      }
+                    }}
+                    className="btn-3d"
+                    style={{
+                      flex: 1,
+                      background: 'linear-gradient(135deg, #FFD54A 0%, #FF9F43 100%)',
+                      color: '#1e1040', fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px',
+                      padding: '14px', borderRadius: '16px', border: 'none',
+                      borderBottom: '3.5px solid #E8A000', cursor: 'pointer',
+                      boxShadow: '0 6px 20px rgba(255,213,74,0.4)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                    }}
+                  >
+                    <span>Play Level {Math.min(15, selectedLevel + 1)} →</span>
+                  </button>
+
+                  <button
+                    onClick={handleCloseModal}
+                    className="btn-3d"
+                    style={{
+                      background: '#F0F4FF', border: '1px solid #E8EFFF', color: '#6C4CFF',
+                      fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
+                      padding: '14px 20px', borderRadius: '16px', cursor: 'pointer',
+                    }}
+                  >
+                    Arcade 🎮
+                  </button>
+                </div>
+              </div>
             )}
 
           </div>
