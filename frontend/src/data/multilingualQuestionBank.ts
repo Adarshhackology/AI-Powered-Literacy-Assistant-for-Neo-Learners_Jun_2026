@@ -21,29 +21,29 @@ export interface StandardQuestion {
 }
 
 export const SUPPORTED_LANGUAGES = [
-  { code: 'en', name: 'English', native: 'English', flag: '🇬🇧' },
-  { code: 'hi', name: 'Hindi', native: 'हिंदी', flag: '🇮🇳' },
-  { code: 'bn', name: 'Bengali', native: 'বাংলা', flag: '🇮🇳' },
-  { code: 'te', name: 'Telugu', native: 'తెలుగు', flag: '🇮🇳' },
-  { code: 'mr', name: 'Marathi', native: 'मराठी', flag: '🇮🇳' },
-  { code: 'ta', name: 'Tamil', native: 'தமிழ்', flag: '🇮🇳' },
-  { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી', flag: '🇮🇳' },
-  { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ', flag: '🇮🇳' },
-  { code: 'ml', name: 'Malayalam', native: 'മലയാളം', flag: '🇮🇳' },
-  { code: 'pa', name: 'Punjabi', native: 'ਪੰਜਾਬੀ', flag: '🇮🇳' },
-  { code: 'or', name: 'Odia', native: 'ଓଡ଼ିଆ', flag: '🇮🇳' },
-  { code: 'as', name: 'Assamese', native: 'অসমীয়া', flag: '🇮🇳' },
-  { code: 'ur', name: 'Urdu', native: 'اردو', flag: '🇮🇳' },
-  { code: 'sa', name: 'Sanskrit', native: 'संस्कृतम्', flag: '🇮🇳' },
-  { code: 'kok', name: 'Konkani', native: 'कोंकणी', flag: '🇮🇳' },
-  { code: 'mni', name: 'Manipuri', native: 'মৈতৈলোন্', flag: '🇮🇳' },
-  { code: 'brx', name: 'Bodo', native: 'बर’', flag: '🇮🇳' },
-  { code: 'doi', name: 'Dogri', native: 'डोगरी', flag: '🇮🇳' },
-  { code: 'mai', name: 'Maithili', native: 'मैथिली', flag: '🇮🇳' },
-  { code: 'sat', name: 'Santali', native: 'ᱥᱟᱱᱛᱟᱲᱤ', flag: '🇮🇳' },
-  { code: 'sd', name: 'Sindhi', native: 'سنڌي', flag: '🇮🇳' },
-  { code: 'ks', name: 'Kashmiri', native: 'कॉशुर', flag: '🇮🇳' },
-  { code: 'ne', name: 'Nepali', native: 'नेपाली', flag: '🇳🇵' },
+  { code: 'en', name: 'English', native: 'English', flag: '🇬🇧', ttsLang: 'en-US' },
+  { code: 'hi', name: 'Hindi', native: 'हिंदी', flag: '🇮🇳', ttsLang: 'hi-IN' },
+  { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી', flag: '🇮🇳', ttsLang: 'gu-IN' },
+  { code: 'bn', name: 'Bengali', native: 'বাংলা', flag: '🇮🇳', ttsLang: 'bn-IN' },
+  { code: 'te', name: 'Telugu', native: 'తెలుగు', flag: '🇮🇳', ttsLang: 'te-IN' },
+  { code: 'mr', name: 'Marathi', native: 'मराठी', flag: '🇮🇳', ttsLang: 'mr-IN' },
+  { code: 'ta', name: 'Tamil', native: 'தமிழ்', flag: '🇮🇳', ttsLang: 'ta-IN' },
+  { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ', flag: '🇮🇳', ttsLang: 'kn-IN' },
+  { code: 'ml', name: 'Malayalam', native: 'മലയാളം', flag: '🇮🇳', ttsLang: 'ml-IN' },
+  { code: 'pa', name: 'Punjabi', native: 'ਪੰਜਾਬੀ', flag: '🇮🇳', ttsLang: 'pa-IN' },
+  { code: 'or', name: 'Odia', native: 'ଓଡ଼ିଆ', flag: '🇮🇳', ttsLang: 'or-IN' },
+  { code: 'as', name: 'Assamese', native: 'অসমীয়া', flag: '🇮🇳', ttsLang: 'as-IN' },
+  { code: 'ur', name: 'Urdu', native: 'اردو', flag: '🇮🇳', ttsLang: 'ur-IN' },
+  { code: 'sa', name: 'Sanskrit', native: 'संस्कृतम्', flag: '🇮🇳', ttsLang: 'sa-IN' },
+  { code: 'kok', name: 'Konkani', native: 'कोंकणी', flag: '🇮🇳', ttsLang: 'hi-IN' },
+  { code: 'mni', name: 'Manipuri', native: 'মৈতৈলোন্', flag: '🇮🇳', ttsLang: 'bn-IN' },
+  { code: 'brx', name: 'Bodo', native: 'बर’', flag: '🇮🇳', ttsLang: 'hi-IN' },
+  { code: 'doi', name: 'Dogri', native: 'डोगरी', flag: '🇮🇳', ttsLang: 'hi-IN' },
+  { code: 'mai', name: 'Maithili', native: 'मैथिली', flag: '🇮🇳', ttsLang: 'hi-IN' },
+  { code: 'sat', name: 'Santali', native: 'ᱥᱟᱱᱛᱟᱲᱤ', flag: '🇮🇳', ttsLang: 'hi-IN' },
+  { code: 'sd', name: 'Sindhi', native: 'سنڌي', flag: '🇮🇳', ttsLang: 'sd-IN' },
+  { code: 'ks', name: 'Kashmiri', native: 'कॉशुर', flag: '🇮🇳', ttsLang: 'hi-IN' },
+  { code: 'ne', name: 'Nepali', native: 'नेपाली', flag: '🇳🇵', ttsLang: 'ne-NP' },
 ];
 
 export const DIFFICULTY_LEVELS = [
@@ -64,133 +64,118 @@ export const DIFFICULTY_LEVELS = [
   { level: 15, name: 'Advanced Fluency', desc: 'Proverbs, idioms & fast reading' },
 ];
 
-// Core Multilingual Master Seed Questions (Standard JSON Schema)
-export const masterQuestionBank: StandardQuestion[] = [
-  {
-    id: "EN_RD_000001",
-    language: "English",
-    game: "Picture Detective",
-    level: 6,
-    difficulty: "Easy",
-    category: "Reading",
-    topic: "Fruits",
-    question: "Find the Apple",
-    voice: "Find the Apple",
-    emoji: "🍎",
-    options: ["Apple", "Banana", "Orange", "Mango"],
-    correct: "Apple",
-    hint: "Apple is red and juicy.",
-    reward: 10,
-    streakBonus: 2,
-    animation: "confetti"
-  },
-  {
-    id: "HI_RD_000001",
-    language: "Hindi",
-    game: "Picture Detective",
-    level: 6,
-    difficulty: "Easy",
-    category: "Reading",
-    topic: "Fruits",
-    question: "सेब चुनें",
-    voice: "सेब चुनें",
-    emoji: "🍎",
-    options: ["सेब", "केला", "संतरा", "आम"],
-    correct: "सेब",
-    hint: "सेब लाल रंग का होता है।",
-    reward: 10,
-    streakBonus: 2,
-    animation: "confetti"
-  },
-  {
-    id: "GU_RD_000001",
-    language: "Gujarati",
-    game: "Picture Detective",
-    level: 6,
-    difficulty: "Easy",
-    category: "Reading",
-    topic: "Fruits",
-    question: "સફરજન શોધો",
-    voice: "સફરજન શોધો",
-    emoji: "🍎",
-    options: ["સફરજન", "કેળું", "નારીયળ", "કેરી"],
-    correct: "સફરજન",
-    hint: "સફરજન લાલ રંગનું ફળ છે.",
-    reward: 10,
-    streakBonus: 2,
-    animation: "confetti"
-  },
-  {
-    id: "EN_WR_000002",
-    language: "English",
-    game: "Drag Sentence",
-    level: 8,
-    difficulty: "Easy",
-    category: "Writing",
-    topic: "Simple Sentences",
-    question: "Arrange the words into the correct sentence:",
-    voice: "Arrange the words: Neo loves reading books",
-    emoji: "📚",
-    options: ["Neo loves reading books", "reading books loves Neo", "books Neo loves reading"],
-    correct: "Neo loves reading books",
-    hint: "Start with the name Neo.",
-    reward: 15,
-    streakBonus: 3,
-    animation: "stars"
-  },
-  {
-    id: "HI_WR_000002",
-    language: "Hindi",
-    game: "Drag Sentence",
-    level: 8,
-    difficulty: "Easy",
-    category: "Writing",
-    topic: "Simple Sentences",
-    question: "वाक्य को सही क्रम में लगाएं:",
-    voice: "नियो किताबें पढ़ना पसंद करता है",
-    emoji: "📚",
-    options: ["नियो किताबें पढ़ना पसंद करता है", "किताबें नियो पसंद पढ़ता है", "पढ़ता है नियो किताबें"],
-    correct: "नियो किताबें पढ़ना पसंद करता है",
-    hint: "नियो से शुरू करें।",
-    reward: 15,
-    streakBonus: 3,
-    animation: "stars"
-  },
-  {
-    id: "EN_SP_000003",
-    language: "English",
-    game: "Repeat After Neo",
-    level: 11,
-    difficulty: "Medium",
-    category: "Speaking",
-    topic: "Conversations",
-    question: "Repeat out loud: 'Good Morning! Have a wonderful day!'",
-    voice: "Good Morning! Have a wonderful day!",
-    emoji: "🌞",
-    options: ["Good Morning! Have a wonderful day!"],
-    correct: "Good Morning! Have a wonderful day!",
-    hint: "Speak clearly into the microphone.",
-    reward: 20,
-    streakBonus: 5,
-    animation: "fireworks"
+export function getLanguagePrompts(lang: string) {
+  const n = (lang || '').toLowerCase();
+  if (n.includes('gu') || n.includes('gujarati') || n.includes('ગુજરાતી')) {
+    return {
+      findApple: 'સફરજન શોધો',
+      apple: 'સફરજન',
+      banana: 'કેળું',
+      cat: 'બિલાડી',
+      dog: 'કૂતરો',
+      sunshine: 'સૂર્યપ્રકાશ આપણા નાના ગલુડિયાને આનંદ આપે છે.',
+      targetSentence: 'નિયો પુસ્તકો વાંચવાનું પસંદ કરે છે',
+      readAloud: 'નમસ્તે! તમારો દિવસ શુભ રહે!',
+      missingWord: 'સફરજન લાલ રંગનું ફળ છે',
+      bossQuestion: 'કયો શબ્દ "ખૂબ ખુશ" દર્શાવે છે?',
+      bossAnswer: 'આનંદી',
+    };
   }
-];
+  if (n.includes('hi') || n.includes('hindi') || n.includes('हिंदी')) {
+    return {
+      findApple: 'सेब चुनें',
+      apple: 'सेब',
+      banana: 'केला',
+      cat: 'बिल्ली',
+      dog: 'कुत्ता',
+      sunshine: 'सूरज की रोशनी हमारे छोटे पिल्ले को खुशी देती है।',
+      targetSentence: 'नियो किताबें पढ़ना पसंद करता है',
+      readAloud: 'नमस्ते! आपका दिन शुभ हो!',
+      missingWord: 'सेब लाल रंग का फल है',
+      bossQuestion: 'कौन सा शब्द "बहुत खुश" दर्शाता है?',
+      bossAnswer: 'आनंदित',
+    };
+  }
+  if (n.includes('te') || n.includes('telugu') || n.includes('తెలుగు')) {
+    return {
+      findApple: 'యాపిల్ ఎంచుకోండి',
+      apple: 'యాపిల్',
+      banana: 'అరటి',
+      cat: 'పిల్లి',
+      dog: 'కుక్క',
+      sunshine: 'సూర్యరశ్మి మా చిన్న కుక్కపిల్లకు సంతోషాన్ని ఇస్తుంది.',
+      targetSentence: 'నియో పుస్తకాలు చదవడానికి ఇష్టపడతాడు',
+      readAloud: 'నమస్కారం! మీ రోజు బాగుండాలి!',
+      missingWord: 'యాపిల్ ఎర్రటి పండు',
+      bossQuestion: 'ఏ పదం "చాలా సంతోషం" అని అర్థం?',
+      bossAnswer: 'ఆనందకరమైన',
+    };
+  }
+  if (n.includes('ta') || n.includes('tamil') || n.includes('தமிழ்')) {
+    return {
+      findApple: 'ஆப்பிளைத் தேர்ந்தெடுக்கவும்',
+      apple: 'ஆப்பிள்',
+      banana: 'வாழைப்பழம்',
+      cat: 'பூனை',
+      dog: 'நாய்',
+      sunshine: 'சூரிய ஒளி எங்கள் சிறிய நாய்க்குட்டிக்கு மகிழ்ச்சியைத் தருகிறது.',
+      targetSentence: 'நியோ புத்தகங்களைப் படிக்க விரும்புகிறார்',
+      readAloud: 'வணக்கம்! நல்வாழ்த்துக்கள்!',
+      missingWord: 'ஆப்பிள் ஒரு சிவப்பு பழம்',
+      bossQuestion: 'எந்த சொல் "மிகவும் மகிழ்ச்சி" என்று பொருள்?',
+      bossAnswer: 'மகிழ்ச்சியான',
+    };
+  }
+  if (n.includes('bn') || n.includes('bengali') || n.includes('বাংলা')) {
+    return {
+      findApple: 'আপেল খুঁজুন',
+      apple: 'আপেল',
+      banana: 'কলা',
+      cat: 'বিড়াল',
+      dog: 'কুকুর',
+      sunshine: 'সূর্যের আলো আমাদের ছোট্ট কুকুরছানাটিকে আনন্দ দেয়।',
+      targetSentence: 'নিও বই পড়তে ভালোবাসে',
+      readAloud: 'নমস্কার! আপনার দিনটি শুভ হোক!',
+      missingWord: 'আপেল একটি লাল ফল',
+      bossQuestion: 'কোন শব্দটি "খুব আনন্দিত" বোঝায়?',
+      bossAnswer: 'আনন্দিত',
+    };
+  }
+  if (n.includes('mr') || n.includes('marathi') || n.includes('मराठी')) {
+    return {
+      findApple: 'सफरचंद शोधा',
+      apple: 'सफरचंद',
+      banana: 'केळी',
+      cat: 'मांजर',
+      dog: 'कुत्रा',
+      sunshine: 'सूर्याचा प्रकाश आमच्या लहान कुत्र्याच्या पिल्लाला आनंद देतो.',
+      targetSentence: 'निओला पुस्तके वाचायला आवडतात',
+      readAloud: 'नमस्कार! तुमचा दिवस आनंदाचा जावो!',
+      missingWord: 'सफरचंद हे लाल रंगाचे फळ आहे',
+      bossQuestion: 'कोणता शब्द "खूप आनंदी" दर्शवतो?',
+      bossAnswer: 'आनंदी',
+    };
+  }
+  return {
+    findApple: 'Find the Apple',
+    apple: 'Apple',
+    banana: 'Banana',
+    cat: 'Cat',
+    dog: 'Dog',
+    sunshine: 'The sunshine brings joy to our little puppy.',
+    targetSentence: 'Neo loves reading books',
+    readAloud: 'Hello! Have a wonderful day!',
+    missingWord: 'Apple is a red fruit',
+    bossQuestion: 'Which word means "very happy"?',
+    bossAnswer: 'Joyful',
+  };
+}
 
 // Dynamic Infinite AI Question Generator
 export function generateAIQuestion(language: string, category: string, level: number): StandardQuestion {
   const langName = language || 'English';
   const levelObj = DIFFICULTY_LEVELS.find(l => l.level === level) || DIFFICULTY_LEVELS[2];
-
-  const fruits: Record<string, string[]> = {
-    English: ['Apple', 'Banana', 'Mango', 'Orange'],
-    Hindi: ['सेब', 'केला', 'आम', 'संतरा'],
-    Gujarati: ['સફરજન', 'કેળું', 'કેરી', 'નારંગી'],
-    Telugu: ['యాపిల్', 'అరటి', 'మామిడి', 'నారింజ'],
-    Tamil: ['ஆப்பிள்', 'வாழைப்பழம்', 'மாம்பழம்', 'ஆரஞ்சு']
-  };
-
-  const currentFruits = fruits[langName] || fruits['English'];
-  const targetFruit = currentFruits[0];
+  const p = getLanguagePrompts(langName);
 
   return {
     id: `${langName.substring(0, 2).toUpperCase()}_GEN_${Date.now()}`,
@@ -200,12 +185,12 @@ export function generateAIQuestion(language: string, category: string, level: nu
     difficulty: level <= 5 ? 'Easy' : level <= 10 ? 'Medium' : 'Hard',
     category: (category as any) || 'Reading',
     topic: levelObj.name,
-    question: `[Level ${level} ${levelObj.name}] Find the correct item in ${langName}:`,
-    voice: `Find ${targetFruit}`,
-    emoji: '🌟',
-    options: currentFruits,
-    correct: targetFruit,
-    hint: `Select ${targetFruit}`,
+    question: p.findApple,
+    voice: p.findApple,
+    emoji: '🍎',
+    options: [p.apple, p.banana, p.cat, p.dog],
+    correct: p.apple,
+    hint: `${p.apple}`,
     reward: 10 + level * 2,
     streakBonus: 2 + Math.floor(level / 3),
     animation: 'confetti'

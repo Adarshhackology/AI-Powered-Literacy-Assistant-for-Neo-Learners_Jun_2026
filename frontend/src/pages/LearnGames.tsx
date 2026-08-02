@@ -8,7 +8,7 @@ import {
 import { apiClient } from '../utils/api';
 import { Sparkle, CoinSVG, XPGem, RobotMascot, DragonMascot } from '../components/UI/Illustrations';
 
-import { SUPPORTED_LANGUAGES, DIFFICULTY_LEVELS, generateAIQuestion, StandardQuestion } from '../data/multilingualQuestionBank';
+import { SUPPORTED_LANGUAGES, DIFFICULTY_LEVELS, generateAIQuestion, getLanguagePrompts, StandardQuestion } from '../data/multilingualQuestionBank';
 
 interface GameItem {
   id: string;
@@ -57,7 +57,7 @@ export default function LearnGames() {
   const navigate = useNavigate();
   const username = localStorage.getItem('username') || 'learner';
 
-  const [selectedLanguage, setSelectedLanguage] = useState<string>('English');
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('Gujarati');
   const [selectedLevel, setSelectedLevel] = useState<number>(3);
 
   const [categoryFilter, setCategoryFilter] = useState<'all' | 'reading' | 'writing' | 'speaking' | 'mixed'>('all');
@@ -83,6 +83,8 @@ export default function LearnGames() {
   const [ninjaSlicedCount, setNinjaSlicedCount] = useState<number>(0);
   const timerRef = useRef<any>(null);
 
+  const langPrompts = getLanguagePrompts(selectedLanguage);
+
   useEffect(() => {
     const loadProfile = async () => {
       try {
@@ -101,6 +103,10 @@ export default function LearnGames() {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
+      const langObj = SUPPORTED_LANGUAGES.find(l => l.name.toLowerCase() === selectedLanguage.toLowerCase());
+      if (langObj) {
+        utterance.lang = langObj.ttsLang;
+      }
       utterance.rate = 0.85;
       window.speechSynthesis.speak(utterance);
     }
@@ -517,24 +523,24 @@ export default function LearnGames() {
             {/* GAME 1: PICTURE DETECTIVE */}
             {activeGame.id === 'picture_detective' && (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
-                <button onClick={() => speakText("Find the Apple!")} className="btn-3d" style={{ background: '#F0F4FF', border: '1px solid #E8EFFF', color: '#6C4CFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', padding: '8px 16px', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Volume2 className="w-4 h-4" /> Listen AI Prompt: "Find the Apple"
+                <button onClick={() => speakText(langPrompts.findApple)} className="btn-3d" style={{ background: '#F0F4FF', border: '1px solid #E8EFFF', color: '#6C4CFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', padding: '8px 16px', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Volume2 className="w-4 h-4" /> Listen AI Prompt: "{langPrompts.findApple}" 🔊
                 </button>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', width: '100%' }}>
                   {[
-                    { name: 'Apple', emoji: '🍎', label: 'Apple' },
-                    { name: 'Banana', emoji: '🍌', label: 'Banana' },
-                    { name: 'Cat', emoji: '🐱', label: 'Cat' },
-                    { name: 'Dog', emoji: '🐶', label: 'Dog' },
+                    { name: langPrompts.apple, emoji: '🍎', label: langPrompts.apple },
+                    { name: langPrompts.banana, emoji: '🍌', label: langPrompts.banana },
+                    { name: langPrompts.cat, emoji: '🐱', label: langPrompts.cat },
+                    { name: langPrompts.dog, emoji: '🐶', label: langPrompts.dog },
                   ].map((item) => (
                     <div
                       key={item.name}
                       onClick={() => {
                         setSelectedOpt(item.name);
-                        if (item.name === 'Apple') {
-                          finishGameWithSuccess("🎉 Correct! You found the Apple! +15 XP awarded!", 15, 5);
+                        if (item.name === langPrompts.apple) {
+                          finishGameWithSuccess(`🎉 Correct! You found ${langPrompts.apple}! +15 XP awarded!`, 15, 5);
                         } else {
-                          setFeedback("❌ Try again! Look for the red fruit.");
+                          setFeedback("❌ Try again!");
                           speakText("Try again!");
                         }
                       }}
@@ -559,14 +565,14 @@ export default function LearnGames() {
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
                 <div style={{ background: '#F8FAFF', border: '2px solid #E8EFFF', borderRadius: '20px', padding: '20px', width: '100%' }}>
                   <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', color: '#1e1040', lineHeight: 1.6, margin: 0 }}>
-                    "The <span style={{ color: '#6C4CFF', textDecoration: 'underline' }}>sunshine</span> brings joy to our little puppy."
+                    "{langPrompts.sunshine}"
                   </p>
                 </div>
                 <div style={{ display: 'flex', gap: '12px' }}>
-                  <button onClick={() => speakText("The sunshine brings joy to our little puppy.")} className="btn-3d" style={{ background: '#F0F4FF', border: '1px solid #E8EFFF', color: '#6C4CFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', padding: '10px 18px', borderRadius: '14px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Volume2 className="w-4 h-4" /> AI Narrator
+                  <button onClick={() => speakText(langPrompts.sunshine)} className="btn-3d" style={{ background: '#F0F4FF', border: '1px solid #E8EFFF', color: '#6C4CFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', padding: '10px 18px', borderRadius: '14px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Volume2 className="w-4 h-4" /> AI Narrator ({selectedLanguage})
                   </button>
-                  <button onClick={() => handleMicClick("The sunshine brings joy to our little puppy.")} className="btn-3d" style={{ background: 'linear-gradient(135deg,#6C4CFF,#8A5CFF)', color: 'white', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', padding: '10px 18px', borderRadius: '14px', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <button onClick={() => handleMicClick(langPrompts.sunshine)} className="btn-3d" style={{ background: 'linear-gradient(135deg,#6C4CFF,#8A5CFF)', color: 'white', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', padding: '10px 18px', borderRadius: '14px', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <Mic className="w-4 h-4" /> Read Aloud Mic
                   </button>
                 </div>
