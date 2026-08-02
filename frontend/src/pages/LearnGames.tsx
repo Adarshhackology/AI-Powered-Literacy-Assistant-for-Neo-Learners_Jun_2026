@@ -996,44 +996,211 @@ export default function LearnGames() {
               </div>
             )}
 
-            {/* 27. BOSS BATTLE */}
-            {activeGame.id === 'boss_battle' && (
+            {/* 28. WORD MAZE */}
+            {activeGame.id === 'word_maze' && (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
-                <div style={{ width: '100%', background: '#F1F5F9', borderRadius: '99px', height: '16px', overflow: 'hidden', border: '1px solid #CBD5E1' }}>
-                  <div style={{ width: `${bossHp}%`, background: 'linear-gradient(90deg, #EF4444, #F97316)', height: '100%', transition: 'width 0.3s' }} />
-                </div>
-                <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#EF4444' }}>
-                  🐉 WORD DRAGON HP: {bossHp} / 100
-                </span>
-
                 <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', color: '#1e1040', margin: 0 }}>
-                  Which word means "very happy"?
+                  Tap letters in correct order to spell <strong style={{ color: '#6C4CFF' }}>CAT 🐱</strong>:
                 </p>
-
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', width: '100%' }}>
-                  {['Joyful', 'Sad', 'Angry', 'Tired'].map((opt) => (
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                  {['C', 'A', 'T', 'X', 'O'].map((ltr, idx) => (
                     <button
-                      key={opt}
+                      key={idx}
                       onClick={() => {
-                        if (opt === 'Joyful') {
-                          const newHp = Math.max(0, bossHp - 50);
-                          setBossHp(newHp);
-                          if (newHp === 0) {
-                            finishGameWithSuccess("🎉 YOU DEFEATED THE WORD DRAGON BOSS! +50 XP, +20 Coins!", 50, 20);
-                          } else {
-                            setFeedback("💥 Critical Hit! Dragon took 50 damage!");
-                          }
-                        } else {
-                          setFeedback("🛡️ Dragon blocked your attack! Try again!");
+                        setTextInput(prev => prev + ltr);
+                        if ((textInput + ltr).includes('CAT')) {
+                          finishGameWithSuccess("🎉 Word Maze Cleared! Spelled CAT! +20 XP!", 20, 8);
                         }
                       }}
-                      className="btn-3d"
-                      style={{ background: '#F8FAFF', border: '1.5px solid #E8EFFF', padding: '12px', borderRadius: '14px', fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', cursor: 'pointer' }}
+                      className="btn-3d hover-lift"
+                      style={{ width: '48px', height: '48px', borderRadius: '14px', background: '#F0FDF4', border: '2px solid #86EFAC', fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', color: '#166534', cursor: 'pointer' }}
                     >
-                      {opt}
+                      {ltr}
                     </button>
                   ))}
                 </div>
+                <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', color: '#6C4CFF' }}>Spelled: {textInput}</div>
+              </div>
+            )}
+
+            {/* 29. SENTENCE BUILDER */}
+            {activeGame.id === 'sentence_builder' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', color: '#1e1040', margin: 0 }}>
+                  Build sentence: <strong style={{ color: '#6C4CFF' }}>The sun is bright.</strong>
+                </p>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                  {['The', 'sun', 'is', 'bright.'].map((w, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        setTextInput(prev => prev ? `${prev} ${w}` : w);
+                        if (`${textInput} ${w}`.trim() === 'The sun is bright.') {
+                          finishGameWithSuccess("🎉 Sentence Built: 'The sun is bright.'! +18 XP!", 18, 6);
+                        }
+                      }}
+                      className="btn-3d"
+                      style={{ padding: '10px 16px', borderRadius: '12px', background: '#FFFDF0', border: '1.5px solid #FFD54A', fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: '#1e1040', cursor: 'pointer' }}
+                    >
+                      {w} +
+                    </button>
+                  ))}
+                </div>
+                <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', color: '#1e1040' }}>{textInput}</div>
+              </div>
+            )}
+
+            {/* 30. PHONICS POP */}
+            {activeGame.id === 'phonics_pop' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', color: '#1e1040', margin: 0 }}>
+                  Pop the bubble matching sound <strong style={{ color: '#6C4CFF' }}>/B/</strong> (as in Ball ⚽)!
+                </p>
+                <div style={{ display: 'flex', gap: '14px', justifyContent: 'center' }}>
+                  {['/B/', '/A/', '/C/', '/D/'].map((snd) => (
+                    <button
+                      key={snd}
+                      onClick={() => {
+                        if (snd === '/B/') {
+                          finishGameWithSuccess("🎈 POP! Correct Phonics Sound /B/! +15 XP!", 15, 5);
+                        } else {
+                          setFeedback("❌ Try again!");
+                        }
+                      }}
+                      className="btn-3d animate-bounce"
+                      style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'linear-gradient(135deg, #FF5CA8, #FF2E93)', border: '2px solid white', color: 'white', fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', cursor: 'pointer' }}
+                    >
+                      {snd}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 31. GRAMMAR QUEST */}
+            {activeGame.id === 'grammar_quest' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', color: '#1e1040', margin: 0 }}>
+                  Is <strong style={{ color: '#6C4CFF' }}>"RUN"</strong> a Noun, Verb, or Adjective?
+                </p>
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                  {['Noun', 'Verb', 'Adjective'].map((g) => (
+                    <button
+                      key={g}
+                      onClick={() => {
+                        if (g === 'Verb') {
+                          finishGameWithSuccess("🛡️ Grammar Quest Won! RUN is a VERB! +22 XP!", 22, 8);
+                        } else {
+                          setFeedback("❌ Try again! RUN is an action word.");
+                        }
+                      }}
+                      className="btn-3d"
+                      style={{ padding: '12px 20px', borderRadius: '14px', background: '#F0F4FF', border: '1.5px solid #6C4CFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', color: '#1e1040', cursor: 'pointer' }}
+                    >
+                      {g}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 32. RHYME MATCHER */}
+            {activeGame.id === 'rhyme_match' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <p style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', color: '#1e1040', margin: 0 }}>
+                  Which word rhymes with <strong style={{ color: '#6C4CFF' }}>"CAT" 🐱</strong>?
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', width: '100%' }}>
+                  {['HAT 🎩', 'DOG 🐶', 'SUN ☀️', 'CAR 🚗'].map((w) => (
+                    <button
+                      key={w}
+                      onClick={() => {
+                        if (w.includes('HAT')) {
+                          finishGameWithSuccess("🎵 Rhyme Matched! CAT rhymes with HAT! +16 XP!", 16, 6);
+                        } else {
+                          setFeedback("❌ Try again!");
+                        }
+                      }}
+                      className="btn-3d"
+                      style={{ padding: '14px', borderRadius: '14px', background: '#FFFDF0', border: '1.5px solid #FFD54A', fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', color: '#1e1040', cursor: 'pointer' }}
+                    >
+                      {w}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 33. SPEED SCRAMBLE */}
+            {activeGame.id === 'speed_scramble' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                <div style={{ background: '#FDF2F8', border: '1.5px solid #F472B6', padding: '4px 16px', borderRadius: '99px', fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#DB2777' }}>
+                  ⚡ SPEED CHALLENGE (15s)
+                </div>
+                <h4 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '28px', color: '#6C4CFF', letterSpacing: '4px', margin: 0 }}>
+                  S T A R 🌟
+                </h4>
+                <input
+                  type="text"
+                  value={textInput}
+                  onChange={(e) => setTextInput(e.target.value.toUpperCase())}
+                  placeholder="STAR"
+                  style={{ width: '100%', padding: '12px', borderRadius: '14px', border: '2px solid #E8EFFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', textAlign: 'center', outline: 'none' }}
+                />
+                <button
+                  onClick={() => {
+                    if (textInput.trim() === 'STAR') {
+                      finishGameWithSuccess("⚡ Speed Scramble Solved: STAR! +25 XP!", 25, 10);
+                    } else {
+                      setFeedback("❌ Try again!");
+                    }
+                  }}
+                  className="btn-3d"
+                  style={{ background: 'linear-gradient(135deg,#6C4CFF,#8A5CFF)', color: 'white', fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', padding: '10px 24px', borderRadius: '14px', border: 'none', cursor: 'pointer' }}
+                >
+                  Submit ⚡
+                </button>
+              </div>
+            )}
+
+            {/* UNIVERSAL FALLBACK FOR ALL OTHER STANDARD AI QUESTION GAMES */}
+            {!['boss_battle', 'ninja_reading', 'memory_match', 'word_catcher', 'unscramble', 'crossword', 'picture_detective', 'word_hunter', 'word_maze', 'sentence_builder', 'phonics_pop', 'grammar_quest', 'rhyme_match', 'speed_scramble'].includes(activeGame.id) && activeGame.category !== 'speaking' && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center' }}>
+                {currentAiQuestion?.options ? (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px', width: '100%' }}>
+                    {currentAiQuestion.options.map((opt) => (
+                      <button
+                        key={opt}
+                        onClick={() => {
+                          finishGameWithSuccess(`🎉 Excellent Choice! Selected: ${opt}! +15 XP!`, activeGame.xpReward || 15, activeGame.coinReward || 5);
+                        }}
+                        className="btn-3d hover-lift"
+                        style={{ padding: '14px', borderRadius: '16px', background: 'white', border: '1.5px solid #6C4CFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', color: '#1e1040', cursor: 'pointer' }}
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <input
+                      type="text"
+                      value={textInput}
+                      onChange={(e) => setTextInput(e.target.value)}
+                      placeholder="Type your answer here..."
+                      style={{ width: '100%', padding: '14px', borderRadius: '16px', border: '2px solid #E8EFFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '18px', textAlign: 'center', outline: 'none' }}
+                    />
+                    <button
+                      onClick={() => {
+                        finishGameWithSuccess(`🎉 Answer Submitted! Great Job! +15 XP!`, activeGame.xpReward || 15, activeGame.coinReward || 5);
+                      }}
+                      className="btn-3d"
+                      style={{ background: 'linear-gradient(135deg,#6C4CFF,#8A5CFF)', color: 'white', fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px', padding: '12px', borderRadius: '14px', border: 'none', cursor: 'pointer' }}
+                    >
+                      Submit Answer →
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 
