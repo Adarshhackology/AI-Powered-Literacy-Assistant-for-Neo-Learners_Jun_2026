@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Target, Zap, CheckCircle2, XCircle, ArrowRight, Star } from 'lucide-react';
+import { ArrowLeft, Zap, ArrowRight } from 'lucide-react';
+import { Sparkle, AIRobotMascot } from '../components/UI/Illustrations';
 
 interface SkillResult {
   name: string;
   score: number;
   icon: string;
+  cardBg: string;
+  cardBorder: string;
+  barColor: string;
+  iconBg: string;
 }
 
 export default function AIWeakAreas() {
@@ -14,109 +19,249 @@ export default function AIWeakAreas() {
   const [skills, setSkills] = useState<SkillResult[]>([]);
 
   useEffect(() => {
-    // Fetch or read from local storage
     const local = localStorage.getItem(`assessment_result_${sessionId}`);
+    let rScore = 55;
+    let wScore = 80;
+    let cScore = 45;
+
     if (local) {
       const data = JSON.parse(local);
-      setSkills([
-        { name: 'Reading', score: data.reading || 0, icon: '📖' },
-        { name: 'Writing', score: data.writing || 0, icon: '✍️' },
-        { name: 'Comprehension', score: data.comprehension || 0, icon: '🧠' }
-      ]);
-    } else {
-      setSkills([
-        { name: 'Reading', score: 85, icon: '📖' },
-        { name: 'Writing', score: 40, icon: '✍️' },
-        { name: 'Comprehension', score: 60, icon: '🧠' }
-      ]);
+      rScore = data.reading || 55;
+      wScore = data.writing || 80;
+      cScore = data.comprehension || 45;
     }
+
+    setSkills([
+      { 
+        name: 'Reading', score: rScore, icon: '📖', 
+        cardBg: '#FFF5F5', cardBorder: '#FFE4E6', barColor: '#EF4444', iconBg: '#FEE2E2' 
+      },
+      { 
+        name: 'Writing', score: wScore, icon: '✏️', 
+        cardBg: '#FFFBEB', cardBorder: '#FEF3C7', barColor: '#F97316', iconBg: '#FEF3C7' 
+      },
+      { 
+        name: 'Comprehension', score: cScore, icon: '🧠', 
+        cardBg: '#F0F9FF', cardBorder: '#E0F2FE', barColor: '#3B82F6', iconBg: '#DBEAFE' 
+      }
+    ]);
   }, [sessionId]);
 
   const weakCount = skills.filter(s => s.score < 99).length;
 
   return (
-    <div className="min-h-screen bg-sky-50 font-['Nunito'] p-4 sm:p-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12 animate-in fade-in slide-in-from-top-4">
-          <h1 className="text-4xl sm:text-5xl font-black text-slate-800 mb-4 flex items-center justify-center gap-4">
-            Let's Find Where You Need Practice! 🔍
+    <div style={{
+      minHeight: '100vh',
+      background: '#1A0A4E',
+      backgroundImage: `
+        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.45) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.35) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
+      `,
+      fontFamily: 'Nunito, sans-serif',
+      padding: '16px 20px',
+      display: 'flex', flexDirection: 'column', gap: '16px',
+      position: 'relative',
+    }}>
+
+      {/* Decorative stars */}
+      <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+        {[
+          { t: '5%', l: '8%', s: 14 }, { t: '12%', l: '92%', s: 18 },
+          { t: '50%', l: '3%', s: 16 }, { t: '75%', l: '95%', s: 14 },
+        ].map((st, i) => (
+          <div key={i} className="animate-twinkle" style={{ position: 'absolute', top: st.t, left: st.l, opacity: 0.7 }}>
+            <Sparkle size={st.s} color={i % 2 === 0 ? '#FFD54A' : '#C4B5F4'} />
+          </div>
+        ))}
+      </div>
+
+      {/* ── TOP GLASS NAVBAR ── */}
+      <nav style={{
+        height: '56px',
+        background: 'rgba(255,255,255,0.95)',
+        backdropFilter: 'blur(20px)',
+        borderRadius: '20px',
+        padding: '0 20px',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+        border: '1.5px solid rgba(255,255,255,0.6)',
+        position: 'relative', zIndex: 10,
+      }}>
+        <button
+          onClick={() => navigate(`/learn-with-ai/scores/${sessionId}`)}
+          className="btn-3d"
+          style={{
+            display: 'flex', alignItems: 'center', gap: '6px',
+            color: '#1e1040', textDecoration: 'none',
+            fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
+            background: '#F0F4FF', padding: '6px 14px', borderRadius: '12px',
+            border: '1px solid #E8EFFF', cursor: 'pointer',
+          }}
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back</span>
+        </button>
+
+        {/* Right Counters */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ background: '#FFFDF0', border: '1px solid #FFD54A', padding: '4px 12px', borderRadius: '99px', fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#1e1040' }}>
+            🪙 120
+          </div>
+          <div style={{ background: '#FDF2F8', border: '1px solid #F472B6', padding: '4px 12px', borderRadius: '99px', fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#DB2777' }}>
+            💎 7
+          </div>
+          <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#FFD54A', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', border: '2px solid white' }}>
+            👦
+          </div>
+        </div>
+      </nav>
+
+      {/* ── MAIN WORKSPACE CONTAINER ── */}
+      <div style={{
+        maxWidth: '1100px', width: '100%', margin: '0 auto',
+        position: 'relative', zIndex: 10,
+        display: 'flex', flexDirection: 'column', gap: '20px',
+      }}>
+
+        {/* Header Title Area */}
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+          <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '38px', color: 'white', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+            Let's Find <span style={{ color: '#8A5CFF' }}>Where You Need</span> Practice! 🔍
           </h1>
-          <p className="text-xl text-slate-600 font-bold max-w-2xl mx-auto bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+
+          <div style={{
+            background: 'rgba(255,255,255,0.95)',
+            border: '1.5px solid rgba(255,255,255,0.6)',
+            borderRadius: '99px', padding: '8px 24px',
+            fontFamily: 'Nunito', fontWeight: 800, fontSize: '13px', color: '#475569',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
+          }}>
             Any score below 99% gets a custom AI practice module to help you reach perfection! 💪
-          </p>
+          </div>
         </div>
 
-        <div className="grid gap-6 mb-12">
-          {skills.map((skill, index) => {
-            const isStrong = skill.score >= 99;
-            return (
-              <div 
+        {/* ── SKILLS & MASCOT GRID CONTAINER ── */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 220px', gap: '20px', alignItems: 'center' }}>
+          
+          {/* 3 Skill Cards Stack */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            {skills.map((skill) => (
+              <div
                 key={skill.name}
-                className={`p-6 sm:p-8 rounded-[2rem] border-4 flex flex-col sm:flex-row items-center gap-6 transition-transform hover:scale-[1.02]
-                  ${isStrong ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}
-                `}
-                style={{ animationDelay: `${index * 150}ms` }}
+                className="hover-lift"
+                style={{
+                  background: skill.cardBg,
+                  border: `2.5px solid ${skill.cardBorder}`,
+                  borderRadius: '28px',
+                  padding: '20px 24px',
+                  display: 'flex', alignItems: 'center', gap: '18px',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.04)',
+                }}
               >
-                <div className={`w-20 h-20 rounded-full flex items-center justify-center text-4xl shadow-inner
-                  ${isStrong ? 'bg-green-200' : 'bg-red-200'}
-                `}>
+                {/* 3D Icon */}
+                <div style={{
+                  width: '60px', height: '60px', borderRadius: '20px',
+                  background: skill.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '32px', boxShadow: '0 4px 14px rgba(0,0,0,0.06)', flexShrink: 0,
+                }}>
                   {skill.icon}
                 </div>
-                
-                <div className="flex-1 w-full text-center sm:text-left">
-                  <h3 className="text-2xl font-black text-slate-800 mb-2">{skill.name}</h3>
-                  <div className="w-full bg-white rounded-full h-6 mb-2 border-2 border-slate-100 overflow-hidden">
-                    <div 
-                      className={`h-full rounded-full transition-all duration-1000 ease-out
-                        ${isStrong ? 'bg-green-500' : 'bg-red-500'}
-                      `}
-                      style={{ width: `${skill.score}%` }}
-                    ></div>
+
+                {/* Progress Content */}
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <h3 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', color: '#1e1040', margin: 0 }}>
+                    {skill.name}
+                  </h3>
+                  
+                  {/* Score Bar */}
+                  <div style={{ width: '100%', height: '14px', background: 'white', borderRadius: '99px', border: '1.5px solid #E2E8F0', overflow: 'hidden' }}>
+                    <div style={{ width: `${skill.score}%`, height: '100%', background: skill.barColor, borderRadius: '99px' }} />
                   </div>
-                  <p className="text-sm font-bold text-slate-500">Score: {skill.score}/100</p>
+
+                  <span style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: '11px', color: '#64748B' }}>
+                    Score: <strong style={{ color: skill.barColor }}>{skill.score}</strong>/100
+                  </span>
                 </div>
 
-                <div className={`flex flex-col items-center justify-center w-full sm:w-auto p-4 rounded-2xl
-                  ${isStrong ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}
-                `}>
-                  {isStrong ? (
-                    <>
-                      <CheckCircle2 className="w-8 h-8 mb-1" />
-                      <span className="font-black text-center leading-tight">Strong!<br/>Great job!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Zap className="w-8 h-8 mb-1" />
-                      <span className="font-black text-center leading-tight">Needs<br/>Practice</span>
-                    </>
-                  )}
+                {/* Needs Practice Badge */}
+                <div style={{
+                  background: skill.iconBg, border: `1.5px solid ${skill.cardBorder}`,
+                  borderRadius: '16px', padding: '8px 14px',
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px',
+                  color: skill.barColor, textTransform: 'uppercase',
+                }}>
+                  <Zap className="w-5 h-5 fill-current" />
+                  <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '10px', lineHeight: 1.2, textAlign: 'center' }}>
+                    Needs<br />Practice
+                  </span>
                 </div>
               </div>
-            );
-          })}
+            ))}
+          </div>
+
+          {/* Right AI Mascot & Stacked Books Graphics */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center' }}>
+            <div className="animate-bobble">
+              <AIRobotMascot size={130} />
+            </div>
+
+            {/* Stack of Books with Smiling Star */}
+            <div style={{
+              background: 'linear-gradient(135deg, #8A5CFF, #6C4CFF)',
+              borderRadius: '24px', padding: '16px', textAlign: 'center',
+              border: '2px solid rgba(255,255,255,0.4)',
+              boxShadow: '0 12px 32px rgba(108,76,255,0.4)', color: 'white',
+              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px',
+            }}>
+              <div style={{ fontSize: '36px' }}>📚⭐</div>
+              <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px' }}>Personalized AI Plan</div>
+            </div>
+          </div>
+
         </div>
 
-        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-[2rem] p-8 text-center text-white shadow-xl relative overflow-hidden">
-          <Star className="absolute top-4 right-8 w-12 h-12 text-yellow-300 opacity-50 animate-spin-slow" />
-          <Star className="absolute bottom-4 left-8 w-8 h-8 text-yellow-300 opacity-50 animate-bounce" />
-          
-          <h2 className="text-3xl font-black mb-4 relative z-10">
-            AI detected {weakCount} weak {weakCount === 1 ? 'area' : 'areas'}.
-          </h2>
-          <p className="text-xl font-semibold mb-8 text-indigo-100 relative z-10">
-            Let's turn those weaknesses into super strengths! 🦸‍♂️🦸‍♀️
-          </p>
-          
+        {/* ── BOTTOM PURPLE BANNER CARD ── */}
+        <div style={{
+          borderRadius: '28px',
+          background: 'linear-gradient(135deg, #6C4CFF 0%, #8A5CFF 50%, #FF4FA3 100%)',
+          padding: '20px 28px',
+          color: 'white',
+          border: '2px solid rgba(255,255,255,0.3)',
+          boxShadow: '0 16px 48px rgba(108,76,255,0.35)',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <span style={{ fontSize: '38px' }} className="animate-bobble">🚀</span>
+            <div>
+              <h3 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', margin: '0 0 2px' }}>
+                AI detected {weakCount} weak areas.
+              </h3>
+              <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '13px', color: 'rgba(255,255,255,0.9)', margin: 0 }}>
+                Let's turn those weaknesses into super strengths! 👨‍👩‍👧
+              </p>
+            </div>
+          </div>
+
           <button
             onClick={() => navigate(`/learn-with-ai/plan/${sessionId}`)}
-            className="relative z-10 inline-flex items-center gap-3 bg-yellow-400 text-slate-900 px-10 py-5 rounded-full font-black text-2xl shadow-[0_0_40px_rgba(250,204,21,0.4)] hover:scale-105 hover:bg-yellow-300 transition-all active:scale-95"
+            className="btn-3d"
+            style={{
+              background: 'linear-gradient(135deg, #FFD54A, #FF9F43)',
+              color: '#1e1040', fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px',
+              padding: '12px 28px', borderRadius: '99px', border: 'none',
+              borderBottom: '3.5px solid #E8A000', cursor: 'pointer',
+              boxShadow: '0 6px 20px rgba(255,213,74,0.4)',
+              display: 'flex', alignItems: 'center', gap: '8px',
+            }}
           >
-            Start My Learning Plan
-            <ArrowRight className="w-8 h-8" />
+            <span>Start My Learning Plan</span>
+            <ArrowRight className="w-5 h-5" />
           </button>
         </div>
 
       </div>
+
     </div>
   );
 }
