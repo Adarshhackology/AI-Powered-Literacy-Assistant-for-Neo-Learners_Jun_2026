@@ -8,6 +8,8 @@ import {
 import { apiClient } from '../utils/api';
 import { Sparkle, CoinSVG, XPGem, RobotMascot, DragonMascot } from '../components/UI/Illustrations';
 
+import { SUPPORTED_LANGUAGES, DIFFICULTY_LEVELS, generateAIQuestion, StandardQuestion } from '../data/multilingualQuestionBank';
+
 interface GameItem {
   id: string;
   title: string;
@@ -55,9 +57,13 @@ export default function LearnGames() {
   const navigate = useNavigate();
   const username = localStorage.getItem('username') || 'learner';
 
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('English');
+  const [selectedLevel, setSelectedLevel] = useState<number>(3);
+
   const [categoryFilter, setCategoryFilter] = useState<'all' | 'reading' | 'writing' | 'speaking' | 'mixed'>('all');
   const [profile, setProfile] = useState<any>({ xp: 450, coins: 120, streak: 12 });
   const [activeGame, setActiveGame] = useState<GameItem | null>(null);
+  const [currentAiQuestion, setCurrentAiQuestion] = useState<StandardQuestion | null>(null);
 
   // Playable Mini-game States
   const [feedback, setFeedback] = useState<string>('');
@@ -101,6 +107,8 @@ export default function LearnGames() {
   };
 
   const handleLaunchGame = (game: GameItem) => {
+    const aiQ = generateAIQuestion(selectedLanguage, game.category, selectedLevel);
+    setCurrentAiQuestion(aiQ);
     setActiveGame(game);
     setFeedback('');
     setSelectedOpt(null);
@@ -114,13 +122,13 @@ export default function LearnGames() {
     setNinjaSlicedCount(0);
 
     if (game.id === 'picture_detective') {
-      speakText("Find the Apple!");
+      speakText(`${aiQ.voice}`);
     } else if (game.id === 'magic_reading') {
-      speakText("Read out loud: The sunshine brings joy to our little puppy.");
+      speakText(`Read in ${selectedLanguage}: ${aiQ.question}`);
     } else if (game.id === 'spell_bee') {
-      speakText("Spell the word: CAT");
+      speakText(`Spell the word: ${aiQ.correct}`);
     } else if (game.id === 'repeat_neo') {
-      speakText("Say: Literacy is Fun!");
+      speakText(`Repeat in ${selectedLanguage}: ${aiQ.question}`);
     } else if (game.id === 'memory_match') {
       const icons = ['🍎', '🍎', '🐶', '🐶', '🚀', '🚀', '⭐', '⭐'];
       const shuffled = icons.sort(() => Math.random() - 0.5).map((icon, idx) => ({ id: idx, icon, flipped: false, matched: false }));
@@ -302,8 +310,64 @@ export default function LearnGames() {
             </div>
           </div>
           <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '14px', color: 'rgba(255,255,255,0.9)', margin: 0 }}>
-            Master reading, writing & speaking skills through 21+ gamified adventures! Earn XP, Coins, and unlock Stickers!
+            Master reading, writing & speaking skills across 24 Indian languages and 15 difficulty levels!
           </p>
+        </div>
+
+        {/* Multilingual (24 Languages) & Difficulty Level (15 Levels) Selector Controls */}
+        <div style={{
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '20px',
+          padding: '16px 24px',
+          border: '1.5px solid rgba(255,255,255,0.6)',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '14px',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.1)',
+        }}>
+          {/* Language Selector */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', color: '#1e1040' }}>🌐 Target Language:</span>
+            <select
+              value={selectedLanguage}
+              onChange={(e) => {
+                setSelectedLanguage(e.target.value);
+                localStorage.setItem('preferredLanguage', e.target.value.toLowerCase());
+              }}
+              style={{
+                background: '#F8FAFF', border: '1.5px solid #E8EFFF',
+                borderRadius: '12px', padding: '8px 16px',
+                fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', color: '#6C4CFF',
+                outline: 'none', cursor: 'pointer',
+              }}
+            >
+              {SUPPORTED_LANGUAGES.map((lang) => (
+                <option key={lang.code} value={lang.name}>
+                  {lang.flag} {lang.name} ({lang.native})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* 15 Difficulty Levels Selector */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', color: '#1e1040' }}>📈 Difficulty Level:</span>
+            <select
+              value={selectedLevel}
+              onChange={(e) => setSelectedLevel(Number(e.target.value))}
+              style={{
+                background: '#FFFDF0', border: '1.5px solid #FFD54A',
+                borderRadius: '12px', padding: '8px 16px',
+                fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', color: '#B45309',
+                outline: 'none', cursor: 'pointer',
+              }}
+            >
+              {DIFFICULTY_LEVELS.map((lvl) => (
+                <option key={lvl.level} value={lvl.level}>
+                  Level {lvl.level}: {lvl.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* Category Filter Pills */}
