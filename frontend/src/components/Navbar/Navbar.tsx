@@ -241,22 +241,38 @@ export const Navbar: React.FC<NavbarProps> = ({ profile, searchQuery, setSearchQ
               <span>Change Language</span>
             </button>
 
-            <button
-              onClick={() => { setShowMenu(false); navigate('/admin'); }}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '10px',
-                padding: '10px 12px', borderRadius: '12px', border: 'none',
-                background: 'transparent', color: '#334155',
-                fontFamily: 'Poppins', fontWeight: 800, fontSize: '12px',
-                cursor: 'pointer', width: '100%', textAlign: 'left',
-                transition: 'all 0.15s ease',
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.background = '#F8FAFF'}
-              onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-            >
-              <Settings style={{ width: '16px', height: '16px', color: '#FF9F43' }} />
-              <span>Admin Console</span>
-            </button>
+            {(() => {
+              const username = localStorage.getItem('username') || '';
+              const userStr = localStorage.getItem('user');
+              let isAdmin = username.toLowerCase() === 'admin' || username.toLowerCase() === 'superadmin';
+              if (userStr) {
+                try {
+                  const user = JSON.parse(userStr);
+                  if (user.is_staff || user.is_superuser || user.role === 'admin') {
+                    isAdmin = true;
+                  }
+                } catch (e) {}
+              }
+              if (!isAdmin) return null;
+              return (
+                <button
+                  onClick={() => { setShowMenu(false); navigate('/admin'); }}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '10px',
+                    padding: '10px 12px', borderRadius: '12px', border: 'none',
+                    background: 'transparent', color: '#334155',
+                    fontFamily: 'Poppins', fontWeight: 800, fontSize: '12px',
+                    cursor: 'pointer', width: '100%', textAlign: 'left',
+                    transition: 'all 0.15s ease',
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = '#F8FAFF'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                >
+                  <Settings style={{ width: '16px', height: '16px', color: '#FF9F43' }} />
+                  <span>Admin Console</span>
+                </button>
+              );
+            })()}
 
             <div style={{ height: '1px', background: '#F1F5F9', margin: '4px 0' }} />
 
