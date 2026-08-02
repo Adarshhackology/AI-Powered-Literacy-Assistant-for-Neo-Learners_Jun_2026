@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Volume2, Mic, Sparkles, CheckCircle2, RotateCcw, Lightbulb, Trophy, Flame, Clock } from 'lucide-react';
+import { ArrowLeft, Volume2, Mic, RotateCcw, Lightbulb, Trophy, Flame, Clock, Star } from 'lucide-react';
 import { apiClient } from '../utils/api';
 import { Sparkle, AIRobotMascot } from '../components/UI/Illustrations';
 
@@ -78,7 +78,7 @@ const getLanguageFallbackQuestions = (lang: string): Question[] => {
   ];
 };
 
-// Hindi / Keyboard On-Screen Layout Rows
+// Hindi / Keyboard On-Screen Layout Rows matching screenshot
 const keyboardRows = [
   ['क', 'ख', 'ग', 'घ', 'ङ', 'च', 'छ', 'ज', 'झ', 'ञ', 'ट', 'ठ'],
   ['ड', 'ढ', 'ण', 'त', 'थ', 'द', 'ध', 'न', 'प', 'फ', 'ब', 'भ', 'म'],
@@ -96,7 +96,6 @@ export default function AIAssessment() {
   const [submitting, setSubmitting] = useState(false);
   const [currentAnswer, setCurrentAnswer] = useState('');
   const [isRecording, setIsRecording] = useState(false);
-  const [showHint, setShowHint] = useState(false);
   const [hintCount, setHintCount] = useState(2);
 
   const recognitionRef = useRef<any>(null);
@@ -188,7 +187,6 @@ export default function AIAssessment() {
       setCurrentIndex(currentIndex + 1);
       setCurrentAnswer('');
       setIsRecording(false);
-      setShowHint(false);
     } else {
       setSubmitting(true);
       try {
@@ -250,7 +248,7 @@ export default function AIAssessment() {
         radial-gradient(circle at 90% 80%, rgba(255,79,163,0.35) 0%, transparent 40%),
         radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
       `,
-      padding: '16px 24px',
+      padding: '16px 20px',
       display: 'flex', flexDirection: 'column', gap: '16px',
       fontFamily: 'Nunito, sans-serif',
       position: 'relative',
@@ -258,7 +256,7 @@ export default function AIAssessment() {
 
       {/* ── TOP GLASS NAVBAR ── */}
       <nav style={{
-        height: '60px',
+        height: '56px',
         background: 'rgba(255,255,255,0.95)',
         backdropFilter: 'blur(20px)',
         borderRadius: '20px',
@@ -283,16 +281,16 @@ export default function AIAssessment() {
         </button>
 
         {/* Stepper Pills */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#F1F5F9', padding: '4px 10px', borderRadius: '99px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           {sections.map((sec) => {
             const isActive = sec === currentSectionName;
             return (
               <div
                 key={sec}
                 style={{
-                  background: isActive ? 'linear-gradient(135deg, #6C4CFF, #8A5CFF)' : 'transparent',
+                  background: isActive ? '#6C4CFF' : 'transparent',
                   color: isActive ? 'white' : '#64748B',
-                  borderRadius: '99px', padding: '4px 16px',
+                  borderRadius: '99px', padding: '4px 18px',
                   fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px',
                   boxShadow: isActive ? '0 4px 14px rgba(108,76,255,0.4)' : 'none',
                 }}
@@ -304,9 +302,9 @@ export default function AIAssessment() {
         </div>
 
         {/* Right Counters */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', color: '#6C4CFF', background: '#EDE7F6', padding: '4px 12px', borderRadius: '99px' }}>
-            Q{currentIndex + 1}/{questions.length}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#6C4CFF', background: '#EDE7F6', padding: '4px 12px', borderRadius: '99px' }}>
+            Q{currentIndex + 1}/5
           </span>
           <div style={{ background: '#FFFDF0', border: '1px solid #FFD54A', padding: '4px 12px', borderRadius: '99px', fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#1e1040' }}>
             🪙 120
@@ -322,19 +320,18 @@ export default function AIAssessment() {
 
       {/* ── THREE-COLUMN GAME WORKSPACE LAYOUT ── */}
       <div style={{
-        maxWidth: '1280px', width: '100%', margin: '0 auto',
-        display: 'grid', gridTemplateColumns: '220px 1fr 180px', gap: '20px',
+        maxWidth: '1240px', width: '100%', margin: '0 auto',
+        display: 'grid', gridTemplateColumns: '200px 1fr 180px', gap: '18px',
         alignItems: 'start', position: 'relative', zIndex: 10,
       }}>
 
-        {/* LEFT PANEL: AI Mascot & Stats Cards */}
+        {/* LEFT PANEL: AI Mascot & Stats Card */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', alignItems: 'center' }}>
           {/* AI Mascot & Speech Bubble */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
             <div style={{
               background: 'white', border: '1.5px solid #C4B5F4', borderRadius: '16px',
-              padding: '8px 12px', textAlign: 'center', boxShadow: '0 6px 18px rgba(0,0,0,0.15)',
-              position: 'relative',
+              padding: '6px 12px', textAlign: 'center', boxShadow: '0 6px 18px rgba(0,0,0,0.15)',
             }}>
               <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px', color: '#6C4CFF' }}>
                 बहुत बढ़िया! ⭐
@@ -344,44 +341,39 @@ export default function AIAssessment() {
               </div>
             </div>
             <div className="animate-bobble">
-              <AIRobotMascot size={70} />
+              <AIRobotMascot size={64} />
             </div>
           </div>
 
-          {/* 3 Dark Glass Stat Cards */}
-          <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {/* Stacked Dark Translucent Stats Card */}
+          <div style={{
+            width: '100%',
+            background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(16px)',
+            borderRadius: '20px', border: '1.5px solid rgba(255,255,255,0.15)',
+            padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', color: 'white',
+          }}>
             {/* Streak */}
-            <div style={{
-              background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(12px)',
-              borderRadius: '16px', border: '1.5px solid rgba(255,255,255,0.2)',
-              padding: '12px 16px', display: 'flex', alignItems: 'center', gap: '12px', color: 'white',
-            }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <Flame className="w-6 h-6 text-amber-400" />
               <div>
                 <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px' }}>5</div>
-                <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', opacity: 0.8 }}>Days Streak</div>
+                <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', opacity: 0.8 }}>Days</div>
               </div>
             </div>
+            <div style={{ height: '1px', background: 'rgba(255,255,255,0.12)' }} />
 
             {/* Score */}
-            <div style={{
-              background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(12px)',
-              borderRadius: '16px', border: '1.5px solid rgba(255,255,255,0.2)',
-              padding: '12px 16px', display: 'flex', alignItems: 'center', gap: '12px', color: 'white',
-            }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <Trophy className="w-6 h-6 text-yellow-400" />
               <div>
                 <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px' }}>450</div>
-                <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', opacity: 0.8 }}>Score XP</div>
+                <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', opacity: 0.8 }}>XP</div>
               </div>
             </div>
+            <div style={{ height: '1px', background: 'rgba(255,255,255,0.12)' }} />
 
             {/* Time */}
-            <div style={{
-              background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(12px)',
-              borderRadius: '16px', border: '1.5px solid rgba(255,255,255,0.2)',
-              padding: '12px 16px', display: 'flex', alignItems: 'center', gap: '12px', color: 'white',
-            }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <Clock className="w-6 h-6 text-indigo-300" />
               <div>
                 <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px' }}>00:45</div>
@@ -391,45 +383,44 @@ export default function AIAssessment() {
           </div>
 
           <div style={{ fontFamily: 'Nunito', fontWeight: 800, fontSize: '11px', color: 'rgba(255,255,255,0.85)', textAlign: 'center' }}>
-            Keep going! You're doing great! 🌟
+            Keep going!<br />You're doing great! 🌟
           </div>
         </div>
 
-        {/* CENTER MAIN QUESTION CARD (White 3D Glass Container) */}
+        {/* CENTER MAIN QUESTION CARD (White 3D Container matching screenshot) */}
         <div style={{
-          background: 'rgba(255,255,255,0.96)',
-          backdropFilter: 'blur(20px)',
+          background: 'white',
           borderRadius: '32px',
           padding: '24px 32px',
-          border: '2px solid rgba(255,255,255,0.8)',
-          boxShadow: '0 24px 72px rgba(0,0,0,0.35)',
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px',
+          border: '4px solid #6C4CFF',
+          boxShadow: '0 24px 72px rgba(108,76,255,0.3)',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px',
           textAlign: 'center', position: 'relative',
         }}>
           {/* Header Bar inside card */}
           <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{
-              background: '#EDE7F6', color: '#6C4CFF',
+              background: '#6C4CFF', color: 'white',
               fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px',
               padding: '4px 14px', borderRadius: '99px',
             }}>
-              Question {currentIndex + 1} of {questions.length}
+              Question {currentIndex + 1} of 5
             </span>
 
             {/* Progress Bar */}
             <div style={{ flex: 1, maxWidth: '240px', height: '10px', background: '#E2E8F0', borderRadius: '99px', overflow: 'hidden', margin: '0 16px' }}>
-              <div style={{ width: `${((currentIndex + 1) / questions.length) * 100}%`, height: '100%', background: 'linear-gradient(90deg, #6C4CFF, #FF9F43)', borderRadius: '99px' }} />
+              <div style={{ width: `${((currentIndex + 1) / 5) * 100}%`, height: '100%', background: 'linear-gradient(90deg, #6C4CFF, #FF9F43)', borderRadius: '99px' }} />
             </div>
 
-            <Sparkle size={20} color="#FFD54A" />
+            <Star className="w-5 h-5 text-amber-400 fill-current" />
           </div>
 
           {/* 3D Illustration Container */}
           <div className="animate-bobble" style={{
-            width: '96px', height: '96px', borderRadius: '24px',
+            width: '84px', height: '84px', borderRadius: '22px',
             background: 'linear-gradient(135deg, #F3E8FF, #FCE7F3)',
-            border: '3px solid #C4B5F4', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '52px', boxShadow: '0 12px 28px rgba(108,76,255,0.25)',
+            border: '2.5px solid #C4B5F4', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '46px', boxShadow: '0 8px 24px rgba(108,76,255,0.2)',
           }}>
             {question.emoji || '🧄'}
           </div>
@@ -440,17 +431,15 @@ export default function AIAssessment() {
           </h2>
 
           {/* Hint Pill */}
-          {showHint && (
-            <div style={{
-              background: '#FFFDF0', border: '1.5px solid #FFD54A',
-              borderRadius: '99px', padding: '6px 18px',
-              fontFamily: 'Nunito', fontWeight: 800, fontSize: '12px', color: '#B45309',
-              display: 'flex', alignItems: 'center', gap: '6px',
-            }}>
-              <span>💡 Hint:</span>
-              <span>{question.hint || 'यह खाने के काम आता है।'}</span>
-            </div>
-          )}
+          <div style={{
+            background: '#FFFDF0', border: '1.5px solid #FFD54A',
+            borderRadius: '99px', padding: '6px 18px',
+            fontFamily: 'Nunito', fontWeight: 800, fontSize: '12px', color: '#6C4CFF',
+            display: 'flex', alignItems: 'center', gap: '6px',
+          }}>
+            <span>💡 Hint:</span>
+            <span>{question.hint || 'यह खाने के काम आता है।'}</span>
+          </div>
 
           {/* INPUT AREA: Text Input + Mic Button */}
           <div style={{ width: '100%', maxWidth: '520px', position: 'relative' }}>
@@ -472,7 +461,7 @@ export default function AIAssessment() {
               style={{
                 position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)',
                 width: '40px', height: '40px', borderRadius: '50%',
-                background: isRecording ? '#EF4444' : 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
+                background: isRecording ? '#EF4444' : '#6C4CFF',
                 color: 'white', border: 'none', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 boxShadow: '0 4px 14px rgba(108,76,255,0.4)',
@@ -497,7 +486,7 @@ export default function AIAssessment() {
                     onClick={() => setCurrentAnswer(prev => prev + char)}
                     className="btn-3d hover-lift"
                     style={{
-                      width: '36px', height: '36px', borderRadius: '10px',
+                      width: '34px', height: '34px', borderRadius: '10px',
                       background: 'white', border: '1px solid #E2E8F0',
                       borderBottom: '2.5px solid #CBD5E1',
                       fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px', color: '#1e1040',
@@ -512,7 +501,7 @@ export default function AIAssessment() {
                     onClick={() => setCurrentAnswer(prev => prev.slice(0, -1))}
                     className="btn-3d hover-lift"
                     style={{
-                      padding: '0 12px', height: '36px', borderRadius: '10px',
+                      padding: '0 12px', height: '34px', borderRadius: '10px',
                       background: '#EDE7F6', border: '1px solid #C4B5F4',
                       color: '#6C4CFF', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
                       cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -530,7 +519,7 @@ export default function AIAssessment() {
                 onClick={() => setCurrentAnswer(prev => prev + ' ')}
                 className="btn-3d hover-lift"
                 style={{
-                  width: '180px', height: '34px', margin: '0 auto', borderRadius: '10px',
+                  width: '180px', height: '34px', borderRadius: '10px',
                   background: 'white', border: '1px solid #E2E8F0',
                   borderBottom: '2.5px solid #CBD5E1',
                   fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px', color: '#475569',
@@ -543,7 +532,7 @@ export default function AIAssessment() {
           </div>
 
           {/* BOTTOM ACTION BAR */}
-          <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '8px' }}>
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '6px' }}>
             <button
               onClick={() => speakText(question.text)}
               className="btn-3d"
@@ -559,7 +548,6 @@ export default function AIAssessment() {
 
             <button
               onClick={() => {
-                setShowHint(!showHint);
                 if (hintCount > 0) setHintCount(prev => prev - 1);
               }}
               className="btn-3d"
