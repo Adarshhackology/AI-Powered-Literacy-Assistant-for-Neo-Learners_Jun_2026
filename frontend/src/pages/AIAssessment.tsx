@@ -359,32 +359,106 @@ export default function AIAssessment() {
             )}
 
             {question.type === 'fill_blank' && (
-              <input
-                type="text"
-                value={currentAnswer}
-                onChange={(e) => setCurrentAnswer(e.target.value)}
-                placeholder="Type your answer here..."
-                style={{
-                  width: '100%', padding: '16px', borderRadius: '18px',
-                  border: '2px solid #E8EFFF', background: '#F8FAFF',
-                  fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', color: '#1e1040',
-                  textAlign: 'center', outline: 'none',
-                }}
-              />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {/* Word Chips Row for Fill in the Blank */}
+                <div style={{
+                  background: '#F0F4FF', border: '2px dashed #C7D2FE',
+                  borderRadius: '18px', padding: '14px',
+                  display: 'flex', flexDirection: 'column', gap: '8px',
+                }}>
+                  <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px', color: '#6C4CFF', textTransform: 'uppercase' }}>
+                    🧩 Tap correct word chip to fill blank:
+                  </span>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
+                    {(question.options && question.options.length > 0
+                      ? question.options
+                      : ['नीला', 'लाल', 'हरा', 'काला', 'नील', 'সাদা', 'Blue', 'Big', 'Bright']
+                    ).map((word: string, idx: number) => (
+                      <button
+                        key={idx}
+                        onClick={() => setCurrentAnswer(word)}
+                        className="btn-3d hover-lift"
+                        style={{
+                          background: currentAnswer === word ? '#FFFDF0' : 'white',
+                          border: currentAnswer === word ? '2.5px solid #FFD54A' : '1.5px solid #6C4CFF',
+                          color: '#1e1040', fontFamily: 'Poppins', fontWeight: 900, fontSize: '15px',
+                          padding: '10px 18px', borderRadius: '14px', cursor: 'pointer',
+                          boxShadow: '0 4px 14px rgba(108,76,255,0.2)',
+                        }}
+                      >
+                        {word}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <input
+                  type="text"
+                  value={currentAnswer}
+                  onChange={(e) => setCurrentAnswer(e.target.value)}
+                  placeholder="Type or tap a word above..."
+                  style={{
+                    width: '100%', padding: '16px', borderRadius: '18px',
+                    border: '2px solid #E8EFFF', background: '#F8FAFF',
+                    fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', color: '#1e1040',
+                    textAlign: 'center', outline: 'none',
+                  }}
+                />
+              </div>
             )}
 
             {question.type === 'paragraph' && (
-              <textarea
-                value={currentAnswer}
-                onChange={(e) => setCurrentAnswer(e.target.value)}
-                placeholder="Write your answer here..."
-                style={{
-                  width: '100%', height: '120px', padding: '16px', borderRadius: '18px',
-                  border: '2px solid #E8EFFF', background: '#F8FAFF',
-                  fontFamily: 'Nunito', fontWeight: 700, fontSize: '15px', color: '#1e1040',
-                  outline: 'none', resize: 'none',
-                }}
-              />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {/* Word Chips for Paragraph Writing */}
+                <div style={{
+                  background: '#F0F4FF', border: '2px dashed #C7D2FE',
+                  borderRadius: '18px', padding: '14px',
+                  display: 'flex', flexDirection: 'column', gap: '8px',
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px', color: '#6C4CFF', textTransform: 'uppercase' }}>
+                      🧩 Tap Word Chips to Form Sentence:
+                    </span>
+                    {currentAnswer && (
+                      <button
+                        onClick={() => setCurrentAnswer('')}
+                        style={{ background: '#FEE2E2', color: '#EF4444', border: 'none', borderRadius: '99px', padding: '2px 10px', fontFamily: 'Poppins', fontWeight: 800, fontSize: '10px', cursor: 'pointer' }}
+                      >
+                        Clear
+                      </button>
+                    )}
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    {['The', 'sky', 'is', 'blue', 'and', 'bright.', 'I', 'love', 'reading', 'books', 'every', 'day.'].map((word: string, idx: number) => (
+                      <button
+                        key={idx}
+                        onClick={() => setCurrentAnswer(prev => prev ? `${prev} ${word}` : word)}
+                        className="btn-3d hover-lift"
+                        style={{
+                          background: 'white', border: '1.5px solid #6C4CFF',
+                          color: '#1e1040', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
+                          padding: '8px 14px', borderRadius: '12px', cursor: 'pointer',
+                          boxShadow: '0 4px 12px rgba(108,76,255,0.15)',
+                        }}
+                      >
+                        {word} +
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <textarea
+                  value={currentAnswer}
+                  onChange={(e) => setCurrentAnswer(e.target.value)}
+                  placeholder="Write or tap word chips above to build sentence..."
+                  style={{
+                    width: '100%', height: '100px', padding: '16px', borderRadius: '18px',
+                    border: '2px solid #E8EFFF', background: '#F8FAFF',
+                    fontFamily: 'Nunito', fontWeight: 700, fontSize: '15px', color: '#1e1040',
+                    outline: 'none', resize: 'none',
+                  }}
+                />
+              </div>
             )}
 
             {question.type === 'read_aloud' && (

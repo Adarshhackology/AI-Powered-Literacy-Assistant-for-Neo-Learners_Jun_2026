@@ -608,11 +608,62 @@ export default function Assessment() {
               </div>
             </div>
 
+            {/* Interactive Drag & Drop / Tap Word Chips */}
+            <div style={{
+              background: '#F0F4FF', border: '2px dashed #C7D2FE',
+              borderRadius: '20px', padding: '16px',
+              display: 'flex', flexDirection: 'column', gap: '10px',
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px', color: '#6C4CFF', textTransform: 'uppercase' }}>
+                  🧩 Tap / Drag Word Chips to Build Sentence:
+                </span>
+                {writingText && (
+                  <button
+                    onClick={() => setWritingText('')}
+                    style={{ background: '#FEE2E2', color: '#EF4444', border: 'none', borderRadius: '99px', padding: '2px 10px', fontFamily: 'Poppins', fontWeight: 800, fontSize: '10px', cursor: 'pointer' }}
+                  >
+                    Clear All
+                  </button>
+                )}
+              </div>
+
+              {/* Word Chips Row */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                {(userLang === 'bengali'
+                  ? ['আমি', 'একটি', 'সুন্দর', 'লাল', 'আপেল', 'খেতে', 'ভালোবাসি।']
+                  : userLang === 'hindi'
+                  ? ['मुझे', 'किताबें', 'और', 'कहानी', 'पढ़ना', 'पसंद', 'है।']
+                  : userLang === 'telugu'
+                  ? ['నేను', 'పుస్తకం', 'చదవడానికి', 'ఇష్టపడతాను.']
+                  : userLang === 'gujarati'
+                  ? ['મને', 'પુસ્તક', 'વાંચવું', 'ખૂબ', 'ગમે', 'છે.']
+                  : ['The', 'dog', 'is', 'running', 'happily', 'in', 'the', 'park.']
+                ).map((word, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => {
+                      setWritingText(prev => prev ? `${prev} ${word}` : word);
+                    }}
+                    className="btn-3d hover-lift"
+                    style={{
+                      background: 'white', border: '1.5px solid #6C4CFF',
+                      color: '#1e1040', fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px',
+                      padding: '8px 14px', borderRadius: '12px', cursor: 'pointer',
+                      boxShadow: '0 4px 12px rgba(108,76,255,0.15)',
+                    }}
+                  >
+                    {word} +
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div className="relative">
               <textarea
                 value={writingText}
                 onChange={(e) => setWritingText(e.target.value)}
-                className="w-full h-32 p-4 bg-white border-2 border-slate-200 rounded-3xl focus:outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-500 text-slate-800 font-extrabold text-base placeholder:text-slate-400/80"
+                className="w-full h-28 p-4 bg-white border-2 border-slate-200 rounded-3xl focus:outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-500 text-slate-800 font-extrabold text-base placeholder:text-slate-400/80"
                 placeholder={t.placeholder}
               />
               <div className="absolute right-4 bottom-4 bg-white/80 backdrop-blur border border-slate-100 px-3.5 py-1 rounded-full text-[10px] font-black text-slate-550">
