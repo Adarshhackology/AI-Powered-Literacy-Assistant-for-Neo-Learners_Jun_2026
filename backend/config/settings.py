@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'django_celery_beat',
+    'django_celery_results',
     'users',
     'curriculum',
     'assessments',
@@ -116,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -131,3 +133,39 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.CustomUser'
 CORS_ALLOW_ALL_ORIGINS = True
+
+# ── EMAIL CONFIGURATION ──
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'neolit.assistant@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = 'NeoLit AI Literacy Assistant <neolit.assistant@gmail.com>'
+
+# ── WEB PUSH / PUSH NOTIFICATION CONFIGURATION ──
+VAPID_PUBLIC_KEY = os.environ.get('VAPID_PUBLIC_KEY', 'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-Skv69yViEuiBIa')
+VAPID_PRIVATE_KEY = os.environ.get('VAPID_PRIVATE_KEY', '')
+VAPID_ADMIN_EMAIL = os.environ.get('VAPID_ADMIN_EMAIL', 'admin@neolit.org')
+
+# ── CELERY CONFIGURATION ──
+CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379/0')
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kolkata'
+
+# ── CELERY BEAT SCHEDULED TASKS (CRONS) ──
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+    'send-daily-streak-reminders': {
+        'task': 'users.tasks.check_daily_streaks_and_notify_task',
+        'schedule': crontab(hour=18, minute=0), # 6:00 PM Every Evening
+    },
+    'send-weekly-parent-reports': {
+        'task': 'users.tasks.send_weekly_parent_reports_task',
+        'schedule': crontab(day_of_week='sunday', hour=20, minute=0), # 8:00 PM Every Sunday
+    },
+}

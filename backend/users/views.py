@@ -10,6 +10,7 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 from .models import CustomUser, UserProfile
 from .serializers import UserSerializer, UserProfileSerializer
+from .tasks import send_welcome_email_task, send_push_notification_task, send_async_email_task
 
 class RegisterView(APIView):
     def post(self, request):
@@ -20,6 +21,7 @@ class RegisterView(APIView):
         age = request.data.get('age', '24')
         education = request.data.get('education', 'Primary School')
         preferredLanguage = request.data.get('preferredLanguage', 'english')
+        parentEmail = request.data.get('parentEmail')
 
         if not username or not email or not password or not name:
             return Response({'error': 'Please provide username, email, password, and name'}, status=status.HTTP_400_BAD_REQUEST)
@@ -43,6 +45,7 @@ class RegisterView(APIView):
                 age=age,
                 education=education,
                 preferredLanguage=preferredLanguage,
+                parentEmail=parentEmail,
                 xp=10,
                 coins=10,
                 streak=1,
@@ -51,12 +54,25 @@ class RegisterView(APIView):
                 completedLessons='[]'
             )
 
+            # 🚀 ASYNC CELERY TASKS: Trigger Welcome Email & Initial Push Notification
+            try:
+                send_welcome_email_task.delay(username)
+                send_push_notification_task.delay(
+                    username,
+                    title="Welcome to NeoLit! 🎉",
+                    body="Your AI learning adventure begins now! Let's explore your first lesson.",
+                    icon="🤖"
+                )
+            except Exception as cel_err:
+                print(f"Celery task trigger warning: {cel_err}")
+
             return Response({
                 'message': 'User registered successfully',
                 'user': UserSerializer(user).data
             })
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class LoginView(APIView):
     def post(self, request):
@@ -181,3 +197,84 @@ class GoogleLoginView(APIView):
             return Response({'error': 'Invalid Google Token'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class SavePushSubscriptionView(APIView):
+    """
+    Saves user Web Push / Mobile Push notification payload or FCM token.
+    """
+    def post(self, request):
+        username = request.data.get('username')
+        subscription = request.data.get('subscription')
+
+        if not username or not subscription:
+            return Response({'error': 'username and subscription payload are required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = CustomUser.objects.get(username=username)
+            profile, _ = UserProfile.objects.get_or_create(user=user, defaults={'fullName': username})
+            profile.pushSubscription = subscription
+            profile.save()
+
+            # Trigger a confirmation push notification task
+            send_push_notification_task.delay(
+                username,
+                title="Notifications Enabled! 🔔",
+                body="You will now receive daily learning streak reminders & reward alerts!",
+                icon="🔔"
+            )
+
+            return Response({
+                'status': 'success',
+                'message': 'Push subscription saved successfully and task queued.'
+            })
+        except CustomUser.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class TestEmailView(APIView):
+    """
+    Endpoint to test Async Celery Email tasks.
+    """
+    def post(self, request):
+        username = request.data.get('username', 'admin')
+        email = request.data.get('email')
+
+        try:
+            user = CustomUser.objects.get(username=username) if username else None
+            recipient = email or (user.email if user else 'test@neolit.org')
+
+            task = send_async_email_task.delay(
+                subject="🧪 NeoLit Celery Email Test",
+                message=f"Hello! This email was sent asynchronously via Celery Task for user '{username}'.",
+                recipient_list=[recipient]
+            )
+
+            return Response({
+                'status': 'queued',
+                'task_id': task.id,
+                'recipient': recipient,
+                'message': 'Celery async email task queued successfully!'
+            })
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class TestPushView(APIView):
+    """
+    Endpoint to test Async Celery Push Notifications tasks.
+    """
+    def post(self, request):
+        username = request.data.get('username', 'admin')
+        title = request.data.get('title', '⭐ Streak Reminder!')
+        body = request.data.get('body', 'Don\'t forget to complete today\'s lesson to earn 20 coins!')
+
+        task = send_push_notification_task.delay(username, title, body)
+
+        return Response({
+            'status': 'queued',
+            'task_id': task.id,
+            'username': username,
+            'message': 'Celery async push notification task queued successfully!'
+        })
+

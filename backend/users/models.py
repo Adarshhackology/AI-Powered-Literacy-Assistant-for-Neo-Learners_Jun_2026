@@ -26,6 +26,9 @@ class UserProfile(models.Model):
     level = models.IntegerField(default=1)
     badges = models.TextField(default="[]") # JSON list of strings
     completedLessons = models.TextField(default="[]") # JSON list of integers
+    parentEmail = models.EmailField(null=True, blank=True)
+    pushSubscription = models.JSONField(null=True, blank=True) # Web push or FCM token payload
 
     def __str__(self):
         return f"{self.fullName} ({self.user.username})"
+
