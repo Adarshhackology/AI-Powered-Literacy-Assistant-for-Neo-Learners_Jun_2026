@@ -180,12 +180,7 @@ export default function AIPracticeModule() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#1A0A4E',
-      backgroundImage: `
-        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.45) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.35) 0%, transparent 40%),
-        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
-      `,
+      background: '#F6F8FD',
       fontFamily: 'Nunito, sans-serif',
       padding: '16px 20px',
       display: 'flex', flexDirection: 'column', gap: '16px',

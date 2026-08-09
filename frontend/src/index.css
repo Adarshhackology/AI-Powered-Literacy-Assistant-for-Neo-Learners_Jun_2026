@@ -9,10 +9,11 @@
   --blue: #4D9DFF;
   --green: #5AD66F;
   --orange: #FF9F43;
-  --bg: #1a0a4e;
+  --bg: #F6F8FD;
 }
 
 * { font-family: 'Nunito', sans-serif; box-sizing: border-box; margin: 0; padding: 0; }
+body { background-color: #F6F8FD; color: #1E1040; }
 h1,h2,h3,h4,h5,h6 { font-family: 'Poppins', sans-serif; font-weight: 900; }
 .font-baloo { font-family: 'Baloo 2', cursive; }
 .font-poppins { font-family: 'Poppins', sans-serif; }
@@ -99,15 +100,11 @@ h1,h2,h3,h4,h5,h6 { font-family: 'Poppins', sans-serif; font-weight: 900; }
 
 ::-webkit-scrollbar { width:5px; height:5px; }
 ::-webkit-scrollbar-track { background:transparent; }
-::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.2); border-radius:99px; }
+::-webkit-scrollbar-thumb { background:rgba(0,0,0,0.15); border-radius:99px; }
 
 .dashboard-shell {
   min-height: 100vh;
-  background: #1A0A4E;
-  background-image:
-    radial-gradient(circle at 10% 20%, rgba(108,76,255,0.35) 0%, transparent 38%),
-    radial-gradient(circle at 90% 80%, rgba(255,79,163,0.24) 0%, transparent 38%),
-    radial-gradient(circle at 50% 50%, rgba(77,157,255,0.18) 0%, transparent 58%);
+  background: #F6F8FD;
   padding: 16px;
   position: relative;
   overflow-x: hidden;
