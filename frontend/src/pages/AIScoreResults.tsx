@@ -30,14 +30,8 @@ export default function AIScoreResults() {
   const overall = Math.round((scores.reading + scores.writing + scores.comprehension) / 3);
 
   return (
-    <div style={{
+    <div className="neolit-fluid-bg" style={{
       minHeight: '100vh',
-      background: '#1A0A4E',
-      backgroundImage: `
-        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.45) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.35) 0%, transparent 40%),
-        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
-      `,
       fontFamily: 'Nunito, sans-serif',
       padding: '24px 20px',
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
@@ -69,10 +63,10 @@ export default function AIScoreResults() {
             🏆
           </div>
 
-          <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '42px', color: 'white', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '42px', color: '#1E1040', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
             Awesome Job! 🎉
           </h1>
-          <p style={{ fontFamily: 'Nunito', fontWeight: 800, fontSize: '16px', color: 'rgba(255,255,255,0.85)', margin: 0 }}>
+          <p style={{ fontFamily: 'Nunito', fontWeight: 800, fontSize: '16px', color: '#64748B', margin: 0 }}>
             Here are your magical AI results
           </p>
         </div>

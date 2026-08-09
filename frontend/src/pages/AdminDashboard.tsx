@@ -152,16 +152,10 @@ export default function AdminDashboard() {
   );
 
   return (
-    <div style={{
+    <div className="neolit-fluid-bg" style={{
       minHeight: '100vh',
-      background: '#1A0A4E',
-      backgroundImage: `
-        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.4) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.3) 0%, transparent 40%),
-        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
-      `,
       display: 'flex',
-      color: '#1e1040',
+      color: '#1E1040',
       fontFamily: 'Nunito, sans-serif',
       padding: '16px',
       gap: '16px',
@@ -169,17 +163,17 @@ export default function AdminDashboard() {
       {/* Admin Sidebar */}
       <aside style={{
         width: '240px', minWidth: '240px',
-        background: 'linear-gradient(180deg, #3D1D99 0%, #2D1278 50%, #1E0A5E 100%)',
+        background: '#FFFFFF',
         borderRadius: '24px',
+        border: '1.5px solid #EAECF5',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
         display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
         padding: '20px 14px',
-        border: '1.5px solid rgba(255,255,255,0.12)',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
       }}>
         <div className="space-y-8">
           <div className="flex items-center gap-3 px-2">
             <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-md">⚙️</div>
-            <span className="text-xl font-black text-white font-poppins">NeoLit Admin</span>
+            <span className="text-xl font-black text-slate-900 font-poppins">NeoLit Admin</span>
           </div>
 
           <nav className="space-y-1.5">

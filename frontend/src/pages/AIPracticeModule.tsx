@@ -168,8 +168,8 @@ export default function AIPracticeModule() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', background: '#1A0A4E', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontFamily: 'Poppins', fontWeight: 900 }}>
-        <Loader2 className="w-14 h-14 text-purple-400 animate-spin mb-4" />
+      <div className="neolit-fluid-bg" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#1E1040', fontFamily: 'Poppins', fontWeight: 900 }}>
+        <Loader2 className="w-14 h-14 text-purple-600 animate-spin mb-4" />
         <div>Loading Practice Module... ✨</div>
       </div>
     );
@@ -178,9 +178,8 @@ export default function AIPracticeModule() {
   const currentQ = questions[currentIndex] || defaultPracticeQuestions.reading[0];
 
   return (
-    <div style={{
+    <div className="neolit-fluid-bg" style={{
       minHeight: '100vh',
-      background: '#F6F8FD',
       fontFamily: 'Nunito, sans-serif',
       padding: '16px 20px',
       display: 'flex', flexDirection: 'column', gap: '16px',

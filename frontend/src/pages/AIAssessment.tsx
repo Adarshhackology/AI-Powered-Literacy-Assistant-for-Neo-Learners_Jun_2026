@@ -229,7 +229,7 @@ export default function AIAssessment() {
 
   if (submitting) {
     return (
-      <div style={{ minHeight: '100vh', background: '#1A0A4E', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontFamily: 'Poppins', fontWeight: 900 }}>
+      <div className="neolit-fluid-bg" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1E1040', fontFamily: 'Poppins', fontWeight: 900 }}>
         AI is analyzing your skills! 🧠
       </div>
     );
@@ -240,9 +240,8 @@ export default function AIAssessment() {
   const currentSectionName = question.section === 'reading' ? 'Reading' : question.section === 'writing' ? 'Writing' : 'Comprehension';
 
   return (
-    <div style={{
+    <div className="neolit-fluid-bg" style={{
       minHeight: '100vh',
-      background: '#F6F8FD',
       padding: '16px 20px',
       display: 'flex', flexDirection: 'column', gap: '16px',
       fontFamily: 'Nunito, sans-serif',
