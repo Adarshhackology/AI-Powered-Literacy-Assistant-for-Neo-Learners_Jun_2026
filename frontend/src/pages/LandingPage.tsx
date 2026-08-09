@@ -71,40 +71,6 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Center Nav Pills */}
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: '6px',
-          background: '#F1F5F9', padding: '4px 8px', borderRadius: '99px',
-          border: '1px solid #E2E8F0',
-        }}>
-          {[
-            { label: 'Home', icon: '🏠', route: '/' },
-            { label: 'Playground', icon: '🎯', route: '/dashboard' },
-            { label: 'Features', icon: '💡', route: '/learn-with-ai' },
-            { label: 'Achievements', icon: '🏅', route: '/reports' },
-            { label: 'Sticker Album', icon: '📓', route: '/vocabulary' },
-            { label: 'League', icon: '🏆', route: '/leaderboard' },
-          ].map((item, i) => (
-            <button
-              key={i}
-              onClick={() => navigate(item.route)}
-              style={{
-                background: i === 0 ? 'white' : 'transparent',
-                color: i === 0 ? '#6C4CFF' : '#64748B',
-                border: 'none', borderRadius: '99px',
-                padding: '6px 14px',
-                fontFamily: 'Poppins', fontWeight: 800, fontSize: '12px',
-                cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px',
-                boxShadow: i === 0 ? '0 2px 8px rgba(0,0,0,0.08)' : 'none',
-                transition: 'all 0.15s ease',
-              }}
-            >
-              <span>{item.icon}</span>
-              <span>{item.label}</span>
-            </button>
-          ))}
-        </div>
-
         {/* Right Action buttons */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           {/* Language Selector */}
