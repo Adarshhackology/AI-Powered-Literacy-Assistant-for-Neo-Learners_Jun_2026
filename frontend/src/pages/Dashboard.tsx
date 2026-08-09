@@ -12,6 +12,7 @@ import { BadgesWidget } from '../components/Badges/BadgesWidget';
 import { RewardsWidget } from '../components/Rewards/RewardsWidget';
 import { ContinueLearning } from '../components/ContinueLearning/ContinueLearning';
 import { defaultProfile, championsList, ProfileData } from '../data/dashboardData';
+import { Target } from 'lucide-react';
 import { TrophySVG, Sparkle } from '../components/UI/Illustrations';
 
 export default function Dashboard() {
@@ -40,18 +41,7 @@ export default function Dashboard() {
   }, [username, navigate]);
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: '#1A0A4E',
-      backgroundImage: `
-        radial-gradient(circle at 10% 20%, rgba(108,76,255,0.4) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(255,79,163,0.3) 0%, transparent 40%),
-        radial-gradient(circle at 50% 50%, rgba(77,157,255,0.2) 0%, transparent 60%)
-      `,
-      padding: '16px',
-      position: 'relative',
-      overflowX: 'hidden',
-    }}>
+    <div className="dashboard-shell">
 
       {/* Background Star Field */}
       <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
@@ -71,21 +61,13 @@ export default function Dashboard() {
       </div>
 
       {/* Main Container */}
-      <div style={{
-        maxWidth: '1600px',
-        margin: '0 auto',
-        display: 'flex',
-        gap: '16px',
-        position: 'relative',
-        zIndex: 1,
-        alignItems: 'stretch',
-      }}>
+      <div className="dashboard-layout">
 
         {/* SIDEBAR */}
         <Sidebar />
 
         {/* MAIN BODY CONTENT */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '14px', minWidth: 0 }}>
+        <div className="dashboard-main">
 
           {/* NAVBAR */}
           <Navbar profile={profile} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
@@ -97,7 +79,7 @@ export default function Dashboard() {
           <ProgressCards />
 
           {/* MIDDLE ROW: Adventure Map (Left) + Daily Goal & Champions (Right) */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: '14px', alignItems: 'stretch' }}>
+          <div className="dashboard-mid-grid">
 
             {/* Adventure Map */}
             <AdventureMap activeLevel={activeLevel} setActiveLevel={setActiveLevel} />
@@ -110,7 +92,7 @@ export default function Dashboard() {
           </div>
 
           {/* BOTTOM ROW 1: My Badges + Rewards Store + Upcoming Milestone */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px' }}>
+          <div className="dashboard-bottom-grid">
 
             {/* My Badges */}
             <BadgesWidget />
@@ -121,7 +103,7 @@ export default function Dashboard() {
             {/* Upcoming Milestone */}
             <div style={{
               background: 'white',
-              borderRadius: '20px',
+              borderRadius: '14px',
               border: '1.5px solid #E8EFFF',
               padding: '14px 16px',
               boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
@@ -129,7 +111,7 @@ export default function Dashboard() {
             }}>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
-                  <span style={{ fontSize: '18px' }}>🎯</span>
+                  <Target size={18} color="#6C4CFF" strokeWidth={2.8} />
                   <span style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '13px', color: '#1e1040' }}>Upcoming Milestone</span>
                 </div>
                 <div style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#64748B', marginBottom: '12px' }}>
