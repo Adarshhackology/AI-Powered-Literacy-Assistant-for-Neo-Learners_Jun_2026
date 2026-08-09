@@ -159,12 +159,12 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* ── HERO MAIN SECTION (3 COLUMNS) ── */}
+      {/* ── HERO MAIN SECTION (2 COLUMNS) ── */}
       <section style={{
-        maxWidth: '1440px', margin: '0 auto',
-        padding: '30px 24px 40px',
-        display: 'grid', gridTemplateColumns: '1.1fr 1fr 1fr',
-        gap: '24px', alignItems: 'center',
+        maxWidth: '1280px', margin: '0 auto',
+        padding: '40px 24px 50px',
+        display: 'grid', gridTemplateColumns: '1.2fr 1fr',
+        gap: '40px', alignItems: 'center',
         position: 'relative',
       }}>
 
@@ -312,140 +312,6 @@ export default function LandingPage() {
               </radialGradient>
             </defs>
           </svg>
-        </div>
-
-        {/* ══ COLUMN 3: Welcome Back Login Card ══ */}
-        <div style={{
-          background: 'white',
-          borderRadius: '24px',
-          padding: '24px',
-          border: '1.5px solid #E2E8F0',
-          boxShadow: '0 16px 40px rgba(0,0,0,0.08)',
-          display: 'flex', flexDirection: 'column', gap: '14px',
-        }}>
-          <div style={{ textAlign: 'center' }}>
-            <h3 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '20px', color: '#1e1040', margin: '0 0 2px' }}>
-              Welcome Back! 👋
-            </h3>
-            <p style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '11px', color: '#64748B', margin: 0 }}>
-              Continue your learning adventure
-            </p>
-          </div>
-
-          {/* Login / Sign Up Tabs */}
-          <div style={{
-            display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px',
-            background: '#F1F5F9', padding: '3px', borderRadius: '14px',
-          }}>
-            <button
-              onClick={() => setActiveTab('login')}
-              style={{
-                background: activeTab === 'login' ? 'linear-gradient(135deg, #6C4CFF, #8A5CFF)' : 'transparent',
-                color: activeTab === 'login' ? 'white' : '#64748B',
-                border: 'none', borderRadius: '11px', padding: '8px',
-                fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px',
-                cursor: 'pointer', boxShadow: activeTab === 'login' ? '0 4px 12px rgba(108,76,255,0.3)' : 'none',
-              }}
-            >
-              Login
-            </button>
-            <button
-              onClick={() => navigate('/register')}
-              style={{
-                background: 'transparent', color: '#64748B',
-                border: 'none', borderRadius: '11px', padding: '8px',
-                fontFamily: 'Poppins', fontWeight: 900, fontSize: '12px',
-                cursor: 'pointer',
-              }}
-            >
-              Sign Up
-            </button>
-          </div>
-
-          {/* Form */}
-          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <div style={{
-              display: 'flex', alignItems: 'center', gap: '8px',
-              background: '#F8FAFF', border: '1.5px solid #E2E8F0',
-              borderRadius: '12px', padding: '10px 12px',
-            }}>
-              <span style={{ opacity: 0.5 }}>📧</span>
-              <input
-                type="text"
-                placeholder="Email or Username"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                style={{ border: 'none', outline: 'none', background: 'transparent', width: '100%', fontFamily: 'Nunito', fontWeight: 700, fontSize: '12px', color: '#1e1040' }}
-              />
-            </div>
-
-            <div style={{
-              display: 'flex', alignItems: 'center', gap: '8px',
-              background: '#F8FAFF', border: '1.5px solid #E2E8F0',
-              borderRadius: '12px', padding: '10px 12px',
-            }}>
-              <span style={{ opacity: 0.5 }}>🔒</span>
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                style={{ border: 'none', outline: 'none', background: 'transparent', width: '100%', fontFamily: 'Nunito', fontWeight: 700, fontSize: '12px', color: '#1e1040' }}
-              />
-              <span style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#6C4CFF', cursor: 'pointer' }}>Forgot?</span>
-            </div>
-
-            <button
-              type="submit"
-              className="btn-3d"
-              style={{
-                background: 'linear-gradient(135deg, #6C4CFF, #8A5CFF)',
-                color: 'white', fontFamily: 'Poppins', fontWeight: 900, fontSize: '14px',
-                padding: '11px', borderRadius: '12px', border: 'none',
-                borderBottom: '3.5px solid #4D2FCC', cursor: 'pointer',
-                boxShadow: '0 6px 18px rgba(108,76,255,0.4)', marginTop: '4px',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-              }}
-            >
-              🔒 Login →
-            </button>
-          </form>
-
-          {/* Social login divider */}
-          <div style={{ textAlign: 'center', position: 'relative', margin: '4px 0' }}>
-            <span style={{ fontFamily: 'Nunito', fontWeight: 700, fontSize: '10px', color: '#94A3B8', background: 'white', padding: '0 8px', position: 'relative', zIndex: 1 }}>
-              or continue with
-            </span>
-            <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '1px', background: '#E2E8F0' }} />
-          </div>
-
-          {/* Social Buttons */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-            <button
-              onClick={() => navigate('/dashboard')}
-              style={{
-                background: '#F8FAFF', border: '1.5px solid #E2E8F0', borderRadius: '10px',
-                padding: '8px', fontFamily: 'Poppins', fontWeight: 800, fontSize: '11px', color: '#334155',
-                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-              }}
-            >
-              <span>G</span> Google
-            </button>
-            <button
-              onClick={() => navigate('/dashboard')}
-              style={{
-                background: '#F8FAFF', border: '1.5px solid #E2E8F0', borderRadius: '10px',
-                padding: '8px', fontFamily: 'Poppins', fontWeight: 800, fontSize: '11px', color: '#334155',
-                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-              }}
-            >
-              <span></span> Apple
-            </button>
-          </div>
-
-          <div style={{ textAlign: 'center', fontFamily: 'Nunito', fontWeight: 700, fontSize: '11px', color: '#64748B' }}>
-            New to NeoLit? <span onClick={() => navigate('/register')} style={{ color: '#6C4CFF', cursor: 'pointer', fontWeight: 900 }}>Register now</span>
-          </div>
         </div>
 
       </section>
