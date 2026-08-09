@@ -296,6 +296,38 @@ export const apiClient = {
     }
   },
 
+  // Generate AI Lesson with AI Text & Image
+  generateAILesson: async (payload: { topic: string; difficulty?: string; category?: string; language?: string; save?: boolean }) => {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/curriculum/lessons/generate/`, payload);
+      return response.data;
+    } catch (err) {
+      console.warn('Django backend not active, running local AI lesson fallback generator');
+      const topic = payload.topic || 'Phonics & Words';
+      const difficulty = payload.difficulty || 'Beginner';
+      const category = payload.category || 'Reading';
+      const encodedPrompt = encodeURIComponent(`Cute cartoon illustration of ${topic} for children learning, 3d Pixar style, vibrant colors`);
+      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=800&height=500&nologo=true`;
+
+      const newLesson = {
+        id: Date.now(),
+        title: `AI: ${topic}`,
+        difficulty,
+        time: '10 mins',
+        category,
+        content: `Welcome to your AI lesson on ${topic}! Practice reading the key words and pronouncing them aloud clearly.`,
+        audioText: `Today we are learning about ${topic}. Listen closely and repeat after me.`,
+        imageUrl,
+        examples: [`${topic} Example 1`, `${topic} Example 2`, `${topic} Example 3`]
+      };
+
+      const lessons = getStorageItem<any[]>('lessons', defaultLessons);
+      lessons.push(newLesson);
+      setStorageItem('lessons', lessons);
+      return newLesson;
+    }
+  },
+
   // Delete Lesson
   deleteLesson: async (id: number) => {
     try {

@@ -111,6 +111,31 @@ export default function AdminDashboard() {
     }
   };
 
+  const [generatingAI, setGeneratingAI] = useState(false);
+
+  const handleGenerateAILesson = async () => {
+    const topic = window.prompt('Enter topic for AI Lesson Generator (e.g. "Space Exploration", "Rainforest Animals", "Market Shopping"):', 'Space Exploration & Planets');
+    if (!topic) return;
+
+    setGeneratingAI(true);
+    try {
+      const newLesson = await apiClient.generateAILesson({
+        topic,
+        difficulty: 'Beginner',
+        category: 'Reading',
+        language: 'English',
+        save: true
+      });
+      alert(`🎉 AI Lesson Generated Successfully!\n\nTitle: ${newLesson.title}\nImage URL: ${newLesson.imageUrl || 'Generated'}`);
+      await fetchLessons();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to generate AI lesson. Check console.');
+    } finally {
+      setGeneratingAI(false);
+    }
+  };
+
   const handleDeleteLesson = async (id: number) => {
     if (window.confirm('Are you sure you want to delete this lesson?')) {
       try {
@@ -509,13 +534,23 @@ export default function AdminDashboard() {
             <div className="space-y-6 animate-fade-in">
               <div className="flex justify-between items-center">
                 <h3 className="font-extrabold text-slate-900 text-lg">Curriculum Syllabus List</h3>
-                <button
-                  onClick={() => setShowAddModal(true)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs px-5 py-3 rounded-2xl flex items-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer"
-                >
-                  <Plus className="w-4.5 h-4.5" />
-                  <span>Create Lesson</span>
-                </button>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={handleGenerateAILesson}
+                    disabled={generatingAI}
+                    className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-extrabold text-xs px-5 py-3 rounded-2xl flex items-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    <Sparkles className="w-4.5 h-4.5 animate-spin" />
+                    <span>{generatingAI ? 'AI Generating Lesson & Image...' : '✨ Generate with AI (Text + Image)'}</span>
+                  </button>
+                  <button
+                    onClick={() => setShowAddModal(true)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs px-5 py-3 rounded-2xl flex items-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer"
+                  >
+                    <Plus className="w-4.5 h-4.5" />
+                    <span>Create Lesson</span>
+                  </button>
+                </div>
               </div>
 
               {/* Table list */}

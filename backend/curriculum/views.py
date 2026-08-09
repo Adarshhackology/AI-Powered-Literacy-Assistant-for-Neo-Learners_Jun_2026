@@ -1,6 +1,7 @@
 import json
 import os
 import requests
+import urllib.parse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -342,4 +343,106 @@ class SaveLearningPathView(APIView):
             return Response({'error': 'Lesson not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+def generate_ai_lesson_with_image(topic, difficulty='Beginner', category='Reading', language='English'):
+    """
+    Uses Gemini API to generate lesson text, audio script, bilingual examples, 
+    and an AI image prompt, then creates a real image URL using Pollinations AI image generator.
+    """
+    api_key = os.environ.get('GEMINI_API_KEY')
+    
+    prompt = f"""You are an expert AI curriculum designer for children and literacy learners.
+Generate a high-quality educational lesson on the topic: "{topic}".
+Difficulty level: {difficulty}
+Category: {category}
+Language context: {language}
+
+Your output must be a single, valid JSON object matching this schema:
+{{
+  "title": "Short catchy title (max 6 words)",
+  "difficulty": "{difficulty}",
+  "time": "10 mins",
+  "category": "{category}",
+  "content": "Rich educational text for children with phonetic rules, grammar explanations, or vocabulary (100-200 words). Include native language translations in parentheses if relevant.",
+  "audioText": "Clear, slow-paced audio narration script for read-aloud practice.",
+  "examples": ["Example 1 (Translation 1)", "Example 2 (Translation 2)", "Example 3 (Translation 3)"],
+  "image_prompt": "Detailed 3D cartoon illustration prompt describing the lesson visual (e.g. 'Cute cartoon owl reading a book under a sunlit tree, 3D Pixar render, vibrant colors, child-friendly')"
+}}
+"""
+    
+    lesson_data = None
+    if api_key:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+        headers = {'Content-Type': 'application/json'}
+        payload = {
+            "contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {"responseMimeType": "application/json"}
+        }
+        try:
+            resp = requests.post(url, headers=headers, json=payload, timeout=12)
+            if resp.status_code == 200:
+                res_json = resp.json()
+                text_response = res_json['candidates'][0]['content']['parts'][0]['text']
+                lesson_data = json.loads(text_response)
+        except Exception as e:
+            print(f"Gemini API Error in lesson generation: {e}")
+
+    # Fallback if Gemini unavailable or failed
+    if not lesson_data:
+        lesson_data = {
+            "title": f"Learning {topic.title()}",
+            "difficulty": difficulty,
+            "time": "10 mins",
+            "category": category,
+            "content": f"Welcome to your AI lesson on {topic}! Practice reading the key words and pronouncing them aloud clearly. Knowledge builds step by step!",
+            "audioText": f"Today we are learning about {topic}. Listen closely and repeat after me to improve your vocabulary.",
+            "examples": [f"{topic.title()} Basics (बुनियादी नियम)", f"{topic.title()} Key Phrase (मुख्य वाक्य)", f"{topic.title()} Practice (अभ्यास)"],
+            "image_prompt": f"Cute 3D illustration of {topic} for children education, vibrant colorful vector art"
+        }
+
+    # Generate real AI image URL using Pollinations AI image generator API
+    raw_prompt = lesson_data.get('image_prompt') or f"Cute colorful 3D cartoon illustration of {topic} for kids learning"
+    encoded_prompt = urllib.parse.quote(f"{raw_prompt}, high resolution, 3d render, vibrant colors, child friendly")
+    image_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=800&height=500&nologo=true"
+    
+    lesson_data['imageUrl'] = image_url
+    return lesson_data
+
+
+class GenerateAILessonView(APIView):
+    """
+    API endpoint: POST /api/curriculum/lessons/generate/
+    Generates a new lesson with AI text, bilingual examples, and AI-generated image URL.
+    """
+    def post(self, request):
+        topic = request.data.get('topic') or 'Animals & Phonics'
+        difficulty = request.data.get('difficulty') or 'Beginner'
+        category = request.data.get('category') or 'Reading'
+        language = request.data.get('language') or 'English'
+        save_to_db = request.data.get('save', True)
+
+        try:
+            lesson_dict = generate_ai_lesson_with_image(topic, difficulty, category, language)
+            
+            if save_to_db:
+                curriculum, _ = Curriculum.objects.get_or_create(level=difficulty)
+                lesson = Lesson.objects.create(
+                    curriculum=curriculum,
+                    title=lesson_dict.get('title', f"Lesson on {topic}"),
+                    difficulty=difficulty,
+                    time=lesson_dict.get('time', '10 mins'),
+                    category=category,
+                    content=lesson_dict.get('content', ''),
+                    audioText=lesson_dict.get('audioText', ''),
+                    imageUrl=lesson_dict.get('imageUrl', ''),
+                    examples=json.dumps(lesson_dict.get('examples', []))
+                )
+                return Response(LessonSerializer(lesson).data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(lesson_dict, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
