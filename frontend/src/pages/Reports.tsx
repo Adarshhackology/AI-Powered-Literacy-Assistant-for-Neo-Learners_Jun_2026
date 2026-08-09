@@ -46,9 +46,8 @@ export default function Reports() {
   ];
 
   return (
-    <div style={{
+    <div className="neolit-fluid-bg" style={{
       minHeight: '100vh',
-      background: '#F6F8FD',
       fontFamily: 'Nunito, sans-serif',
       display: 'flex',
       color: '#1E1040',

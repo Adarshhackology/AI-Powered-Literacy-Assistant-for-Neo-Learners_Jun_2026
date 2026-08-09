@@ -32,9 +32,8 @@ export default function LandingPage() {
   };
 
   return (
-    <div style={{
+    <div className="neolit-fluid-bg" style={{
       minHeight: '100vh',
-      background: 'linear-gradient(180deg, #E0F2FE 0%, #F0F9FF 30%, #F5F3FF 70%, #FAF5FF 100%)',
       fontFamily: 'Nunito, sans-serif',
       color: '#1E293B',
       position: 'relative',

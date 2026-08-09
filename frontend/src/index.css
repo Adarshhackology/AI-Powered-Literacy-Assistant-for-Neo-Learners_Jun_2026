@@ -9,11 +9,44 @@
   --blue: #4D9DFF;
   --green: #5AD66F;
   --orange: #FF9F43;
-  --bg: #F6F8FD;
+  --bg: #F8F9FE;
 }
 
 * { font-family: 'Nunito', sans-serif; box-sizing: border-box; margin: 0; padding: 0; }
-body { background-color: #F6F8FD; color: #1E1040; }
+
+/* ── Global Organic Fluid Wave Background (Matching Reference Theme) ── */
+.neolit-fluid-bg {
+  background-color: #F8F9FE;
+  background-image:
+    radial-gradient(circle at 2% 0%, rgba(185, 165, 255, 0.45) 0%, rgba(210, 195, 255, 0.2) 28%, transparent 55%),
+    radial-gradient(circle at 98% 0%, rgba(255, 195, 225, 0.5) 0%, rgba(255, 220, 240, 0.2) 28%, transparent 55%),
+    radial-gradient(circle at 2% 100%, rgba(165, 180, 255, 0.55) 0%, rgba(195, 205, 255, 0.25) 32%, transparent 60%),
+    radial-gradient(circle at 98% 100%, rgba(175, 185, 255, 0.55) 0%, rgba(200, 210, 255, 0.25) 32%, transparent 60%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.9) 0%, rgba(248, 249, 254, 0.6) 100%);
+  background-attachment: fixed;
+  position: relative;
+}
+
+/* Decorative background dot matrix & organic rings */
+.neolit-fluid-bg::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(rgba(108, 76, 255, 0.12) 1.2px, transparent 1.2px),
+    radial-gradient(rgba(255, 79, 163, 0.12) 1.2px, transparent 1.2px);
+  background-size: 24px 24px, 32px 32px;
+  background-position: 0 0, 12px 12px;
+  opacity: 0.6;
+  z-index: 0;
+}
+
+body {
+  background-color: #F8F9FE;
+  color: #1E1040;
+}
+
 h1,h2,h3,h4,h5,h6 { font-family: 'Poppins', sans-serif; font-weight: 900; }
 .font-baloo { font-family: 'Baloo 2', cursive; }
 .font-poppins { font-family: 'Poppins', sans-serif; }
@@ -100,11 +133,16 @@ h1,h2,h3,h4,h5,h6 { font-family: 'Poppins', sans-serif; font-weight: 900; }
 
 ::-webkit-scrollbar { width:5px; height:5px; }
 ::-webkit-scrollbar-track { background:transparent; }
-::-webkit-scrollbar-thumb { background:rgba(0,0,0,0.15); border-radius:99px; }
+::-webkit-scrollbar-thumb { background:rgba(108,76,255,0.2); border-radius:99px; }
 
 .dashboard-shell {
   min-height: 100vh;
-  background: #F6F8FD;
+  background-color: #F8F9FE;
+  background-image:
+    radial-gradient(circle at 2% 0%, rgba(185, 165, 255, 0.45) 0%, rgba(210, 195, 255, 0.2) 28%, transparent 55%),
+    radial-gradient(circle at 98% 0%, rgba(255, 195, 225, 0.5) 0%, rgba(255, 220, 240, 0.2) 28%, transparent 55%),
+    radial-gradient(circle at 2% 100%, rgba(165, 180, 255, 0.55) 0%, rgba(195, 205, 255, 0.25) 32%, transparent 60%),
+    radial-gradient(circle at 98% 100%, rgba(175, 185, 255, 0.55) 0%, rgba(200, 210, 255, 0.25) 32%, transparent 60%);
   padding: 16px;
   position: relative;
   overflow-x: hidden;
