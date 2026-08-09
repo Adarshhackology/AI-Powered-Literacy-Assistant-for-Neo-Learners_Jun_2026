@@ -278,3 +278,55 @@ h1,h2,h3,h4,h5,h6 { font-family: 'Poppins', sans-serif; font-weight: 900; }
     padding: 18px 130px 18px 18px !important;
   }
 }
+
+/* ===================== iOS & ANDROID MOBILE UI/UX PRO MAX RULES ===================== */
+:root {
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+}
+
+/* 1. Touch Target Optimization (UI UX Pro Max 44x44px rule) */
+button, a, input, select, textarea, [role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 2. Safe Area Notch & Home Indicator Padding for iPhone & Android */
+.safe-area-top {
+  padding-top: max(16px, var(--sat));
+}
+
+.safe-area-bottom {
+  padding-bottom: max(16px, var(--sab));
+}
+
+/* 3. Smooth Native Momentum Scroll on Mobile Safari & Android Chrome */
+.mobile-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* 4. Active Press Feedback for Touch Displays */
+@media (hover: none) and (pointer: coarse) {
+  .hover-lift:active {
+    transform: scale(0.96) !important;
+  }
+  .btn-3d:active {
+    transform: translateY(2px) scale(0.98) !important;
+  }
+}
+
+/* 5. Mobile Dynamic Breakpoints for iPhone SE, iPhone 14/15/16 Pro, Samsung Galaxy */
+@media (max-width: 480px) {
+  h1 { font-size: 26px !important; }
+  h2 { font-size: 22px !important; }
+  h3 { font-size: 18px !important; }
+
+  .hero-card-primary-copy,
+  .hero-card-secondary-copy {
+    padding: 16px !important;
+  }
+}
+
