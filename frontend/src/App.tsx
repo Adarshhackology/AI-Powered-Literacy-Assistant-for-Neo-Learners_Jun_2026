@@ -29,9 +29,12 @@ import GamificationStore from './pages/GamificationStore';
 import Leaderboard from './pages/Leaderboard';
 import LearnGames from './pages/LearnGames';
 
+import { PWAInstallBanner } from './components/PWAInstallBanner';
+
 function App() {
   return (
     <Router>
+      <PWAInstallBanner />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/select-language" element={<LanguageSelection />} />
@@ -58,7 +61,9 @@ function App() {
         <Route path="/learn-with-ai/scores/:sessionId" element={<AIScoreResults />} />
         <Route path="/learn-with-ai/weak-areas/:sessionId" element={<AIWeakAreas />} />
         <Route path="/learn-with-ai/plan/:sessionId" element={<AILearningPlan />} />
+        <Route path="/learn-with-ai/practice/:moduleId" element={<AIPracticeModule />} />
         <Route path="/learn-with-ai/practice/:sessionId/:moduleId" element={<AIPracticeModule />} />
+        <Route path="/learn-with-ai/suggestions/:moduleId" element={<AISuggestions />} />
         <Route path="/learn-with-ai/suggestions/:sessionId/:moduleId" element={<AISuggestions />} />
         <Route path="/learn-with-ai/retest/:sessionId" element={<AIRetest />} />
         <Route path="/learn-with-ai/comparison/:sessionId" element={<AIComparison />} />

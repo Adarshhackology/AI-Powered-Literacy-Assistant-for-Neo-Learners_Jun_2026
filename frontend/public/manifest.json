@@ -1,0 +1,42 @@
+{
+  "short_name": "NeoLit",
+  "name": "NeoLit Adventure - AI Literacy Assistant for Kids",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#F8F9FE",
+  "theme_color": "#6C4CFF",
+  "display": "standalone",
+  "orientation": "any",
+  "description": "Interactive AI-powered literacy playground for kids with reading matches, voice pronunciation, game levels, and sticker rewards.",
+  "categories": ["education", "kids", "games"],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Open student dashboard",
+      "url": "/dashboard",
+      "icons": [{ "src": "/vite.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Learn Games",
+      "short_name": "Games",
+      "description": "Play 33 interactive literacy mini-games",
+      "url": "/games",
+      "icons": [{ "src": "/vite.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Voice Practice",
+      "short_name": "Practice",
+      "description": "Speech recognition voice tutor",
+      "url": "/voice-practice",
+      "icons": [{ "src": "/vite.svg", "sizes": "192x192" }]
+    }
+  ]
+}
