@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const BACKEND_URL = 'http://127.0.0.1:8000/api';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000';
+const BACKEND_URL = API_BASE.endsWith('/api') ? API_BASE : `${API_BASE.replace(/\/$/, '')}/api`;
+
+
 
 // Helper to interact with local storage
 const getStorageItem = <T>(key: string, defaultValue: T): T => {
