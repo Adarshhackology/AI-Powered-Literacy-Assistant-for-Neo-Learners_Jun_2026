@@ -601,5 +601,16 @@ export const apiClient = {
         }
       };
     }
+  },
+
+  // Fetch real database analytics for user
+  getUserAnalytics: async (username: string) => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/users/analytics/${username}/`);
+      return response.data;
+    } catch (error) {
+      console.warn('Backend analytics endpoint offline, using local calculations:', error);
+      return null;
+    }
   }
 };

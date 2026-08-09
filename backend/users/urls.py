@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     RegisterView, LoginView, SaveProfileView, GetProfileView, GoogleLoginView,
-    SavePushSubscriptionView, TestEmailView, TestPushView
+    SavePushSubscriptionView, TestEmailView, TestPushView, UserAnalyticsView
 )
 
 urlpatterns = [
@@ -10,6 +10,7 @@ urlpatterns = [
     path('google-login/', GoogleLoginView.as_view(), name='google_login'),
     path('profile/save/', SaveProfileView.as_view(), name='save_profile'),
     path('profile/<str:username>/', GetProfileView.as_view(), name='get_profile'),
+    path('analytics/<str:username>/', UserAnalyticsView.as_view(), name='user_analytics'),
     path('push-subscribe/', SavePushSubscriptionView.as_view(), name='push_subscribe'),
     path('test-email/', TestEmailView.as_view(), name='test_email'),
     path('test-push/', TestPushView.as_view(), name='test_push'),
