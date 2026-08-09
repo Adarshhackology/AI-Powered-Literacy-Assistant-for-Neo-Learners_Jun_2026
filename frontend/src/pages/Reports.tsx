@@ -12,19 +12,26 @@ export default function Reports() {
   const navigate = useNavigate();
   const username = localStorage.getItem('username') || 'Adarsh';
 
-  const [activeTab, setActiveTab] = useState<string>('all');
+  const [activeTab, setActiveTab] = useState<string>('daily');
   const [activeSidebarItem, setActiveSidebarItem] = useState<string>('ai_reports');
 
-  const reportTabs = [
-    { id: 'all', label: 'All Reports', icon: '🎆' },
-    { id: 'daily', label: 'Daily Progress', icon: '📅' },
+  // Exact 15 Detailed Report Categories matching reference image
+  const reportCategories = [
+    { id: 'all', label: 'All Reports', icon: '⚡' },
+    { id: 'daily', label: 'Daily Progress', icon: '📊' },
     { id: 'weekly', label: 'Weekly Trend', icon: '📈' },
-    { id: 'monthly', label: 'Monthly Overview', icon: '📊' },
-    { id: 'lesson_completion', label: 'Lesson Completion', icon: '☑️' },
-    { id: 'reading', label: 'Reading', icon: '📖' },
-    { id: 'writing', label: 'Writing', icon: '✍️' },
-    { id: 'speaking', label: 'Speaking', icon: '🎤' },
-    { id: 'vocabulary', label: 'Vocabulary', icon: 'Aa' },
+    { id: 'monthly', label: 'Monthly Overview', icon: '📅' },
+    { id: 'lesson_completion', label: 'Lesson Completion', icon: '🎓' },
+    { id: 'reading', label: 'Reading Report', icon: '📖' },
+    { id: 'writing', label: 'Writing Report', icon: '✍️' },
+    { id: 'speaking', label: 'Speaking Report', icon: '🎤' },
+    { id: 'pronunciation', label: 'Pronunciation', icon: '🗣️' },
+    { id: 'vocabulary', label: 'Vocabulary Growth', icon: '🌱' },
+    { id: 'study_time', label: 'Study Time', icon: '⏱️' },
+    { id: 'weak_skills', label: 'Weak Skills', icon: '⚡' },
+    { id: 'strong_skills', label: 'Strong Skills', icon: '⭐' },
+    { id: 'achievements', label: 'Achievements', icon: '🏆' },
+    { id: 'streak', label: 'Streak Report', icon: '🔥' },
   ];
 
   const sidebarNavItems = [
@@ -33,7 +40,7 @@ export default function Reports() {
     { id: 'practice', label: 'Practice', icon: '✍️', path: '/voice-practice' },
     { id: 'learning_path', label: 'Learning Path', icon: '🗺️', path: '/learn-with-ai' },
     { id: 'achievements', label: 'Achievements', icon: '🏆', path: '/games' },
-    { id: 'streaks', label: 'Streaks', icon: '🔥', path: '/dashboard' },
+    { id: 'streaks', label: 'Streaks', icon: '🔥', path: '/reports' },
     { id: 'certificates', label: 'Certificates', icon: '📜', path: '/reports' },
     { id: 'settings', label: 'Settings', icon: '⚙️', path: '/profile-setup' },
   ];
@@ -358,40 +365,41 @@ export default function Reports() {
           </div>
         </div>
 
-        {/* ── MIDDLE SECTION: CATEGORY TABS BAR ── */}
+        {/* ── 15 DETAILED REPORT CATEGORIES (SLIDER & CONTAINER) ── */}
         <div style={{
-          display: 'flex', alignItems: 'center', gap: '8px', overflowX: 'auto', paddingBottom: '4px',
+          background: '#F1F3FB', borderRadius: '20px', padding: '16px 20px',
+          border: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: '12px',
         }}>
-          {reportTabs.map(tab => {
-            const isSel = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                style={{
-                  padding: '8px 16px', borderRadius: '12px', border: 'none',
-                  background: isSel ? '#6C4CFF' : '#FFFFFF',
-                  color: isSel ? '#FFFFFF' : '#64748B',
-                  fontFamily: 'Poppins', fontWeight: isSel ? 800 : 600, fontSize: '13px',
-                  cursor: 'pointer', whiteSpace: 'nowrap',
-                  boxShadow: isSel ? '0 4px 14px rgba(108,76,255,0.35)' : '0 2px 8px rgba(0,0,0,0.02)',
-                  display: 'flex', alignItems: 'center', gap: '6px',
-                  transition: 'all 0.15s ease',
-                }}
-              >
-                <span>{tab.icon}</span>
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
-          <button style={{
-            padding: '8px 16px', borderRadius: '12px', background: '#FFFFFF', border: '1px solid #E2E8F0',
-            color: '#64748B', fontFamily: 'Poppins', fontWeight: 700, fontSize: '13px', cursor: 'pointer',
-            display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap',
+          <div style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '11px', color: '#94A3B8', letterSpacing: '1px', textTransform: 'uppercase' }}>
+            SELECT REPORT CATEGORY (15 DETAILED REPORTS)
+          </div>
+
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap',
           }}>
-            <span>More</span>
-            <ChevronDown className="w-4 h-4" />
-          </button>
+            {reportCategories.map(cat => {
+              const isSel = activeTab === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveTab(cat.id)}
+                  style={{
+                    padding: '9px 18px', borderRadius: '99px', border: 'none',
+                    background: isSel ? 'linear-gradient(135deg, #6C4CFF 0%, #8A5CFF 100%)' : '#FFFFFF',
+                    color: isSel ? '#FFFFFF' : '#475569',
+                    fontFamily: 'Poppins', fontWeight: isSel ? 800 : 700, fontSize: '13px',
+                    cursor: 'pointer', whiteSpace: 'nowrap',
+                    boxShadow: isSel ? '0 6px 18px rgba(108,76,255,0.4)' : '0 2px 6px rgba(0,0,0,0.04)',
+                    display: 'flex', alignItems: 'center', gap: '8px',
+                    transition: 'all 0.18s ease',
+                  }}
+                >
+                  <span style={{ fontSize: '15px' }}>{cat.icon}</span>
+                  <span>{cat.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* ── TOP 3 SUMMARY STAT CARDS ── */}
@@ -475,7 +483,7 @@ export default function Reports() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span style={{ fontSize: '18px' }}>📈</span>
                 <h3 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '16px', color: '#1E1040', margin: 0 }}>
-                  Accuracy Over Time
+                  Accuracy Over Time ({reportCategories.find(c => c.id === activeTab)?.label})
                 </h3>
               </div>
               <span style={{ background: '#F3E8FF', color: '#6C4CFF', fontFamily: 'Poppins', fontWeight: 800, fontSize: '11px', padding: '4px 10px', borderRadius: '99px' }}>
