@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Smartphone } from 'lucide-react';
 import { SupportedLanguage, translations } from '../utils/translationHelper';
 import { Sparkle, TrophySVG, RobotMascot } from '../components/UI/Illustrations';
+import { DownloadAppModal } from '../components/DownloadAppModal';
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const [lang, setLang] = useState<SupportedLanguage>('english');
+  const [showDownloadModal, setShowDownloadModal] = useState(false);
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -73,6 +76,29 @@ export default function LandingPage() {
 
         {/* Right Action buttons */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <button
+            onClick={() => setShowDownloadModal(true)}
+            className="btn-3d hover-lift"
+            style={{
+              background: 'linear-gradient(135deg, #FF4FA3, #FF9F43)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '99px',
+              padding: '6px 14px',
+              fontFamily: 'Poppins',
+              fontWeight: 900,
+              fontSize: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 4px 14px rgba(255,79,163,0.3)',
+              cursor: 'pointer',
+            }}
+          >
+            <Smartphone className="w-4 h-4" />
+            <span>Download App</span>
+          </button>
+
           {/* Language Selector */}
           <div style={{
             display: 'flex', alignItems: 'center', gap: '6px',
@@ -486,6 +512,12 @@ export default function LandingPage() {
           <div className="animate-bobble" style={{ fontSize: '36px' }}>🦁</div>
         </div>
       </footer>
+
+      {/* Download App Modal */}
+      <DownloadAppModal
+        isOpen={showDownloadModal}
+        onClose={() => setShowDownloadModal(false)}
+      />
 
     </div>
   );
