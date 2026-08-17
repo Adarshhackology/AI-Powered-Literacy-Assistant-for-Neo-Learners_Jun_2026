@@ -319,14 +319,71 @@ button, a, input, select, textarea, [role="button"] {
 }
 
 /* 5. Mobile Dynamic Breakpoints for iPhone SE, iPhone 14/15/16 Pro, Samsung Galaxy */
-@media (max-width: 480px) {
-  h1 { font-size: 26px !important; }
-  h2 { font-size: 22px !important; }
-  h3 { font-size: 18px !important; }
+@media (max-width: 640px) {
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  h1 { font-size: 24px !important; }
+  h2 { font-size: 20px !important; }
+  h3 { font-size: 17px !important; }
+
+  /* Full responsive mobile adjustments */
+  .dashboard-shell {
+    padding: 8px !important;
+  }
+
+  .dashboard-navbar {
+    padding: 8px 10px !important;
+    gap: 8px !important;
+  }
+
+  .dashboard-search {
+    max-width: 100% !important;
+    font-size: 12px !important;
+  }
+
+  /* Hero cards scaling on phone */
+  .hero-card {
+    min-height: auto !important;
+    flex-direction: column !important;
+  }
 
   .hero-card-primary-copy,
   .hero-card-secondary-copy {
     padding: 16px !important;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-card .animate-float {
+    position: relative !important;
+    width: 100% !important;
+    height: 100px !important;
+    margin-top: -30px;
+    align-self: center;
+  }
+
+  /* Modals & Drawers Responsive Fix */
+  div[style*="maxWidth: 520px"],
+  div[style*="maxWidth: 420px"],
+  div[style*="maxWidth: 1000px"],
+  div[style*="maxWidth: 850px"] {
+    max-width: 95vw !important;
+    padding: 16px !important;
   }
 }
+
+@media (max-width: 480px) {
+  button, input, select, textarea {
+    font-size: 13px !important;
+  }
+  
+  .btn-3d {
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+  }
+}
+
 
