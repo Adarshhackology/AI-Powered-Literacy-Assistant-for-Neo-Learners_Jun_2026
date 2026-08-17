@@ -168,11 +168,11 @@ export default function AILearningPlan() {
 
         {/* Title & Progress Bar */}
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-          <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '38px', color: 'white', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '38px', color: '#1E1040', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
             Your AI Learning Plan 📊
           </h1>
-          <div style={{ fontFamily: 'Nunito', fontWeight: 800, fontSize: '14px', color: 'rgba(255,255,255,0.85)' }}>
-            Progress: <strong style={{ color: '#FFD54A' }}>{completedCount}</strong> of <strong style={{ color: '#FFD54A' }}>{assignedModules.length}</strong> modules completed
+          <div style={{ fontFamily: 'Nunito', fontWeight: 800, fontSize: '14px', color: '#64748B' }}>
+            Progress: <strong style={{ color: '#6C4CFF' }}>{completedCount}</strong> of <strong style={{ color: '#6C4CFF' }}>{assignedModules.length}</strong> modules completed
           </div>
         </div>
 

@@ -120,8 +120,8 @@ export default function AIWeakAreas() {
 
         {/* Header Title Area */}
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-          <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '38px', color: 'white', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
-            Let's Find <span style={{ color: '#8A5CFF' }}>Where You Need</span> Practice! 🔍
+          <h1 style={{ fontFamily: 'Poppins', fontWeight: 900, fontSize: '38px', color: '#1E1040', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+            Let's Find <span style={{ color: '#6C4CFF' }}>Where You Need</span> Practice! 🔍
           </h1>
 
           <div style={{
